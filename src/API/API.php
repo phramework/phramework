@@ -218,7 +218,7 @@ class API {
             self::call_callback(self::STEP_AFTER_AUTHENTICATION_CHECK);
 
             //@todo update
-            $language = \API\API::get_setting('language');
+            $language = self::get_setting('language');
 
             //Select request's language
             if (isset($_GET['this_language']) && in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
@@ -235,7 +235,7 @@ class API {
                     $language = $a;
                 } else {
                     //Force english for not greek & english browsers
-                    $language = \API\API::get_setting('language');
+                    $language = self::get_setting('language');
                 }
             }
 
