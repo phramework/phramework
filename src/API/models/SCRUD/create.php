@@ -48,7 +48,7 @@ class create {
             . "VALUES ($query_parameter_string )";
         //Return inserted id
         if($return == self::RETURN_ID) {
-            $driver = \API\API::get_db_driver();
+            $driver = \Phramework\API\models\database::get_db_driver();
             if ($driver == 'postgresql') {
                 $query .= ' RETURNING id';
             }

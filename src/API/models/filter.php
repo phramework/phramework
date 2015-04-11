@@ -163,7 +163,7 @@ class filter {
             case validate::TYPE_UNIX_TIMESTAMP:
                 //Add the timezone offset (in minutes)
                 $value = intval($value) + 
-                    (\API\API::get_timezone_offset()*60);
+                    (\Phramework\API\API::get_timezone_offset()*60);
                 break;
         }
     }

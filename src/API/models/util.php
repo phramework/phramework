@@ -25,7 +25,7 @@ class util {
      * @return string
      */
     public static function url($controller = NULL, $suffix = '') {
-        $api_base = \API\API::get_setting('api_base');
+        $api_base = \Phramework\API\API::get_setting('api_base');
 
         if ($controller) {
             $suffix = $controller . '/' . $suffix;

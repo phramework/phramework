@@ -37,7 +37,7 @@ class request {
      * @return array Returns the user object
      */
     public static function check_permission($user_id = FALSE) {
-        $user = \API\API::get_user();
+        $user = \Phramework\API\API::get_user();
         //If user is not authenticated throw an exception
         if (!$user) {
             throw new permission(__('user_authentication_required_exception'));
