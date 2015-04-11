@@ -6,7 +6,7 @@
     "keywords": [
         "RESTful"
     ],
-    "version" : "0.0.3",
+    "version" : "0.0.4",
     "homepage": "https://nohponex.gr",
     "authors": [
         {
@@ -15,7 +15,6 @@
             "homepage": "https://nohponex.gr"
         }
     ],
-    "version" : "0.0.1",
     "autoload": {
         "psr-4": {
             "Phramework\\API\\": "src/API"

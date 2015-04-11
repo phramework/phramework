@@ -52,7 +52,7 @@ class authentication {
         }
         //Check if user is disabled
         if ($auth['disabled']) {
-            throw new \API\exceptions\permission(__('disabled_account_exception'));
+            throw new \Phramework\API\exceptions\permission(__('disabled_account_exception'));
         }
         
         //Check if user is validated

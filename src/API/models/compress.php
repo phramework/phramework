@@ -45,7 +45,7 @@ class compress {
         $res = $zip->open($compressed_file);
 
         if ($res !== TRUE) {
-            throw new \API\exceptions\request('Cannot open zip archive', $res);
+            throw new \Phramework\API\exceptions\request('Cannot open zip archive', $res);
         }
 
         $files = [];
@@ -100,7 +100,7 @@ class compress {
         try {
             $zip = new PharData($compressed_file);
         } catch (\UnexpectedValueException $e) {
-            throw new \API\exceptions\request('Cannot open tar archive');
+            throw new \Phramework\API\exceptions\request('Cannot open tar archive');
         }
 
         $files = [];
