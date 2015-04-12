@@ -1,3 +1,4 @@
 nbproject/
 /vendor/
-/nbproject/private/
+/nbproject/private
+/doc/
