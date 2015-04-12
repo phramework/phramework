@@ -4,21 +4,28 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a354bf6e239d3fb6e6fa0afbdfc29ac7",
+    "hash": "b9fccf8a6fe0b1e36379a4fe48b75d1c",
     "packages": [
         {
             "name": "metaphrase/php-sdk",
-            "version": "dev-master",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/metaphrase/php-sdk.git",
-                "reference": "db336124deaf3a1e9130637ff4beb03d8dc62a65"
+                "reference": "4779c9bd16b0b1879236126c9f17879adfe493ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/metaphrase/php-sdk/zipball/db336124deaf3a1e9130637ff4beb03d8dc62a65",
-                "reference": "db336124deaf3a1e9130637ff4beb03d8dc62a65",
+                "url": "https://api.github.com/repos/metaphrase/php-sdk/zipball/4779c9bd16b0b1879236126c9f17879adfe493ef",
+                "reference": "4779c9bd16b0b1879236126c9f17879adfe493ef",
                 "shasum": ""
+            },
+            "archive": {
+                "exclude": [
+                    "demo/",
+                    "/*.test",
+                    "demo.php"
+                ]
             },
             "require": {
                 "lib-curl": ">=7.35.0",
@@ -45,11 +52,14 @@
             ],
             "description": "PHP SDK for metaphrase service",
             "homepage": "https://translate.nohponex.gr",
+            "keywords": [
+                "localization"
+            ],
             "support": {
-                "source": "https://github.com/metaphrase/php-sdk/tree/master",
+                "source": "https://github.com/metaphrase/php-sdk/tree/0.0.4",
                 "issues": "https://github.com/metaphrase/php-sdk/issues"
             },
-            "time": "2015-04-11 20:00:26"
+            "time": "2015-04-12 09:18:08"
         }
     ],
     "packages-dev": [
@@ -1012,11 +1022,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "metaphrase/php-sdk": 20
-    },
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.5",

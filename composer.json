@@ -29,9 +29,14 @@
         "ext-pdo": ">=1.0.0",
         "ext-pdo_pgsql": ">=1.0.2",
         "ext-json": ">=1.3.6",
-        "metaphrase/php-sdk": "dev-master"
+        "metaphrase/php-sdk": "0.0.x"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*"
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable" : true,
+    "archive": {
+        "exclude": ["demo", "/*.test"]
     }
 }
