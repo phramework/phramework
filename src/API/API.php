@@ -32,8 +32,10 @@ mb_http_output('UTF-8');
  * @author NohponeX, nohponex@gmail.com
  * @link https://nohponex.gr Developer's website
  * @link http://mathlogic.eu
- * @version 0.1.1
+ * @version 0.1.2
  * @package API
+ * @todo remove APPPATH
+ * @todo configurable APP\\controllers\\ namespace
  */
 class API {
 
@@ -42,11 +44,13 @@ class API {
      * @var array
      */
     private static $controller_whitelist;
+    
     /**
      * Controllers that doesn't require authentication
      * @var array
      */
     private static $controller_unauthenticated_whitelist;
+    
     /**
      * Controllers that doesn't require authentication
      * @var array
@@ -61,7 +65,7 @@ class API {
     private static $method;
 
     /**
-     * JSONP callback
+     * JSONP callback, When NULL no JSONP callback is set
      * @var type
      */
     private static $callback = NULL;
@@ -81,7 +85,9 @@ class API {
      * @param array $controller_public_whitelist
      * @param string $mode [optional]
      */
-    public function __construct($settings, $controller_whitelist, $controller_unauthenticated_whitelist, $controller_public_whitelist, $mode = self::MODE_DEFAULT) {
+    public function __construct($settings, $controller_whitelist,
+        $controller_unauthenticated_whitelist, $controller_public_whitelist,
+        $mode = self::MODE_DEFAULT) {
 
         self::$settings = $settings;
         self::$controller_whitelist = $controller_whitelist;
@@ -92,7 +98,10 @@ class API {
         self::$user = FALSE;
         self::$language = 'en';
     }
-
+    
+    /**
+     * Authentication class (Full namespace)
+     */
     private static $authentication_class = 'Phramework\API\models\authentication';
 
     /**
@@ -115,11 +124,8 @@ class API {
      * @param array|FALSE Returns the user object
      */
     public static function authenticate($username, $password) {
-        //return self::$authentication_class::authenticate::authenticate($username, $password);
-
-        return call_user_func(array(self::$authentication_class, 'authenticate'), $username, $password);
-
-        //return self::$user = authentication::authenticate($username, $password);
+        return call_user_func([self::$authentication_class, 'authenticate'],
+            $username, $password);
     }
 
     /**
@@ -153,9 +159,11 @@ class API {
 
             //Initialize metaphrase\phpsdk\Metaphrase
             //$metaphrase = new \metaphrase\phpsdk\Metaphrase($settings['translate']['api_key']);
-            //
-            //Initialize database connection
-            models\database::require_database(self::get_setting('db'));
+            
+            //Initialize database connection if required or db set
+            if( self::get_setting('require_db') || self::get_setting('db')){
+                models\database::require_database(self::get_setting('db'));
+            }
             
             //Unset from memory database connection information
             unset(self::$settings['db']);
@@ -211,7 +219,7 @@ class API {
                 }
             }
 
-            //Authenticate request
+            //Authenticate request (check authentication)
             self::$user = call_user_func(array(self::$authentication_class, 'check'));
 
             //STEP_AFTER_AUTHENTICATION_CHECK
@@ -263,8 +271,17 @@ class API {
             self::call_callback(self::STEP_BEFORE_REQUIRE_CONTROLLER);
 
             //Include the requested controller file (containing the controller class)
-            require(APPPATH . '/controllers/' . (self::$mode == self::MODE_DEFAULT ? '' : self::$mode.'/') . $controller . '.php');
-
+            require(
+                APPPATH . '/controllers/' . (self::$mode == self::MODE_DEFAULT ? '' : self::$mode.'/') . $controller . '.php');
+            
+            //Override method HEAD.
+            // When HEAD method is called the GET method will be executed but no response boy will be send
+            // we update the value of local variable $method sinse then original
+            // requested method is stored at API::$method
+            if($method=='HEAD'){
+                $method = 'GET';
+            }
+            
             /**
              * Check if the requested controller and model is callable
              * In order to be callable :
@@ -272,7 +289,10 @@ class API {
              * 2) the methods must be defined as : public static function GET($params)
              *    where $params are the passed parameters
              */
-            if (!is_callable("APP\\controllers" . (self::$mode == self::MODE_DEFAULT ? '' : '\\' . self::$mode) . "\\{$controller}_controller::$method")) {
+            if (!is_callable(
+                "APP\\controllers" .
+                (self::$mode == self::MODE_DEFAULT ? '' : '\\' . self::$mode) .
+                "\\{$controller}_controller::$method")) {
                 throw new exceptions\not_found('method_not_found_exception');
             }
 
@@ -292,7 +312,10 @@ class API {
             self::call_callback(self::STEP_BEFORE_CALL_METHOD);
 
             //Call controller's method
-            call_user_func([ 'APP\\controllers\\' . (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '\\') . $controller . '_controller', $method], $params);
+            call_user_func([
+                'APP\\controllers\\' .
+                (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '\\') .
+                $controller . '_controller', $method], $params);
 
             //Unset all
             unset($params);
@@ -407,6 +430,7 @@ class API {
      * Output the response in json encoded format.
      * @param array $params The output parameters. Notice $params[ 'user' ] will be overwritten if set.
      * @todo Test JSONP
+     * @todo add viewers
      * @return null Returns nothing
      */
     public static function view($params = []) {
@@ -415,9 +439,16 @@ class API {
 
         //Clean user object output
         $user = \Phramework\API\models\filter::out_entry($user, ['password', 'id']);
-
-        //Merge output parameters with current user information, if any.
-        $params = array_merge([ 'user' => $user], $params);
+        
+        /**
+         * On HEAD method dont return response body, only the user's object
+         */
+        if(self::get_method() == 'HEAD'){
+            $params = [ 'user' => $user];
+        }else{
+            //Merge output parameters with current user information, if any.
+            $params = array_merge([ 'user' => $user], $params);
+        }
         header('Content-type: application/json;charset=utf-8');
 
         //If JSONP requested (if callback is requested though GET)
@@ -428,22 +459,6 @@ class API {
             echo '])';
         }else{
             echo json_encode($params);
-        }
-
-    }
-
-    /**
-     * Include an php file ( Used instead of include_once method )
-     * @param string @path File to include
-     * @deprecated since version 0 not safe
-     */
-    public static function clude($path) {
-        static $included = [];
-
-        //If not included
-        if (!isset($included[$path])) {
-            $included[$path] = true;
-            include $path;
         }
     }
 
