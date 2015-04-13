@@ -5,17 +5,6 @@ namespace Phramework\API;
 use Phramework\API\models\authentication;
 use Phramework\API\models\util;
 
-/**
- * index.php
- * This is the main file of the API SERVER.
- * It implements an MVC architectural pattern, where viewer is a JSON viewer or a raw binary file output.
- */
-
-/**
- * Define APIPATH
- */
-define('APIPATH', __DIR__);
-
 // Tell PHP that we're using UTF-8 strings until the end of the script
 mb_internal_encoding('UTF-8');
 
@@ -24,12 +13,12 @@ mb_http_output('UTF-8');
 
 /**
  * API 'framework' by NohponeX
- * @license Proprietary This product is allowed only for usage by mathlogic.eu project 'dwaste atlas'
+ * @license Proprietary This product is allowed only for usage by mathlogic.eu project 'dwaste atlas' and metaphrase
  * @todo Use parameters, implement alternative authentication methods
  * @todo Create a class for settings
  * @todo Clean GET callback
  * @todo Rething the role of $controller_public_whitelist
- * @author NohponeX, nohponex@gmail.com
+ * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @link https://nohponex.gr Developer's website
  * @link http://mathlogic.eu
  * @version 0.1.2
@@ -44,13 +33,13 @@ class API {
      * @var array
      */
     private static $controller_whitelist;
-    
+
     /**
      * Controllers that doesn't require authentication
      * @var array
      */
     private static $controller_unauthenticated_whitelist;
-    
+
     /**
      * Controllers that doesn't require authentication
      * @var array
@@ -60,7 +49,6 @@ class API {
     private static $language;
     private static $settings;
     private static $mode;
-
     private static $controller;
     private static $method;
 
@@ -86,7 +74,8 @@ class API {
      * @param string $mode [optional]
      */
     public function __construct($settings, $controller_whitelist,
-        $controller_unauthenticated_whitelist, $controller_public_whitelist,
+        $controller_unauthenticated_whitelist,
+        $controller_public_whitelist,
         $mode = self::MODE_DEFAULT) {
 
         self::$settings = $settings;
@@ -98,7 +87,7 @@ class API {
         self::$user = FALSE;
         self::$language = 'en';
     }
-    
+
     /**
      * Authentication class (Full namespace)
      */
@@ -109,7 +98,7 @@ class API {
      * @param string $class A name of class that extends \Phramework\API\models\authentication
      */
     public static function set_authentication_class($class) {
-        if(!is_subclass_of($class, 'Phramework\API\models\authentication', TRUE)) {
+        if (!is_subclass_of($class, 'Phramework\API\models\authentication', TRUE)) {
             throw new \Exception('class_is_not_implementing Phramework\API\models\authentication');
         }
         self::$authentication_class = $class;
@@ -124,8 +113,7 @@ class API {
      * @param array|FALSE Returns the user object
      */
     public static function authenticate($username, $password) {
-        return call_user_func([self::$authentication_class, 'authenticate'],
-            $username, $password);
+        return call_user_func([self::$authentication_class, 'authenticate'], $username, $password);
     }
 
     /**
@@ -149,22 +137,21 @@ class API {
             ini_set('error_log', self::get_setting('errorlog_path'));
 
             //Check if callback is set (JSONP)
-            if(isset($_GET['callback'])) {
-                if(!API\models\validate::is_valid_callback($_GET['callback'])) {
+            if (isset($_GET['callback'])) {
+                if (!API\models\validate::is_valid_callback($_GET['callback'])) {
                     throw new exceptions\incorrect_paramenters(['callback']);
                 }
-                self::$callback=$_GET['callback'];
+                self::$callback = $_GET['callback'];
                 unset($_GET['callback']);
             }
 
             //Initialize metaphrase\phpsdk\Metaphrase
             //$metaphrase = new \metaphrase\phpsdk\Metaphrase($settings['translate']['api_key']);
-            
             //Initialize database connection if required or db set
-            if( self::get_setting('require_db') || self::get_setting('db')){
+            if (self::get_setting('require_db') || self::get_setting('db')) {
                 models\database::require_database(self::get_setting('db'));
             }
-            
+
             //Unset from memory database connection information
             unset(self::$settings['db']);
 
@@ -179,13 +166,16 @@ class API {
             unset($_GET['controller']);
 
             //Get method from the request (HTTP) method
-            self::$method = $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
+            self::$method = $method =
+                isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-            //Cross origin feature
+            //Default value of response's header origin  
             $origin = '*';
-
+            
+            //Get request headers
             $headers = util::headers();
-
+            
+            //Check origin header
             if (isset($headers['Origin'])) {
                 $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
                 //Check if origin host is allowed
@@ -199,7 +189,7 @@ class API {
 
             header('Access-Control-Allow-Credentials: true');
             header('Access-Control-Allow-Origin: ' . $origin);
-            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+            header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
             header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding');
 
             //Catch OPTIONS request and kill it
@@ -225,11 +215,13 @@ class API {
             //STEP_AFTER_AUTHENTICATION_CHECK
             self::call_callback(self::STEP_AFTER_AUTHENTICATION_CHECK);
 
-            //@todo update
+            //Default language value
             $language = self::get_setting('language');
 
             //Select request's language
-            if (isset($_GET['this_language']) && in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
+            if (isset($_GET['this_language']) &&
+                in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
+                
                 if ($_GET['this_language'] != $language) {
                     $language = $_GET['this_language'];
                 }
@@ -237,8 +229,8 @@ class API {
             } else if (self::$user) { // Use user's langugae
                 $language = self::$user['language_code'];
             } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) { // Use Accept languge if provided
-                $a = str_replace('el', 'gr', substr(strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), 0, 2));
-
+                $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+                
                 if (in_array($a, self::get_setting('languages'))) {
                     $language = $a;
                 } else {
@@ -254,9 +246,10 @@ class API {
              * each langauge file should have a global $strings variable
              */
             //require( "../language/$language.php" );
-
             //If not authenticated allow only certain controllers to access
-            if (!self::get_user() && !in_array($controller, self::$controller_unauthenticated_whitelist) && !in_array($controller, self::$controller_public_whitelist)) {
+            if (!self::get_user() &&
+                !in_array($controller, self::$controller_unauthenticated_whitelist) &&
+                !in_array($controller, self::$controller_public_whitelist)) {
                 throw new exceptions\permission(\__('unauthenticated_access_exception'));
             }
 
@@ -272,16 +265,19 @@ class API {
 
             //Include the requested controller file (containing the controller class)
             require(
-                APPPATH . '/controllers/' . (self::$mode == self::MODE_DEFAULT ? '' : self::$mode.'/') . $controller . '.php');
-            
+                APPPATH .
+                '/controllers/' .
+                (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '/') .
+                $controller . '.php');
+
             //Override method HEAD.
             // When HEAD method is called the GET method will be executed but no response boy will be send
             // we update the value of local variable $method sinse then original
             // requested method is stored at API::$method
-            if($method=='HEAD'){
+            if ($method == 'HEAD') {
                 $method = 'GET';
             }
-            
+
             /**
              * Check if the requested controller and model is callable
              * In order to be callable :
@@ -290,9 +286,9 @@ class API {
              *    where $params are the passed parameters
              */
             if (!is_callable(
-                "APP\\controllers" .
-                (self::$mode == self::MODE_DEFAULT ? '' : '\\' . self::$mode) .
-                "\\{$controller}_controller::$method")) {
+                    "APP\\controllers" .
+                    (self::$mode == self::MODE_DEFAULT ? '' : '\\' . self::$mode) .
+                    "\\{$controller}_controller::$method")) {
                 throw new exceptions\not_found('method_not_found_exception');
             }
 
@@ -326,27 +322,62 @@ class API {
             //Try to close the databse
             models\database::close();
         } catch (exceptions\not_found $exception) {
-            self::write_error_log($exception->getMessage() . ( isset($_SERVER['HTTP_REFERER']) ? ' from ' . util::user_content($_SERVER['HTTP_REFERER']) : '' ));
-            self::error_view([ 'code' => $exception->getCode(), 'error' => $exception->getMessage()]);
+            self::write_error_log(
+                $exception->getMessage() .
+                ( isset($_SERVER['HTTP_REFERER']) ? ' from ' .
+                    util::user_content($_SERVER['HTTP_REFERER']) : '' )
+            );
+            self::error_view([
+                'code' => $exception->getCode(),
+                'error' => $exception->getMessage()
+            ]);
         } catch (exceptions\request $exception) {
 
-            self::error_view([ 'code' => $exception->getCode(), 'error' => $exception->getMessage()]);
+            self::error_view([
+                'code' => $exception->getCode(),
+                'error' => $exception->getMessage()]);
         } catch (exceptions\permission $exception) {
-            self::write_error_log($exception->getMessage());
-            self::error_view([ 'code' => 403, 'error' => $exception->getMessage(), 'title' => 'error']);
+            self::write_error_log(
+                $exception->getMessage());
+            self::error_view([ 'code' => 403,
+                'error' => $exception->getMessage(),
+                'title' => 'error'
+            ]);
         } catch (exceptions\missing_paramenters $exception) {
-            self::write_error_log($exception->getMessage() . implode(', ', $exception->getParameters()));
+            self::write_error_log(
+                $exception->getMessage() .
+                implode(', ', $exception->getParameters())
+            );
+            
             if (self::get_setting('debug')) {
-                self::error_view([ 'code' => $exception->getCode(), 'error' => $exception->getMessage(), 'missing' => $exception->getParameters()]);
+                self::error_view([
+                    'code' => $exception->getCode(),
+                    'error' => $exception->getMessage(),
+                    'missing' => $exception->getParameters()
+                ]);
             } else {
-                self::error_view([ 'code' => $exception->getCode(), 'error' => $exception->getMessage()]);
+                self::error_view([
+                    'code' => $exception->getCode(),
+                    'error' => $exception->getMessage()
+                ]);
             }
         } catch (exceptions\incorrect_paramenters $exception) {
-            self::write_error_log($exception->getMessage() . implode(', ', $exception->getParameters()));
-            self::error_view([ 'code' => 400, 'error' => $exception->getMessage() . ' : ' . implode(', ', $exception->getParameters()), 'incorrect' => $exception->getParameters(), 'title' => 'incorrect_parameters_exception']);
+            self::write_error_log(
+                $exception->getMessage() . implode(', ', $exception->getParameters()));
+            self::error_view([
+                'code' => 400,
+                'error' => $exception->getMessage() . ' : ' . implode(', ', $exception->getParameters()),
+                'incorrect' => $exception->getParameters(),
+                'title' => 'incorrect_parameters_exception'
+            ]);
         } catch (\Exception $exception) {
-            self::write_error_log($exception->getMessage());
-            self::error_view([ 'code' => 400, 'error' => $exception->getMessage(), 'title' => 'Error']);
+            self::write_error_log(
+                $exception->getMessage());
+            self::error_view([
+                'code' => 400,
+                'error' => $exception->getMessage(),
+                'title' => 'error'
+            ]);
         }
     }
 
@@ -366,7 +397,7 @@ class API {
      * @return integer Returns offset from UTC in minutes
      */
     public static function get_timezone_offset() {
-       return +2*60;
+        return +2 * 60;
     }
 
     /**
@@ -428,36 +459,37 @@ class API {
 
     /**
      * Output the response in json encoded format.
-     * @param array $params The output parameters. Notice $params[ 'user' ] will be overwritten if set.
+     * @param array $params The output parameters. Notice $params['user'] will be overwritten if set.
      * @todo Test JSONP
      * @todo add viewers
      * @return null Returns nothing
      */
     public static function view($params = []) {
-        //Access global user variable
+        //Access global user object
         $user = self::get_user();
 
         //Clean user object output
-        $user = \Phramework\API\models\filter::out_entry($user, ['password', 'id']);
-        
+        $user = \Phramework\API\models\filter::out_entry($user, [
+            'password', 'id']);
+
         /**
          * On HEAD method dont return response body, only the user's object
          */
-        if(self::get_method() == 'HEAD'){
+        if (self::get_method() == 'HEAD') {
             $params = [ 'user' => $user];
-        }else{
+        } else {
             //Merge output parameters with current user information, if any.
             $params = array_merge([ 'user' => $user], $params);
         }
         header('Content-type: application/json;charset=utf-8');
 
         //If JSONP requested (if callback is requested though GET)
-        if(self::$callback) {
+        if (self::$callback) {
             echo $callback;
             echo '([';
             echo json_encode($params);
             echo '])';
-        }else{
+        } else {
             echo json_encode($params);
         }
     }
@@ -468,13 +500,12 @@ class API {
      * @todo improve
      */
     public static function write_error_log($message) {
-        error_log( self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
+        error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
     }
 
     /**
      * Step callbacks
      */
-
     const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
     const STEP_BEFORE_REQUIRE_CONTROLLER = 'STEP_BEFORE_REQUIRE_CONTROLLER';
     const STEP_BEFORE_CALL_METHOD = 'STEP_BEFORE_CALL_METHOD';
@@ -502,13 +533,13 @@ class API {
             self::STEP_BEFORE_CALL_METHOD,
             self::STEP_BEFORE_CLOSE,
         ]);
-        if(!is_callable($callback)) {
+        if (!is_callable($callback)) {
             throw new \Exception(__('callback_is_not_function_exception'));
         }
         //If empty
-        if(!isset(self::$step_callback[$step])) {
+        if (!isset(self::$step_callback[$step])) {
             //Initialize array
-            self::$step_callback[$step]=[];
+            self::$step_callback[$step] = [];
         }
 
         //Push
@@ -520,14 +551,15 @@ class API {
      * @param string $step
      */
     private static function call_callback($step) {
-        if(!isset(self::$step_callback[$step])) {
+        if (!isset(self::$step_callback[$step])) {
             return;
         }
-        foreach(self::$step_callback[$step] as $s) {
-            if(!is_callable($s)) {
+        foreach (self::$step_callback[$step] as $s) {
+            if (!is_callable($s)) {
                 throw new \Exception(__('callback_is_not_function_exception'));
             }
             $s();
         }
     }
+
 }
