@@ -38,6 +38,13 @@ namespace Phramework\API\models;
 
   echo $key;
   } */
+
+/**
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @package Phramework
+ * @subpackage API
+ * @category models
+ */
 class language {
 
     /**

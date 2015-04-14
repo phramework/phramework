@@ -8,10 +8,11 @@ use Phramework\API\models\util;
  * Compress class
  * 
  * Provides functions to uncompress files
- * 
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class compress {
 

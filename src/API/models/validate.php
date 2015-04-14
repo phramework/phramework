@@ -8,10 +8,11 @@ use Phramework\API\exceptions\incorrect_paramenters;
 /**
  * Provides various methods for validating data
  * 
- * @author nohponex
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class validate {
 

@@ -5,9 +5,11 @@ namespace Phramework\API\models;
 /**
  * Email functions
  * 
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class email {
     /* public static function send( $address, $subject, $body, $account = 'contact@host.com' ) {

@@ -20,11 +20,11 @@ mb_http_output('UTF-8');
  * @todo Rething the role of $controller_public_whitelist
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @link https://nohponex.gr Developer's website
- * @link http://mathlogic.eu
  * @version 0.1.2
  * @package API
  * @todo remove APPPATH
  * @todo configurable APP\\controllers\\ namespace
+ * @todo change default timezone
  */
 class API {
 
@@ -49,6 +49,11 @@ class API {
     private static $language;
     private static $settings;
     private static $mode;
+    /**
+     * Viewer class
+     */
+    private static $viewer = 'Phramework\API\viewers\json';
+    
     private static $controller;
     private static $method;
 
@@ -103,6 +108,8 @@ class API {
         }
         self::$authentication_class = $class;
     }
+    
+    
 
     /**
      * Authenticate a user
@@ -186,14 +193,14 @@ class API {
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
                 $origin = ''; //TODO Exctract origin from request url
             }
-
-            header('Access-Control-Allow-Credentials: true');
-            header('Access-Control-Allow-Origin: ' . $origin);
-            header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
-            header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding');
-
+            if(!headers_sent()){
+                header('Access-Control-Allow-Credentials: true');
+                header('Access-Control-Allow-Origin: ' . $origin);
+                header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
+                header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding');
+            }
             //Catch OPTIONS request and kill it
-            if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            if ($method == 'OPTIONS') {
                 header('HTTP/1.1 200 OK');
                 exit();
             }
@@ -431,6 +438,22 @@ class API {
     public static function get_mode() {
         return self::$mode;
     }
+    
+    /**
+     * Get current viewer
+     * @return string
+     */
+    public static function get_viewer() {
+        return self::$viewer;
+    }
+    
+    /**
+     * Get callback if set
+     * @return string
+     */
+    public static function get_callback() {
+        return self::$callback;
+    }
 
     /**
      * Get a setting value
@@ -445,7 +468,18 @@ class API {
 
         return self::$settings[$key];
     }
-
+    
+    /**
+     * Set viewer class
+     * @param string $class A name of class that implements \Phramework\API\viewers\IViewer
+     */
+    public static function set_viewer($class) {
+        if (!is_subclass_of($class, 'Phramework\API\viewers\IViewer', TRUE)) {
+            throw new \Exception('class_is_not_implementing Phramework\API\viewers\IViewer');
+        }
+        self::$viewer = $class;
+    }
+    
     /**
      * Output an error
      * @param array $params The error parameters. The 'error' index holds the message, and the 'code' message the error code, note that if headers are not send the response code will set with the 'code' value
@@ -464,7 +498,7 @@ class API {
      * @todo add viewers
      * @return null Returns nothing
      */
-    public static function view($params = []) {
+    public static function view($parameters = []) {
         //Access global user object
         $user = self::get_user();
 
@@ -476,22 +510,17 @@ class API {
          * On HEAD method dont return response body, only the user's object
          */
         if (self::get_method() == 'HEAD') {
-            $params = [ 'user' => $user];
+            $parameters = [ 'user' => $user];
         } else {
             //Merge output parameters with current user information, if any.
-            $params = array_merge([ 'user' => $user], $params);
+            $parameters = array_merge([ 'user' => $user], $parameters);
         }
-        header('Content-type: application/json;charset=utf-8');
-
-        //If JSONP requested (if callback is requested though GET)
-        if (self::$callback) {
-            echo $callback;
-            echo '([';
-            echo json_encode($params);
-            echo '])';
-        } else {
-            echo json_encode($params);
-        }
+        
+        //Instanciate a new viewer object
+        $viewer =  new self::$viewer();
+        
+        //Call view method
+        return $viewer->view($parameters);
     }
 
     /**

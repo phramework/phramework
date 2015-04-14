@@ -10,11 +10,12 @@ use Phramework\API\exceptions\incorrect_paramenters;
 /**
  * Utility class
  * 
- * Provides a set of methods that perform common, often re-used functions. 
- * @author nohponex
+ * Provides a set of methods that perform common, often re-used functions.
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class util {
 
@@ -222,7 +223,7 @@ class util {
         $files = array_diff(scandir($directory), ['.', '..']);
         foreach ($files as $file) {
             $path = util::get_path([ $directory, $file]);
-            ( is_dir($path) ? self::delete_directory_contents($path, TRUE) : unlink($path) );
+            ( is_dir($path) ? self::delete_directory_contents($path, TRUE) : unlink($path));
         }
 
         return ( $DELETE_DIRECTORY ? rmdir($directory) : TRUE );
@@ -233,6 +234,7 @@ class util {
      * @return array Return the array with the headers (indexes in lowercase)
      */
     public static function headers() {
+        $headers = [];
         foreach ($_SERVER as $name => $value) {
             if (substr($name, 0, 5) == 'HTTP_') {
                 $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))));
@@ -336,7 +338,7 @@ class util {
     /**
      * Extract extension from a filename
      * @param String $filename The filename
-     * @return String The extension ( Without dot prefix )
+     * @return String The extension without dot prefix
      */
     public static function extension($filename) {
         return strtolower(preg_replace('/^.*\.([^.]+)$/D', '$1', $filename));

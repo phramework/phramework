@@ -10,12 +10,11 @@ class request extends \Exception {
     /**
      * 
      * @param array $message Exception message
-     * @param type $code Error code, Optional default 400
+     * @param integer $code Error code, Optional default 400
      */
     public function __construct($message, $code = 400) {
         //Known error codes
         $errors = [
-                //TODO
         ];
         if (isset($errors[$code])) {
             $message = $errors[$code];

@@ -9,7 +9,11 @@ use Phramework\API\exceptions\not_found;
 
 /**
  * create model
- * @author Xenophon Spafaridis <nohponex@gmail.com>
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @since 0
+ * @package Phramework
+ * @subpackage API
+ * @category models
  */
 class create {
 

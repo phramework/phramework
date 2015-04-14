@@ -7,9 +7,11 @@ namespace Phramework\API\models;
  * 
  * Provides function to execute commands
  * 
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class execute {
     

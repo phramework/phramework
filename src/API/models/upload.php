@@ -7,11 +7,13 @@ use Phramework\API\exceptions\not_found;
 
 /**
  * Upload class
- * Provides functions for uploading files and images
  * 
+ * Provides functions for uploading files and images
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class upload {
 

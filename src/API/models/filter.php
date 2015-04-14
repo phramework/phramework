@@ -11,10 +11,11 @@ namespace Phramework\API\models;
 /**
  * Provides various methods for filtering data
  *
- * @author nohponex
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class filter {
 

@@ -6,7 +6,11 @@ use Phramework\API\models\validate;
 /**
  * Provides varius helper functions for searching
  * @todo Change OPERATOR types from validate
- * @author nohponex
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @since 0
+ * @package Phramework
+ * @subpackage API
+ * @category models
  */
 class search {
 

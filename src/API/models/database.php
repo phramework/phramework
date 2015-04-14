@@ -5,11 +5,13 @@ namespace Phramework\API\models;
 use PDO;
 
 /**
- * Basic MySQL model using PDO
+ * Basic mysql postgresql and  model using PDO
  *
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class database {
 

@@ -6,25 +6,13 @@ use Phramework\API\exceptions\permission;
 use Phramework\API\exceptions\missing_paramenters;
 use Phramework\API\exceptions\incorrect_paramenters;
 
-/*
-  public static function template( $template, $parameters ) {
-
-  global $settings;
-  $parameters[ 'home_link' ] = util::url_base();
-
-  foreach( $parameters as $key => $value ) {
-  $template = str_replace( '%' . $key . '%', $value, $template );
-  }
-  return $template;
-  }
- */
-
 /**
  * Request related functions
- * @author nohponex
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  */
 class request {
 

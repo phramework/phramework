@@ -7,11 +7,11 @@ namespace Phramework\API\models;
  * 
  * Warning, function not completed yet
  * 
- * @author NohponeX
- * @version 0
- * @since 1
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @since 0
+ * @package Phramework
+ * @subpackage API
  * @category models
- * @package API
  * @todo Use prefix from the settings file
  */
 class cache {
