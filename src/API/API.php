@@ -2,7 +2,6 @@
 
 namespace Phramework\API;
 
-use Phramework\API\models\authentication;
 use Phramework\API\models\util;
 
 // Tell PHP that we're using UTF-8 strings until the end of the script
@@ -25,6 +24,7 @@ mb_http_output('UTF-8');
  * @todo remove APPPATH
  * @todo configurable APP\\controllers\\ namespace
  * @todo change default timezone
+ * @todo remove _controller suffix
  */
 class API {
 
@@ -240,12 +240,10 @@ class API {
                 
                 if (in_array($a, self::get_setting('languages'))) {
                     $language = $a;
-                } else {
-                    //Force english for not greek & english browsers
-                    $language = self::get_setting('language');
                 }
             }
-
+            
+            //Set language variable
             self::$language = $language;
 
             /*
@@ -272,8 +270,7 @@ class API {
 
             //Include the requested controller file (containing the controller class)
             require(
-                APPPATH .
-                '/controllers/' .
+                APPPATH . '/controllers/' .
                 (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '/') .
                 $controller . '.php');
 

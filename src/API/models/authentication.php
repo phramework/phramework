@@ -7,6 +7,7 @@ use Phramework\API\models\database;
 /**
  * Authentication related functions
  * 
+ * Implements authentication using HTTP\s BASIC AUTHENTICATION
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
  * @package Phramework
@@ -48,7 +49,7 @@ class authentication {
         $auth = database::ExecuteAndFetch('SELECT "id", "username", "email", "password", "language_code", "usergroup", "disabled"'
               .'FROM "user" WHERE LOWER("email") = ?  LIMIT 1', [strtolower($email)]);
 
-        //Check if user exists        
+        //Check if user exists
         if (!$auth) {
             return FALSE;
         }

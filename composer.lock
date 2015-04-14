@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c9158e9ff761ccd6b12ab9a546755c93",
+    "hash": "545765a60f60a31d0164390ef6289219",
     "packages": [
         {
             "name": "metaphrase/php-sdk",
-            "version": "0.0.4",
+            "version": "0.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/metaphrase/php-sdk.git",
-                "reference": "4779c9bd16b0b1879236126c9f17879adfe493ef"
+                "reference": "ab27cbe2f734654eadfa4c42687a4971e522f54a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/metaphrase/php-sdk/zipball/4779c9bd16b0b1879236126c9f17879adfe493ef",
-                "reference": "4779c9bd16b0b1879236126c9f17879adfe493ef",
+                "url": "https://api.github.com/repos/metaphrase/php-sdk/zipball/ab27cbe2f734654eadfa4c42687a4971e522f54a",
+                "reference": "ab27cbe2f734654eadfa4c42687a4971e522f54a",
                 "shasum": ""
             },
             "archive": {
@@ -28,11 +28,12 @@
                 ]
             },
             "require": {
-                "lib-curl": ">=7.35.0",
+                "lib-curl": ">=7.26.0",
                 "php": ">=5.5"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.6.*"
+                "phpunit/phpunit": "4.*",
+                "phpunit/phpunit-skeleton-generator": "*"
             },
             "type": "library",
             "autoload": {
@@ -56,10 +57,10 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/metaphrase/php-sdk/tree/0.0.4",
+                "source": "https://github.com/metaphrase/php-sdk/tree/0.0.5",
                 "issues": "https://github.com/metaphrase/php-sdk/issues"
             },
-            "time": "2015-04-12 09:18:08"
+            "time": "2015-04-14 17:08:45"
         }
     ],
     "packages-dev": [
@@ -1145,10 +1146,9 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.5",
-        "lib-curl": ">=7.35.0",
+        "lib-curl": ">=7.26.0",
         "ext-pdo": ">=1.0.0",
-        "ext-pdo_pgsql": ">=1.0.2",
-        "ext-json": ">=1.3.6"
+        "ext-pdo_pgsql": ">=1.0.2"
     },
     "platform-dev": []
 }
