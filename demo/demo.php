@@ -25,7 +25,7 @@ $APP = function() {
     $_GET['controller'] = 'test';
     $_SERVER['REQUEST_METHOD'] = 'HEAD';
 
-    $API->set_viewer('Phramework\API\viewers\print_r');
+    //$API->set_viewer('Phramework\API\viewers\print_r');
 
     //Execute API
     $API->invoke();

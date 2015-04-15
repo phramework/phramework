@@ -48,7 +48,7 @@ class database {
 
             // $this::$pdoLink ->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this::$pdoLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             write_error_log($e->getMessage());
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
@@ -67,7 +67,7 @@ class database {
         $options[PDO::MYSQL_ATTR_USE_BUFFERED_QUERY] = true;
 
         if (!$this::$pdoLink = new PDO("mysql:dbname={$name};host={$host};port={$port};charset=utf8", $username, $password, $options)) {
-            throw new Exception('ERROR_DATABASE_CONNECT');
+            throw new \Exception('ERROR_DATABASE_CONNECT');
         }
         $this::$pdoLink->query('SET NAMES utf8');
         $this::$pdoLink->query('SET SQL_MODE=ANSI_QUOTES');
@@ -75,7 +75,7 @@ class database {
 
     private function create_postgresql_connection($name, $username, $password, $host, $port) {
         if (!$this::$pdoLink = new PDO("pgsql:dbname=$name;host=$host;user=$username;password=$password;port=$port")) {
-            throw new Exception('ERROR_DATABASE_CONNECT');
+            throw new \Exception('ERROR_DATABASE_CONNECT');
         }
     }
 
@@ -123,7 +123,7 @@ class database {
             $statement = database::$pdoLink->prepare($query);
             $statement->execute($parameters);
             return $statement->rowCount();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -141,7 +141,7 @@ class database {
             $statement = database::$pdoLink->prepare($query);
             $statement->execute($parameters);
             return database::$pdoLink->lastInsertId();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -166,7 +166,7 @@ class database {
                 ? \Phramework\API\models\filter::cast_entry($data, $cast_model)
                 : $data
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -191,7 +191,7 @@ class database {
                 ? \Phramework\API\models\filter::cast($data, $cast_model)
                 : $data
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -210,7 +210,7 @@ class database {
             $data = $statement->fetch(PDO::FETCH_COLUMN);
             $statement->closeCursor();
             return $data;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -229,7 +229,7 @@ class database {
             $data = $statement->fetchAll(PDO::FETCH_COLUMN);
             $statement->closeCursor();
             return $data;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -253,7 +253,7 @@ class database {
             }
             $statement->execute();
             return database::$pdoLink->lastInsertId();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -280,7 +280,7 @@ class database {
 
             $statement->execute();
             return $statement->rowCount();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -312,7 +312,7 @@ class database {
                 ? \Phramework\API\models\filter::cast_entry($data, $cast_model)
                 : $data
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -344,7 +344,7 @@ class database {
                 ? \Phramework\API\models\filter::cast($data, $cast_model)
                 : $data
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
