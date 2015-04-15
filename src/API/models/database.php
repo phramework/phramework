@@ -17,20 +17,24 @@ class database {
 
     /**
      * PDO Link object
-     * @var type
+     * @var object
      */
     protected static $pdoLink = false;
+    /**
+     * Database driver (mysql, postgresql)
+     * @var string 
+     */
     protected static $db_driver;
     /**
      * Initialize model, connecto to database
      *
-     * @param type $name Database name
-     * @param type $username Connection username
-     * @param type $password Connection password
-     * @param type $host Connection host, default is localhost
-     * @param type $port Connection port, default is 3306
+     * @param string $driver Database driver. Supported : mysql, postgresql
+     * @param string $name Database name
+     * @param string $username Connection username
+     * @param string|NULL $password Connection password
+     * @param string $host Connection host, default is localhost
+     * @param integer $port Connection port, default is 3306
      * @throws Phramework\API\exceptions\database
-     * @throws Exception
      */
     protected function __construct($driver, $name, $username, $password, $host = 'localhost', $port = 3306) {
         self::$db_driver = $driver;
@@ -85,9 +89,9 @@ class database {
     }
 
     /**
-     * Connecto to database, if not connected, using credentials stored in global variable
+     * Connect to database, if not connected, using credentials stored in global variable
      *
-     * @param Array $settings associative with name, user, host required. port is optional.
+     * @param array $settings associative with name, user, host required. port is optional.
      */
     public static function require_database($settings) {
         if (!database::$pdoLink) {

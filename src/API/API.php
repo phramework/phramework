@@ -165,7 +165,7 @@ class API {
             //Allowed methods
             $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS'];
 
-            //Get controller from the request ( URL parameter )
+            //Get controller from the request (URL parameter)
             if (!isset($_GET['controller'])) {
                 die(); //Or throw exception OR redirect to API documentation
             }
@@ -205,7 +205,7 @@ class API {
                 exit();
             }
 
-            //If a request from site ( using HTML request referer )
+            //If a request from site (using HTML request referer)
             $request_from_site = FALSE;
 
             //Check if the request is comming from web
@@ -246,11 +246,6 @@ class API {
             //Set language variable
             self::$language = $language;
 
-            /*
-             * Load language file
-             * each langauge file should have a global $strings variable
-             */
-            //require( "../language/$language.php" );
             //If not authenticated allow only certain controllers to access
             if (!self::get_user() &&
                 !in_array($controller, self::$controller_unauthenticated_whitelist) &&
@@ -328,8 +323,8 @@ class API {
         } catch (exceptions\not_found $exception) {
             self::write_error_log(
                 $exception->getMessage() .
-                ( isset($_SERVER['HTTP_REFERER']) ? ' from ' .
-                    util::user_content($_SERVER['HTTP_REFERER']) : '' )
+                (isset($_SERVER['HTTP_REFERER']) ? ' from ' .
+                    util::user_content($_SERVER['HTTP_REFERER']) : '')
             );
             self::error_view([
                 'code' => $exception->getCode(),
@@ -343,7 +338,7 @@ class API {
         } catch (exceptions\permission $exception) {
             self::write_error_log(
                 $exception->getMessage());
-            self::error_view([ 'code' => 403,
+            self::error_view(['code' => 403,
                 'error' => $exception->getMessage(),
                 'title' => 'error'
             ]);
@@ -471,7 +466,7 @@ class API {
      * @param string $class A name of class that implements \Phramework\API\viewers\IViewer
      */
     public static function set_viewer($class) {
-        if (!is_subclass_of($class, 'Phramework\API\viewers\IViewer', TRUE)) {
+        if (!$class instanceof \Phramework\API\viewers\IViewer) {
             throw new \Exception('class_is_not_implementing Phramework\API\viewers\IViewer');
         }
         self::$viewer = $class;
@@ -507,10 +502,10 @@ class API {
          * On HEAD method dont return response body, only the user's object
          */
         if (self::get_method() == 'HEAD') {
-            $parameters = [ 'user' => $user];
+            $parameters = ['user' => $user];
         } else {
             //Merge output parameters with current user information, if any.
-            $parameters = array_merge([ 'user' => $user], $parameters);
+            $parameters = array_merge(['user' => $user], $parameters);
         }
         
         //Instanciate a new viewer object

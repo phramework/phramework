@@ -26,29 +26,29 @@ class search {
      * @return type
      * @throws RequestException
      */
-    public static function search( $parameters, $model, &$fields, $order = FALSE, $page = 1, &$pages = 0 ){
-        //Search model ( returned to caller )
+    public static function search($parameters, $model, &$fields, $order = FALSE, $page = 1, &$pages = 0) {
+        //Search model (returned to caller )
         $fields = [];
 
-        foreach( $model[ 'fields' ] as $key => $value ){
-            if( in_array( 'searchable', $value ) ){
-                if( isset( $parameters[ $key . '_operator' ] ) ){
-                    if( empty( $parameters[ $key . '_operator' ] ) ){
+        foreach($model['fields'] as $key => $value) {
+            if(in_array('searchable', $value)) {
+                if(isset($parameters[$key . '_operator'])) {
+                    if(empty($parameters[$key . '_operator'])) {
                         continue;
                     }
-                    $operator = validate::operator( $parameters[ $key . '_operator' ] );
-                    $v        = ( isset( $parameters[ $key . '_value' ] ) ? html_entity_decode( util::user_content( $parameters[ $key . '_value' ] ) ) : '' );
-                    $fields[ $key ] = [ 'operator' => $operator, 'value' =>  $v ];
+                    $operator = validate::operator($parameters[$key . '_operator'] );
+                    $v        = (isset($parameters[$key . '_value'] ) ? html_entity_decode(util::user_content($parameters[$key . '_value'] ) ) : '' );
+                    $fields[$key ] = ['operator' => $operator, 'value' =>  $v ];
                 }
             }
         }
-        if( !$fields ){
-            throw new Exception( 'No search fields set' );
+        if(!$fields) {
+            throw new Exception('No search fields set' );
         }
-        $table = $model[ 'table' ];
-        $index = $model[ 'index' ];
+        $table = $model['table'];
+        $index = $model['index'];
 
-        $order_string = ( $order ? '"' . $order[ 'field' ] . '" ' . ($order[ 'asc' ] ? 'ASC' : 'DESC') : ' "' . $table . '"."' . $index . '" DESC' );
+        $order_string = ($order ? '"' . $order['field'] . '" ' . ($order['asc'] ? 'ASC' : 'DESC') : ' "' . $table . '"."' . $index . '" DESC' );
 
         $query = 'SELECT "' . $table . '".* FROM "' . $table . '" WHERE ';
 
@@ -56,18 +56,18 @@ class search {
         $p = [];
         //Initialize query array fields
         $fields_query = [];
-        foreach( $fields as $key => $v ){
-            $operator = $v[ 'operator' ];
-            $value    = $v[ 'value' ];
+        foreach($fields as $key => $v) {
+            $operator = $v['operator'];
+            $value    = $v['value'];
 
-            switch ( $operator ){
+            switch ($operator) {
                 case OPERATOR_EQUAL:
                 case OPERATOR_NOT_EQUAL:
                 case OPERATOR_GREATER:
                 case OPERATOR_GREATER_EQUAL:
                 case OPERATOR_LESS:
                 case OPERATOR_LESS_EQUAL:
-                    if( empty( $value ) ){
+                    if(empty($value)) {
                         break;
                     }
                     //@TODO FIX
@@ -76,28 +76,28 @@ class search {
                     break;
                 case OPERATOR_IN:
                 case OPERATOR_NOT_IN:
-                    if( empty( $value ) ){
+                    if(empty($value)) {
                         break;
                     }
                     //Split multiplevalues
                     $values = explode(',', $value );
-                   /* $tmp = array_fill( 0, count($values), '?' );
-                    $tmp = implode( ',', $tmp );*/
-                    $tmp = trim( str_repeat( '?,', count( $values ) ), ',' );
+                   /* $tmp = array_fill(0, count($values), '?' );
+                    $tmp = implode(',', $tmp );*/
+                    $tmp = trim(str_repeat('?,', count($values ) ), ',' );
                     //@TODO FIX
-                    //$fields_query[]  = " "$key" $operator( $tmp )";
-                    foreach( $values as $tmp ){
-                        $p[] = trim( $tmp );
+                    //$fields_query[]  = " "$key" $operator($tmp )";
+                    foreach($values as $tmp) {
+                        $p[] = trim($tmp );
                     }
                     break;
                 case OPERATOR_ISNULL:
                 case OPERATOR_NOT_ISNULL:
                     //@TODO FIX
-                    //$fields_query[] = " $operator( "$key" ) ";
+                    //$fields_query[] = " $operator("$key" ) ";
                     break;
                 case OPERATOR_LIKE:
                 case OPERATOR_NOT_LIKE:
-                    if( empty( $value ) ){
+                    if(empty($value)) {
                         break;
                     }
                     //TODO FIX
@@ -106,29 +106,29 @@ class search {
                     break;
             }
         }
-        if( !$fields_query ){
-            throw new Exception( 'No search fields set' );
+        if(!$fields_query) {
+            throw new Exception('No search fields set' );
         }
-        if( isset( $model[ 'listing_fields' ] ) ){
-            $select_fields = '"' . implode( '","', $model[ 'listing_fields' ] ) . '"';
-            //$select_fields = rtrim( $select_fields, ',"' );
+        if(isset($model['listing_fields'])) {
+            $select_fields = '"' . implode('","', $model['listing_fields'] ) . '"';
+            //$select_fields = rtrim($select_fields, ',"' );
         }else{
             //@TODO FIX
             //$select_fields = " "$table".*";
         }
         //Set limit query string
-        $limit = ( ($page - 1) * ITEMS_PER_PAGE) . ',' . ITEMS_PER_PAGE;
+        $limit = (($page - 1) * ITEMS_PER_PAGE) . ',' . ITEMS_PER_PAGE;
 
         //TODO OR OR AND ??
-        $data = database::ExecuteAndFetchAll( "SELECT $select_fields" . 'FROM "' . $table . '" WHERE "'
-            . implode( 'OR' , $fields_query ) . ' ORDER BY ' . $order_string . " LIMIT $limit", $p );
+        $data = database::ExecuteAndFetchAll("SELECT $select_fields" . 'FROM "' . $table . '" WHERE "'
+            . implode('OR' , $fields_query ) . ' ORDER BY ' . $order_string . " LIMIT $limit", $p );
 
-        if( $page == 1 && count( $data ) < ITEMS_PER_PAGE ){
+        if($page == 1 && count($data ) < ITEMS_PER_PAGE) {
             $pages = 1;
         }else{
-            $pages = database::ExecuteAndFetch( 'SELECT COUNT( "' . $table . '"."' . $index . '" ) AS count FROM "' .
-                $table . '" WHERE ' . implode( 'OR' , $fields_query ) . ' ORDER BY ' . $order_string, $p );
-            $pages = ceil( floatval( $pages[ 'count' ] ) / ITEMS_PER_PAGE );
+            $pages = database::ExecuteAndFetch('SELECT COUNT("' . $table . '"."' . $index . '" ) AS count FROM "' .
+                $table . '" WHERE ' . implode('OR' , $fields_query ) . ' ORDER BY ' . $order_string, $p );
+            $pages = ceil(floatval($pages['count'] ) / ITEMS_PER_PAGE );
         }
 
         return $data;
