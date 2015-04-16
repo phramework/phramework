@@ -10,7 +10,6 @@ $settings = [
     'maintenance' => FALSE,
     'allowed_referer' => [ 'localhost', '127.0.0.1'],
     'api_base' => 'http://localhost/metaphrase/api/',
-    'executable' => '/',
     'errorlog_path' => '../error_log.txt',
     'email_accounts' => [
         'default' => ['address' => 'phramework@nohponex.gr', 'name' => 'phramework']
