@@ -9,6 +9,6 @@
             <label for="content">Post content</label>
             <textarea class="form-control" id="content" name="content" placeholder="Content..." rows="10"></textarea>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary btn-lg" type="submit">Submit</button>
     </fieldset>
 </form>

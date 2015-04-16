@@ -3,13 +3,13 @@
 namespace APP\viewers;
 
 /**
- * 
+ * @package examples/blog
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  */
 class viewer implements \Phramework\API\viewers\IViewer {
 
     /**
-     * Display output
+     * Display output as html using a header and footer
      * 
      * @param array $parameters Output parameters to display
      */
@@ -17,14 +17,16 @@ class viewer implements \Phramework\API\viewers\IViewer {
         
         extract($parameters);
         
-        include(__DIR__ . '/header.php');
-        if(isset($page) && $page){
-            include(__DIR__ . '/pages/' . $page . '.php');
-        }else if(isset($error)){
-            echo '<pre>';
-            print_r($error);
-            echo '</pre>';
+        if(!isset($page) || !$page){ //In case page parameter is set
+            $page = 'error';
         }
+        
+        include(__DIR__ . '/header.php');
+        
+        
+        //Include the page file
+        include(__DIR__ . '/pages/' . $page . '.php');
+       
         include(__DIR__ . '/footer.php');
     }
 

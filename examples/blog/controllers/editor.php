@@ -10,7 +10,7 @@ class editor_controller {
 
         API::view([
             'page'  => 'editor', //Will load page blog.php
-            'title' => 'My Editor',
+            'title' => 'Blog\'s Editor',
         ]);
     }
 

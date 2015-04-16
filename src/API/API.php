@@ -19,7 +19,7 @@ mb_http_output('UTF-8');
  * @todo Rething the role of $controller_public_whitelist
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @link https://nohponex.gr Developer's website
- * @version 0.1.2
+ * @version 0.1.3
  * @package API
  * @todo remove APPPATH
  * @todo configurable APP\\controllers\\ namespace
@@ -209,7 +209,7 @@ class API {
             $request_from_site = FALSE;
 
             //Check if the request is comming from web
-            if (isset($_SERVER['HTTP_REFERER'])) {
+            if (isset($_SERVER['HTTP_REFERER']) && self::get_setting('allowed_referer')) {
                 $referer_data = parse_url($_SERVER['HTTP_REFERER']);
                 if (in_array($referer_data['host'], self::get_setting('allowed_referer'))) {
                     $request_from_site = TRUE;
@@ -226,7 +226,7 @@ class API {
             $language = self::get_setting('language');
 
             //Select request's language
-            if (isset($_GET['this_language']) &&
+            if (isset($_GET['this_language']) && self::get_setting('languages') &&
                 in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
                 
                 if ($_GET['this_language'] != $language) {
@@ -235,7 +235,7 @@ class API {
                 unset($_GET['this_language']);
             } else if (self::$user) { // Use user's langugae
                 $language = self::$user['language_code'];
-            } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) { // Use Accept languge if provided
+            } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::get_setting('languages')) { // Use Accept languge if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
                 
                 if (in_array($a, self::get_setting('languages'))) {

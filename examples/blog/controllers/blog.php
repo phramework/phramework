@@ -22,18 +22,24 @@ class blog_controller {
     public static function POST($params) {
         //Define model
         $model = [
-            'title'     => ['type' => validate::TYPE_TEXT, 'max' => 12,   'min' => 3,  'required' => TRUE],
-            'content'   => ['type' => validate::TYPE_TEXT, 'max' => 4096, 'min' => 12, 'required' => TRUE]
+            'title'     => [
+                'type' => validate::TYPE_TEXT, 'max' => 12,   'min' => 3,  'required' => TRUE
+            ],
+            'content'   => [
+                'type' => validate::TYPE_TEXT, 'max' => 4096, 'min' => 12, 'required' => TRUE
+            ]
         ];
         
         //Require and validate model
         validate::model($params, $model);
         
+        //Declare them as variables
         $title      = $params['title'];
         $content    = $params['content'];
         
-        //Store ($title, $content)
+        //Store ($title, $content) somehow
         
+        //Sample output
         API::view([
             'error' => [$title, $content]
         ]);
