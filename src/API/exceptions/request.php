@@ -8,7 +8,7 @@ namespace Phramework\API\exceptions;
 class request extends \Exception {
 
     /**
-     * 
+     *
      * @param array $message Exception message
      * @param integer $code Error code, Optional default 400
      */

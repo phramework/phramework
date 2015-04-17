@@ -59,8 +59,22 @@ class update {
         //Push id to the end
         $query_values[] = $id;
 
-        $query = 'UPDATE "' . $table . '" SET "' . $query_keys . '" = ? '
-            . 'WHERE "' . $table . '"."' . $index . '" = ?';
+        $query = 'UPDATE ';
+
+        $table_name = '';
+        if (is_array($table) &&
+            isset($table['schema']) &&
+            isset($table['table'])) {
+            $table_name = '"' . $table['schema'] . '"'
+                .'."' . $table['table'] . '"';
+        } else {
+            $table_name = '"' . $table . '"';
+        }
+
+        $query.= $table_name;
+
+        $query .= ' SET "' . $query_keys . '" = ? '
+            . 'WHERE ' . $table_name . '."' . $index . '" = ?';
 
         //Return number of rows affected
         $result = database::Execute($query, $query_values);

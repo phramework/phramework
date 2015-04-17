@@ -48,18 +48,32 @@ class create {
         $query_parameter_string = trim(str_repeat('?,', count($keys_values)), ',');
         $query_values = array_values($keys_values);
 
-        $query = 'INSERT INTO "' . $table . '" ("' . $query_keys . '") '
-            . "VALUES ($query_parameter_string )";
+        $query = 'INSERT INTO ';
+
+        if (is_array($table) &&
+            isset($table['schema']) &&
+            isset($table['table'])) {
+            $query .= '"' . $table['schema'] . '"' . '."' . $table['table'] . '"';
+        } else {
+            $query .= '"' . $table . '"';
+        }
+
+        $query .= ' ("' . $query_keys . '") ' . "VALUES ($query_parameter_string )";
+
+        $driver = \Phramework\API\models\database::get_db_driver();
         //Return inserted id
         if($return == self::RETURN_ID) {
-            $driver = \Phramework\API\models\database::get_db_driver();
             if ($driver == 'postgresql') {
                 $query .= ' RETURNING id';
             }
             return database::ExecuteLastInsertId($query, $query_values);
         //Return number of rows affected
         } else {
-            return database::Execute($query, $query_values);
+            if ($driver == 'postgresql') {
+                $query .= 'RETURNING ' . '*';
+            }
+
+            return database::ExecuteAndFetch($query, $query_values);
         }
     }
 
