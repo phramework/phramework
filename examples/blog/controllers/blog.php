@@ -23,10 +23,10 @@ class blog_controller {
         //Define model
         $model = [
             'title'     => [
-                'type' => validate::TYPE_TEXT, 'max' => 12,   'min' => 3,  'required' => TRUE
+                'type' => validate::TYPE_TEXT, 'max' => 12,   'min' => 3,  'required'
             ],
             'content'   => [
-                'type' => validate::TYPE_TEXT, 'max' => 4096, 'min' => 12, 'required' => TRUE
+                'type' => validate::TYPE_TEXT, 'max' => 4096, 'min' => 12, 'required'
             ]
         ];
         

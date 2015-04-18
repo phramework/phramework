@@ -18,9 +18,9 @@ class APITest extends \PHPUnit_Framework_TestCase {
      */
     protected function setUp() {
         $settings = [
-            
+            'language' => 'en'
         ];
-        $this->object = new API($settings);
+        $this->object = new API($settings, ['test'], ['test'], ['test']);
     }
 
     /**
