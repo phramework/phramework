@@ -8,25 +8,20 @@ namespace Phramework\API\exceptions;
  */
 class database extends \Exception {
 
-    //Error message
-    private $error;
-
     /**
+     * Database exception
      * 
      * @global type $settings
      * @todo Notify administrators
-     * @param type $message Exception message
-     * @param type $error Internal error message
+     * @param string $message Exception message
+     * @param string $error Internal error message
      */
     public function __construct($message, $error) {
-        //global $settings;
-        //if( $settings[ 'debug'] ) {
-        //   parent::__construct( $error, 666 );
-        //}else{
-        parent::__construct($message, 666);
-        //}
-        $this->$error = $message;
-        //ToDo Notify administrators!!
+        if (\Phramework\API\API::get_setting('debug')) {
+            parent::__construct($error, 666);
+        } else {
+            parent::__construct($message, 666);
+        }
     }
 
 }
