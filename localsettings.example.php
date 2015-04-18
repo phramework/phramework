@@ -15,7 +15,9 @@ $settings['api_base']                        = 'http://localhost:4444/api/';
 $settings['interface_base']                  = 'http://localhost:4444/web/';
 $settings['translate']['fetch_keys']         = FALSE;
 $settings['translate']['track_missing_keys'] = FALSE;
-
+$settings['email'] = [
+    'default' => [ 'mail' => 'mail@localhhost', 'name' => 'localhost']
+];
 /**
  * Sample Database configuration
  * 

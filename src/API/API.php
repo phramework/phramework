@@ -19,7 +19,7 @@ mb_http_output('UTF-8');
  * @todo Rething the role of $controller_public_whitelist
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @link https://nohponex.gr Developer's website
- * @version 0.1.3
+ * @version 0.1.4
  * @package API
  * @todo remove APPPATH
  * @todo configurable APP\\controllers\\ namespace

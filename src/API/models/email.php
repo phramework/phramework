@@ -92,7 +92,6 @@ class email {
     /**
      * Send an e-mail
      * 
-     * @todo use settings
      * @param string $address
      * @param string $subject
      * @param string $body
@@ -100,9 +99,13 @@ class email {
      */
     public static function send($address, $subject, $body, $account = 'default') {
         $HTML = TRUE;
-        $accounts = [ 'default' => [ 'mail' => 'info@mathlogic.eu', 'name' => 'Bin packing']];
+        $accounts = \Phramework\API\API::get_setting('email');
+        
         if (!isset($accounts[$account])) {
             $account = 'default';
+        }
+        if(!isset($accounts[$account])){
+            throw new \Exception('email setting is required');
         }
         $headers = [];
         $headers[] = "MIME-Version: 1.0" . "\r\n";
