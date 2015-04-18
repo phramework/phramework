@@ -50,7 +50,7 @@ class database {
             $this::$pdoLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {
             write_error_log($e->getMessage());
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
     
@@ -124,7 +124,7 @@ class database {
             $statement->execute($parameters);
             return $statement->rowCount();
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -142,7 +142,7 @@ class database {
             $statement->execute($parameters);
             return database::$pdoLink->lastInsertId();
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -167,7 +167,7 @@ class database {
                 : $data
             );
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -192,7 +192,7 @@ class database {
                 : $data
             );
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -211,7 +211,7 @@ class database {
             $statement->closeCursor();
             return $data;
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -230,7 +230,7 @@ class database {
             $statement->closeCursor();
             return $data;
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -254,7 +254,7 @@ class database {
             $statement->execute();
             return database::$pdoLink->lastInsertId();
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -281,7 +281,7 @@ class database {
             $statement->execute();
             return $statement->rowCount();
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -313,7 +313,7 @@ class database {
                 : $data
             );
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 
@@ -345,7 +345,7 @@ class database {
                 : $data
             );
         } catch (\Exception $e) {
-            throw new Phramework\API\exceptions\database('Database Error', $e->getMessage());
+            throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
 }

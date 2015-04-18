@@ -36,6 +36,6 @@
     "minimum-stability" : "dev",
     "prefer-stable" : true,
     "archive": {
-        "exclude": ["demo/", "test/", "/*.test", "tests", "demo.php"]
+        "exclude": ["demo/", "examples/", "test/", "/*.test", "tests", "demo.php"]
     }
 }
