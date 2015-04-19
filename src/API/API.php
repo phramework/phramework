@@ -25,7 +25,7 @@ if(!function_exists('__')){
  * @todo Rething the role of $controller_public_whitelist
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @link https://nohponex.gr Developer's website
- * @version 0.1.4
+ * @version 0.1.5
  * @package API
  * @todo remove APPPATH
  * @todo configurable APP\\controllers\\ namespace

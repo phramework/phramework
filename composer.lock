@@ -4,31 +4,34 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e164b1df576c12f234c40ba2191a4db7",
+    "hash": "2b84000a547976933bb213fa54780162",
     "packages": [
         {
             "name": "metaphrase/php-sdk",
-            "version": "0.0.5",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/metaphrase/php-sdk.git",
-                "reference": "ab27cbe2f734654eadfa4c42687a4971e522f54a"
+                "reference": "5920525aefd8425bc4d3dfa76bd6f6cc3b15b372"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/metaphrase/php-sdk/zipball/ab27cbe2f734654eadfa4c42687a4971e522f54a",
-                "reference": "ab27cbe2f734654eadfa4c42687a4971e522f54a",
+                "url": "https://api.github.com/repos/metaphrase/php-sdk/zipball/5920525aefd8425bc4d3dfa76bd6f6cc3b15b372",
+                "reference": "5920525aefd8425bc4d3dfa76bd6f6cc3b15b372",
                 "shasum": ""
             },
             "archive": {
                 "exclude": [
                     "demo/",
+                    "test/",
                     "/*.test",
-                    "demo.php"
+                    "tests",
+                    "demo.php",
+                    "build/"
                 ]
             },
             "require": {
-                "lib-curl": ">=7.26.0",
+                "lib-curl": ">=7.0.0",
                 "php": ">=5.5"
             },
             "require-dev": {
@@ -42,25 +45,28 @@
                 }
             },
             "license": [
-                "TBA"
+                "LGPL-2.1"
             ],
             "authors": [
                 {
                     "name": "Xenophon Spafaridis",
                     "email": "nohponex@gmail.com",
-                    "homepage": "https://nohponex.gr"
+                    "homepage": "https://nohponex.gr",
+                    "role": "Developer"
                 }
             ],
             "description": "PHP SDK for metaphrase service",
             "homepage": "https://translate.nohponex.gr",
             "keywords": [
-                "localization"
+                "globalization",
+                "localization",
+                "translation"
             ],
             "support": {
-                "source": "https://github.com/metaphrase/php-sdk/tree/0.0.5",
-                "issues": "https://github.com/metaphrase/php-sdk/issues"
+                "issues": "https://github.com/metaphrase/php-sdk/issues",
+                "source": "https://github.com/metaphrase/php-sdk/"
             },
-            "time": "2015-04-14 17:08:45"
+            "time": "2015-04-19 19:45:54"
         }
     ],
     "packages-dev": [
