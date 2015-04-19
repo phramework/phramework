@@ -4,7 +4,7 @@ namespace Phramework\API\exceptions;
 
 /**
  * NotFoundException
- * Used to throw an exception, when the requested resource is not found.
+ * Used to throw an \Exception, when the requested resource is not found.
  */
 class not_found extends \Exception {
 

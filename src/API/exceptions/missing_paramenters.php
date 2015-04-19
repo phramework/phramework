@@ -4,7 +4,7 @@ namespace Phramework\API\exceptions;
 
 /**
  * MissingParamentersException
- * Used to throw an exception, when there are some missing parameters.
+ * Used to throw an \Exception, when there are some missing parameters.
  */
 class missing_paramenters extends \Exception {
 

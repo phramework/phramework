@@ -4,15 +4,15 @@ namespace Phramework\API\exceptions;
 
 /**
  * DatabaseException
- * Used to throw an exception, when there is something wrong with a database request.
+ * Used to throw an \Exception, when there is something wrong with a database request.
  */
 class database extends \Exception {
 
     /**
-     * Database exception
+     * Database \Exception
      * 
      * @todo Notify administrators
-     * @param string $message Exception message
+     * @param string $message \Exception message
      * @param string $error Internal error message
      */
     public function __construct($message, $error = NULL) {

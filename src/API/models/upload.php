@@ -168,7 +168,7 @@ class upload {
      */
     public static function create_zip($destination, $files = [], $blobs = [], $overwrite = TRUE) {
         if (!class_exists('ZipArchive')) {
-            throw new Exception('cannot_create_zip_archive');
+            throw new \Exception('cannot_create_zip_archive');
         }
         //if the zip file already exists and overwrite is false, return false
         if (file_exists($destination) && !$overwrite) {
@@ -199,7 +199,7 @@ class upload {
             $path = $blob['path'];
 
             if (!file_exists($path)) {
-                throw new Exception('file_not_found');
+                throw new \Exception('file_not_found');
             }
             $zip->addFile($filename, $path);
         }

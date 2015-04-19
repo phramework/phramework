@@ -10,6 +10,12 @@ mb_internal_encoding('UTF-8');
 // Tell PHP that we'll be outputting UTF-8 to the browser
 mb_http_output('UTF-8');
 
+//TODO remove
+if(!function_exists('__')){
+    function __($key){
+        return $key;
+    }
+}
 /**
  * API 'framework' by NohponeX
  * @license Proprietary This product is allowed only for usage by mathlogic.eu project 'dwaste atlas' and metaphrase
@@ -25,6 +31,8 @@ mb_http_output('UTF-8');
  * @todo configurable APP\\controllers\\ namespace
  * @todo change default timezone
  * @todo remove _controller suffix
+ * @todo Add localization class
+ * @todo split callbacks into new class
  */
 class API {
 
@@ -109,8 +117,6 @@ class API {
         self::$authentication_class = $class;
     }
     
-    
-
     /**
      * Authenticate a user
      *
@@ -167,7 +173,7 @@ class API {
 
             //Get controller from the request (URL parameter)
             if (!isset($_GET['controller'])) {
-                die(); //Or throw exception OR redirect to API documentation
+                die(); //Or throw \Exception OR redirect to API documentation
             }
             self::$controller = $controller = $_GET['controller'];
             unset($_GET['controller']);
@@ -250,7 +256,7 @@ class API {
             if (!self::get_user() &&
                 !in_array($controller, self::$controller_unauthenticated_whitelist) &&
                 !in_array($controller, self::$controller_public_whitelist)) {
-                throw new exceptions\permission(\__('unauthenticated_access_exception'));
+                throw new exceptions\permission(__('unauthenticated_access_exception'));
             }
 
             //Check if requested controller and method are allowed
@@ -455,7 +461,7 @@ class API {
     public static function get_setting($key) {
         if (!isset(self::$settings[$key])) {
             return NULL;
-            //throw new Exception('Not a valid setting key');
+            //throw new \Exception('Not a valid setting key');
         }
 
         return self::$settings[$key];

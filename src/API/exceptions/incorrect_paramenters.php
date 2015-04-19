@@ -4,7 +4,7 @@ namespace Phramework\API\exceptions;
 
 /**
  * IncorrectParamentersException
- * Used to throw an exception, when there are some incorrect formed parameters.
+ * Used to throw an \Exception, when there are some incorrect formed parameters.
  */
 class incorrect_paramenters extends \Exception {
 

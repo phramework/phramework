@@ -294,7 +294,7 @@ class util {
      * @return bool True if download succeed 
      */
     public static function curl_download($url, $path, $timeout = 9000000000) {
-        $return = false;
+        $return = FALSE;
         try {
             // open file to write
             $fp = fopen($path, 'w+');
@@ -315,8 +315,8 @@ class util {
             curl_close($ch);
             // close local file
             fclose($fp);
-        } catch (Exception $e) {
-            return false;
+        } catch (\Exception $e) {
+            return FALSE;
         }
         return $return;
     }

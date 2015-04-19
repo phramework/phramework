@@ -25,11 +25,11 @@ class cache {
      * @return cache The *Singleton* instance.
      */
     public static function getInstance() {
-        if ($instance === null) {
-            $instance = new static();
+        if (self::$instance === null) {
+            self::$instance = new static();
         }
 
-        return $instance;
+        return self::$instance;
     }
 
     /**
@@ -76,6 +76,7 @@ class cache {
               } */
         }
         $data = call_user_func_array(array($class, $function), $parameters);
+        
         if ($data && $memcached) {
             $memcached->set($key, $data, $time); // or die ("Failed to save data at the server");
         }

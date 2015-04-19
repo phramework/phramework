@@ -43,7 +43,7 @@ class search {
             }
         }
         if(!$fields) {
-            throw new Exception('No search fields set' );
+            throw new \Exception('No search fields set' );
         }
         $table = $model['table'];
         $index = $model['index'];
@@ -107,7 +107,7 @@ class search {
             }
         }
         if(!$fields_query) {
-            throw new Exception('No search fields set' );
+            throw new \Exception('No search fields set' );
         }
         if(isset($model['listing_fields'])) {
             $select_fields = '"' . implode('","', $model['listing_fields'] ) . '"';

@@ -4,7 +4,7 @@ namespace Phramework\API\exceptions;
 
 /**
  * PermissionException
- * Used to throw an exception, when there requested resource is not available for current user.
+ * Used to throw an \Exception, when there requested resource is not available for current user.
  */
 class permission extends \Exception {
 
@@ -13,7 +13,7 @@ class permission extends \Exception {
 
     /**
      * 
-     * @param string $message Exception message
+     * @param string $message \Exception message
      * @param string $return Return url. Optional, default is FALSE.
      */
     public function __construct($message, $return = FALSE) {

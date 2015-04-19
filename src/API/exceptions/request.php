@@ -3,13 +3,13 @@
 namespace Phramework\API\exceptions;
 /**
  * RequestException
- * Used to throw an exception, when there is something wrong with the request.
+ * Used to throw an \Exception, when there is something wrong with the request.
  */
 class request extends \Exception {
 
     /**
      *
-     * @param array $message Exception message
+     * @param array $message \Exception message
      * @param integer $code Error code, Optional default 400
      */
     public function __construct($message, $code = 400) {

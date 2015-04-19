@@ -212,7 +212,7 @@ class validate {
         return floatval($number);
     }
     
-     /**
+    /**
      * Validate a double presision floating point number
      * @param string|double|float|int $number
      * @param float|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
@@ -304,7 +304,7 @@ class validate {
 
         //Check if array was given for $values value
         if (!is_array($allowed)) {
-            throw new Exception('Array is expencted as value');
+            throw new \Exception('Array is expencted as value');
         }
         //Check if input doesen't exist in $values array
         if (!in_array($input, $allowed)) {
@@ -385,16 +385,18 @@ class validate {
     public static function boolean($input, $field_name) {
         return \Phramework\API\models\filter::boolean($input);
     }
+    
     /**
      * Validate a model
      * @param array $parameters Request parameters
      * @param array $model Model
      * @return boolean
-     * @throws Exception
+     * @throws \Exception
      * @throws incorrect_paramenters
      * @throws missing_paramenters
      */
     public static function model(&$parameters, $model) {
+        
         $incorrect = [];
         $missing = [];
         foreach ($model as $key => $value) {
@@ -645,8 +647,8 @@ class validate {
     /**
      * Check if callback is valid
      * @link http://www.geekality.net/2010/06/27/php-how-to-easily-provide-json-and-jsonp/ source
-     * @param type $subject
-     * @return type
+     * @param string $subject
+     * @return boolean
      */
     public function is_valid_callback($subject) {
         
