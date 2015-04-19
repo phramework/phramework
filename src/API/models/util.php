@@ -174,7 +174,7 @@ class util {
      * @param boolean $recursive        Include sub directories
      * @param boolean $listDirs         Include directories on listing
      * @param boolean $listFiles        Include files on listing
-     * @param sstring $exclude [Optional]       Exclude paths that matches this regex
+     * @param sstring $exclude [optional]       Exclude paths that matches this regex
      * @param array $allowed_filetypes Allowed file extensions. Optional. Default allow all
      * @param boolean $relative_path    Return paths in relative form. Optional. Default FALSE
      */

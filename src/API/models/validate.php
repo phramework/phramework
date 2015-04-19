@@ -79,7 +79,7 @@ class validate {
      * When used in a validate::model it splits the values ,
      * validates the subtype and returns as array
      * @example aaa,bb,cc,1,2 Example parameter data
-     * @property string subtype [Optional] Defines the subtype, default text
+     * @property string subtype [optional] Defines the subtype, default text
      */
     const TYPE_ARRAY_CSV = 'array_csv';
     
@@ -114,7 +114,7 @@ class validate {
      * Validate a custom data type
      * @param string $type Custom type's name
      * @param mixed $value Value to test
-     * @param string $field_name [Optional] field's name
+     * @param string $field_name [optional] field's name
      * @param array $model [optional]
      * @throws \Exception type_not_found
      * @throws incorrect_paramenters if validation fails
@@ -150,7 +150,7 @@ class validate {
      * @param string|int $int Input value
      * @param int|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
      * @param int|NULL $max Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is int
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is int
      * @throws incorrect_paramenters if value is not correct
      * @return intigerReturns the value of the input value as int
      */
@@ -193,7 +193,7 @@ class validate {
      * @param string|float|int $number
      * @param float|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
      * @param float|NULL Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is number
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is number
      * @return float Returns the input value as float
      * @throws incorrect_paramenters
      */
@@ -217,7 +217,7 @@ class validate {
      * @param string|double|float|int $number
      * @param float|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
      * @param float|NULL Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is number
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is number
      * @return float Returns the input value as double
      * @throws incorrect_paramenters
      */
@@ -239,7 +239,7 @@ class validate {
     /**
      * Validate an email address
      * @param type $email
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is email
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is email
      * @return string Return the email address
      * @throws incorrect_paramenters
      */
@@ -253,7 +253,7 @@ class validate {
     /**
      * Validate a url
      * @param type $url
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is url
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is url
      * @return string Return the url
      * @throws incorrect_paramenters
      */
@@ -267,7 +267,7 @@ class validate {
     /**
      * Validate a permalink id
      * @param type $permalink
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is permalink
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is permalink
      * @return string Return the permalink
      * @throws incorrect_paramenters
      */
@@ -281,7 +281,7 @@ class validate {
     /**
      * 
      * @param string $token
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is token
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is token
      * @return string Return the token
      * @throws incorrect_paramenters
      */
@@ -296,7 +296,7 @@ class validate {
      * Check if input value is in allowed values
      * @param string|int $input Input array to check
      * @param array $allowed Array of strings or number, defines the allowed input values
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is enum
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is enum
      * @throws incorrect_paramenters if value is not correct
      * @return returns the value of the input value
      */
@@ -317,7 +317,7 @@ class validate {
     /**
      * Validate SQL date, datetime
      * @param string $date Input date
-     * @param string $field_name [Optional] Field's name, used in IncorrectParamentersException. Optional default is date
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is date
      * @return type
      * @throws incorrect_paramenters
      */
@@ -333,7 +333,7 @@ class validate {
     /**
      * Validate color
      * @param type $color Input color
-     * @param string $field_name [Optional] [Optional] Field's name, used in IncorrectParamentersException. Optional default is color
+     * @param string $field_name [optional] [optional] Field's name, used in IncorrectParamentersException. Optional default is color
      * @param string $type Color value type. Optional, default is hex
      * @return type
      * @throws incorrect_paramenters
@@ -349,7 +349,7 @@ class validate {
     /**
      * Validate an operator
      * @param type $operator
-     * @param string $field_name [Optional] [Optional]
+     * @param string $field_name [optional] [optional]
      * @return type
      * @throws incorrect_paramenters
      */
@@ -364,7 +364,7 @@ class validate {
      * Validate a regexp
      * @param string input
      * @param string regexp
-     * @param string $field_name [Optional]
+     * @param string $field_name [optional]
      * @return type
      * @throws incorrect_paramenters
      */
@@ -378,7 +378,7 @@ class validate {
     /**
      * Validate a regexp
      * @param string input
-     * @param string $field_name [Optional]
+     * @param string $field_name [optional]
      * @return type
      * @throws incorrect_paramenters
      */

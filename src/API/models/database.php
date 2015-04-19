@@ -49,7 +49,6 @@ class database {
             // $this::$pdoLink ->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this::$pdoLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {
-            write_error_log($e->getMessage());
             throw new \Phramework\API\exceptions\database('Database Error', $e->getMessage());
         }
     }
@@ -67,7 +66,7 @@ class database {
         $options[PDO::MYSQL_ATTR_USE_BUFFERED_QUERY] = true;
 
         if (!$this::$pdoLink = new PDO("mysql:dbname={$name};host={$host};port={$port};charset=utf8", $username, $password, $options)) {
-            throw new \Exception('ERROR_DATABASE_CONNECT');
+            throw new \Phramework\API\exceptions\database('ERROR_DATABASE_CONNECT');
         }
         $this::$pdoLink->query('SET NAMES utf8');
         $this::$pdoLink->query('SET SQL_MODE=ANSI_QUOTES');
@@ -75,7 +74,7 @@ class database {
 
     private function create_postgresql_connection($name, $username, $password, $host, $port) {
         if (!$this::$pdoLink = new PDO("pgsql:dbname=$name;host=$host;user=$username;password=$password;port=$port")) {
-            throw new \Exception('ERROR_DATABASE_CONNECT');
+            throw new \Phramework\API\exceptions\database('ERROR_DATABASE_CONNECT');
         }
     }
 

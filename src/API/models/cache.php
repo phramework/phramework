@@ -5,7 +5,7 @@ namespace Phramework\API\models;
 /**
  * Default cache engine
  * 
- * Warning, function not completed yet
+ * WARNING, function not completed yet
  * 
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
@@ -25,7 +25,7 @@ class cache {
      * @return cache The *Singleton* instance.
      */
     public static function getInstance() {
-        if (null === $instance) {
+        if ($instance === null) {
             $instance = new static();
         }
 
@@ -42,11 +42,11 @@ class cache {
                 self::$instance = new Memcached();
                 self::$instance->addServer('localhost', 11211);
 
-                if ($prefix = \Phramework\API\API::get_setting('cache_prefix')) {
+                if (($prefix = \Phramework\API\API::get_setting('cache_prefix'))) {
                     self::$prefix = $prefix;
                 }
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             self::$instance = null;
         }
     }
