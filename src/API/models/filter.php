@@ -2,12 +2,6 @@
 
 namespace Phramework\API\models;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Provides various methods for filtering data
  *
@@ -22,8 +16,8 @@ class filter {
     /**
      * Allow only keys of $whitelist in every row of $data array
      * 
-     * @param type $data
-     * @param type $whitelist
+     * @param array $data
+     * @param array $whitelist
      * @return type
      */
     public static function filter_in($data, $whitelist) {
@@ -47,8 +41,8 @@ class filter {
     /**
      * Allow only keys of $whitelist in object
      * 
-     * @param type $data
-     * @param type $whitelist
+     * @param array $data
+     * @param array $whitelist
      * @return type
      */
     public static function filter_in_entry($data, $whitelist) {
@@ -67,9 +61,9 @@ class filter {
     /**
      * Exclude blackisted keys of $blacklist in every row of $data array
      * 
-     * @param type $data
-     * @param type $blacklist
-     * @return type
+     * @param array $data
+     * @param array $blacklist
+     * @return array
      */
     public static function out($data, $blacklist) {
         if ($data) {
@@ -86,9 +80,9 @@ class filter {
     /**
      * Exclude blackisted keys of $blacklist in $data object 
      * 
-     * @param type $data
-     * @param type $blacklist
-     * @return type
+     * @param array $data
+     * @param array $blacklist
+     * @return array
      */
     public static function out_entry($data, $blacklist) {
         if ($data) {
@@ -119,7 +113,7 @@ class filter {
 
     /**
      * Filter email
-     * @param type $value
+     * @param string $value
      * @return string Returns the filtered email
      */
     public static function email($value) {

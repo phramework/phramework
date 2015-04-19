@@ -8,6 +8,7 @@ use Phramework\API\models\database;
  * Authentication related functions
  * 
  * Implements authentication using HTTP\s BASIC AUTHENTICATION
+ * This class should be extended if database structure differs
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
  * @package Phramework
@@ -25,8 +26,7 @@ class authentication {
         if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
             return FALSE;
         }
-        
-        
+
         //Validate authentication credentials
         \Phramework\API\models\validate::email($_SERVER['PHP_AUTH_USER']);
 
@@ -41,13 +41,14 @@ class authentication {
      * @param string $email
      * @param string $password
      * @return array|FALSE Returns false on error or the user object on success
-     * @throws \API\exceptions\permission
+     * @throws \Phramework\API\exceptions\permission
      */
     public static function authenticate($email, $password) {
 
         //Select using user's email       
-        $auth = database::ExecuteAndFetch('SELECT "id", "username", "email", "password", "language_code", "usergroup", "disabled"'
-              .'FROM "user" WHERE LOWER("email") = ?  LIMIT 1', [strtolower($email)]);
+        $auth = database::ExecuteAndFetch(
+                'SELECT "id", "username", "email", "password", "language_code", "usergroup", "disabled"'
+                . 'FROM "user" WHERE LOWER("email") = ? LIMIT 1', [strtolower($email)]);
 
         //Check if user exists
         if (!$auth) {
@@ -57,11 +58,6 @@ class authentication {
         if ($auth['disabled']) {
             throw new \Phramework\API\exceptions\permission(__('disabled_account_exception'));
         }
-        
-        //Check if user is validated
-        /* if( !$auth[ 'validated' ] ) {
-          //TODO @security @validation
-          } */
 
         //Verify password hash
         if (password_verify($password, $auth['password'])) {
@@ -69,10 +65,12 @@ class authentication {
             $auth['id'] = intval($auth['id']);
 
             //Return without the password field
-            return \Phramework\API\models\filter::out_entry($auth, [ 'password', 'disabled', 'validated']);
+            return \Phramework\API\models\filter::out_entry($auth, ['password', 'disabled',
+                    'validated']);
         } else {
             //In case of incorrect password
             return FALSE;
         }
     }
+
 }

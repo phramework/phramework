@@ -17,7 +17,7 @@ namespace Phramework\API\models;
 class cache {
 
     private static $instance = null;
-    private static $prefix = 'atlas_';
+    private static $prefix   = 'phramework_';
 
     /**
      * Returns the *Singleton* instance of this class.
@@ -36,16 +36,18 @@ class cache {
      * Protected constructor to prevent creating a new instance of the
      * *Singleton* via the `new` operator from outside of this class.
      */
-    protected function __construct( ) {
+    protected function __construct() {
         try {
             if (!self::$instance && class_exists('Memcached')) {
                 self::$instance = new Memcached();
                 self::$instance->addServer('localhost', 11211);
+
+                if ($prefix = \Phramework\API\API::get_setting('cache_prefix')) {
+                    self::$prefix = $prefix;
+                }
             }
         } catch (exception $e) {
-            self::$instance = FALSE;
-            /* }finally{
-             */
+            self::$instance = null;
         }
     }
 
@@ -54,7 +56,7 @@ class cache {
      * if object is not available returns the data using the callback provided by $class, $function, $parameters 
      * 
      * @todo Rename
-     * @todo Use anonym functions
+     * @todo Use anonymous functions
      */
 
     public static function memcached($key, $class, $function, $parameters = array(), $time = MEMCACHED_TIME_DEFAULT) {

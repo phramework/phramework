@@ -10,6 +10,7 @@ namespace Phramework\API\models;
  * @package Phramework
  * @subpackage API
  * @category models
+ * @todo add more methods
  */
 class email {
     /* public static function send( $address, $subject, $body, $account = 'contact@host.com' ) {
@@ -98,22 +99,26 @@ class email {
      * @param string $account Account name. Optional, default is default
      */
     public static function send($address, $subject, $body, $account = 'default') {
-        $HTML = TRUE;
+        $HTML     = TRUE;
         $accounts = \Phramework\API\API::get_setting('email');
-        
+
+        if (!$accounts || !isset($accounts['default'])) {
+            throw new \Exception('email setting is required');
+        }
+
         if (!isset($accounts[$account])) {
             $account = 'default';
         }
-        if(!isset($accounts[$account])){
-            throw new \Exception('email setting is required');
-        }
-        $headers = [];
+
+        $headers   = [];
         $headers[] = "MIME-Version: 1.0" . "\r\n";
+        
         if (!$HTML) {
             $headers[] = 'Content-type: text/plain;charset=utf-8' . "\r\n";
         } else {
             $headers[] = 'Content-type: text/html;charset=utf-8' . "\r\n";
         }
+        
         $headers[] = 'From: ' . $accounts[$account]['name'] . ' <' . $accounts[$account]['mail'] . '>' . "\r\n";
         $headers[] = 'Reply-To: ' . $accounts[$account]['name'] . ' <' . $accounts[$account]['mail'] . "\r\n";
 
