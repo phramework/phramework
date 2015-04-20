@@ -3,6 +3,7 @@
 namespace Phramework\API;
 
 use Phramework\API\models\util;
+use Phramework\API\extensions\step_callback;
 
 // Tell PHP that we're using UTF-8 strings until the end of the script
 mb_internal_encoding('UTF-8');
@@ -13,7 +14,7 @@ mb_http_output('UTF-8');
 //TODO remove
 if(!function_exists('__')){
     function __($key){
-        return $key;
+        return API::get_translated($key);
     }
 }
 /**
@@ -25,17 +26,16 @@ if(!function_exists('__')){
  * @todo Rething the role of $controller_public_whitelist
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @link https://nohponex.gr Developer's website
- * @version 0.1.5
+ * @version 1.0.0
  * @package API
  * @todo remove APPPATH
  * @todo configurable APP\\controllers\\ namespace
  * @todo change default timezone
  * @todo remove _controller suffix
  * @todo Add localization class
- * @todo split callbacks into new class
  */
 class API {
-
+    protected static $instance;
     /**
      * Allowed controllers
      * @var array
@@ -70,7 +70,22 @@ class API {
      * @var type
      */
     private static $callback = NULL;
-
+    
+    /**
+     * Exposed extensions
+     */
+    
+    /**
+     * step_callback extension
+     * @var Phramework\API\extensions\step_callback 
+     */
+    public $step_callback;
+    /**
+     * translation extension
+     * @var Phramework\API\extensions\translation 
+     */
+    public $translation;
+    
     /**
      * Default mode
      */
@@ -85,11 +100,12 @@ class API {
      * @param array $controller_unauthenticated_whitelist
      * @param array $controller_public_whitelist
      * @param string $mode [optional]
+     * @param object|NULL $$translation_object [optional] Set custom translation class
      */
     public function __construct($settings, $controller_whitelist,
         $controller_unauthenticated_whitelist,
         $controller_public_whitelist,
-        $mode = self::MODE_DEFAULT) {
+        $mode = self::MODE_DEFAULT, $translation_object = NULL) {
 
         self::$settings = $settings;
         self::$controller_whitelist = $controller_whitelist;
@@ -99,8 +115,27 @@ class API {
 
         self::$user = FALSE;
         self::$language = 'en';
+        
+        //Instantiate step_callback object
+        $this->step_callback = new \Phramework\API\extensions\step_callback();
+        
+        //If custom translation object is set add it
+        if($translation_object){
+            $this->set_translation_object($translation_object);
+        }else{
+            //Or instantiate default translation object
+            $this->translation = new \Phramework\API\extensions\translation(
+                self::get_setting('language'),
+                self::get_setting('translation','track_missing_keys'));
+        }
+        
+        self::$instance = $this;
     }
-
+    
+    public static function get_instance(){
+        return self::$instance;
+    }
+    
     /**
      * Authentication class (Full namespace)
      */
@@ -128,7 +163,24 @@ class API {
     public static function authenticate($username, $password) {
         return call_user_func([self::$authentication_class, 'authenticate'], $username, $password);
     }
-
+    
+    public function set_translation_object($translation_object){
+        if (!is_subclass_of($class, 'Phramework\API\extensions\translation', TRUE)) {
+            throw new \Exception('class_is_not_implementing Phramework\API\extensions\translation');
+        }
+        $this->translation = $translation_object;
+    }
+    
+    /**
+     * Shortcut function alias of $this->translation->get_translated
+     * @param type $key
+     * @param type $parameters
+     * @param type $fallback_value
+     * @return type
+     */
+    public static function get_translated($key, $parameters = NULL, $fallback_value = NULL){
+        return self::$instance->translation->get_translated($key, $parameters, $fallback_value);
+    }
     /**
      * Execute the API
      * @throws exceptions\permission
@@ -146,9 +198,11 @@ class API {
                 error_reporting(E_ALL);
                 ini_set('display_errors', '1');
             }
-
-            ini_set('error_log', self::get_setting('errorlog_path'));
-
+            
+            if(self::get_setting('errorlog_path')){
+                ini_set('error_log', self::get_setting('errorlog_path'));
+            }
+            
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
                 if (!API\models\validate::is_valid_callback($_GET['callback'])) {
@@ -157,31 +211,11 @@ class API {
                 self::$callback = $_GET['callback'];
                 unset($_GET['callback']);
             }
-
-            //Initialize metaphrase\phpsdk\Metaphrase
-            //$metaphrase = new \metaphrase\phpsdk\Metaphrase($settings['translate']['api_key']);
-            //Initialize database connection if required or db set
-            if (self::get_setting('require_db') || self::get_setting('db')) {
-                models\database::require_database(self::get_setting('db'));
-            }
-
-            //Unset from memory database connection information
-            unset(self::$settings['db']);
-
-            //Allowed methods
-            $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS'];
-
-            //Get controller from the request (URL parameter)
-            if (!isset($_GET['controller'])) {
-                die(); //Or throw \Exception OR redirect to API documentation
-            }
-            self::$controller = $controller = $_GET['controller'];
-            unset($_GET['controller']);
-
+            
             //Get method from the request (HTTP) method
             self::$method = $method =
                 isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-
+            
             //Default value of response's header origin  
             $origin = '*';
             
@@ -210,7 +244,28 @@ class API {
                 header('HTTP/1.1 200 OK');
                 exit();
             }
+            
+            //Initialize database connection if required or db set
+            if (self::get_setting('require_db') || self::get_setting('db')) {
+                models\database::require_database(self::get_setting('db'));
+            }
 
+            //Unset from memory database connection information
+            unset(self::$settings['db']);
+
+            //Allowed methods
+            $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS'];
+
+            //Get controller from the request (URL parameter)
+            if (!isset($_GET['controller'])) {
+                die(); //Or throw \Exception OR redirect to API documentation
+            }
+            self::$controller = $controller = $_GET['controller'];
+            unset($_GET['controller']);
+
+            
+
+            
             //If a request from site (using HTML request referer)
             $request_from_site = FALSE;
 
@@ -226,7 +281,7 @@ class API {
             self::$user = call_user_func(array(self::$authentication_class, 'check'));
 
             //STEP_AFTER_AUTHENTICATION_CHECK
-            self::call_callback(self::STEP_AFTER_AUTHENTICATION_CHECK);
+            $this->step_callback->call(step_callback::STEP_AFTER_AUTHENTICATION_CHECK);
 
             //Default language value
             $language = self::get_setting('language');
@@ -251,23 +306,24 @@ class API {
             
             //Set language variable
             self::$language = $language;
-
+            $this->translation->set_language_code($language);
+            
             //If not authenticated allow only certain controllers to access
             if (!self::get_user() &&
                 !in_array($controller, self::$controller_unauthenticated_whitelist) &&
                 !in_array($controller, self::$controller_public_whitelist)) {
-                throw new exceptions\permission(__('unauthenticated_access_exception'));
+                throw new exceptions\permission(API::get_translated('unauthenticated_access_exception'));
             }
 
             //Check if requested controller and method are allowed
             if (!in_array($controller, self::$controller_whitelist)) {
-                throw new exceptions\not_found(__('controller_not_found_exception'));
+                throw new exceptions\not_found(API::get_translated('controller_not_found_exception'));
             } else if (!in_array($method, $method_whitelist)) {
-                throw new exceptions\not_found(__('method_not_found_exception'));
+                throw new exceptions\not_found(API::get_translated('method_not_found_exception'));
             }
 
             //STEP_BEFORE_REQUIRE_CONTROLLER
-            self::call_callback(self::STEP_BEFORE_REQUIRE_CONTROLLER);
+            $this->step_callback->call(step_callback::STEP_BEFORE_REQUIRE_CONTROLLER);
 
             //Include the requested controller file (containing the controller class)
             require(
@@ -310,7 +366,7 @@ class API {
             }
 
             //STEP_BEFORE_CALL_METHOD
-            self::call_callback(self::STEP_BEFORE_CALL_METHOD);
+            $this->step_callback->call(step_callback::STEP_BEFORE_CALL_METHOD);
 
             //Call controller's method
             call_user_func([
@@ -322,7 +378,7 @@ class API {
             unset($params);
 
             //STEP_BEFORE_CLOSE
-            self::call_callback(self::STEP_BEFORE_CLOSE);
+            $this->step_callback->call(step_callback::STEP_BEFORE_CLOSE);
 
             //Try to close the databse
             models\database::close();
@@ -456,14 +512,18 @@ class API {
     /**
      * Get a setting value
      * @param string $key The requested setting key
+     * @param string|NULL $second_level
+     * @param mixed $default_value [optional] Default value is the setting is missing.
      * @return Mixed Returns the value of setting, NULL when not found
      */
-    public static function get_setting($key) {
-        if (!isset(self::$settings[$key])) {
-            return NULL;
-            //throw new \Exception('Not a valid setting key');
+    public static function get_setting($key, $second_level = NULL, $default_value = NULL) {
+        if (!isset(self::$settings[$key]) || ($second_level && isset(self::$settings[$key][$second_level]))) {
+            return $default_value;
         }
-
+        if($second_level) {
+            self::$settings[$key][$second_level];
+        }
+        
         return self::$settings[$key];
     }
     
@@ -530,63 +590,5 @@ class API {
         error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
     }
 
-    /**
-     * Step callbacks
-     */
-    const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
-    const STEP_BEFORE_REQUIRE_CONTROLLER = 'STEP_BEFORE_REQUIRE_CONTROLLER';
-    const STEP_BEFORE_CALL_METHOD = 'STEP_BEFORE_CALL_METHOD';
-    const STEP_BEFORE_CLOSE = 'STEP_BEFORE_CLOSE';
-
-    /**
-     * Hold all step callbacks
-     * @var array Array of arrays
-     */
-    private static $step_callback = [];
-
-    /**
-     * Add a step callback
-     *
-     * Step callbacks, are callbacks that executed when the API reaches
-     * a certain step, multiple callbacks can be set for the same step.
-     * @param string $step
-     * @param function $callback
-     * @since 0.1.1
-     * @throws \Exception callback_is_not_function_exception
-     */
-    public function add_step_callback($step, $callback) {
-        \Phramework\API\models\validate::enum($step, [
-            self::STEP_BEFORE_REQUIRE_CONTROLLER,
-            self::STEP_BEFORE_CALL_METHOD,
-            self::STEP_BEFORE_CLOSE,
-        ]);
-        if (!is_callable($callback)) {
-            throw new \Exception(__('callback_is_not_function_exception'));
-        }
-        //If empty
-        if (!isset(self::$step_callback[$step])) {
-            //Initialize array
-            self::$step_callback[$step] = [];
-        }
-
-        //Push
-        self::$step_callback[$step][] = $callback;
-    }
-
-    /**
-     * Execute all callbacks set for this step
-     * @param string $step
-     */
-    private static function call_callback($step) {
-        if (!isset(self::$step_callback[$step])) {
-            return;
-        }
-        foreach (self::$step_callback[$step] as $s) {
-            if (!is_callable($s)) {
-                throw new \Exception(__('callback_is_not_function_exception'));
-            }
-            $s();
-        }
-    }
 
 }
