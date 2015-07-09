@@ -16,8 +16,14 @@ class viewer implements \Phramework\API\viewers\IViewer {
      * @param $VIEWER_title Page's title
      */
     public function view($parameters) {
-        $VIEWER_page = func_get_arg(1);
-        $VIEWER_title = func_get_arg(2);
+        $num_args = func_num_args();
+        
+        if ($num_args >1) {
+            $VIEWER_page = func_get_arg(1);
+        }
+        if ($num_args >1) {
+            $VIEWER_title = func_get_arg(2);
+        }
 
         extract($parameters);
 
