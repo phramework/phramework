@@ -8,10 +8,7 @@ class editor_controller {
 
     public static function GET($params) {
 
-        API::view([
-            'page'  => 'editor', //Will load page blog.php
-            'title' => 'Blog\'s Editor',
-        ]);
+        API::view([], 'editor', 'Blog\'s Editor');
     }
 
 }

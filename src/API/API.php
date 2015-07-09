@@ -61,7 +61,7 @@ class API {
      * Viewer class
      */
     private static $viewer = 'Phramework\API\viewers\json';
-    
+
     private static $controller;
     private static $method;
 
@@ -116,7 +116,7 @@ class API {
         }
         self::$authentication_class = $class;
     }
-    
+
     /**
      * Authenticate a user
      *
@@ -172,8 +172,12 @@ class API {
             $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS'];
 
             //Get controller from the request (URL parameter)
-            if (!isset($_GET['controller'])) {
-                die(); //Or throw \Exception OR redirect to API documentation
+            if (!isset($_GET['controller']) || empty($_GET['controller'])) {
+                if (($default_controller = self::get_setting('default_controller'))) {
+                    $_GET['controller'] = $default_controller;
+                } else {
+                    die(); //Or throw \Exception OR redirect to API documentation
+                }
             }
             self::$controller = $controller = $_GET['controller'];
             unset($_GET['controller']);
@@ -182,12 +186,12 @@ class API {
             self::$method = $method =
                 isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-            //Default value of response's header origin  
+            //Default value of response's header origin
             $origin = '*';
-            
+
             //Get request headers
             $headers = util::headers();
-            
+
             //Check origin header
             if (isset($headers['Origin'])) {
                 $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
@@ -199,7 +203,7 @@ class API {
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
                 $origin = ''; //TODO Exctract origin from request url
             }
-            if(!headers_sent()){
+            if (!headers_sent()) {
                 header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $origin);
                 header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
@@ -234,7 +238,7 @@ class API {
             //Select request's language
             if (isset($_GET['this_language']) && self::get_setting('languages') &&
                 in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
-                
+
                 if ($_GET['this_language'] != $language) {
                     $language = $_GET['this_language'];
                 }
@@ -243,12 +247,12 @@ class API {
                 $language = self::$user['language_code'];
             } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::get_setting('languages')) { // Use Accept languge if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-                
+
                 if (in_array($a, self::get_setting('languages'))) {
                     $language = $a;
                 }
             }
-            
+
             //Set language variable
             self::$language = $language;
 
@@ -353,7 +357,7 @@ class API {
                 $exception->getMessage() .
                 implode(', ', $exception->getParameters())
             );
-            
+
             if (self::get_setting('debug')) {
                 self::error_view([
                     'code' => $exception->getCode(),
@@ -436,7 +440,7 @@ class API {
     public static function get_mode() {
         return self::$mode;
     }
-    
+
     /**
      * Get current viewer
      * @return string
@@ -444,7 +448,7 @@ class API {
     public static function get_viewer() {
         return self::$viewer;
     }
-    
+
     /**
      * Get callback if set
      * @return string
@@ -466,7 +470,7 @@ class API {
 
         return self::$settings[$key];
     }
-    
+
     /**
      * Set viewer class
      * @param string $class A name of class that implements \Phramework\API\viewers\IViewer
@@ -477,7 +481,7 @@ class API {
         }
         self::$viewer = $class;
     }
-    
+
     /**
      * Output an error
      * @param array $params The error parameters. The 'error' index holds the message, and the 'code' message the error code, note that if headers are not send the response code will set with the 'code' value
@@ -490,13 +494,16 @@ class API {
     }
 
     /**
-     * Output the response in json encoded format.
+     * Output the response using the selected viewer
+     *
+     * Multiple arguments can be set, first argument will always be used as the parameters array.
+     * Custom IViewer implementation can use these additional parameters at they definition.
      * @param array $params The output parameters. Notice $params['user'] will be overwritten if set.
-     * @todo Test JSONP
-     * @todo add viewers
      * @return null Returns nothing
      */
     public static function view($parameters = []) {
+        $args = func_get_args();
+
         //Access global user object
         $user = self::get_user();
 
@@ -513,12 +520,15 @@ class API {
             //Merge output parameters with current user information, if any.
             $parameters = array_merge(['user' => $user], $parameters);
         }
-        
+
         //Instanciate a new viewer object
         $viewer =  new self::$viewer();
-        
+
+        //rewrite $parameters to args
+        $args[0] = $parameters;
+
         //Call view method
-        return $viewer->view($parameters);
+        return call_user_func_array([$viewer, 'view'], $args);
     }
 
     /**

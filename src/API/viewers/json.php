@@ -11,7 +11,7 @@ class json implements \Phramework\API\viewers\IViewer {
 
     /**
      * Display output
-     * 
+     *
      * @param array $parameters Output parameters to display
      */
     public function view($parameters) {
