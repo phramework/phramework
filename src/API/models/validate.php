@@ -448,7 +448,7 @@ class validate {
                     case self::TYPE_DOUBLE :
                         //Replace comma with dot
                         $parameters[$key] = str_replace(',', '.', $parameters[$key]);
-                        if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT)) {
+                        if (filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
                             array_push($incorrect, $key);
                         } else {
                             $parameters[$key] = doubleval($parameters[$key]);

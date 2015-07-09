@@ -61,7 +61,7 @@ class API {
      * Viewer class
      */
     private static $viewer = 'Phramework\API\viewers\json';
-    
+
     private static $controller;
     private static $method;
 
@@ -70,22 +70,22 @@ class API {
      * @var type
      */
     private static $callback = NULL;
-    
+
     /**
      * Exposed extensions
      */
-    
+
     /**
      * step_callback extension
-     * @var Phramework\API\extensions\step_callback 
+     * @var Phramework\API\extensions\step_callback
      */
     public $step_callback;
     /**
      * translation extension
-     * @var Phramework\API\extensions\translation 
+     * @var Phramework\API\extensions\translation
      */
     public $translation;
-    
+
     /**
      * Default mode
      */
@@ -115,10 +115,10 @@ class API {
 
         self::$user = FALSE;
         self::$language = 'en';
-        
+
         //Instantiate step_callback object
         $this->step_callback = new \Phramework\API\extensions\step_callback();
-        
+
         //If custom translation object is set add it
         if($translation_object){
             $this->set_translation_object($translation_object);
@@ -128,14 +128,14 @@ class API {
                 self::get_setting('language'),
                 self::get_setting('translation','track_missing_keys'));
         }
-        
+
         self::$instance = $this;
     }
-    
+
     public static function get_instance(){
         return self::$instance;
     }
-    
+
     /**
      * Authentication class (Full namespace)
      */
@@ -151,7 +151,7 @@ class API {
         }
         self::$authentication_class = $class;
     }
-    
+
     /**
      * Authenticate a user
      *
@@ -163,14 +163,14 @@ class API {
     public static function authenticate($username, $password) {
         return call_user_func([self::$authentication_class, 'authenticate'], $username, $password);
     }
-    
+
     public function set_translation_object($translation_object){
         if (!is_subclass_of($class, 'Phramework\API\extensions\translation', TRUE)) {
             throw new \Exception('class_is_not_implementing Phramework\API\extensions\translation');
         }
         $this->translation = $translation_object;
     }
-    
+
     /**
      * Shortcut function alias of $this->translation->get_translated
      * @param type $key
@@ -198,11 +198,11 @@ class API {
                 error_reporting(E_ALL);
                 ini_set('display_errors', '1');
             }
-            
+
             if(self::get_setting('errorlog_path')){
                 ini_set('error_log', self::get_setting('errorlog_path'));
             }
-            
+
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
                 if (!API\models\validate::is_valid_callback($_GET['callback'])) {
@@ -211,40 +211,9 @@ class API {
                 self::$callback = $_GET['callback'];
                 unset($_GET['callback']);
             }
-            
-            //Get method from the request (HTTP) method
-            self::$method = $method =
-                isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-            
-            //Default value of response's header origin  
-            $origin = '*';
-            
-            //Get request headers
-            $headers = util::headers();
-            
-            //Check origin header
-            if (isset($headers['Origin'])) {
-                $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
-                //Check if origin host is allowed
-                if ($origin_host && in_array($origin_host, self::get_setting('allowed_referer'))) {
-                    $origin = $headers['Origin'];
-                }
-                //@TODO @security else deny access
-            } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
-                $origin = ''; //TODO Exctract origin from request url
-            }
-            if(!headers_sent()){
-                header('Access-Control-Allow-Credentials: true');
-                header('Access-Control-Allow-Origin: ' . $origin);
-                header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
-                header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding');
-            }
-            //Catch OPTIONS request and kill it
-            if ($method == 'OPTIONS') {
-                header('HTTP/1.1 200 OK');
-                exit();
-            }
-            
+
+            //Initialize metaphrase\phpsdk\Metaphrase
+            //$metaphrase = new \metaphrase\phpsdk\Metaphrase($settings['translate']['api_key']);
             //Initialize database connection if required or db set
             if (self::get_setting('require_db') || self::get_setting('db')) {
                 models\database::require_database(self::get_setting('db'));
@@ -257,24 +226,49 @@ class API {
             $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS'];
 
             //Get controller from the request (URL parameter)
-            if (!isset($_GET['controller'])) {
-                die(); //Or throw \Exception OR redirect to API documentation
+            if (!isset($_GET['controller']) || empty($_GET['controller'])) {
+                if (($default_controller = self::get_setting('default_controller'))) {
+                    $_GET['controller'] = $default_controller;
+                } else {
+                    die(); //Or throw \Exception OR redirect to API documentation
+                }
             }
+
             self::$controller = $controller = $_GET['controller'];
             unset($_GET['controller']);
 
-            
 
-            
-            //If a request from site (using HTML request referer)
-            $request_from_site = FALSE;
+            //Get method from the request (HTTP) method
+            self::$method = $method =
+                isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-            //Check if the request is comming from web
-            if (isset($_SERVER['HTTP_REFERER']) && self::get_setting('allowed_referer')) {
-                $referer_data = parse_url($_SERVER['HTTP_REFERER']);
-                if (in_array($referer_data['host'], self::get_setting('allowed_referer'))) {
-                    $request_from_site = TRUE;
+            //Default value of response's header origin
+            $origin = '*';
+
+            //Get request headers
+            $headers = util::headers();
+
+            //Check origin header
+            if (isset($headers['Origin'])) {
+                $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
+                //Check if origin host is allowed
+                if ($origin_host && in_array($origin_host, self::get_setting('allowed_referer'))) {
+                    $origin = $headers['Origin'];
                 }
+                //@TODO @security else deny access
+            } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
+                $origin = ''; //TODO Exctract origin from request url
+            }
+            if (!headers_sent()) {
+                header('Access-Control-Allow-Credentials: true');
+                header('Access-Control-Allow-Origin: ' . $origin);
+                header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
+                header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding');
+            }
+            //Catch OPTIONS request and kill it
+            if ($method == 'OPTIONS') {
+                header('HTTP/1.1 200 OK');
+                exit();
             }
 
             //Authenticate request (check authentication)
@@ -285,11 +279,11 @@ class API {
 
             //Default language value
             $language = self::get_setting('language');
-
+            
             //Select request's language
             if (isset($_GET['this_language']) && self::get_setting('languages') &&
                 in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
-                
+
                 if ($_GET['this_language'] != $language) {
                     $language = $_GET['this_language'];
                 }
@@ -298,16 +292,16 @@ class API {
                 $language = self::$user['language_code'];
             } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::get_setting('languages')) { // Use Accept languge if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-                
+
                 if (in_array($a, self::get_setting('languages'))) {
                     $language = $a;
                 }
             }
-            
+
             //Set language variable
             self::$language = $language;
             $this->translation->set_language_code($language);
-            
+
             //If not authenticated allow only certain controllers to access
             if (!self::get_user() &&
                 !in_array($controller, self::$controller_unauthenticated_whitelist) &&
@@ -409,7 +403,7 @@ class API {
                 $exception->getMessage() .
                 implode(', ', $exception->getParameters())
             );
-            
+
             if (self::get_setting('debug')) {
                 self::error_view([
                     'code' => $exception->getCode(),
@@ -492,7 +486,7 @@ class API {
     public static function get_mode() {
         return self::$mode;
     }
-    
+
     /**
      * Get current viewer
      * @return string
@@ -500,7 +494,7 @@ class API {
     public static function get_viewer() {
         return self::$viewer;
     }
-    
+
     /**
      * Get callback if set
      * @return string
@@ -523,10 +517,10 @@ class API {
         if($second_level) {
             self::$settings[$key][$second_level];
         }
-        
+
         return self::$settings[$key];
     }
-    
+
     /**
      * Set viewer class
      * @param string $class A name of class that implements \Phramework\API\viewers\IViewer
@@ -537,7 +531,7 @@ class API {
         }
         self::$viewer = $class;
     }
-    
+
     /**
      * Output an error
      * @param array $params The error parameters. The 'error' index holds the message, and the 'code' message the error code, note that if headers are not send the response code will set with the 'code' value
@@ -550,13 +544,16 @@ class API {
     }
 
     /**
-     * Output the response in json encoded format.
+     * Output the response using the selected viewer
+     *
+     * Multiple arguments can be set, first argument will always be used as the parameters array.
+     * Custom IViewer implementation can use these additional parameters at they definition.
      * @param array $params The output parameters. Notice $params['user'] will be overwritten if set.
-     * @todo Test JSONP
-     * @todo add viewers
      * @return null Returns nothing
      */
     public static function view($parameters = []) {
+        $args = func_get_args();
+
         //Access global user object
         $user = self::get_user();
 
@@ -573,12 +570,15 @@ class API {
             //Merge output parameters with current user information, if any.
             $parameters = array_merge(['user' => $user], $parameters);
         }
-        
+
         //Instanciate a new viewer object
         $viewer =  new self::$viewer();
-        
+
+        //rewrite $parameters to args
+        $args[0] = $parameters;
+
         //Call view method
-        return $viewer->view($parameters);
+        return call_user_func_array([$viewer, 'view'], $args);
     }
 
     /**

@@ -1,41 +1,40 @@
 {
-    "name": "Phramework/API",
-    "description": "PHP SDK for metaphrase service",
-    "license": "TBA",
-    "type": "library",
-    "keywords": [
-        "RESTful"
-    ],
-    "homepage": "https://nohponex.gr",
-    "authors": [
-        {
-            "name": "Xenophon Spafaridis",
-            "email": "nohponex@gmail.com",
-            "homepage": "https://nohponex.gr"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Phramework\\API\\": "src/API"
-        }
-    },
-    "repositories": [
-        { "type": "vcs", "url": "git@github.com:metaphrase/php-sdk.git" }
-    ],
-    "require": {
-        "php": ">=5.5",
-        "lib-curl": ">=7.26.0",
-        "ext-pdo": ">=1.0.0",
-        "ext-pdo_pgsql": ">=1.0.2",
-        "metaphrase/php-sdk": "~0.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "4.*",
-        "phpunit/phpunit-skeleton-generator": "*"
-    },
-    "minimum-stability" : "dev",
-    "prefer-stable" : true,
-    "archive": {
-        "exclude": ["demo/", "examples/", "test/", "/*.test", "tests", "demo.php"]
+  "name": "Phramework/API",
+  "description": "PHP SDK for metaphrase service",
+  "license": "TBA",
+  "type": "library",
+  "keywords": [
+    "RESTful"
+  ],
+  "homepage": "https://nohponex.gr",
+  "authors": [{
+    "name": "Xenophon Spafaridis",
+    "email": "nohponex@gmail.com",
+    "homepage": "https://nohponex.gr"
+  }],
+  "autoload": {
+    "psr-4": {
+      "Phramework\\API\\": "src/API"
     }
+  },
+  "repositories": [{
+    "type": "vcs",
+    "url": "git@github.com:metaphrase/php-sdk.git"
+  }],
+  "require": {
+    "php": ">=5.5",
+    "lib-curl": ">=7.26.0",
+    "ext-pdo": ">=1.0.0",
+    "ext-pdo_pgsql": ">=1.0.2",
+    "metaphrase/php-sdk": "~0.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*",
+    "phpunit/phpunit-skeleton-generator": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "archive": {
+    "exclude": ["demo/", "examples/", "test/", "/*.test", "tests", "demo.php"]
+  }
 }
