@@ -279,7 +279,7 @@ class API {
 
             //Default language value
             $language = self::get_setting('language');
-            
+
             //Select request's language
             if (isset($_GET['this_language']) && self::get_setting('languages') &&
                 in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
@@ -288,7 +288,7 @@ class API {
                     $language = $_GET['this_language'];
                 }
                 unset($_GET['this_language']);
-            } else if (self::$user) { // Use user's langugae
+            } else if (self::$user && isset(self::$user['language_code'])) { // Use user's langugae
                 $language = self::$user['language_code'];
             } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::get_setting('languages')) { // Use Accept languge if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
