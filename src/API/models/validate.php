@@ -6,13 +6,10 @@ use Phramework\API\exceptions\missing_paramenters;
 use Phramework\API\exceptions\incorrect_paramenters;
 
 /**
- * Provides various methods for validating data
+ * Provides various methods for validating data for varius datatypes.
  * 
  * @author Spafaridis Xenophon <nohponex@gmail.com>
- * @since 0
- * @package Phramework
- * @subpackage API
- * @category models
+ * @since 0.0.1
  */
 class validate {
 
@@ -51,7 +48,9 @@ class validate {
      */
     const TYPE_BOOLEAN = 'boolean';
     
-    
+    /**
+     * Color type
+     */
     const TYPE_COLOR = 'color';
     const TYPE_USERNAME = 'username';
     const TYPE_EMAIL = 'email';
@@ -83,14 +82,31 @@ class validate {
      */
     const TYPE_ARRAY_CSV = 'array_csv';
     
+    /**
+     * Regular expression of resource ID
+     */
     const REGEXP_RESOURCE_ID = '/^d+$/';  //'/^[A-Za-z0-9_]{3,128}$/' );
+    
+    /**
+     * Regular expresion of username
+     */
     const REGEXP_USERNAME = '/^[A-Za-z0-9_\.]{3,64}$/';
+    /**
+     * Regular expresion of a token
+     */
     const REGEXP_TOKEN = '/^[A-Za-z0-9_]{3,48}$/';
+    /**
+     * Regular expresion of a permalink
+     */
     const REGEXP_PERMALINK = '/^[A-Za-z0-9_]{3,32}$/';
+    
+    const COLOR_HEX = 'hex';
     
     /**
      * Custom data types validators
-     * @var type 
+     * 
+     * This array holds the defined custom types
+     * @var array 
      */
     private static $custom_types = [];
     
@@ -111,7 +127,9 @@ class validate {
     }
     
     /**
-     * Validate a custom data type
+     * Validate a custom data type.
+     * 
+     * This method uses previous custom-defined datatype to validate it's data. 
      * @param string $type Custom type's name
      * @param mixed $value Value to test
      * @param string $field_name [optional] field's name
@@ -124,8 +142,8 @@ class validate {
             throw new \Exception('type_not_found');
         }
         $callback = self::$custom_types[$type]['callback'];
-                            
-        $output;
+        
+        $output = FALSE;
 
         if($callback($value, $model, $output) === FALSE) {
             //Incorrect
@@ -147,179 +165,226 @@ class validate {
     /**
      * Validate a signed integer
      * 
-     * @param string|int $int Input value
-     * @param int|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
-     * @param int|NULL $max Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * @param string|integer $input Input value
+     * @param integer|NULL $min Minimum value. [optional] Default is NULL, if NULL then the minum value is skipped
+     * @param integer|NULL $max Maximum value. [optional] Default is NULL, if NULL then the maximum value is skipped
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is int
-     * @throws incorrect_paramenters if value is not correct
-     * @return intigerReturns the value of the input value as int
+     * @throws incorrect_paramenters If valu type is not correct.
+     * @return integer Returns the value of the input value as int
      */
-    public static function int($int, $min = NULL, $max = NULL, $field_name = 'int') {
-        $options = [];
+    public static function int($input, $min = NULL, $max = NULL, $field_name = 'int') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_INT, 'required']
+        ];
+        
         if ($min !== NULL) {
-            $options['min_range'] = $min;
+            $model[$field_name]['min'] = $min;
         }
+        
         if ($max !== NULL) {
-            $options['max_range'] = $max;
+            $model[$field_name]['max'] = $max;
         }
-        if (filter_var($int, FILTER_VALIDATE_INT, ['options' => $options]) === FALSE) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return intval($int);
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
     }
 
     /**
      * Validate an unsigned integer
-     * @param string|int $int Input value
-     * @param int $min Minimum value. Optional default is 0.
-     * @param int|NULL $max Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * @param string|integer $input Input value
+     * @param integer $min Minimum value. Optional default is 0.
+     * @param integer|NULL $max Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
      * @param String $field_name Field's name, used in IncorrectParamentersException. Optional default is uint
-     * @throws incorrect_paramenters if value is not correct
-     * @return intigerReturns the value of the input value as int
+     * @throws incorrect_paramenters If valu type is not correct.
+     * @return integer Returns the value of the input value as int
      */
-    public static function uint($int, $min = 0, $max = NULL, $field_name = 'uint') {
-        $options = [ 'min_range' => $min];
+    public static function uint($input, $min = 0, $max = NULL, $field_name = 'uint') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_UINT, 'required']
+        ];
+        
+        $model[$field_name]['min'] = $min;
+        
         if ($max !== NULL) {
-            $options['max_range'] = $max;
+            $model[$field_name]['max'] = $max;
         }
-        if (filter_var($int, FILTER_VALIDATE_INT, ['options' => $options]) === FALSE) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return intval($int);
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * Validate a floating point number
-     * @param string|float|int $number
+     * @param string|float|int $input
      * @param float|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
      * @param float|NULL Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is number
      * @return float Returns the input value as float
-     * @throws incorrect_paramenters
+     * @throws incorrect_paramenters If value type is not correct.
      */
-    public static function float($number, $min = NULL, $max = NULL, $field_name = 'float') {
-        $options = [];
-        if ($min != NULL) {
-            $options['min_range'] = $min;
+    public static function float($input, $min = NULL, $max = NULL, $field_name = 'float') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_FLOAT, 'required']
+        ];
+        
+        if ($min !== NULL) {
+            $model[$field_name]['min'] = $min;
         }
-        if ($max != NULL) {
-            $options['max_range'] = $max;
+        
+        if ($max !== NULL) {
+            $model[$field_name]['max'] = $max;
         }
-        if (filter_var($number, FILTER_VALIDATE_FLOAT, ['options' => $options]) === FALSE) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-
-        return floatval($number);
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
     
     /**
      * Validate a double presision floating point number
-     * @param string|double|float|int $number
-     * @param float|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
-     * @param float|NULL Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * @param string|double|float|int $input
+     * @param double|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
+     * @param double|NULL Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is number
-     * @return float Returns the input value as double
-     * @throws incorrect_paramenters
+     * @return double Returns the input value as double
+     * @throws incorrect_paramenters If value type is not correct.
      */
-    public static function double($number, $min = NULL, $max = NULL, $field_name = 'double') {
-        $options = [];
-        if ($min != NULL) {
-            $options['min_range'] = $min;
+    public static function double($input, $min = NULL, $max = NULL, $field_name = 'double') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_DOUBLE, 'required']
+        ];
+        
+        if ($min !== NULL) {
+            $model[$field_name]['min'] = $min;
         }
-        if ($max != NULL) {
-            $options['max_range'] = $max;
+        
+        if ($max !== NULL) {
+            $model[$field_name]['max'] = $max;
         }
-        if (filter_var($number, FILTER_VALIDATE_FLOAT, ['options' => $options]) === FALSE) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-
-        return doubleval($number);
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * Validate an email address
-     * @param type $email
+     * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is email
      * @return string Return the email address
-     * @throws incorrect_paramenters
+     * @throws incorrect_paramenters If value type is not correct.
      */
-    public static function email($email, $field_name = 'email') {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return $email;
+    public static function email($input, $field_name = 'email') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_EMAIL, 'required']
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * Validate a url
-     * @param type $url
+     * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is url
      * @return string Return the url
-     * @throws incorrect_paramenters
+     * @throws incorrect_paramenters If value type is not correct.
      */
-    public static function url($url, $field_name = 'url') {
-        if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return $url;
+    public static function url($input, $field_name = 'url') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_URL, 'required']
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * Validate a permalink id
-     * @param type $permalink
+     * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is permalink
      * @return string Return the permalink
-     * @throws incorrect_paramenters
+     * @throws incorrect_paramenters If value type is not correct.
      */
-    public static function permalink($permalink, $field_name = 'permalink') {
-        if (!preg_match(self::REGEXP_PERMALINK, $permalink)) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return $permalink;
+    public static function permalink($input, $field_name = 'permalink') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_PERMALINK, 'required']
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * 
-     * @param string $token
+     * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is token
      * @return string Return the token
-     * @throws incorrect_paramenters
+     * @throws incorrect_paramenters If value type is not correct.
      */
-    public static function token($token, $field_name = 'token') {
-        if (!preg_match(self::REGEXP_TOKEN, $token)) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return $token;
+    public static function token($input, $field_name = 'token') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_TOKEN, 'required']
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * Check if input value is in allowed values
-     * @param string|int $input Input array to check
-     * @param array $allowed Array of strings or number, defines the allowed input values
+     * @param string|integer $input Input array to check
+     * @param array $values Array of strings or number, defines the allowed input values
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is enum
-     * @throws incorrect_paramenters if value is not correct
+     * @throws incorrect_paramenters If valu type is not correct.
      * @return returns the value of the input value
      */
-    public static function enum($input, $allowed, $field_name = 'enum') {
+    public static function enum($input, $values, $field_name = 'enum') {
 
         //Check if array was given for $values value
-        if (!is_array($allowed)) {
-            throw new \Exception('Array is expencted as value');
+        if (!is_array($values)) {
+            throw new \Exception('Array is expected as values');
         }
-        //Check if input doesen't exist in $values array
-        if (!in_array($input, $allowed)) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-
-        return $input;
+        
+        //Define trivial model
+        $model = [
+            $field_name => [
+                'type' => validate::TYPE_ENUM, 'values' => $values, 'required'
+            ]
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * Validate SQL date, datetime
      * @param string $date Input date
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is date
-     * @return type
-     * @throws incorrect_paramenters
+     * @return string
+     * @throws incorrect_paramenters If value type is not correct.
      */
     public static function sql_date($date, $field_name = 'date') {
         if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/', $date, $matches)) {
@@ -332,26 +397,31 @@ class validate {
 
     /**
      * Validate color
-     * @param type $color Input color
-     * @param string $field_name [optional] [optional] Field's name, used in IncorrectParamentersException. Optional default is color
+     * @param type $input Input color
      * @param string $type Color value type. Optional, default is hex
-     * @return type
-     * @throws incorrect_paramenters
+     * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is color
+     * @return string
+     * @throws incorrect_paramenters If value type is not correct.
      * @todo Implement additional types
      */
-    public static function color($color, $field_name = 'color', $type = 'hex') {
-        if (!preg_match('/^#[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}$/', $color)) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return $color;
+    public static function color($input, $type = validate::COLOR_HEX, $field_name = 'color') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_COLOR, 'color_type' => $type, 'required']
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
      * Validate an operator
-     * @param type $operator
-     * @param string $field_name [optional] [optional]
-     * @return type
-     * @throws incorrect_paramenters
+     * @param string $operator
+     * @param string $field_name [optional]
+     * @return string
+     * @throws incorrect_paramenters If value type is not correct.
      */
     public static function operator($operator, $field_name = 'operator') {
         if (!in_array($operator, self::$operators)) {
@@ -365,40 +435,58 @@ class validate {
      * @param string input
      * @param string regexp
      * @param string $field_name [optional]
-     * @return type
-     * @throws incorrect_paramenters
+     * @return string
+     * @throws incorrect_paramenters If value type is not correct.
      */
     public static function regexp($input, $regexp, $field_name = 'regexp') {
-        if (!preg_match($regexp, $input)) {
-            throw new incorrect_paramenters([ $field_name]);
-        }
-        return $input;
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_REGEXP, 'regexp' => $regexp, 'required']
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
     
     /**
      * Validate a regexp
-     * @param string input
+     * @param mixed input
      * @param string $field_name [optional]
-     * @return type
-     * @throws incorrect_paramenters
+     * @return boolean
+     * @throws incorrect_paramenters If value type is not correct.
      */
-    public static function boolean($input, $field_name) {
-        return \Phramework\API\models\filter::boolean($input);
+    public static function boolean($input, $field_name = 'boolean') {
+        //Define trivial model
+        $model = [
+            $field_name => ['type' => validate::TYPE_BOOLEAN, 'required']
+        ];
+        
+        $parameters = [$field_name => $input];
+        validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
     
     /**
      * Validate a model
+     * 
+     * This method accepts a request model, and validates.
+     * The values of $parameters array might be changed due to type casting.
      * @param array $parameters Request parameters
-     * @param array $model Model
+     * @param array $model Model used for the validation
      * @return boolean
      * @throws \Exception
-     * @throws incorrect_paramenters
-     * @throws missing_paramenters
+     * @throws incorrect_paramenters If any field is incorrect
+     * @throws missing_paramenters If any required field is missing
      */
     public static function model(&$parameters, $model) {
-        
+        //holds incorrect fields
         $incorrect = [];
+        //holds missing fields
         $missing = [];
+        
         foreach ($model as $key => $value) {
 
             if (!isset($parameters[$key])) {
@@ -424,7 +512,7 @@ class validate {
                         if (isset($value['min'])) {
                             $options['min_range'] = $value['min'];
                         }
-                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT, [ 'options' => $options]) === FALSE) {
+                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT, ['options' => $options]) === FALSE) {
                             array_push($incorrect, $key);
                         } else {
                             $parameters[$key] = intval($parameters[$key]);
@@ -439,11 +527,15 @@ class validate {
                         if (isset($value['min'])) {
                             $options['min_range'] = $value['min'];
                         }
-                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT, [ 'options' => $options]) === FALSE) {
+                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT, ['options' => $options]) === FALSE) {
                             array_push($incorrect, $key);
                         } else {
                             $parameters[$key] = intval($parameters[$key]);
                         }
+                        break;
+                    case self::TYPE_BOOLEAN :
+                        //try to filter as boolean
+                        $parameters[$key] = \Phramework\API\models\filter::boolean($input);
                         break;
                     case self::TYPE_DOUBLE :
                         //Replace comma with dot
@@ -451,14 +543,15 @@ class validate {
                         if (filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
                             array_push($incorrect, $key);
                         } else {
-                            $parameters[$key] = doubleval($parameters[$key]);
-
+                            
                             if (isset($value['max']) && $parameters[$key] > $value['max']) {
                                 array_push($incorrect, $key);
                             }
                             if (isset($value['min']) && $parameters[$key] < $value['min']) {
                                 array_push($incorrect, $key);
                             }
+                            
+                            $parameters[$key] = doubleval($parameters[$key]);
                         }
                         break;
                     case self::TYPE_FLOAT :
@@ -467,14 +560,15 @@ class validate {
                         if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT)) {
                             array_push($incorrect, $key);
                         } else {
-                            $parameters[$key] = floatval($parameters[$key]);
-
+                            
                             if (isset($value['max']) && $parameters[$key] > $value['max']) {
                                 array_push($incorrect, $key);
                             }
                             if (isset($value['min']) && $parameters[$key] < $value['min']) {
                                 array_push($incorrect, $key);
                             }
+                            
+                            $parameters[$key] = floatval($parameters[$key]);
                         }
                         break;
                     case self::TYPE_USERNAME :
@@ -493,6 +587,7 @@ class validate {
                         }
                         break;
                     case self::TYPE_COLOR :
+                        //@todo check (color_type) subtype
                         if (!preg_match('/^#[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}$/', $parameters[$key])) {
                             array_push($incorrect, $key);
                         }
