@@ -428,6 +428,21 @@ class API {
                 'incorrect' => $exception->getParameters(),
                 'title' => 'incorrect_parameters_exception'
             ]);
+        } catch (exceptions\method_not_allowed $exception) {
+            self::write_error_log(
+                $exception->getMessage());
+            
+            //write allow header if AllowedMethods is set
+            if (!headers_sent() && $exception->getAllowedMethods()) {
+                header('Allow ' . implode(',', $exception->getAllowedMethods() ));
+            }
+
+            self::error_view([
+                'code' => 400,
+                'error' => $exception->getMessage() . ' : ' . implode(', ', array_keys($exception->getParameters())),
+                'allow' => $exception->getAllowedMethods(),
+                'title' => 'method_not_allowed'
+            ]);
         } catch (\Exception $exception) {
             self::write_error_log(
                 $exception->getMessage());
