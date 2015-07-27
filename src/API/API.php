@@ -567,6 +567,7 @@ class API {
      * Multiple arguments can be set, first argument will always be used as the parameters array.
      * Custom IViewer implementation can use these additional parameters at they definition.
      * @param array $params The output parameters. Notice $params['user'] will be overwritten if set.
+     * @param integer $status The response status
      * @return null Returns nothing
      */
     public static function view($parameters = []) {
@@ -588,13 +589,13 @@ class API {
             //Merge output parameters with current user information, if any.
             $parameters = array_merge(['user' => $user], $parameters);
         }
-
+        
         //Instanciate a new viewer object
         $viewer =  new self::$viewer();
 
         //rewrite $parameters to args
         $args[0] = $parameters;
-
+        
         //Call view method
         return call_user_func_array([$viewer, 'view'], $args);
     }

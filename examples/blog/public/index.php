@@ -30,7 +30,7 @@ $APP = function() {
 
     unset($settings);
 
-    //$API->set_viewer('APP\viewers\viewer');
+    $API->set_viewer('APP\viewers\viewer');
 
     //Execute API
     $API->invoke();
