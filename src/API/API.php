@@ -223,7 +223,7 @@ class API {
             unset(self::$settings['db']);
 
             //Allowed methods
-            $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS'];
+            $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS', 'PATCH'];
 
             //Get controller from the request (URL parameter)
             if (!isset($_GET['controller']) || empty($_GET['controller'])) {
