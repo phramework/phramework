@@ -413,15 +413,16 @@ class API {
             } else {
                 self::error_view([
                     'code' => $exception->getCode(),
-                    'error' => $exception->getMessage()
+                    'error' => $exception->getMessage(),
+                    'missing' => $exception->getParameters()
                 ]);
             }
         } catch (exceptions\incorrect_paramenters $exception) {
             self::write_error_log(
-                $exception->getMessage() . implode(', ', $exception->getParameters()));
+                $exception->getMessage() . implode(', ', array_keys($exception->getParameters())));
             self::error_view([
                 'code' => 400,
-                'error' => $exception->getMessage() . ' : ' . implode(', ', $exception->getParameters()),
+                'error' => $exception->getMessage() . ' : ' . implode(', ', array_keys($exception->getParameters())),
                 'incorrect' => $exception->getParameters(),
                 'title' => 'incorrect_parameters_exception'
             ]);

@@ -163,6 +163,317 @@ class validate {
         OPERATOR_IN, OPERATOR_NOT_IN, OPERATOR_LIKE, OPERATOR_NOT_LIKE];*/
 
     /**
+     * Validate a model
+     * 
+     * This method accepts a request model, and validates.
+     * The values of $parameters array might be changed due to type casting.
+     * @param array $parameters Request parameters
+     * @param array $model Model used for the validation
+     * @return boolean
+     * @throws \Exception
+     * @throws incorrect_paramenters If any field is incorrect
+     * @throws missing_paramenters If any required field is missing
+     */
+    public static function model(&$parameters, $model) {
+        //holds incorrect fields
+        $incorrect = [];
+        //holds missing fields
+        $missing = [];
+        
+        foreach ($model as $key => $value) {
+            
+            if (!isset($parameters[$key])) {
+                if (is_array($value) && (
+                    ( isset($value['required']) && $value['required']) ||
+                    in_array('required', $value, TRUE) === TRUE) ) {
+                    array_push($missing, $key);
+                } else if (is_array($value) && isset($value['default'])) {
+                    $parameters[$key] = $value['default'];
+                }
+            } else {
+                if (!is_array($value)) {
+                    $parameters[$key] = strip_tags(self::filter_STRING($parameters[$key]));
+                    continue;
+                }
+                $temporary_exception_description = ['type' => $value['type']];
+                switch ($value['type']) {
+                    case self::TYPE_INT :
+                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === FALSE) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        } else {
+                            
+                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                                $temporary_exception_description['failure'] = 'max';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                                $temporary_exception_description['failure'] = 'min';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }
+                            
+                            $parameters[$key] = intval($parameters[$key]);
+                        }
+                        break;
+                    case self::TYPE_UINT :
+                    case self::TYPE_UNIX_TIMESTAMP :
+                        if (!isset($value['max'])) {
+                            $value['max'] = 0;
+                        }
+                        
+                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === FALSE) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        } else {
+                            
+                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                                $temporary_exception_description['failure'] = 'max';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                                $temporary_exception_description['failure'] = 'min';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }
+                            
+                            $parameters[$key] = intval($parameters[$key]);
+                        }
+                        
+                        break;
+                    case self::TYPE_BOOLEAN :
+                        //try to filter as boolean
+                        $parameters[$key] = \Phramework\API\models\filter::boolean($parameters[$key]);
+                        break;
+                    case self::TYPE_DOUBLE :
+                        //Replace comma with dot
+                        $parameters[$key] = str_replace(',', '.', $parameters[$key]);
+                        
+                        if (filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        } else {
+                            
+                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                                $temporary_exception_description['failure'] = 'max';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                                $temporary_exception_description['failure'] = 'min';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }
+                            
+                            $parameters[$key] = doubleval($parameters[$key]);
+                        }
+                        break;
+                    case self::TYPE_FLOAT :
+                        //Replace comma with dot
+                        $parameters[$key] = str_replace(',', '.', $parameters[$key]);
+                        
+                        if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        } else {
+                            
+                           if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                                $temporary_exception_description['failure'] = 'max';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                                $temporary_exception_description['failure'] = 'min';
+                                $incorrect[$key] = $temporary_exception_description;
+                            }
+                            
+                            $parameters[$key] = floatval($parameters[$key]);
+                        }
+                        break;
+                    case self::TYPE_USERNAME :
+                        if (!preg_match(self::REGEXP_USERNAME, $parameters[$key])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_PERMALINK :
+                        if (!preg_match(self::REGEXP_PERMALINK, $parameters[$key])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_TOKEN :
+                        if (!preg_match(self::REGEXP_TOKEN, $parameters[$key])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_COLOR :
+                        //@todo check (color_type) subtype
+                        if (!preg_match('/^#[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}$/', $parameters[$key])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_EMAIL :
+                        if (!empty($parameters[$key]) && filter_var($parameters[$key], FILTER_VALIDATE_EMAIL) === FALSE) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_URL :
+                        if (!filter_var($parameters[$key], FILTER_VALIDATE_URL)) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_DATE :
+                    case self::TYPE_DATETIME :
+                        if (!self::validate_sql_date($parameters[$key])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_REGEXP :
+                        if (!isset($value['regexp'])) {
+                            throw new \Exception(__('regexp_not_set_exception'));
+                        }
+                        if (!preg_match($value['regexp'], $parameters[$key])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_PASSWORD :
+                        break;
+                    case self::TYPE_ENUM :
+                        if (!isset($value['values'])) {
+                            //Internal error ! //TODO @security
+                            throw new \Exception('Values not set');
+                        }
+                        if (!in_array($parameters[$key], $value['values'])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_JSON_ARRAY :
+                        $temp = [];
+
+                        //Force to array when is not []
+                        if (!$parameters[$key]) {
+                            $parameters[$key] = [];
+                        }
+                        foreach ($parameters[$key] as $t) {
+                            $ob = json_decode($t, FALSE);
+                            if ($ob === null) {
+                                $incorrect[$key] = $temporary_exception_description;
+                            } else {
+                                //Overwrite json
+                                $temp[] = $ob;
+                            }
+                        }
+                        $parameters[$key] = $temp;
+                        break;
+                    case self::TYPE_JSON :
+                        $ob = json_decode($parameters[$key], FALSE);
+                        if ($ob === null) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        } else {
+                            //Overwrite json
+                            $parameters[$key] = $ob;
+                        }
+                        break;
+                    case self::TYPE_ARRAY:
+                        //Get single value
+                        if (!is_array($parameters[$key])) {
+                            $parameters[$key] = [ $parameters[$key]];
+                        }
+
+                        if (isset($value['max']) && count($parameters[$key]) > $value['max']) {
+                            $temporary_exception_description['failure'] = 'max';
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+
+                        if (isset($value['min']) && count($parameters[$key]) < $value['min']) {
+                            $temporary_exception_description['failure'] = 'min';
+                            $incorrect[$key] = $temporary_exception_description;
+                        }
+                        break;
+                    case self::TYPE_ARRAY_CSV:
+                        if(!is_string($parameters[$key])) {
+                            $incorrect[$key] = $temporary_exception_description;
+                        }else{
+                            $values = mbsplit(',', $parameters[$key]);
+                            
+                            $subtype = (
+                                isset($value['subtype'])
+                                ? $value['subtype']
+                                : validate::TYPE_TEXT
+                            );
+                            
+                            //Validate every record of this subtype
+                            foreach($values as &$v) {
+                                //Create temporary model
+                                $m = [ $key => $v];
+                                
+                                //Validate this model
+                                validate::model($m, [
+                                    $key => ['type' => $subtype]
+                                    ]
+                                );
+                                
+                                //Overwrite $v
+                                $v = $m[$key];
+                            }
+                            $parameters[$key] = $values;
+                        }
+                        break;
+                    case self::TYPE_TEXT :
+                    case self::TYPE_TEXTAREA :
+                    default :
+                        //Check if is custom_type
+                        if (isset(self::$custom_types[$value['type']])) {
+                            $callback = self::$custom_types[$value['type']]['callback'];
+                            
+                            $output;
+                                                                                    
+                            if($callback($parameters[$key], $value, $output) === FALSE) {
+                                //Incorrect
+                                $incorrect[$key] = $temporary_exception_description;
+                            }else{
+                                //update output
+                                $parameters[$key]=$output;
+                            }                            
+                        }else{
+                            if (isset($value['max'])) {
+                                if (mb_strlen($parameters[$key]) > $value['max']) {
+                                    $temporary_exception_description['failure'] = 'max';
+                                    $incorrect[$key] = $temporary_exception_description;
+                                }
+                            }
+                            if (isset($value['min'])) {
+                                if (mb_strlen($parameters[$key]) < $value['min']) {
+                                    $temporary_exception_description['failure'] = 'min';
+                                    $incorrect[$key] = $temporary_exception_description;
+                                }
+                            }
+                            //Ignore sting filtering only if raw flag is set
+                            if (!in_array('raw', $value)) {
+                                $parameters[$key] = strip_tags(filter::string($parameters[$key]));
+                            }
+                        }
+                }
+            }
+        }
+        if ($incorrect) {
+            throw new incorrect_paramenters($incorrect);
+        } elseif ($missing) {
+            throw new missing_paramenters($missing);
+        }
+        return TRUE;
+    }
+    
+    /**
+     * Check if callback is valid
+     * @link http://www.geekality.net/2010/06/27/php-how-to-easily-provide-json-and-jsonp/ source
+     * @param string $subject
+     * @return boolean
+     */
+    public function is_valid_callback($subject) {
+        
+        $identifier_syntax
+          = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';
+
+        $reserved_words = array('break', 'do', 'instanceof', 'typeof', 'case',
+          'else', 'new', 'var', 'catch', 'finally', 'return', 'void', 'continue',
+          'for', 'switch', 'while', 'debugger', 'function', 'this', 'with',
+          'default', 'if', 'throw', 'delete', 'in', 'try', 'class', 'enum',
+          'extends', 'super', 'const', 'export', 'import', 'implements', 'let',
+          'private', 'public', 'yield', 'interface', 'package', 'protected',
+          'static', 'null', 'true', 'false');
+
+        return preg_match($identifier_syntax, $subject)
+            && ! in_array(mb_strtolower($subject, 'UTF-8'), $reserved_words);
+    }
+    
+    /**
      * Validate a signed integer
      * 
      * @param string|integer $input Input value
@@ -188,6 +499,8 @@ class validate {
         
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
+        
+        return $parameters[$field_name];
     }
 
     /**
@@ -467,298 +780,5 @@ class validate {
         validate::model($parameters, $model);
         
         return $parameters[$field_name];
-    }
-    
-    /**
-     * Validate a model
-     * 
-     * This method accepts a request model, and validates.
-     * The values of $parameters array might be changed due to type casting.
-     * @param array $parameters Request parameters
-     * @param array $model Model used for the validation
-     * @return boolean
-     * @throws \Exception
-     * @throws incorrect_paramenters If any field is incorrect
-     * @throws missing_paramenters If any required field is missing
-     */
-    public static function model(&$parameters, $model) {
-        //holds incorrect fields
-        $incorrect = [];
-        //holds missing fields
-        $missing = [];
-        
-        foreach ($model as $key => $value) {
-
-            if (!isset($parameters[$key])) {
-                if (is_array($value) && (
-                    ( isset($value['required']) && $value['required']) ||
-                    in_array('required', $value, TRUE) === TRUE) ) {
-                    array_push($missing, $key);
-                } else if (is_array($value) && isset($value['default'])) {
-                    $parameters[$key] = $value['default'];
-                }
-            } else {
-                if (!is_array($value)) {
-                    $parameters[$key] = strip_tags(self::filter_STRING($parameters[$key]));
-                    continue;
-                }
-
-                switch ($value['type']) {
-                    case self::TYPE_INT :
-                        $options = [];
-                        if (isset($value['max'])) {
-                            $options['max_range'] = $value['max'];
-                        }
-                        if (isset($value['min'])) {
-                            $options['min_range'] = $value['min'];
-                        }
-                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT, ['options' => $options]) === FALSE) {
-                            array_push($incorrect, $key);
-                        } else {
-                            $parameters[$key] = intval($parameters[$key]);
-                        }
-                        break;
-                    case self::TYPE_UINT :
-                    case self::TYPE_UNIX_TIMESTAMP :
-                        $options = ['min_range' => 0];
-                        if (isset($value['max'])) {
-                            $options['max_range'] = $value['max'];
-                        }
-                        if (isset($value['min'])) {
-                            $options['min_range'] = $value['min'];
-                        }
-                        if (filter_var($parameters[$key], FILTER_VALIDATE_INT, ['options' => $options]) === FALSE) {
-                            array_push($incorrect, $key);
-                        } else {
-                            $parameters[$key] = intval($parameters[$key]);
-                        }
-                        break;
-                    case self::TYPE_BOOLEAN :
-                        //try to filter as boolean
-                        $parameters[$key] = \Phramework\API\models\filter::boolean($input);
-                        break;
-                    case self::TYPE_DOUBLE :
-                        //Replace comma with dot
-                        $parameters[$key] = str_replace(',', '.', $parameters[$key]);
-                        if (filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
-                            array_push($incorrect, $key);
-                        } else {
-                            
-                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
-                                array_push($incorrect, $key);
-                            }
-                            if (isset($value['min']) && $parameters[$key] < $value['min']) {
-                                array_push($incorrect, $key);
-                            }
-                            
-                            $parameters[$key] = doubleval($parameters[$key]);
-                        }
-                        break;
-                    case self::TYPE_FLOAT :
-                        //Replace comma with dot
-                        $parameters[$key] = str_replace(',', '.', $parameters[$key]);
-                        if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT)) {
-                            array_push($incorrect, $key);
-                        } else {
-                            
-                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
-                                array_push($incorrect, $key);
-                            }
-                            if (isset($value['min']) && $parameters[$key] < $value['min']) {
-                                array_push($incorrect, $key);
-                            }
-                            
-                            $parameters[$key] = floatval($parameters[$key]);
-                        }
-                        break;
-                    case self::TYPE_USERNAME :
-                        if (!preg_match(self::REGEXP_USERNAME, $parameters[$key])) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_PERMALINK :
-                        if (!preg_match(self::REGEXP_PERMALINK, $parameters[$key])) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_TOKEN :
-                        if (!preg_match(self::REGEXP_TOKEN, $parameters[$key])) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_COLOR :
-                        //@todo check (color_type) subtype
-                        if (!preg_match('/^#[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}$/', $parameters[$key])) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_EMAIL :
-                        if (!empty($parameters[$key]) && filter_var($parameters[$key], FILTER_VALIDATE_EMAIL) === FALSE) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_URL :
-                        if (!filter_var($parameters[$key], FILTER_VALIDATE_URL)) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_DATE :
-                    case self::TYPE_DATETIME :
-                        if (!self::validate_sql_date($parameters[$key])) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_REGEXP :
-                        if (!isset($value['regexp'])) {
-                            throw new \Exception(__('regexp_not_set_exception'));
-                        }
-                        if (!preg_match($value['regexp'], $parameters[$key])) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_PASSWORD :
-                        break;
-                    case self::TYPE_ENUM :
-                        if (!isset($value['values'])) {
-                            //Internal error ! //TODO @security
-                            throw new \Exception('Values not set');
-                        }
-                        if (!in_array($parameters[$key], $value['values'])) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_JSON_ARRAY :
-                        $temp = [];
-
-                        //Force to array when is not []
-                        if (!$parameters[$key]) {
-                            $parameters[$key] = [];
-                        }
-                        foreach ($parameters[$key] as $t) {
-                            $ob = json_decode($t, FALSE);
-                            if ($ob === null) {
-                                array_push($incorrect, $key);
-                            } else {
-                                //Overwrite json
-                                $temp[] = $ob;
-                            }
-                        }
-                        $parameters[$key] = $temp;
-                        break;
-                    case self::TYPE_JSON :
-                        $ob = json_decode($parameters[$key], FALSE);
-                        if ($ob === null) {
-                            array_push($incorrect, $key);
-                        } else {
-                            //Overwrite json
-                            $parameters[$key] = $ob;
-                        }
-                        break;
-                    case self::TYPE_ARRAY:
-                        //Get single value
-                        if (!is_array($parameters[$key])) {
-                            $parameters[$key] = [ $parameters[$key]];
-                        }
-
-                        if (isset($value['max']) && count($parameters[$key]) > $value['max']) {
-                            array_push($incorrect, $key);
-                        }
-
-                        if (isset($value['min']) && count($parameters[$key]) < $value['min']) {
-                            array_push($incorrect, $key);
-                        }
-                        break;
-                    case self::TYPE_ARRAY_CSV:
-                        if(!is_string($parameters[$key])) {
-                            array_push($incorrect, $key);
-                        }else{
-                            $values = mbsplit(',', $parameters[$key]);
-                            
-                            $subtype = (
-                                isset($value['subtype'])
-                                ? $value['subtype']
-                                : validate::TYPE_TEXT
-                            );
-                            
-                            //Validate every record of this subtype
-                            foreach($values as &$v) {
-                                //Create temporary model
-                                $m = [ $key => $v];
-                                
-                                //Validate this model
-                                validate::model($m, [
-                                    $key => ['type' => $subtype]
-                                    ]
-                                );
-                                
-                                //Overwrite $v
-                                $v = $m[$key];
-                            }
-                            $parameters[$key] = $values;
-                        }
-                        break;
-                    case self::TYPE_TEXT :
-                    case self::TYPE_TEXTAREA :
-                    default :
-                        //Check if is custom_type
-                        if(isset(self::$custom_types[$value['type']])) {
-                            $callback = self::$custom_types[$value['type']]['callback'];
-                            
-                            $output;
-                                                                                    
-                            if($callback($parameters[$key], $value, $output) === FALSE) {
-                                //Incorrect
-                                array_push($incorrect, $key);
-                            }else{
-                                //update output
-                                $parameters[$key]=$output;
-                            }                            
-                        }else{
-                            if (isset($value['max'])) {
-                                if (mb_strlen($parameters[$key]) > $value['max']) {
-                                    array_push($incorrect, $key);
-                                }
-                            }
-                            if (isset($value['min'])) {
-                                if (mb_strlen($parameters[$key]) < $value['min']) {
-                                    array_push($incorrect, $key);
-                                }
-                            }
-                            if (!in_array('raw', $value)) {
-                                $parameters[$key] = strip_tags(filter::string($parameters[$key]));
-                            }
-                        }
-                }
-            }
-        }
-        if ($incorrect) {
-            throw new incorrect_paramenters($incorrect);
-        } elseif ($missing) {
-            throw new missing_paramenters($missing);
-        }
-        return TRUE;
-    }
-    
-    /**
-     * Check if callback is valid
-     * @link http://www.geekality.net/2010/06/27/php-how-to-easily-provide-json-and-jsonp/ source
-     * @param string $subject
-     * @return boolean
-     */
-    public function is_valid_callback($subject) {
-        
-        $identifier_syntax
-          = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';
-
-        $reserved_words = array('break', 'do', 'instanceof', 'typeof', 'case',
-          'else', 'new', 'var', 'catch', 'finally', 'return', 'void', 'continue',
-          'for', 'switch', 'while', 'debugger', 'function', 'this', 'with',
-          'default', 'if', 'throw', 'delete', 'in', 'try', 'class', 'enum',
-          'extends', 'super', 'const', 'export', 'import', 'implements', 'let',
-          'private', 'public', 'yield', 'interface', 'package', 'protected',
-          'static', 'null', 'true', 'false');
-
-        return preg_match($identifier_syntax, $subject)
-            && ! in_array(mb_strtolower($subject, 'UTF-8'), $reserved_words);
     }
 }
