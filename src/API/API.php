@@ -396,7 +396,7 @@ class API {
                 $exception->getMessage());
             self::error_view(['code' => 403,
                 'error' => $exception->getMessage(),
-                'title' => 'error'
+                'title' => 'permission_exception'
             ]);
         } catch (exceptions\missing_paramenters $exception) {
             self::write_error_log(
@@ -408,13 +408,15 @@ class API {
                 self::error_view([
                     'code' => $exception->getCode(),
                     'error' => $exception->getMessage(),
-                    'missing' => $exception->getParameters()
+                    'missing' => $exception->getParameters(),
+                    'title' => 'missing_paramenters'
                 ]);
             } else {
                 self::error_view([
                     'code' => $exception->getCode(),
                     'error' => $exception->getMessage(),
-                    'missing' => $exception->getParameters()
+                    'missing' => $exception->getParameters(),
+                    'title' => 'missing_paramenters'
                 ]);
             }
         } catch (exceptions\incorrect_paramenters $exception) {

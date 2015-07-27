@@ -34,7 +34,10 @@ class viewer implements \Phramework\API\viewers\IViewer {
         //copy title if not set as funtion argument and set in parameters
         if ((!isset($VIEWER_title) || !$VIEWER_title) && isset($parameters['title'])) {
             $VIEWER_title = $parameters['title'];
+        }else if (!isset($VIEWER_title)) {
+            $VIEWER_title = '';
         }
+        
 
         include(__DIR__ . '/header.php');
 
