@@ -434,7 +434,7 @@ class API {
             
             //write allow header if AllowedMethods is set
             if (!headers_sent() && $exception->getAllowedMethods()) {
-                header('Allow ' . implode(',', $exception->getAllowedMethods() ));
+                header('Allow: ' . implode(', ', $exception->getAllowedMethods() ));
             }
 
             self::error_view([
