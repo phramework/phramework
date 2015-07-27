@@ -39,8 +39,8 @@ class blog_controller {
 
         //Sample output
         API::view([
-            'error' => [$title, $content]
-        ], 'blog post');
+            'post' => ['title' => $title, 'content' => $content]
+        ], 'post', 'Blog post');
     }
 
 }

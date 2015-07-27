@@ -18,10 +18,10 @@ class viewer implements \Phramework\API\viewers\IViewer {
     public function view($parameters) {
         $num_args = func_num_args();
         
-        if ($num_args >1) {
+        if ($num_args > 1) {
             $VIEWER_page = func_get_arg(1);
         }
-        if ($num_args >1) {
+        if ($num_args > 2) {
             $VIEWER_title = func_get_arg(2);
         }
 
