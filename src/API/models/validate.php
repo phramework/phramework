@@ -218,7 +218,7 @@ class validate {
                     case self::TYPE_UINT :
                     case self::TYPE_UNIX_TIMESTAMP :
                         if (!isset($value['max'])) {
-                            $value['max'] = 0;
+                            $value['min'] = 0;
                         }
                         
                         if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === FALSE) {
