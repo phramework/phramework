@@ -202,11 +202,11 @@ class validate {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
                             
-                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                            if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -225,11 +225,11 @@ class validate {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
                             
-                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                            if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -251,11 +251,11 @@ class validate {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
                             
-                            if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                            if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -272,11 +272,11 @@ class validate {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
                             
-                           if (isset($value['max']) && $parameters[$key] > $value['max']) {
+                           if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $parameters[$key] < $value['min']) {
+                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -374,13 +374,13 @@ class validate {
                             $parameters[$key] = [ $parameters[$key]];
                         }
 
-                        if (isset($value['max']) && count($parameters[$key]) > $value['max']) {
+                        if (isset($value['max']) && $value['max'] !== NULL && count($parameters[$key]) > $value['max']) {
                             $temporary_exception_description['failure'] = 'max';
                             $temporary_exception_description['max'] = $value['max'];
                             $incorrect[$key] = $temporary_exception_description;
                         }
 
-                        if (isset($value['min']) && count($parameters[$key]) < $value['min']) {
+                        if (isset($value['min']) && $value['min'] !== NULL && count($parameters[$key]) < $value['min']) {
                             $temporary_exception_description['failure'] = 'min';
                             $temporary_exception_description['min'] = $value['min'];
                             $incorrect[$key] = $temporary_exception_description;
@@ -432,14 +432,14 @@ class validate {
                                 $parameters[$key]=$output;
                             }                            
                         }else{
-                            if (isset($value['max'])) {
+                            if (isset($value['max']) && $value['max'] !== NULL) {
                                 if (mb_strlen($parameters[$key]) > $value['max']) {
                                     $temporary_exception_description['failure'] = 'max';
                                     $temporary_exception_description['max'] = $value['max'];
                                     $incorrect[$key] = $temporary_exception_description;
                                 }
                             }
-                            if (isset($value['min'])) {
+                            if (isset($value['min']) && $value['min'] !== NULL) {
                                 if (mb_strlen($parameters[$key]) < $value['min']) {
                                     $temporary_exception_description['failure'] = 'min';
                                     $temporary_exception_description['min'] = $value['min'];
