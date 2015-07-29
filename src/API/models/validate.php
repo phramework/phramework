@@ -66,7 +66,11 @@ class validate {
      * Unix timestamp (unsigned integer)
      */
     const TYPE_UNIX_TIMESTAMP = 'unix_timestamp';
-    
+    /**
+     * This type allows only specific values
+     * 
+     * when used in model an array named values MUST be set for example `'values' => [1, 2, 'abc']`
+     */
     const TYPE_ENUM = 'enum';
     const TYPE_JSON = 'json';
     const TYPE_JSON_ARRAY = 'json_array';
