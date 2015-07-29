@@ -342,6 +342,8 @@ class validate {
                             throw new \Exception('Values not set');
                         }
                         if (!in_array($parameters[$key], $value['values'])) {
+                            $temporary_exception_description['failure'] = 'not_allowed';
+                            $temporary_exception_description['allowed'] = $value['values'];
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
