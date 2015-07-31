@@ -190,8 +190,10 @@ class validate {
                 if (is_array($value) && (
                     ( isset($value['required']) && $value['required']) ||
                     in_array('required', $value, TRUE) === TRUE) ) {
+                    
                     array_push($missing, $key);
-                } else if (is_array($value) && isset($value['default'])) {
+                    
+                } else if (is_array($value) && array_key_exists('default', $value)) {
                     $parameters[$key] = $value['default'];
                 }
             } else {
