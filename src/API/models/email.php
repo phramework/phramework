@@ -4,7 +4,7 @@ namespace Phramework\API\models;
 
 /**
  * Email functions
- * 
+ *
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
  * @package Phramework
@@ -92,7 +92,7 @@ class email {
 
     /**
      * Send an e-mail
-     * 
+     *
      * @param string $address
      * @param string $subject
      * @param string $body
@@ -112,17 +112,16 @@ class email {
 
         $headers   = [];
         $headers[] = "MIME-Version: 1.0" . "\r\n";
-        
+
         if (!$HTML) {
             $headers[] = 'Content-type: text/plain;charset=utf-8' . "\r\n";
         } else {
             $headers[] = 'Content-type: text/html;charset=utf-8' . "\r\n";
         }
-        
+
         $headers[] = 'From: ' . $accounts[$account]['name'] . ' <' . $accounts[$account]['mail'] . '>' . "\r\n";
         $headers[] = 'Reply-To: ' . $accounts[$account]['name'] . ' <' . $accounts[$account]['mail'] . "\r\n";
 
         mail($address, $subject, $body, implode('', $headers), ('-f' . $accounts[$account]['mail']));
     }
-
 }

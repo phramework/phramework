@@ -17,6 +17,13 @@ if(!function_exists('__')){
         return API::get_translated($key);
     }
 }
+
+//TODO remove
+if(!function_exists('___')){
+    function ___($key){
+        return API::get_translated($key);
+    }
+}
 /**
  * API 'framework' by NohponeX
  * @license Proprietary This product is allowed only for usage by mathlogic.eu project 'dwaste atlas' and metaphrase
@@ -431,7 +438,7 @@ class API {
         } catch (exceptions\method_not_allowed $exception) {
             self::write_error_log(
                 $exception->getMessage());
-            
+
             //write allow header if AllowedMethods is set
             if (!headers_sent() && $exception->getAllowedMethods()) {
                 header('Allow: ' . implode(', ', $exception->getAllowedMethods() ));
@@ -589,13 +596,13 @@ class API {
             //Merge output parameters with current user information, if any.
             $parameters = array_merge(['user' => $user], $parameters);
         }
-        
+
         //Instanciate a new viewer object
         $viewer =  new self::$viewer();
 
         //rewrite $parameters to args
         $args[0] = $parameters;
-        
+
         //Call view method
         return call_user_func_array([$viewer, 'view'], $args);
     }

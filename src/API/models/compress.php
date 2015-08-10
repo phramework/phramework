@@ -6,7 +6,7 @@ use Phramework\API\models\util;
 
 /**
  * Compress class
- * 
+ *
  * Provides functions to uncompress files
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
@@ -120,5 +120,4 @@ class compress {
 
         return $files;
     }
-
 }

@@ -7,7 +7,7 @@ use Phramework\API\exceptions\not_found;
 
 /**
  * Upload class
- * 
+ *
  * Provides functions for uploading files and images
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
@@ -56,9 +56,19 @@ class upload {
             if (!rename($temporary_path, $destination)) {
                 return 'Error uploading file';
             }
-            return [ 'path' => $destination, 'name' => basename($destination), 'size' => filesize($destination), 'name_original' => basename($file['name'])];
+            return [
+                'path' => $destination,
+                'name' => basename($destination),
+                'size' => filesize($destination),
+                'name_original' => basename($file['name'])
+            ];
         } else {
-            return [ 'path' => $temporary_path, 'name' => basename($temporary_path), 'size' => filesize($temporary_path), 'name_original' => basename($file['name'])];
+            return [
+                'path' => $temporary_path,
+                'name' => basename($temporary_path),
+                'size' => filesize($temporary_path),
+                'name_original' => basename($file['name'])
+            ];
         }
     }
 
@@ -163,8 +173,8 @@ class upload {
     /**
      * Create a zip archive
      * @param $destination String Zip archive path
-     * @param $files array array( array( 'filename' => .. 'path' => .. ) ) 
-     * @param $blobs array array( array( 'filename' => .. 'contents' => .. ) ) 
+     * @param $files array array( array( 'filename' => .. 'path' => .. ) )
+     * @param $blobs array array( array( 'filename' => .. 'contents' => .. ) )
      */
     public static function create_zip($destination, $files = [], $blobs = [], $overwrite = TRUE) {
         if (!class_exists('ZipArchive')) {
@@ -190,6 +200,7 @@ class upload {
         // if (count( $valid_files )) {
         //create the archive
         $zip = new ZipArchive();
+
         if ($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE ) !== TRUE) {
             return FALSE;
         }
@@ -220,5 +231,4 @@ class upload {
         //     return FALSE;
         //}
     }
-
 }

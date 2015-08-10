@@ -2,6 +2,7 @@
 
 namespace Phramework\API\models;
 
+use Phramework\API\API;
 use Phramework\API\exceptions\permission;
 use Phramework\API\exceptions\missing_paramenters;
 use Phramework\API\exceptions\incorrect_paramenters;
@@ -18,8 +19,8 @@ class request {
 
     /**
      * Check if current request is authenticated
-     * 
-     * Optionaly it checks the authenticated user has a specific user_id  
+     *
+     * Optionaly it checks the authenticated user has a specific user_id
      * @param string $user_type Optional, check user's type, Default value is USERGROUP_ANY
      * @param uint $user_id [optional] Check if current user has the same id with $user_id
      * @return array Returns the user object
@@ -28,12 +29,16 @@ class request {
         $user = \Phramework\API\API::get_user();
         //If user is not authenticated throw an \Exception
         if (!$user) {
-            throw new permission(__('user_authentication_required_exception'));
+            throw new permission(
+                API::get_translated('user_authentication_required_exception')
+            );
         }
 
         //Check if speficied user is same as current user
         if ($user_id && $user['id'] != $user_id) {
-            throw new permission(__('insufficient_permissions_exception'));
+            throw new permission(
+                API::get_translated('insufficient_permissions_exception')
+            );
         }
         return $user;
     }
@@ -41,7 +46,7 @@ class request {
     /**
      * Check if required parameters are set
      * @param Array @parameters Request's parameters
-     * @param String|Array @ The required parameters 
+     * @param String|Array @ The required parameters
      * @return array Returns the values of required parameters
      */
     public static function required_parameters($parameters, $required) {
@@ -50,10 +55,10 @@ class request {
         if (!is_array($required)) {
             $required = [$required];
         }
-        foreach ($required as $key) {            
+        foreach ($required as $key) {
             if (!isset($parameters[$key])) {
                 array_push($missing, $key);
-            }else{
+            } else {
                 $return[] = $parameters[$key];
             }
         }
@@ -61,19 +66,19 @@ class request {
         if (count($missing)) {
             throw new missing_paramenters($missing);
         }
-        
+
         return $return;
     }
 
     /**
      * Return resource id if it's set else return FALSE, use resource_id or id paramter if available
      * @param array $parameters  The request parameters
-     * @param boolean $INTEGER  Check id's type to be unsigned integer  
+     * @param boolean $INTEGER  Check id's type to be unsigned integer
      * @throws missing_paramenters if id is set and not integer
-     * @return string|integer Returns the id or FALSE if not set, it $INTGER the returned value will be converted to unsigned integer 
+     * @return string|integer Returns the id or FALSE if not set, it $INTGER the returned value will be converted to unsigned integer
      */
     public static function resource_id($parameters, $INTEGER = TRUE) {
-        //Check if is set AND validate 
+        //Check if is set AND validate
         if (isset($parameters['resource_id']) && preg_match(validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== FALSE) {
             if ($INTEGER) {
                 return validate::uint($parameters['resource_id']);
@@ -114,7 +119,7 @@ class request {
         }
         return ( $INTEGER ? intval($parameters['id']) : $parameters['id'] );
     }
-    
+
     /**
      * Required required values and parse provided parameters into an array
      * Validate the provided request model and return the
@@ -127,18 +132,17 @@ class request {
     public static function parse_model($parameters, $model) {
         $required_fields = [];
         foreach ($model as $key => $value) {
-            if ( in_array('required', $value, TRUE) === TRUE 
+            if (in_array('required', $value, TRUE) === TRUE
                 || in_array('required', $value, TRUE) == TRUE ) {
                 $required_fields[] = $key;
             }
         }
-        
+
         \Phramework\API\models\request::required_parameters($parameters, $required_fields);
         \Phramework\API\models\validate::model($parameters, $model);
 
         $keys_values = [];
         foreach ($model as $key => $value) {
-
             if (isset($parameters[$key])) {
                 if (in_array('nullable', $value) && $parameters[$key] == '0') {
                     $keys_values[$key] = NULL;
