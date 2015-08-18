@@ -159,9 +159,9 @@ class request {
                 } else {*/
                     $keys_values[$key] = $parameters[$key];
                 /*}*/
-            } else if (
-                ( $value['type'] == 'boolean' || in_array('boolean', $value) )
-                && (!isset($parameters[$key]) || !$parameters[$key] )) {
+            } elseif (
+                ($value['type'] == 'boolean' || in_array('boolean', $value))
+                && (!isset($parameters[$key]) || !$parameters[$key])) {
                 $keys_values[$key] = FALSE;
             }
         }

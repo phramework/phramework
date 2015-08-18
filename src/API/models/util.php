@@ -6,7 +6,6 @@ use Phramework\API\exceptions\permission;
 use Phramework\API\exceptions\missing_paramenters;
 use Phramework\API\exceptions\incorrect_paramenters;
 
-
 /**
  * Utility class
  *
@@ -102,7 +101,8 @@ class util {
      * @return boolean
      */
     public static function is_ajax_request() {
-        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
             return TRUE;
         }
         return FALSE;
@@ -113,7 +113,11 @@ class util {
      * @return boolean
      */
     public static function is_HTTPS() {
-        return (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') );
+        return (isset($_SERVER['HTTPS'])
+                && ($_SERVER['HTTPS'] == 'on'))
+            || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+                && ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+            );
     }
 
     /**

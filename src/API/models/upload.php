@@ -52,7 +52,7 @@ class upload {
             } else if ($parse_extension) {
                 $move['path'] .= '.' . $ext;
             }
-            $destination = util::get_path(isset($move['name']) ? [ $move['path'], $move['name']] : [ $move['path']] );
+            $destination = util::get_path(isset($move['name']) ? [ $move['path'], $move['name']] : [ $move['path']]);
             if (!rename($temporary_path, $destination)) {
                 return 'Error uploading file';
             }
@@ -201,7 +201,7 @@ class upload {
         //create the archive
         $zip = new ZipArchive();
 
-        if ($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE ) !== TRUE) {
+        if ($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== TRUE) {
             return FALSE;
         }
         //Add the files

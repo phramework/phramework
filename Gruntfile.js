@@ -6,14 +6,18 @@ module.exports = function(grunt) {
         stdout: true,
         stderr: true
       },
-      files: 'src/API/**/*.php'
+      files: ['src/API/**/*.php', 'examples/**/*.php']
     },
     phpcs: {
-      application: {
+      source: {
         src: ['src/API/**/*.php']
+      },
+      examples: {
+        src: ['examples/**/*.php']
       },
       options: {
         bin: 'vendor/bin/phpcs',
+
         //standard: 'PSR2',
         colors: true,
         standard: 'phpcs.xml'

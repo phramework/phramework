@@ -18,6 +18,7 @@ class json implements \Phramework\API\viewers\IViewer {
         if (!headers_sent()) {
             header('Content-type: application/json;charset=utf-8');
         }
+        
         //If JSONP requested (if callback is requested though GET)
         if (($callback = \Phramework\API\API::get_callback())) {
             echo $callback;
@@ -28,5 +29,4 @@ class json implements \Phramework\API\viewers\IViewer {
             echo json_encode($parameters);
         }
     }
-
 }

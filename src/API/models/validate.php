@@ -123,7 +123,7 @@ class validate {
      * @throws \Exception
      */
     public static function register_custom_type($type, $callback) {
-        if(!is_callable($callback)) {
+        if (!is_callable($callback)) {
             throw new \Exception(__('callback_is_not_function_exception'));
         }
 
@@ -141,18 +141,18 @@ class validate {
      * @throws \Exception type_not_found
      * @throws incorrect_paramenters if validation fails
      */
-    public static function validate_custom_type($type, $value, $field_name, $model=[]) {
-        if(!isset(self::$custom_types[$type])) {
+    public static function validate_custom_type($type, $value, $field_name, $model = []) {
+        if (!isset(self::$custom_types[$type])) {
             throw new \Exception('type_not_found');
         }
         $callback = self::$custom_types[$type]['callback'];
 
         $output = FALSE;
 
-        if($callback($value, $model, $output) === FALSE) {
+        if ($callback($value, $model, $output) === FALSE) {
             //Incorrect
             throw new incorrect_paramenters([$field_name]);
-        }else{
+        } else {
             //update output
             return $output;
         }
@@ -185,15 +185,13 @@ class validate {
         $missing = [];
 
         foreach ($model as $key => $value) {
-
             if (!isset($parameters[$key])) {
                 if (is_array($value) && (
                     ( isset($value['required']) && $value['required']) ||
                     in_array('required', $value, TRUE) === TRUE) ) {
-
                     array_push($missing, $key);
 
-                } else if (is_array($value) && array_key_exists('default', $value)) {
+                } elseif (is_array($value) && array_key_exists('default', $value)) {
                     $parameters[$key] = $value['default'];
                 }
             } else {
@@ -203,16 +201,15 @@ class validate {
                 }
                 $temporary_exception_description = ['type' => $value['type']];
                 switch ($value['type']) {
-                    case self::TYPE_INT :
+                    case self::TYPE_INT:
                         if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-
                             if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -221,8 +218,8 @@ class validate {
                             $parameters[$key] = intval($parameters[$key]);
                         }
                         break;
-                    case self::TYPE_UINT :
-                    case self::TYPE_UNIX_TIMESTAMP :
+                    case self::TYPE_UINT:
+                    case self::TYPE_UNIX_TIMESTAMP:
                         if (!isset($value['max'])) {
                             $value['min'] = 0;
                         }
@@ -230,12 +227,11 @@ class validate {
                         if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-
                             if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -245,23 +241,22 @@ class validate {
                         }
 
                         break;
-                    case self::TYPE_BOOLEAN :
+                    case self::TYPE_BOOLEAN:
                         //try to filter as boolean
                         $parameters[$key] = \Phramework\API\models\filter::boolean($parameters[$key]);
                         break;
-                    case self::TYPE_DOUBLE :
+                    case self::TYPE_DOUBLE:
                         //Replace comma with dot
                         $parameters[$key] = str_replace(',', '.', $parameters[$key]);
 
                         if (filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-
                             if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -270,19 +265,18 @@ class validate {
                             $parameters[$key] = doubleval($parameters[$key]);
                         }
                         break;
-                    case self::TYPE_FLOAT :
+                    case self::TYPE_FLOAT:
                         //Replace comma with dot
                         $parameters[$key] = str_replace(',', '.', $parameters[$key]);
 
                         if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-
-                           if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
+                            if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else if (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min']) && $value['min'] !== NULL && $parameters[$key] < $value['min']) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -291,44 +285,44 @@ class validate {
                             $parameters[$key] = floatval($parameters[$key]);
                         }
                         break;
-                    case self::TYPE_USERNAME :
+                    case self::TYPE_USERNAME:
                         if (!preg_match(self::REGEXP_USERNAME, $parameters[$key])) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_PERMALINK :
+                    case self::TYPE_PERMALINK:
                         if (!preg_match(self::REGEXP_PERMALINK, $parameters[$key])) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_TOKEN :
+                    case self::TYPE_TOKEN:
                         if (!preg_match(self::REGEXP_TOKEN, $parameters[$key])) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_COLOR :
+                    case self::TYPE_COLOR:
                         //@todo check (color_type) subtype
                         if (!preg_match('/^#[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}$/', $parameters[$key])) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_EMAIL :
+                    case self::TYPE_EMAIL:
                         if (!empty($parameters[$key]) && filter_var($parameters[$key], FILTER_VALIDATE_EMAIL) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_URL :
+                    case self::TYPE_URL:
                         if (!filter_var($parameters[$key], FILTER_VALIDATE_URL)) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_DATE :
-                    case self::TYPE_DATETIME :
+                    case self::TYPE_DATE:
+                    case self::TYPE_DATETIME:
                         if (!self::validate_sql_date($parameters[$key])) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_REGEXP :
+                    case self::TYPE_REGEXP:
                         if (!isset($value['regexp'])) {
                             throw new \Exception(__('regexp_not_set_exception'));
                         }
@@ -336,9 +330,9 @@ class validate {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_PASSWORD :
+                    case self::TYPE_PASSWORD:
                         break;
-                    case self::TYPE_ENUM :
+                    case self::TYPE_ENUM:
                         if (!isset($value['values'])) {
                             //Internal error ! //TODO @security
                             throw new \Exception('Values not set');
@@ -349,7 +343,7 @@ class validate {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
-                    case self::TYPE_JSON_ARRAY :
+                    case self::TYPE_JSON_ARRAY:
                         $temp = [];
 
                         //Force to array when is not []
@@ -367,7 +361,7 @@ class validate {
                         }
                         $parameters[$key] = $temp;
                         break;
-                    case self::TYPE_JSON :
+                    case self::TYPE_JSON:
                         $ob = json_decode($parameters[$key], FALSE);
                         if ($ob === null) {
                             $incorrect[$key] = $temporary_exception_description;
@@ -395,9 +389,9 @@ class validate {
                         }
                         break;
                     case self::TYPE_ARRAY_CSV:
-                        if(!is_string($parameters[$key])) {
+                        if (!is_string($parameters[$key])) {
                             $incorrect[$key] = $temporary_exception_description;
-                        }else{
+                        } else {
                             $values = mbsplit(',', $parameters[$key]);
 
                             $subtype = (
@@ -407,14 +401,14 @@ class validate {
                             );
 
                             //Validate every record of this subtype
-                            foreach($values as &$v) {
+                            foreach ($values as &$v) {
                                 //Create temporary model
                                 $m = [ $key => $v];
 
                                 //Validate this model
-                                validate::model($m, [
-                                    $key => ['type' => $subtype]
-                                    ]
+                                validate::model(
+                                    $m,
+                                    [ $key => ['type' => $subtype]]
                                 );
 
                                 //Overwrite $v
@@ -423,23 +417,23 @@ class validate {
                             $parameters[$key] = $values;
                         }
                         break;
-                    case self::TYPE_TEXT :
-                    case self::TYPE_TEXTAREA :
-                    default :
+                    case self::TYPE_TEXT:
+                    case self::TYPE_TEXTAREA:
+                    default:
                         //Check if is custom_type
                         if (isset(self::$custom_types[$value['type']])) {
                             $callback = self::$custom_types[$value['type']]['callback'];
 
                             $output;
 
-                            if($callback($parameters[$key], $value, $output) === FALSE) {
+                            if ($callback($parameters[$key], $value, $output) === FALSE) {
                                 //Incorrect
                                 $incorrect[$key] = $temporary_exception_description;
-                            }else{
+                            } else {
                                 //update output
                                 $parameters[$key]=$output;
                             }
-                        }else{
+                        } else {
                             if (isset($value['max']) && $value['max'] !== NULL) {
                                 if (mb_strlen($parameters[$key]) > $value['max']) {
                                     $temporary_exception_description['failure'] = 'max';
