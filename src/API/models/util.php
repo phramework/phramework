@@ -9,7 +9,7 @@ use Phramework\API\exceptions\incorrect_paramenters;
 
 /**
  * Utility class
- * 
+ *
  * Provides a set of methods that perform common, often re-used functions.
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
@@ -46,9 +46,9 @@ class util {
     }
 
     /**
-     * Clears all non ASCII characters from a string and replaces /,_,|,+, ,- charaters to '-' 
+     * Clears all non ASCII characters from a string and replaces /,_,|,+, ,- charaters to '-'
      * @param string $str The input string
-     * @return string Returns the clean string 
+     * @return string Returns the clean string
      */
     public static function to_ascii($str) {
         $clean = preg_replace('/[^a-zA-Z0-9\.\/_|+ -]/', '', $str);
@@ -67,7 +67,7 @@ class util {
     public static function begins_with($string, $search) {
         return ( substr($string, 0, strlen($search)) == $search );
     }
-    
+
     public static function _date_formatted($datetime, $format = 'j M Y G:i') {
         $date = new DateTime($datetime);
         echo $date->format($format);
@@ -77,7 +77,7 @@ class util {
         $date = new DateTime($datetime);
         return $date->format($format);
     }
-    
+
     /**
      * Applies htmlentities
      * @param string $content
@@ -142,7 +142,7 @@ class util {
             header('Expires: ' . date(DATE_RFC822, strtotime($expires)));
         }
     }
-    
+
     /**
      * @deprecated since version 0
      */
@@ -217,7 +217,7 @@ class util {
     /**
      * Delete all contents from a directory
      * @param string $directory Directory path
-     * @param boolean $DELETE_DIRECTORY Optinal, if is set directory will be deleted too. 
+     * @param boolean $DELETE_DIRECTORY Optinal, if is set directory will be deleted too.
      */
     public static function delete_directory_contents($directory, $DELETE_DIRECTORY = FALSE) {
         $files = array_diff(scandir($directory), ['.', '..']);
@@ -291,7 +291,7 @@ class util {
     /**
      * Download a file from a remote link
      * @param str $url, $path
-     * @return bool True if download succeed 
+     * @return bool True if download succeed
      */
     public static function curl_download($url, $path, $timeout = 9000000000) {
         $return = FALSE;

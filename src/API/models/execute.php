@@ -4,9 +4,9 @@ namespace Phramework\API\models;
 
 /**
  * Execute class
- * 
+ *
  * Provides function to execute commands
- * 
+ *
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
  * @package Phramework
@@ -14,7 +14,7 @@ namespace Phramework\API\models;
  * @category models
  */
 class execute {
-    
+
     /**
      * Execute asynchronously using exec
      * @param string $executable Path to executable file
@@ -24,7 +24,7 @@ class execute {
     public static function execute_async($executable, $arguments = [], $output_stream = '/dev/null') {
         exec($executable . ( $arguments ? ' ' . join(' ', $arguments) : '' ) . '>' . $output_stream . ' 2>&1 &');
     }
-    
+
     /**
      * Execute using exec
      * @param string $executable Path to executable file

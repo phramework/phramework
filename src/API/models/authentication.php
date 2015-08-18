@@ -6,7 +6,7 @@ use Phramework\API\models\database;
 
 /**
  * Authentication related functions
- * 
+ *
  * Implements authentication using HTTP\s BASIC AUTHENTICATION
  * This class should be extended if database structure differs
  * @author Spafaridis Xenophon <nohponex@gmail.com>
@@ -45,7 +45,7 @@ class authentication {
      */
     public static function authenticate($email, $password) {
 
-        //Select using user's email       
+        //Select using user's email
         $auth = database::ExecuteAndFetch(
                 'SELECT "id", "username", "email", "password", "language_code", "usergroup", "disabled"'
                 . 'FROM "user" WHERE LOWER("email") = ? LIMIT 1', [strtolower($email)]);
@@ -61,7 +61,7 @@ class authentication {
 
         //Verify password hash
         if (password_verify($password, $auth['password'])) {
-            //Force corrent types 
+            //Force corrent types
             $auth['id'] = intval($auth['id']);
 
             //Return without the password field

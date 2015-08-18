@@ -15,7 +15,7 @@ class filter {
 
     /**
      * Allow only keys of $whitelist in every row of $data array
-     * 
+     *
      * @param array $data
      * @param array $whitelist
      * @return type
@@ -40,7 +40,7 @@ class filter {
 
     /**
      * Allow only keys of $whitelist in object
-     * 
+     *
      * @param array $data
      * @param array $whitelist
      * @return type
@@ -60,7 +60,7 @@ class filter {
 
     /**
      * Exclude blackisted keys of $blacklist in every row of $data array
-     * 
+     *
      * @param array $data
      * @param array $blacklist
      * @return array
@@ -78,8 +78,8 @@ class filter {
     }
 
     /**
-     * Exclude blackisted keys of $blacklist in $data object 
-     * 
+     * Exclude blackisted keys of $blacklist in $data object
+     *
      * @param array $data
      * @param array $blacklist
      * @return array
@@ -133,7 +133,7 @@ class filter {
             return FALSE;
         }
     }
-    
+
     /**
      * Typecast a value
      * @param mixed $value
@@ -157,12 +157,12 @@ class filter {
                 break;
             case validate::TYPE_UNIX_TIMESTAMP:
                 //Add the timezone offset (in minutes)
-                $value = intval($value) + 
+                $value = intval($value) +
                     (\Phramework\API\API::get_timezone_offset()*60);
                 break;
         }
     }
-    
+
     /**
      * Type cast entry's attributs based on the provided model
      * @param array $entry
@@ -180,10 +180,10 @@ class filter {
             //Typecast
             filter::typecast($entry[$k], $v);
         }
-        
+
         return $entry;
     }
-    
+
     /**
      * Type cast each entry of list based on the provided model
      * @param array $list
@@ -194,12 +194,12 @@ class filter {
         if(!$list) {
             return $list;
         }
-        
+
         //Apply cast entry to each entry
         foreach($list as $k => &$v) {
             $v= self::cast_entry($v, $model);
         }
-        
+
         return $list;
     }
 }

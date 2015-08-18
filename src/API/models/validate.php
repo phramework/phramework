@@ -7,7 +7,7 @@ use Phramework\API\exceptions\incorrect_paramenters;
 
 /**
  * Provides various methods for validating data for varius datatypes.
- * 
+ *
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0.0.1
  */
@@ -37,17 +37,17 @@ class validate {
      * Floating point number type
      */
     const TYPE_FLOAT = 'float';
-    
+
     /**
      * Double presision floating point number type
      */
     const TYPE_DOUBLE = 'double';
-    
+
     /**
      * boolean type
      */
     const TYPE_BOOLEAN = 'boolean';
-    
+
     /**
      * Color type
      */
@@ -61,36 +61,36 @@ class validate {
     const TYPE_DATE = 'date';
     const TYPE_DATETIME = 'datetime';
     const TYPE_REGEXP = 'regexp';
-    
+
     /**
      * Unix timestamp (unsigned integer)
      */
     const TYPE_UNIX_TIMESTAMP = 'unix_timestamp';
     /**
      * This type allows only specific values
-     * 
+     *
      * when used in model an array named values MUST be set for example `'values' => [1, 2, 'abc']`
      */
     const TYPE_ENUM = 'enum';
     const TYPE_JSON = 'json';
     const TYPE_JSON_ARRAY = 'json_array';
     const TYPE_ARRAY = 'array';
-    
+
     /**
      * Comma separated array
-     * 
+     *
      * When used in a validate::model it splits the values ,
      * validates the subtype and returns as array
      * @example aaa,bb,cc,1,2 Example parameter data
      * @property string subtype [optional] Defines the subtype, default text
      */
     const TYPE_ARRAY_CSV = 'array_csv';
-    
+
     /**
      * Regular expression of resource ID
      */
     const REGEXP_RESOURCE_ID = '/^d+$/';  //'/^[A-Za-z0-9_]{3,128}$/' );
-    
+
     /**
      * Regular expresion of username
      */
@@ -103,20 +103,20 @@ class validate {
      * Regular expresion of a permalink
      */
     const REGEXP_PERMALINK = '/^[A-Za-z0-9_]{3,32}$/';
-    
+
     const COLOR_HEX = 'hex';
-    
+
     /**
      * Custom data types validators
-     * 
+     *
      * This array holds the defined custom types
-     * @var array 
+     * @var array
      */
     private static $custom_types = [];
-    
+
     /**
      * Register a custom data type
-     * 
+     *
      * It can be used to validate models
      * @param string $type
      * @param function $callback
@@ -126,14 +126,14 @@ class validate {
         if(!is_callable($callback)) {
             throw new \Exception(__('callback_is_not_function_exception'));
         }
-        
+
         self::$custom_types[$type]= ['callback' => $callback];
     }
-    
+
     /**
      * Validate a custom data type.
-     * 
-     * This method uses previous custom-defined datatype to validate it's data. 
+     *
+     * This method uses previous custom-defined datatype to validate it's data.
      * @param string $type Custom type's name
      * @param mixed $value Value to test
      * @param string $field_name [optional] field's name
@@ -146,7 +146,7 @@ class validate {
             throw new \Exception('type_not_found');
         }
         $callback = self::$custom_types[$type]['callback'];
-        
+
         $output = FALSE;
 
         if($callback($value, $model, $output) === FALSE) {
@@ -155,9 +155,9 @@ class validate {
         }else{
             //update output
             return $output;
-        }        
+        }
     }
-    
+
     /**
      * Define available operators
      */
@@ -168,7 +168,7 @@ class validate {
 
     /**
      * Validate a model
-     * 
+     *
      * This method accepts a request model, and validates.
      * The values of $parameters array might be changed due to type casting.
      * @param array $parameters Request parameters
@@ -183,16 +183,16 @@ class validate {
         $incorrect = [];
         //holds missing fields
         $missing = [];
-        
+
         foreach ($model as $key => $value) {
-            
+
             if (!isset($parameters[$key])) {
                 if (is_array($value) && (
                     ( isset($value['required']) && $value['required']) ||
                     in_array('required', $value, TRUE) === TRUE) ) {
-                    
+
                     array_push($missing, $key);
-                    
+
                 } else if (is_array($value) && array_key_exists('default', $value)) {
                     $parameters[$key] = $value['default'];
                 }
@@ -207,7 +207,7 @@ class validate {
                         if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            
+
                             if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
@@ -217,7 +217,7 @@ class validate {
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
                             }
-                            
+
                             $parameters[$key] = intval($parameters[$key]);
                         }
                         break;
@@ -226,11 +226,11 @@ class validate {
                         if (!isset($value['max'])) {
                             $value['min'] = 0;
                         }
-                        
+
                         if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            
+
                             if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
@@ -240,10 +240,10 @@ class validate {
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
                             }
-                            
+
                             $parameters[$key] = intval($parameters[$key]);
                         }
-                        
+
                         break;
                     case self::TYPE_BOOLEAN :
                         //try to filter as boolean
@@ -252,11 +252,11 @@ class validate {
                     case self::TYPE_DOUBLE :
                         //Replace comma with dot
                         $parameters[$key] = str_replace(',', '.', $parameters[$key]);
-                        
+
                         if (filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            
+
                             if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
@@ -266,18 +266,18 @@ class validate {
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
                             }
-                            
+
                             $parameters[$key] = doubleval($parameters[$key]);
                         }
                         break;
                     case self::TYPE_FLOAT :
                         //Replace comma with dot
                         $parameters[$key] = str_replace(',', '.', $parameters[$key]);
-                        
+
                         if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            
+
                            if (isset($value['max']) && $value['max'] !== NULL && $parameters[$key] > $value['max']) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
@@ -287,7 +287,7 @@ class validate {
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
                             }
-                            
+
                             $parameters[$key] = floatval($parameters[$key]);
                         }
                         break;
@@ -399,24 +399,24 @@ class validate {
                             $incorrect[$key] = $temporary_exception_description;
                         }else{
                             $values = mbsplit(',', $parameters[$key]);
-                            
+
                             $subtype = (
                                 isset($value['subtype'])
                                 ? $value['subtype']
                                 : validate::TYPE_TEXT
                             );
-                            
+
                             //Validate every record of this subtype
                             foreach($values as &$v) {
                                 //Create temporary model
                                 $m = [ $key => $v];
-                                
+
                                 //Validate this model
                                 validate::model($m, [
                                     $key => ['type' => $subtype]
                                     ]
                                 );
-                                
+
                                 //Overwrite $v
                                 $v = $m[$key];
                             }
@@ -429,16 +429,16 @@ class validate {
                         //Check if is custom_type
                         if (isset(self::$custom_types[$value['type']])) {
                             $callback = self::$custom_types[$value['type']]['callback'];
-                            
+
                             $output;
-                                                                                    
+
                             if($callback($parameters[$key], $value, $output) === FALSE) {
                                 //Incorrect
                                 $incorrect[$key] = $temporary_exception_description;
                             }else{
                                 //update output
                                 $parameters[$key]=$output;
-                            }                            
+                            }
                         }else{
                             if (isset($value['max']) && $value['max'] !== NULL) {
                                 if (mb_strlen($parameters[$key]) > $value['max']) {
@@ -469,7 +469,7 @@ class validate {
         }
         return TRUE;
     }
-    
+
     /**
      * Check if callback is valid
      * @link http://www.geekality.net/2010/06/27/php-how-to-easily-provide-json-and-jsonp/ source
@@ -477,7 +477,7 @@ class validate {
      * @return boolean
      */
     public function is_valid_callback($subject) {
-        
+
         $identifier_syntax
           = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';
 
@@ -492,10 +492,10 @@ class validate {
         return preg_match($identifier_syntax, $subject)
             && ! in_array(mb_strtolower($subject, 'UTF-8'), $reserved_words);
     }
-    
+
     /**
      * Validate a signed integer
-     * 
+     *
      * @param string|integer $input Input value
      * @param integer|NULL $min Minimum value. [optional] Default is NULL, if NULL then the minum value is skipped
      * @param integer|NULL $max Maximum value. [optional] Default is NULL, if NULL then the maximum value is skipped
@@ -508,18 +508,18 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_INT, 'required']
         ];
-        
+
         if ($min !== NULL) {
             $model[$field_name]['min'] = $min;
         }
-        
+
         if ($max !== NULL) {
             $model[$field_name]['max'] = $max;
         }
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -537,16 +537,16 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_UINT, 'required']
         ];
-        
+
         $model[$field_name]['min'] = $min;
-        
+
         if ($max !== NULL) {
             $model[$field_name]['max'] = $max;
         }
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -564,21 +564,21 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_FLOAT, 'required']
         ];
-        
+
         if ($min !== NULL) {
             $model[$field_name]['min'] = $min;
         }
-        
+
         if ($max !== NULL) {
             $model[$field_name]['max'] = $max;
         }
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
-    
+
     /**
      * Validate a double presision floating point number
      * @param string|double|float|int $input
@@ -593,18 +593,18 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_DOUBLE, 'required']
         ];
-        
+
         if ($min !== NULL) {
             $model[$field_name]['min'] = $min;
         }
-        
+
         if ($max !== NULL) {
             $model[$field_name]['max'] = $max;
         }
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -620,10 +620,10 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_EMAIL, 'required']
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -639,10 +639,10 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_URL, 'required']
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -658,15 +658,15 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_PERMALINK, 'required']
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
     /**
-     * 
+     *
      * @param string $input
      * @param string $field_name [optional] Field's name, used in IncorrectParamentersException. Optional default is token
      * @return string Return the token
@@ -677,10 +677,10 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_TOKEN, 'required']
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -698,17 +698,17 @@ class validate {
         if (!is_array($values)) {
             throw new \Exception('Array is expected as values');
         }
-        
+
         //Define trivial model
         $model = [
             $field_name => [
                 'type' => validate::TYPE_ENUM, 'values' => $values, 'required'
             ]
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -742,10 +742,10 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_COLOR, 'color_type' => $type, 'required']
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 
@@ -776,13 +776,13 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_REGEXP, 'regexp' => $regexp, 'required']
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
-    
+
     /**
      * Validate a regexp
      * @param mixed input
@@ -795,10 +795,10 @@ class validate {
         $model = [
             $field_name => ['type' => validate::TYPE_BOOLEAN, 'required']
         ];
-        
+
         $parameters = [$field_name => $input];
         validate::model($parameters, $model);
-        
+
         return $parameters[$field_name];
     }
 }

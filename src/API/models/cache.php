@@ -4,9 +4,9 @@ namespace Phramework\API\models;
 
 /**
  * Default cache engine
- * 
+ *
  * WARNING, function not completed yet
- * 
+ *
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
  * @package Phramework
@@ -53,8 +53,8 @@ class cache {
 
     /*
      * Access an memcached object using key
-     * if object is not available returns the data using the callback provided by $class, $function, $parameters 
-     * 
+     * if object is not available returns the data using the callback provided by $class, $function, $parameters
+     *
      * @todo Rename
      * @todo Use anonymous functions
      */
@@ -76,7 +76,7 @@ class cache {
               } */
         }
         $data = call_user_func_array(array($class, $function), $parameters);
-        
+
         if ($data && $memcached) {
             $memcached->set($key, $data, $time); // or die ("Failed to save data at the server");
         }
@@ -84,10 +84,10 @@ class cache {
     }
 
     /**
-     * 
+     *
      * @param string $keys
      * @return boolean
-     * 
+     *
      * @todo rename
      */
     public static function memcached_delete($keys) {
@@ -127,7 +127,7 @@ class cache {
      * @return void
      */
     private function __clone() {
-        
+
     }
 
     /**
@@ -137,7 +137,7 @@ class cache {
      * @return void
      */
     private function __wakeup() {
-        
+
     }
 
 }

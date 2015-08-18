@@ -1,6 +1,6 @@
 {
   "name": "Phramework/API",
-  "description": "PHP SDK for metaphrase service",
+  "description": "PHP Framework for RESTful services",
   "license": "TBA",
   "type": "library",
   "keywords": [
@@ -30,7 +30,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "4.*",
-    "phpunit/phpunit-skeleton-generator": "*"
+    "phpunit/phpunit-skeleton-generator": "*",
+    "squizlabs/php_codesniffer": "2.*"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
