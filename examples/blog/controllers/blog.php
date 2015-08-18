@@ -5,6 +5,7 @@ namespace APP\controllers;
 use Phramework\API\API;
 use Phramework\API\models\validate;
 use APP\models\blog;
+
 class blog_controller {
 
     public static function GET($params) {
@@ -35,11 +36,18 @@ class blog_controller {
         $title      = $params['title'];
         $content    = $params['content'];
 
+        $post = ['title' => $title, 'content' => $content, 'timestamp' => time()];
+
+        $post = \Phramework\API\models\filter::cast_entry(
+            $post,
+            ['timestamp' => validate::TYPE_UNIX_TIMESTAMP]
+        );
+
         //Store ($title, $content) somehow
 
         //Sample output
         API::view([
-            'post' => ['title' => $title, 'content' => $content]
+            'post' => $post
         ], 'post', 'Blog post');
     }
 

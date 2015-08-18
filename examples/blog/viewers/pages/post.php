@@ -10,6 +10,10 @@
                 <p><?php echo $post['content'];?></p>
                 <!-- <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p> -->
             </div>
+            <div class="col-xs-6">
+                <h2>Raw data</h2>
+                <pre><?php print_r($post);?></pre>
+            </div>
         </div><!--/row-->
     </div><!--/.col-xs-12.col-sm-9-->
 

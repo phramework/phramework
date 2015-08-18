@@ -96,7 +96,7 @@ class filter {
     /**
      * Filter string, applies FILTER_SANITIZE_STRING
      * @param string $value Input string
-     * @param int|NULL $max_length Max length of the string, optional. Default value is NULL (no limit)
+     * @param integer|NULL $max_length Max length of the string, optional. Default value is NULL (no limit)
      * @return string Returns the filtered string
      */
     public static function string($value, $max_length = NULL) {
@@ -165,20 +165,44 @@ class filter {
 
     /**
      * Type cast entry's attributs based on the provided model
+     *
+     * If any TYPE_UNIX_TIMESTAMP are present an additional attribute will
+     * be included with the suffix _formated, the format of the string can be
+     * changed from timestamp_format setting.
      * @param array $entry
      * @param array $model
      * @return array Returns the typecasted entry
      */
     public static function cast_entry($entry, $model) {
-        if(!$entry) {
+        if (!$entry) {
             return $entry;
         }
-        foreach($model as $k => $v) {
-            if(!isset($entry[$k])) {
+
+        $timestamp_format = \Phramework\API\API::get_setting(
+            'timestamp_format',
+            NULL,
+            'Y-m-d\TH:i:s\Z'
+        );
+
+        //Repeat for each model's attribute of the entry.
+        //$k holds the key of the attribute and $v the type
+        foreach ($model as $k => $v) {
+            if (!isset($entry[$k])) {
                 continue;
             }
+
             //Typecast
             filter::typecast($entry[$k], $v);
+
+            //if type is a validate::TYPE_UNIX_TIMESTAMP
+            //then inject a string version of the timestamp to this entry
+            if ($v === validate::TYPE_UNIX_TIMESTAMP) {
+                //offset included!
+                $converted = gmdate($timestamp_format, $entry[$k]);
+
+                //inject the string version of the timestamp
+                $entry[$k . '_formated'] = $converted;
+            }
         }
 
         return $entry;
