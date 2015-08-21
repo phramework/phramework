@@ -3,3 +3,6 @@ nbproject/
 /nbproject/private
 /doc/
 error_log.txt
+node_modules/
+composer.lock
+npm-debug.log
