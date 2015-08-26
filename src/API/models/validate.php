@@ -307,12 +307,27 @@ class validate {
                         }
                         break;
                     case self::TYPE_EMAIL:
-                        if (!empty($parameters[$key]) && filter_var($parameters[$key], FILTER_VALIDATE_EMAIL) === FALSE) {
+                        if (empty($parameters[$key]) || filter_var($parameters[$key], FILTER_VALIDATE_EMAIL) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
+                        } else {
+                            if (isset($value['max']) && $value['max'] !== NULL) {
+                                if (mb_strlen($parameters[$key]) > $value['max']) {
+                                    $temporary_exception_description['failure'] = 'max';
+                                    $temporary_exception_description['max'] = $value['max'];
+                                    $incorrect[$key] = $temporary_exception_description;
+                                }
+                            }
+                            if (isset($value['min']) && $value['min'] !== NULL) {
+                                if (mb_strlen($parameters[$key]) < $value['min']) {
+                                    $temporary_exception_description['failure'] = 'min';
+                                    $temporary_exception_description['min'] = $value['min'];
+                                    $incorrect[$key] = $temporary_exception_description;
+                                }
+                            }
                         }
                         break;
                     case self::TYPE_URL:
-                        if (!filter_var($parameters[$key], FILTER_VALIDATE_URL)) {
+                        if (filter_var($parameters[$key], FILTER_VALIDATE_URL) === FALSE) {
                             $incorrect[$key] = $temporary_exception_description;
                         }
                         break;
