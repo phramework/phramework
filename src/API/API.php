@@ -64,7 +64,7 @@ class API {
     private static $language;
     private static $settings;
     private static $mode;
-
+    
     /**
      * Viewer class
      */
