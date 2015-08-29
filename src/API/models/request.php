@@ -21,7 +21,6 @@ class request {
      * Check if current request is authenticated
      *
      * Optionaly it checks the authenticated user has a specific user_id
-     * @param string $user_type Optional, check user's type, Default value is USERGROUP_ANY
      * @param uint $user_id [optional] Check if current user has the same id with $user_id
      * @return array Returns the user object
      */
