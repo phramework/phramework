@@ -12,14 +12,14 @@ mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
 
 //TODO remove
-if(!function_exists('__')){
+if (!function_exists('__')) {
     function __($key){
         return API::get_translated($key);
     }
 }
 
 //TODO remove
-if(!function_exists('___')){
+if (!function_exists('___')) {
     function ___($key){
         return API::get_translated($key);
     }
@@ -64,6 +64,7 @@ class API {
     private static $language;
     private static $settings;
     private static $mode;
+
     /**
      * Viewer class
      */
@@ -127,13 +128,14 @@ class API {
         $this->step_callback = new \Phramework\API\extensions\step_callback();
 
         //If custom translation object is set add it
-        if($translation_object){
+        if ($translation_object) {
             $this->set_translation_object($translation_object);
-        }else{
+        } else {
             //Or instantiate default translation object
             $this->translation = new \Phramework\API\extensions\translation(
                 self::get_setting('language'),
-                self::get_setting('translation','track_missing_keys'));
+                self::get_setting('translation', 'track_missing_keys')
+            );
         }
 
         self::$instance = $this;
@@ -188,6 +190,7 @@ class API {
     public static function get_translated($key, $parameters = NULL, $fallback_value = NULL){
         return self::$instance->translation->get_translated($key, $parameters, $fallback_value);
     }
+
     /**
      * Execute the API
      * @throws exceptions\permission
@@ -198,7 +201,6 @@ class API {
     public function invoke() {
 
         try {
-
             date_default_timezone_set('Europe/Athens');
 
             if (self::get_setting('debug')) {
@@ -206,7 +208,7 @@ class API {
                 ini_set('display_errors', '1');
             }
 
-            if(self::get_setting('errorlog_path')){
+            if (self::get_setting('errorlog_path')) {
                 ini_set('error_log', self::get_setting('errorlog_path'));
             }
 
@@ -230,7 +232,15 @@ class API {
             unset(self::$settings['db']);
 
             //Allowed methods
-            $method_whitelist = ['GET', 'POST', 'DELETE', 'PUT', 'HEAD', 'OPTIONS', 'PATCH'];
+            $method_whitelist = [
+                self::METHOD_GET,
+                self::METHOD_POST,
+                self::METHOD_DELETE,
+                self::METHOD_PUT,
+                self::METHOD_HEAD,
+                self::METHOD_OPTIONS,
+                self::METHOD_PATCH
+            ];
 
             //Get controller from the request (URL parameter)
             if (!isset($_GET['controller']) || empty($_GET['controller'])) {
@@ -247,7 +257,7 @@ class API {
 
             //Get method from the request (HTTP) method
             self::$method = $method =
-                isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
+                isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::METHOD_GET;
 
             //Default value of response's header origin
             $origin = '*';
@@ -273,7 +283,7 @@ class API {
                 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding');
             }
             //Catch OPTIONS request and kill it
-            if ($method == 'OPTIONS') {
+            if ($method == self::METHOD_OPTIONS) {
                 header('HTTP/1.1 200 OK');
                 exit();
             }
@@ -289,15 +299,15 @@ class API {
 
             //Select request's language
             if (isset($_GET['this_language']) && self::get_setting('languages') &&
-                in_array($_GET['this_language'], self::get_setting('languages'))) { //Force requested language
-
+                in_array($_GET['this_language'], self::get_setting('languages'))
+            ) { //Force requested language
                 if ($_GET['this_language'] != $language) {
                     $language = $_GET['this_language'];
                 }
                 unset($_GET['this_language']);
-            } else if (self::$user && isset(self::$user['language_code'])) { // Use user's langugae
+            } elseif (self::$user && isset(self::$user['language_code'])) { // Use user's langugae
                 $language = self::$user['language_code'];
-            } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::get_setting('languages')) { // Use Accept languge if provided
+            } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::get_setting('languages')) { // Use Accept languge if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
                 if (in_array($a, self::get_setting('languages'))) {
@@ -319,7 +329,7 @@ class API {
             //Check if requested controller and method are allowed
             if (!in_array($controller, self::$controller_whitelist)) {
                 throw new exceptions\not_found(API::get_translated('controller_not_found_exception'));
-            } else if (!in_array($method, $method_whitelist)) {
+            } elseif (!in_array($method, $method_whitelist)) {
                 throw new exceptions\not_found(API::get_translated('method_not_found_exception'));
             }
 
@@ -328,16 +338,17 @@ class API {
 
             //Include the requested controller file (containing the controller class)
             require(
-                APPPATH . '/controllers/' .
-                (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '/') .
-                $controller . '.php');
+                APPPATH . '/controllers/'
+                . (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '/')
+                . $controller . '.php'
+            );
 
             //Override method HEAD.
             // When HEAD method is called the GET method will be executed but no response boy will be send
             // we update the value of local variable $method sinse then original
             // requested method is stored at API::$method
-            if ($method == 'HEAD') {
-                $method = 'GET';
+            if ($method == self::METHOD_HEAD) {
+                $method = self::METHOD_GET;
             }
 
             /**
@@ -348,9 +359,10 @@ class API {
              *    where $params are the passed parameters
              */
             if (!is_callable(
-                    "APP\\controllers" .
-                    (self::$mode == self::MODE_DEFAULT ? '' : '\\' . self::$mode) .
-                    "\\{$controller}_controller::$method")) {
+                "APP\\controllers" .
+                (self::$mode == self::MODE_DEFAULT ? '' : '\\' . self::$mode) .
+                "\\{$controller}_controller::$method"
+            )) {
                 throw new exceptions\not_found('method_not_found_exception');
             }
 
@@ -394,13 +406,13 @@ class API {
                 'error' => $exception->getMessage()
             ]);
         } catch (exceptions\request $exception) {
-
             self::error_view([
                 'code' => $exception->getCode(),
                 'error' => $exception->getMessage()]);
         } catch (exceptions\permission $exception) {
             self::write_error_log(
-                $exception->getMessage());
+                $exception->getMessage()
+            );
             self::error_view(['code' => 403,
                 'error' => $exception->getMessage(),
                 'title' => 'permission_exception'
@@ -428,7 +440,8 @@ class API {
             }
         } catch (exceptions\incorrect_paramenters $exception) {
             self::write_error_log(
-                $exception->getMessage() . implode(', ', array_keys($exception->getParameters())));
+                $exception->getMessage() . implode(', ', array_keys($exception->getParameters()))
+            );
             self::error_view([
                 'code' => 400,
                 'error' => $exception->getMessage() . ' : ' . implode(', ', array_keys($exception->getParameters())),
@@ -437,11 +450,12 @@ class API {
             ]);
         } catch (exceptions\method_not_allowed $exception) {
             self::write_error_log(
-                $exception->getMessage());
+                $exception->getMessage()
+            );
 
             //write allow header if AllowedMethods is set
             if (!headers_sent() && $exception->getAllowedMethods()) {
-                header('Allow: ' . implode(', ', $exception->getAllowedMethods() ));
+                header('Allow: ' . implode(', ', $exception->getAllowedMethods()));
             }
 
             self::error_view([
@@ -452,7 +466,8 @@ class API {
             ]);
         } catch (\Exception $exception) {
             self::write_error_log(
-                $exception->getMessage());
+                $exception->getMessage()
+            );
             self::error_view([
                 'code' => 400,
                 'error' => $exception->getMessage(),
@@ -477,7 +492,7 @@ class API {
      * @return integer Returns offset from UTC in minutes
      */
     public static function get_timezone_offset() {
-        return +2 * 60;
+        return + 2 * 60;
     }
 
     /**
@@ -539,7 +554,7 @@ class API {
         if (!isset(self::$settings[$key]) || ($second_level && isset(self::$settings[$key][$second_level]))) {
             return $default_value;
         }
-        if($second_level) {
+        if ($second_level) {
             self::$settings[$key][$second_level];
         }
 
@@ -590,7 +605,7 @@ class API {
         /**
          * On HEAD method dont return response body, only the user's object
          */
-        if (self::get_method() == 'HEAD') {
+        if (self::get_method() == self::METHOD_HEAD) {
             $parameters = ['user' => $user];
         } else {
             //Merge output parameters with current user information, if any.
@@ -616,5 +631,12 @@ class API {
         error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
     }
 
-
+    const METHOD_GET     = 'GET';
+    const METHOD_POST    = 'POST';
+    const METHOD_PUT     = 'PUT';
+    const METHOD_DELETE  = 'DELETE';
+    const METHOD_DELETE  = 'HEAD';
+    const METHOD_PATCH   = 'PATCH';
+    const METHOD_OPTIONS = 'OPTIONS';
+    const METHOD_TRACE   = 'TRACE';
 }
