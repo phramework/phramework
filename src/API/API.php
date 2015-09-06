@@ -584,12 +584,14 @@ class API {
                 (isset($params['code']) ? $params['code'] : 400)
             );
         }
+
         self::view($params);
     }
 
     /**
      * Output the response using the selected viewer
      *
+     * If requested method is HEAD then the response body will be empty
      * Multiple arguments can be set, first argument will always be used as the parameters array.
      * Custom IViewer implementation can use these additional parameters at they definition.
      * @param array $params The output parameters. Notice $params['user'] will be overwritten if set.
@@ -599,21 +601,11 @@ class API {
     public static function view($parameters = []) {
         $args = func_get_args();
 
-        //Access global user object
-        $user = self::get_user();
-
-        //Clean user object output
-        $user = \Phramework\API\models\filter::out_entry($user, [
-            'password', 'id']);
-
         /**
          * On HEAD method dont return response body, only the user's object
          */
         if (self::get_method() == self::METHOD_HEAD) {
-            $parameters = ['user' => $user];
-        } else {
-            //Merge output parameters with current user information, if any.
-            $parameters = array_merge(['user' => $user], $parameters);
+            return;
         }
 
         //Instanciate a new viewer object
