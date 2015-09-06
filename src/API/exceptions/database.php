@@ -10,7 +10,7 @@ class database extends \Exception {
 
     /**
      * Database \Exception
-     * 
+     *
      * @todo Notify administrators
      * @param string $message \Exception message
      * @param string $error Internal error message

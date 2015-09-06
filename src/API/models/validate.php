@@ -12,6 +12,10 @@ use Phramework\API\exceptions\incorrect_paramenters;
  * @since 0.0.1
  */
 class validate {
+    /**
+     * Required field
+     */
+    const REQUIRED = 'required';
 
     /**
      * Text type
@@ -187,8 +191,8 @@ class validate {
         foreach ($model as $key => $value) {
             if (!isset($parameters[$key])) {
                 if (is_array($value) && (
-                    ( isset($value['required']) && $value['required']) ||
-                    in_array('required', $value, TRUE) === TRUE) ) {
+                    (isset($value[validate::REQUIRED]) && $value[validate::REQUIRED]) ||
+                    in_array(validate::REQUIRED, $value, TRUE) === TRUE) ) {
                     array_push($missing, $key);
 
                 } elseif (is_array($value) && array_key_exists('default', $value)) {
@@ -515,7 +519,7 @@ class validate {
     public static function int($input, $min = NULL, $max = NULL, $field_name = 'int') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_INT, 'required']
+            $field_name => ['type' => validate::TYPE_INT, validate::REQUIRED]
         ];
 
         if ($min !== NULL) {
@@ -544,7 +548,7 @@ class validate {
     public static function uint($input, $min = 0, $max = NULL, $field_name = 'uint') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_UINT, 'required']
+            $field_name => ['type' => validate::TYPE_UINT, validate::REQUIRED]
         ];
 
         $model[$field_name]['min'] = $min;
@@ -571,7 +575,7 @@ class validate {
     public static function float($input, $min = NULL, $max = NULL, $field_name = 'float') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_FLOAT, 'required']
+            $field_name => ['type' => validate::TYPE_FLOAT, validate::REQUIRED]
         ];
 
         if ($min !== NULL) {
@@ -600,7 +604,7 @@ class validate {
     public static function double($input, $min = NULL, $max = NULL, $field_name = 'double') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_DOUBLE, 'required']
+            $field_name => ['type' => validate::TYPE_DOUBLE, validate::REQUIRED]
         ];
 
         if ($min !== NULL) {
@@ -627,7 +631,7 @@ class validate {
     public static function email($input, $field_name = 'email') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_EMAIL, 'required']
+            $field_name => ['type' => validate::TYPE_EMAIL, validate::REQUIRED]
         ];
 
         $parameters = [$field_name => $input];
@@ -646,7 +650,7 @@ class validate {
     public static function url($input, $field_name = 'url') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_URL, 'required']
+            $field_name => ['type' => validate::TYPE_URL, validate::REQUIRED]
         ];
 
         $parameters = [$field_name => $input];
@@ -665,7 +669,7 @@ class validate {
     public static function permalink($input, $field_name = 'permalink') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_PERMALINK, 'required']
+            $field_name => ['type' => validate::TYPE_PERMALINK, validate::REQUIRED]
         ];
 
         $parameters = [$field_name => $input];
@@ -684,7 +688,7 @@ class validate {
     public static function token($input, $field_name = 'token') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_TOKEN, 'required']
+            $field_name => ['type' => validate::TYPE_TOKEN, validate::REQUIRED]
         ];
 
         $parameters = [$field_name => $input];
@@ -711,7 +715,7 @@ class validate {
         //Define trivial model
         $model = [
             $field_name => [
-                'type' => validate::TYPE_ENUM, 'values' => $values, 'required'
+                'type' => validate::TYPE_ENUM, 'values' => $values, validate::REQUIRED
             ]
         ];
 
@@ -749,7 +753,7 @@ class validate {
     public static function color($input, $type = validate::COLOR_HEX, $field_name = 'color') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_COLOR, 'color_type' => $type, 'required']
+            $field_name => ['type' => validate::TYPE_COLOR, 'color_type' => $type, validate::REQUIRED]
         ];
 
         $parameters = [$field_name => $input];
@@ -783,7 +787,7 @@ class validate {
     public static function regexp($input, $regexp, $field_name = 'regexp') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_REGEXP, 'regexp' => $regexp, 'required']
+            $field_name => ['type' => validate::TYPE_REGEXP, 'regexp' => $regexp, validate::REQUIRED]
         ];
 
         $parameters = [$field_name => $input];
@@ -802,7 +806,7 @@ class validate {
     public static function boolean($input, $field_name = 'boolean') {
         //Define trivial model
         $model = [
-            $field_name => ['type' => validate::TYPE_BOOLEAN, 'required']
+            $field_name => ['type' => validate::TYPE_BOOLEAN, validate::REQUIRED]
         ];
 
         $parameters = [$field_name => $input];

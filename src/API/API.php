@@ -64,7 +64,7 @@ class API {
     private static $language;
     private static $settings;
     private static $mode;
-    
+
     /**
      * Viewer class
      */
@@ -566,7 +566,7 @@ class API {
      * @param string $class A name of class that implements \Phramework\API\viewers\IViewer
      */
     public static function set_viewer($class) {
-        if (!is_subclass_of($class,'\Phramework\API\viewers\IViewer', TRUE)) {
+        if (!is_subclass_of($class, '\Phramework\API\viewers\IViewer', TRUE)) {
             throw new \Exception('class_is_not_implementing Phramework\API\viewers\IViewer');
         }
         self::$viewer = $class;
@@ -574,11 +574,15 @@ class API {
 
     /**
      * Output an error
-     * @param array $params The error parameters. The 'error' index holds the message, and the 'code' message the error code, note that if headers are not send the response code will set with the 'code' value
+     * @param array $params The error parameters. The 'error' index holds the message,
+     * and the 'code' message the error code,
+     * note that if headers are not send the response code will set with the 'code' value.
      */
     private static function error_view($params) {
         if (!headers_sent()) {
-            header('HTTP/1.0 ' . ( isset($params['code']) ? $params['code'] : '400' ));
+            http_response_code(
+                (isset($params['code']) ? $params['code'] : 400)
+            );
         }
         self::view($params);
     }
@@ -635,7 +639,7 @@ class API {
     const METHOD_POST    = 'POST';
     const METHOD_PUT     = 'PUT';
     const METHOD_DELETE  = 'DELETE';
-    const METHOD_DELETE  = 'HEAD';
+    const METHOD_HEAD    = 'HEAD';
     const METHOD_PATCH   = 'PATCH';
     const METHOD_OPTIONS = 'OPTIONS';
     const METHOD_TRACE   = 'TRACE';
