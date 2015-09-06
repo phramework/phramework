@@ -2,6 +2,7 @@
 
 namespace Phramework\API\models;
 
+use Phramework\API\API;
 use Phramework\API\exceptions\permission;
 use Phramework\API\exceptions\missing_paramenters;
 use Phramework\API\exceptions\incorrect_paramenters;
@@ -25,7 +26,7 @@ class util {
      * @return string
      */
     public static function url($controller = NULL, $suffix = '') {
-        $api_base = \Phramework\API\API::get_setting('api_base');
+        $api_base = API::get_setting('api_base');
 
         if ($controller) {
             $suffix = $controller . '/' . $suffix;
@@ -43,7 +44,7 @@ class util {
      * @return string
      */
     public static function url_interface($suffix = '') {
-        return get_setting('interface_base') . $suffix;
+        return API::get_setting('interface_base') . $suffix;
     }
 
     /**
@@ -66,7 +67,7 @@ class util {
      * @return boolean Returns true if the string begins with the search
      */
     public static function begins_with($string, $search) {
-        return ( substr($string, 0, strlen($search)) == $search );
+        return (substr($string, 0, strlen($search)) == $search );
     }
 
     public static function _date_formatted($datetime, $format = 'j M Y G:i') {
