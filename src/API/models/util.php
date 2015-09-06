@@ -29,6 +29,8 @@ class util {
 
         if ($controller) {
             $suffix = $controller . '/' . $suffix;
+
+            $suffix = str_replace('//', '/', $suffix);
         }
         return $api_base . $suffix;
     }
