@@ -565,7 +565,7 @@ class API {
      * Set viewer class
      * @param string $class A name of class that implements \Phramework\API\viewers\IViewer
      */
-    public static function set_viewer($class) {
+    public static function set_viewer_class($class) {
         if (!is_subclass_of($class, '\Phramework\API\viewers\IViewer', TRUE)) {
             throw new \Exception('class_is_not_implementing Phramework\API\viewers\IViewer');
         }
