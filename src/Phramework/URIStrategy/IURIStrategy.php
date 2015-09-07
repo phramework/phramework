@@ -8,5 +8,5 @@ namespace Phramework\URIStrategy;
  */
 interface IURIStrategy
 {
-    public function invoke($requestMethod, $requestParameters, $requestHeaders);
+    public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser);
 }

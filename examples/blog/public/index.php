@@ -1,5 +1,4 @@
 <?php
-
 //Show all errors
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -42,7 +41,8 @@ $APP = function() {
         ['blog/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
         ['blog/{id}', 'APP\\controllers\\blog', 'GETSingle', API::METHOD_GET],
         ['editor', 'APP\\controllers\\editor', 'GET', API::METHOD_GET],
-        ['editor', 'APP\\controllers\\editor', 'POST', API::METHOD_POST]
+        ['editor', 'APP\\controllers\\editor', 'POST', API::METHOD_POST],
+        ['secure', 'APP\\controllers\\secure', 'GET', API::METHOD_GET, TRUE]
     ]);
 
     //Initialize API

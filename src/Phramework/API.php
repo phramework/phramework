@@ -353,7 +353,7 @@ class API
             $this->StepCallback->call(StepCallback::STEP_BEFORE_CALL_METHOD);
 
             //Call controller's method
-            self::$URIStrategy->invoke($method, $params, $headers);
+            self::$URIStrategy->invoke($method, $params, $headers, self::$user);
 
             //Unset all
             unset($params);

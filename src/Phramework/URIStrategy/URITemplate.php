@@ -82,13 +82,14 @@ class URITemplate implements IURIStrategy
         return [$uri, $parameters];
     }
 
-    public function invoke($requestMethod, $requestParameters, $requestHeaders)
+    public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
         // Get request uri and uri parameters
         list($uri, $uri_parameters) = $this->uri();
 
         foreach ($this->templates as $template) {
             $templateMethod = (isset($template[3]) ? $template[3] : API::METHOD_ANY);
+            $requiresAuthentication = (isset($template[4]) ? $template[4] : FALSE);
 
             // Ignore if not a valid method
             if ($templateMethod != API::METHOD_ANY && $templateMethod != $requestMethod) {
@@ -101,6 +102,10 @@ class URITemplate implements IURIStrategy
             $test = $this->test($uri_template, $uri);
 
             if ($test !== false) {
+                if ($requiresAuthentication && $requestUser === false) {
+                    throw new Permission(API::getTranslated('unauthenticated_access_exception'));
+                }
+
                 list($uri_parameters) = $test;
 
                 $class   = $template[1];

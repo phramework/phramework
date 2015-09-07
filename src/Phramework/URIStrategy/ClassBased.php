@@ -7,40 +7,49 @@ use Phramework\Exceptions\NotFound;
 
 /**
  * IURIStrategy implementation using default (old) class paths
+ * @todo document default_controller setting
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
 class ClassBased implements IURIStrategy
 {
-    private $controller_whitelist;
-    private $controller_unauthenticated_whitelist;
-    private $controller_public_whitelist;
+    private $controllerWhitelist;
+    private $controllerUnauthenticatedWhitelist;
+    private $controllerPublicWhitelist;
     private $namespace;
     private $suffix;
 
+    /**
+     * [__construct description]
+     * @param Array $controllerWhitelist                Array with the allowed controllers
+     * @param Array $controllerUnauthenticatedWhitelist Array with the controllers which can be accessed without authentication
+     * @param Array $controllerPublicWhitelist          Array with the controllers which can be accessed without authentication
+     * @param String $namespace                         Controller's namespace
+     * @param String $suffix                            [Optional] Default is NULL
+     */
     public function __construct(
-        $controller_whitelist,
-        $controller_unauthenticated_whitelist,
-        $controller_public_whitelist,
+        $controllerWhitelist,
+        $controllerUnauthenticatedWhitelist,
+        $controllerPublicWhitelist,
         $namespace,
         $suffix = ''
     ) {
 
-        $this->controller_whitelist                 = $controller_whitelist;
-        $this->controller_unauthenticated_whitelist = $controller_unauthenticated_whitelist;
-        $this->controller_public_whitelist          = $controller_public_whitelist;
+        $this->controller_whitelist                 = $controllerWhitelist;
+        $this->controller_unauthenticated_whitelist = $controllerUnauthenticatedWhitelist;
+        $this->controller_public_whitelist          = $controllerPublicWhitelist;
         $this->namespace                            = $namespace;
         $this->suffix                               = $suffix;
     }
     /**
      * [invoke description]
-     * @param  [type] $requestMethod [description]
-     * @param  [type] $params        [description]
-     * @param  [type] $headers       [description]
+     * @param  String $requestMethod [description]
+     * @param  Array $requestParameters        [description]
+     * @param  Array $requestHeaders       [description]
      * @todo check request method
-     * @return [type]                [description]
+     * @return Boolean                [description]
      */
-    public function invoke($requestMethod, $requestParameters, $requestHeaders)
+    public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
 
         //Get controller from the request (URL parameter)
@@ -54,10 +63,9 @@ class ClassBased implements IURIStrategy
 
         $controller = $params['controller'];
         unset($params['controller']);
-        $user       = API::getUser();
 
         //If not authenticated allow only certain controllers to access
-        if (!$user &&
+        if (!$requestUser &&
             !in_array($controller, $this->controller_unauthenticated_whitelist) &&
             !in_array($controller, $this->controller_public_whitelist)) {
             throw new Permission(API::getTranslated('unauthenticated_access_exception'));
@@ -71,7 +79,7 @@ class ClassBased implements IURIStrategy
         }
 
         // Append suffix
-        $controller = $controller . $suffix;
+        $controller = $controller . ($suffix ? $suffix : '');
 
         /**
          * Check if the requested controller and model is callable
