@@ -47,19 +47,19 @@ class API {
      * Allowed controllers
      * @var array
      */
-    private static $controller_whitelist;
+    //private static $controller_whitelist;
 
     /**
      * Controllers that doesn't require authentication
      * @var array
      */
-    private static $controller_unauthenticated_whitelist;
+    //private static $controller_unauthenticated_whitelist;
 
     /**
      * Controllers that doesn't require authentication
      * @var array
      */
-    private static $controller_public_whitelist;
+    //private static $controller_public_whitelist;
     private static $user;
     private static $language;
     private static $settings;
@@ -69,7 +69,8 @@ class API {
      * Viewer class
      */
     private static $viewer = 'Phramework\API\viewers\json';
-
+    private static $uri_strategy;
+    
     private static $controller;
     private static $method;
 
@@ -108,17 +109,16 @@ class API {
      * @param array $controller_unauthenticated_whitelist
      * @param array $controller_public_whitelist
      * @param string $mode [optional]
-     * @param object|NULL $$translation_object [optional] Set custom translation class
+     * @param object|NULL $translation_object [optional] Set custom translation class
      */
-    public function __construct($settings, $controller_whitelist,
-        $controller_unauthenticated_whitelist,
-        $controller_public_whitelist,
-        $mode = self::MODE_DEFAULT, $translation_object = NULL) {
+    public function __construct(
+        $settings,
+        $uri_strategy_object,
+        $mode = self::MODE_DEFAULT,
+        $translation_object = NULL) {
 
         self::$settings = $settings;
-        self::$controller_whitelist = $controller_whitelist;
-        self::$controller_unauthenticated_whitelist = $controller_unauthenticated_whitelist;
-        self::$controller_public_whitelist = $controller_public_whitelist;
+        
         self::$mode = $mode;
 
         self::$user = FALSE;
@@ -126,7 +126,12 @@ class API {
 
         //Instantiate step_callback object
         $this->step_callback = new \Phramework\API\extensions\step_callback();
-
+        
+        if (!is_subclass_of($uri_strategy_object, 'Phramework\API\uri_strategy\Iuri_strategy', TRUE)) {
+            throw new \Exception('class_is_not_implementing Phramework\API\uri_strategy\Iuri_strategy');
+        }
+        self::$uri_strategy = $uri_strategy_object;
+        
         //If custom translation object is set add it
         if ($translation_object) {
             $this->set_translation_object($translation_object);
@@ -190,6 +195,17 @@ class API {
     public static function get_translated($key, $parameters = NULL, $fallback_value = NULL){
         return self::$instance->translation->get_translated($key, $parameters, $fallback_value);
     }
+    
+    //Allowed methods
+    static $method_whitelist = [
+        self::METHOD_GET,
+        self::METHOD_POST,
+        self::METHOD_DELETE,
+        self::METHOD_PUT,
+        self::METHOD_HEAD,
+        self::METHOD_OPTIONS,
+        self::METHOD_PATCH
+    ];
 
     /**
      * Execute the API
@@ -230,30 +246,6 @@ class API {
 
             //Unset from memory database connection information
             unset(self::$settings['db']);
-
-            //Allowed methods
-            $method_whitelist = [
-                self::METHOD_GET,
-                self::METHOD_POST,
-                self::METHOD_DELETE,
-                self::METHOD_PUT,
-                self::METHOD_HEAD,
-                self::METHOD_OPTIONS,
-                self::METHOD_PATCH
-            ];
-
-            //Get controller from the request (URL parameter)
-            if (!isset($_GET['controller']) || empty($_GET['controller'])) {
-                if (($default_controller = self::get_setting('default_controller'))) {
-                    $_GET['controller'] = $default_controller;
-                } else {
-                    die(); //Or throw \Exception OR redirect to API documentation
-                }
-            }
-
-            self::$controller = $controller = $_GET['controller'];
-            unset($_GET['controller']);
-
 
             //Get method from the request (HTTP) method
             self::$method = $method =
@@ -319,29 +311,10 @@ class API {
             self::$language = $language;
             $this->translation->set_language_code($language);
 
-            //If not authenticated allow only certain controllers to access
-            if (!self::get_user() &&
-                !in_array($controller, self::$controller_unauthenticated_whitelist) &&
-                !in_array($controller, self::$controller_public_whitelist)) {
-                throw new exceptions\permission(API::get_translated('unauthenticated_access_exception'));
-            }
-
-            //Check if requested controller and method are allowed
-            if (!in_array($controller, self::$controller_whitelist)) {
-                throw new exceptions\not_found(API::get_translated('controller_not_found_exception'));
-            } elseif (!in_array($method, $method_whitelist)) {
-                throw new exceptions\not_found(API::get_translated('method_not_found_exception'));
-            }
+            
 
             //STEP_BEFORE_REQUIRE_CONTROLLER
             $this->step_callback->call(step_callback::STEP_BEFORE_REQUIRE_CONTROLLER);
-
-            //Include the requested controller file (containing the controller class)
-            require(
-                APPPATH . '/controllers/'
-                . (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '/')
-                . $controller . '.php'
-            );
 
             //Override method HEAD.
             // When HEAD method is called the GET method will be executed but no response boy will be send
@@ -351,20 +324,7 @@ class API {
                 $method = self::METHOD_GET;
             }
 
-            /**
-             * Check if the requested controller and model is callable
-             * In order to be callable :
-             * 1) The controllers class must be defined as : myname_controller
-             * 2) the methods must be defined as : public static function GET($params)
-             *    where $params are the passed parameters
-             */
-            if (!is_callable(
-                "APP\\controllers" .
-                (self::$mode == self::MODE_DEFAULT ? '' : '\\' . self::$mode) .
-                "\\{$controller}_controller::$method"
-            )) {
-                throw new exceptions\not_found('method_not_found_exception');
-            }
+            //is callable
 
             //Merge all REQUEST parameters into $params array
             $params = array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
@@ -382,10 +342,7 @@ class API {
             $this->step_callback->call(step_callback::STEP_BEFORE_CALL_METHOD);
 
             //Call controller's method
-            call_user_func([
-                'APP\\controllers\\' .
-                (self::$mode == self::MODE_DEFAULT ? '' : self::$mode . '\\') .
-                $controller . '_controller', $method], $params);
+            self::$uri_strategy->invoke($method, $params, $headers);
 
             //Unset all
             unset($params);
@@ -571,7 +528,7 @@ class API {
         }
         self::$viewer = $class;
     }
-
+    
     /**
      * Output an error
      * @param array $params The error parameters. The 'error' index holds the message,
@@ -626,7 +583,7 @@ class API {
     public static function write_error_log($message) {
         error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
     }
-
+    const METHOD_ANY     = FALSE;
     const METHOD_GET     = 'GET';
     const METHOD_POST    = 'POST';
     const METHOD_PUT     = 'PUT';

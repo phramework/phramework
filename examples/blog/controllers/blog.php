@@ -5,9 +5,9 @@ namespace APP\controllers;
 use Phramework\API\API;
 use Phramework\API\models\validate;
 use Phramework\API\models\request;
-use APP\models\blog;
+use APP\models\blog as b;
 
-class blog_controller {
+class blog {
 
     public static function GET($params) {
         include(APPPATH. '/models/blog.php');
@@ -16,7 +16,7 @@ class blog_controller {
             throw new \Phramework\API\exceptions\not_implemented();
         }
 
-        $posts = blog::get_all();
+        $posts = b::get_all();
 
         API::view([
             'posts' => $posts
