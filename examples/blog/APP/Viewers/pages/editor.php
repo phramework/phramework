@@ -1,4 +1,4 @@
-<form class="form" method="post" action="<?php echo '?controller=blog'; ?>">
+<form class="form" method="post" action="<?php echo isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''; ?>">
     <fieldset>
         <legend>Create new post</legend>
         <div class="form-group">
