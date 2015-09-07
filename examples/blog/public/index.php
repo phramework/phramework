@@ -30,25 +30,23 @@ $APP = function() {
         'blog', 'editor'
     ];
 
-    /*$uri_strategy = new \Phramework\URIStrategy\ClassBased(
+    /*$uriStrategy = new \Phramework\URIStrategy\ClassBased(
         $controller_whitelist,
         ['blog', 'editor'],
         ['blog', 'editor'],
         "APP\\controllers\\"
     );*/
 
-    $uri_strategy = new \Phramework\URIStrategy\URITemplate(
-        [
-            ['/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
-            ['blog/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
-            ['blog/{id}', 'APP\\controllers\\blog', 'GETSingle', API::METHOD_GET],
-            ['editor', 'APP\\controllers\\editor', 'GET', API::METHOD_GET],
-            ['editor', 'APP\\controllers\\editor', 'POST', API::METHOD_POST]
-        ]
-    );
+    $uriStrategy = new \Phramework\URIStrategy\URITemplate([
+        ['/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
+        ['blog/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
+        ['blog/{id}', 'APP\\controllers\\blog', 'GETSingle', API::METHOD_GET],
+        ['editor', 'APP\\controllers\\editor', 'GET', API::METHOD_GET],
+        ['editor', 'APP\\controllers\\editor', 'POST', API::METHOD_POST]
+    ]);
 
     //Initialize API
-    $API = new API($settings, $uri_strategy);
+    $API = new API($settings, $uriStrategy);
 
     unset($settings);
 
