@@ -1,5 +1,5 @@
 {
-  "name": "Phramework/API",
+  "name": "Phramework",
   "description": "PHP Framework for RESTful services",
   "license": "TBA",
   "type": "library",
@@ -14,7 +14,7 @@
   }],
   "autoload": {
     "psr-4": {
-      "Phramework\\API\\": "src/API"
+      "Phramework\\": "src/Phramework"
     }
   },
   "repositories": [{

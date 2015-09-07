@@ -6,11 +6,11 @@ module.exports = function(grunt) {
         stdout: true,
         stderr: true
       },
-      files: ['src/API/**/*.php', 'examples/**/*.php']
+      files: ['src/**/*.php', 'examples/**/*.php']
     },
     phpcs: {
       source: {
-        src: ['src/API/**/*.php']
+        src: ['src/**/*.php']
       },
       examples: {
         src: ['examples/**/*.php']
@@ -18,9 +18,9 @@ module.exports = function(grunt) {
       options: {
         bin: 'vendor/bin/phpcs',
 
-        //standard: 'PSR2',
+        standard: 'PSR2',
         colors: true,
-        standard: 'phpcs.xml'
+        //standard: 'phpcs.xml'
       }
     }
   });
