@@ -266,7 +266,7 @@ class API
             $method = self::$method =
                 isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::METHOD_GET;
 
-            // Check if the requested HTTP method method is allowed
+            //Check if the requested HTTP method method is allowed
             // @todo check error code
             if (!in_array($method, self::$methodWhitelist)) {
                 throw new Exceptions\Request(self::getTranslated('Method not allowed'));
@@ -276,7 +276,7 @@ class API
             $origin = '*';
 
             //Get request headers
-            $headers = Util::headers();
+            $headers = Models\Request::headers();
 
             //Check origin header
             if (isset($headers['Origin'])) {

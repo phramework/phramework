@@ -172,4 +172,37 @@ class Request
 
         return $keys_values;
     }
+
+    /**
+     * Get the headers send with client's HTTP Request
+     * @return array Return the array with the headers (indexes in lowercase)
+     */
+    public static function headers()
+    {
+        $headers = [];
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))));
+                $headers[$name] = $value;
+            } elseif ($name == 'CONTENT_TYPE') {
+                $headers['Content-Type'] = $value;
+            } elseif ($name == 'CONTENT_LENGTH') {
+                $headers['Content-Length'] = $value;
+            }
+        }
+        return $headers;
+    }
+    
+    /**
+     * Merge put paramters into $parameters array
+     * @param array $parameters Parameter's array
+     */
+    public static function mergePutParamters(&$parameters)
+    {
+        $put_parameters = json_decode(file_get_contents('php://input'), true);
+        //Get params
+        if (isset($put_params['params'])) {
+            $parameters = array_merge($parameters, $put_parameters['params']);
+        }
+    }
 }

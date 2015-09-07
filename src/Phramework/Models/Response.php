@@ -76,4 +76,17 @@ class Response
             throw new \Phramework\Exceptions\Server();
         }
     }
+
+    /**
+     * Write cache headers
+     */
+    public static function cacheHeaders($expires = '+1 hour')
+    {
+        if (!headers_sent()) {
+            header('Cache-Control: private, max-age=3600');
+            header('Pragma: public');
+            header('Last-Modified: ' . date(DATE_RFC822, strtotime('-1 second')));
+            header('Expires: ' . date(DATE_RFC822, strtotime($expires)));
+        }
+    }
 }
