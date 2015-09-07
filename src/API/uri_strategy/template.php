@@ -40,7 +40,7 @@ class template implements Iuri_strategy {
         $uri = '/' . trim(str_replace($uri, '', $REDIRECT_URL), '/');
         $uri = urldecode($uri) . '/';
 
-        $uri = ltrim(rtrim($uri, '/'), '/');
+        $uri = trim($uri, '/');
 
         $this->p($uri);
         $this->p($REDIRECT_QUERY_STRING);
@@ -50,18 +50,18 @@ class template implements Iuri_strategy {
 
         foreach ($this->templates as $t) {
             // trim any slashes from begining and the end of the URI parameter
-            $t[0] = ltrim(rtrim($t[0], '/'), '/');
+            $template = trim($t[0], '/');
             $this->p($t);
             // espace slash / character
-            $t[0] = str_replace('/', '\/', $t[0]);
+            $template = str_replace('/', '\/', $template);
             // replace all named parameters {id} to named regexp matches
-            $t[0] = preg_replace(
-                '/(.*?)\{([a-zA-Z0-9_]+)\}(.*?)/', '$1(?P<$2>[0-9a-zA-Z]+)$3', $t[0]
+            $template = preg_replace(
+                '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+)\}(.*?)/', '$1(?P<$2>[0-9a-zA-Z]+)$3', $template
             );
 
 
 
-            $regexp = '/^' . $t[0] . '$/';
+            $regexp = '/^' . $template . '$/';
             $this->p($regexp);
             $matches;
 
