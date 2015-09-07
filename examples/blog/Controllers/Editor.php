@@ -1,10 +1,10 @@
 <?php
 
-namespace APP\controllers;
+namespace APP\Controllers;
 
-use \Phramework\API;
+use Phramework\API;
 
-class editor
+class Editor
 {
     public static function GET($params)
     {

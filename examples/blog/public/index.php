@@ -10,11 +10,11 @@ use Phramework\API;
 
 define('APPPATH', __DIR__ . '/../');
 
-require APPPATH . '/viewers/viewer.php';
+require APPPATH . '/Viewers/Viewer.php';
 
 //temporary
-require APPPATH . '/controllers/blog.php';
-require APPPATH . '/controllers/editor.php';
+require APPPATH . '/Controllers/Blog.php';
+require APPPATH . '/Controllers/Editor.php';
 
 /**
  * @package examples/blog
@@ -37,12 +37,12 @@ $APP = function() {
     );*/
 
     $uriStrategy = new \Phramework\URIStrategy\URITemplate([
-        ['/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
-        ['blog/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
-        ['blog/{id}', 'APP\\controllers\\blog', 'GETSingle', API::METHOD_GET],
-        ['editor', 'APP\\controllers\\editor', 'GET', API::METHOD_GET],
-        ['editor', 'APP\\controllers\\editor', 'POST', API::METHOD_POST],
-        ['secure', 'APP\\controllers\\secure', 'GET', API::METHOD_GET, TRUE]
+        ['/', 'APP\\Controllers\\Blog', 'GET', API::METHOD_GET],
+        ['blog/', 'APP\\Controllers\\Blog', 'GET', API::METHOD_GET],
+        ['blog/{id}', 'APP\\Controllers\\Blog', 'GETSingle', API::METHOD_GET],
+        ['editor', 'APP\\Controllers\\Editor', 'GET', API::METHOD_GET],
+        ['editor', 'APP\\Controllers\\Editor', 'POST', API::METHOD_POST],
+        ['secure', 'APP\\Controllers\\Secure', 'GET', API::METHOD_GET, TRUE]
     ]);
 
     //Initialize API
@@ -50,7 +50,7 @@ $APP = function() {
 
     unset($settings);
 
-    $API->setViewerClass('APP\viewers\viewer');
+    $API->setViewerClass('APP\Viewers\Viewer');
 
     //Execute API
     $API->invoke();

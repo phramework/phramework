@@ -1,10 +1,10 @@
 <?php
 
-namespace APP\models;
+namespace APP\Models;
 
-class blog
+class Blog
 {
-    public static function get_all()
+    public static function getAll()
     {
         return [
             ['title' => 'post1', 'content' => str_repeat('Lorem ipsum... ', 15)],

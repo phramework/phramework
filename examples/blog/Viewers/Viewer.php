@@ -1,15 +1,14 @@
 <?php
 
-namespace APP\viewers;
+namespace APP\Viewers;
 
 /**
- * @package examples/blog
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  */
-class viewer implements \Phramework\Viewers\IViewer
+class Viewer implements \Phramework\Viewers\IViewer
 {
     /**
-     * Display output as html using a header and footer
+     * Display output as html using a header and footer.
      *
      * @param array $parameters Output parameters to display
      * @param $VIEWER_page $page Page's file name
@@ -39,11 +38,11 @@ class viewer implements \Phramework\Viewers\IViewer
             $VIEWER_title = '';
         }
 
-        include(__DIR__ . '/header.php');
+        include __DIR__.'/header.php';
 
         //Include the page file
-        include(__DIR__ . '/pages/' . $VIEWER_page . '.php');
+        include __DIR__.'/pages/'.$VIEWER_page.'.php';
 
-        include(__DIR__ . '/footer.php');
+        include __DIR__.'/footer.php';
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace APP\controllers;
+namespace APP\Controllers;
 
 use Phramework\API;
 use Phramework\Models\Validate;
 use Phramework\Models\Request;
-use APP\models\blog as b;
+use APP\Models\Blog as B;
 
-class blog
+class Blog
 {
     public static function GET($params, $method, $headers)
     {
-        include(APPPATH. '/models/blog.php');
+        include APPPATH . '/Models/Blog.php';
 
         /*if (($id = Request::resourceId($params)) !== FALSE) {
             echo '<pre>';
@@ -20,20 +20,20 @@ class blog
             throw new \Phramework\Exceptions\NotImplemented();
         }*/
 
-        $posts = b::get_all();
+        $posts = B::getAll();
 
         API::view([
-            'posts' => $posts
+            'posts' => $posts,
         ], 'blog', 'My blog'); //will load viewers/page/blog.php
     }
 
     public static function GETSingle($params, $method, $headers)
     {
-        include(APPPATH. '/models/blog.php');
+        include APPPATH . '/Models/Blog.php';
 
         $id = Request::requiredId($params);
 
-        $posts = b::get_all();
+        $posts = B::getAll();
 
         array_unshift($posts, []);
 
@@ -42,28 +42,28 @@ class blog
         }
 
         API::view([
-            'posts' => [$posts[$id]]
-        ], 'blog', 'My blog #' . $id); //will load viewers/page/blog.php
+            'posts' => [$posts[$id]],
+        ], 'blog', 'My blog #'.$id); //will load viewers/page/blog.php
     }
 
     public static function POST($params)
     {
         //Define model
         $model = [
-            'title'     => [
-                'type' => Validate::TYPE_TEXT, 'max' => 12,   'min' => 3,  Validate::REQUIRED
+            'title' => [
+                'type' => Validate::TYPE_TEXT, 'max' => 12,   'min' => 3,  Validate::REQUIRED,
             ],
-            'content'   => [
-                'type' => Validate::TYPE_TEXT, 'max' => 4096, 'min' => 12, Validate::REQUIRED
-            ]
+            'content' => [
+                'type' => Validate::TYPE_TEXT, 'max' => 4096, 'min' => 12, Validate::REQUIRED,
+            ],
         ];
 
         //Require and Validate model
         Validate::model($params, $model);
 
         //Declare them as variables
-        $title      = $params['title'];
-        $content    = $params['content'];
+        $title = $params['title'];
+        $content = $params['content'];
 
         $post = ['title' => $title, 'content' => $content, 'timestamp' => time()];
 
@@ -78,11 +78,11 @@ class blog
 
         $post['id'] = $id;
 
-        \Phramework\Models\Response::created('http://localhost/post/' . $id . '/');
+        \Phramework\Models\Response::created('http://localhost/post/'. $id .'/');
 
         //Sample output
         API::view([
-            'post' => $post
+            'post' => $post,
         ], 'post', 'Blog post');
     }
 }
