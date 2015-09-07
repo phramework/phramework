@@ -1,6 +1,6 @@
 <?php
 
-namespace Phramework\API;
+namespace Phramework;
 
 use Phramework\Models\Util;
 use Phramework\Extensions\StepCallback;
@@ -143,7 +143,7 @@ class API
             $this->setTranslationObject($translation_object);
         } else {
             //Or instantiate default translation object
-            $this->translation = new \Phramework\Extensions\translation(
+            $this->translation = new \Phramework\Extensions\Translation(
                 self::getSetting('language'),
                 self::getSetting('translation', 'track_missing_keys')
             );

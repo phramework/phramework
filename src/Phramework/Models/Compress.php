@@ -76,7 +76,7 @@ class Compress
         //IN ORDER TO WORK CORRECTLY GZ FILES MUST HAVE DOUBLE EXTENSION E.G. name.csv.gz ( STANDARIZE IT ! )
         //$file_path = Util::get_path( array( $destination_folder, basename( ( $original_filename ? $original_filename : $compressed_file ), '.gz' ) ) );
         //File extension
-        $file_path = Util::get_path([ $destination_folder, basename(($original_filename ? $original_filename : $compressed_file), '.gz')]);
+        $file_path = Util::get_path([$destination_folder, basename(($original_filename ? $original_filename : $compressed_file), '.gz')]);
 
         $sfp = gzopen($compressed_file, "rb");
 
@@ -102,7 +102,7 @@ class Compress
     private static function uncompressTar($compressed_file, $destination_folder, $original_filename = null, $allowed_extensions = [])
     {
         try {
-            $zip = new PharData($compressed_file);
+            $zip = new \PharData($compressed_file);
         } catch (\UnexpectedValueException $e) {
             throw new \Phramework\Exceptions\Request('Cannot open tar archive');
         }

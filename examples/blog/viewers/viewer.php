@@ -6,7 +6,7 @@ namespace APP\viewers;
  * @package examples/blog
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  */
-class viewer implements \Phramework\API\viewers\IViewer {
+class viewer implements \Phramework\Viewers\IViewer {
 
     /**
      * Display output as html using a header and footer
@@ -17,7 +17,7 @@ class viewer implements \Phramework\API\viewers\IViewer {
      */
     public function view($parameters) {
         $num_args = func_num_args();
-        
+
         if ($num_args > 1) {
             $VIEWER_page = func_get_arg(1);
         }
@@ -34,11 +34,10 @@ class viewer implements \Phramework\API\viewers\IViewer {
         //copy title if not set as funtion argument and set in parameters
         if ((!isset($VIEWER_title) || !$VIEWER_title) && isset($parameters['title'])) {
             $VIEWER_title = $parameters['title'];
-        }else if (!isset($VIEWER_title)) {
+        } else if (!isset($VIEWER_title)) {
             $VIEWER_title = '';
         }
         
-
         include(__DIR__ . '/header.php');
 
 

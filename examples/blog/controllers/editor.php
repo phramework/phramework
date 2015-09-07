@@ -2,7 +2,7 @@
 
 namespace APP\controllers;
 
-use \Phramework\API\API;
+use \Phramework\API;
 
 class editor {
 
