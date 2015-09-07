@@ -3,18 +3,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-//Replace it with your path to vendor
+//This autoload path is for loading current version of phramework
 require __DIR__ . '/../../../vendor/autoload.php';
+//This autoload is for loading this APP and any of dependencies
+require __DIR__ . '/../vendor/autoload.php';
 
 use Phramework\API;
 
 define('APPPATH', __DIR__ . '/../');
-
-require APPPATH . '/Viewers/Viewer.php';
-
-//temporary
-require APPPATH . '/Controllers/Blog.php';
-require APPPATH . '/Controllers/Editor.php';
 
 /**
  * @package examples/blog
@@ -42,7 +38,7 @@ $APP = function() {
         ['blog/{id}', 'APP\\Controllers\\Blog', 'GETSingle', API::METHOD_GET],
         ['editor', 'APP\\Controllers\\Editor', 'GET', API::METHOD_GET],
         ['editor', 'APP\\Controllers\\Editor', 'POST', API::METHOD_POST],
-        ['secure', 'APP\\Controllers\\Secure', 'GET', API::METHOD_GET, TRUE]
+        ['secure', 'APP\\Controllers\\Secure', 'GET', API::METHOD_GET, true]
     ]);
 
     //Initialize API

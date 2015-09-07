@@ -89,7 +89,7 @@ class URITemplate implements IURIStrategy
 
         foreach ($this->templates as $template) {
             $templateMethod = (isset($template[3]) ? $template[3] : API::METHOD_ANY);
-            $requiresAuthentication = (isset($template[4]) ? $template[4] : FALSE);
+            $requiresAuthentication = (isset($template[4]) ? $template[4] : false);
 
             // Ignore if not a valid method
             if ($templateMethod != API::METHOD_ANY && $templateMethod != $requestMethod) {

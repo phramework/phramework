@@ -1,0 +1,20 @@
+{
+  "name": "Phramework/Examples/Blog",
+  "description": "PHP Framework for RESTful services",
+  "homepage": "https://nohponex.gr",
+  "authors": [{
+    "name": "Xenophon Spafaridis",
+    "email": "nohponex@gmail.com",
+    "homepage": "https://nohponex.gr"
+  }],
+  "autoload": {
+    "psr-4": {
+      "APP\\": "APP/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "archive": {
+    "exclude": ["demo/", "examples/", "test/", "/*.test", "tests", "demo.php"]
+  }
+}

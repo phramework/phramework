@@ -11,8 +11,6 @@ class Blog
 {
     public static function GET($params, $method, $headers)
     {
-        include APPPATH . '/Models/Blog.php';
-
         /*if (($id = Request::resourceId($params)) !== FALSE) {
             echo '<pre>';
             print_r([$params, $method, $headers]);
@@ -29,8 +27,6 @@ class Blog
 
     public static function GETSingle($params, $method, $headers)
     {
-        include APPPATH . '/Models/Blog.php';
-
         $id = Request::requiredId($params);
 
         $posts = B::getAll();
@@ -43,7 +39,7 @@ class Blog
 
         API::view([
             'posts' => [$posts[$id]],
-        ], 'blog', 'My blog #'.$id); //will load viewers/page/blog.php
+        ], 'blog', 'My blog #' . $id); //will load viewers/page/blog.php
     }
 
     public static function POST($params)
