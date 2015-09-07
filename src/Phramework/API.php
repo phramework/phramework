@@ -23,7 +23,7 @@ if (!function_exists('__')) {
 if (!function_exists('___')) {
     function ___($key)
     {
-        return API::getTranslated($key);
+        echo API::getTranslated($key);
     }
 }
 /**
@@ -207,7 +207,10 @@ class API
         return self::$instance->translation->getTranslated($key, $parameters, $fallback_value);
     }
 
-    //Allowed methods
+    /**
+     * Allowed HTTP methods
+     * @var [type]
+     */
     public static $method_whitelist = [
         self::METHOD_GET,
         self::METHOD_POST,
@@ -220,10 +223,11 @@ class API
 
     /**
      * Execute the API
-     * @throws exceptions\permission
-     * @throws exceptions\NotFound
+     * @throws Exceptions\Permission
+     * @throws Exceptions\NotFound
      * @todo change default timezone
      * @todo change default language
+     * TODO @security deny access to any else referalls
      */
     public function invoke()
     {
@@ -259,8 +263,14 @@ class API
             unset(self::$settings['db']);
 
             //Get method from the request (HTTP) method
-            self::$method = $method =
+            $method = self::$method =
                 isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::METHOD_GET;
+
+            // Check if the requested HTTP method method is allowed
+            // @todo check error code
+            if (!in_array($method, self::$methodWhitelist)) {
+                throw new Exceptions\Request(self::getTranslated('Method not allowed'));
+            }
 
             //Default value of response's header origin
             $origin = '*';
@@ -331,9 +341,9 @@ class API
             // When HEAD method is called the GET method will be executed but no response boy will be send
             // we update the value of local variable $method sinse then original
             // requested method is stored at API::$method
-            if ($method == self::METHOD_HEAD) {
-                $method = self::METHOD_GET;
-            }
+            //if ($method == self::METHOD_HEAD) {
+            //    $method = self::METHOD_GET;
+            //}
 
             //is callable
 
