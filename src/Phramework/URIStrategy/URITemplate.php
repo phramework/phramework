@@ -88,15 +88,23 @@ class URITemplate implements IURIStrategy
         list($uri, $uri_parameters) = $this->uri();
 
         foreach ($this->templates as $template) {
+            $templateMethod = (isset($template[3]) ? $template[3] : API::METHOD_ANY);
+
+            // Ignore if not a valid method
+            if ($templateMethod != API::METHOD_ANY && $templateMethod != $requestMethod) {
+                continue;
+            }
+
             $uri_template = $template[0];
+
             //Test if uri matches the current uri template
             $test = $this->test($uri_template, $uri);
 
             if ($test !== false) {
                 list($uri_parameters) = $test;
 
-                $class  = $template[1];
-                $method = $template[2];
+                $class   = $template[1];
+                $method  = $template[2];
 
                 //Merge all available parameters
                 $parameters = array_merge($requestParameters, $uri_parameters, $test[0]);
@@ -107,7 +115,7 @@ class URITemplate implements IURIStrategy
                  * @todo
                  */
                 if (!is_callable("$class::$method")) {
-                    throw new Server(API::getTranslated('method_NotFound_exception'));
+                    throw new NotFound(API::getTranslated('method_NotFound_exception'));
                 }
 
                 //Call method

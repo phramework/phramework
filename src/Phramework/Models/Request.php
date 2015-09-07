@@ -111,7 +111,7 @@ class Request
             $parameters['id'] = $parameters['resource_id'];
         }
         if (!isset($parameters['id'])) {
-            throw new MissingParamenters([ 'id']);
+            throw new MissingParamenters(['id']);
         }
 
         //Validate as unsigned integer

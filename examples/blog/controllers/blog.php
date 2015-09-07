@@ -7,9 +7,10 @@ use Phramework\Models\Validate;
 use Phramework\Models\Request;
 use APP\models\blog as b;
 
-class blog {
-
-    public static function GET($params, $method, $headers) {
+class blog
+{
+    public static function GET($params, $method, $headers)
+    {
         include(APPPATH. '/models/blog.php');
 
         /*if (($id = Request::resourceId($params)) !== FALSE) {
@@ -26,8 +27,8 @@ class blog {
         ], 'blog', 'My blog'); //will load viewers/page/blog.php
     }
 
-    public static function GETSingle($params, $method, $headers) {
-
+    public static function GETSingle($params, $method, $headers)
+    {
         include(APPPATH. '/models/blog.php');
 
         $id = Request::requiredId($params);
@@ -45,7 +46,8 @@ class blog {
         ], 'blog', 'My blog #' . $id); //will load viewers/page/blog.php
     }
 
-    public static function POST($params) {
+    public static function POST($params)
+    {
         //Define model
         $model = [
             'title'     => [
