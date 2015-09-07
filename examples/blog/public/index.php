@@ -36,12 +36,12 @@ $APP = function() {
         ['blog', 'editor'],
         "APP\\controllers\\"
     );*/
-
+    header('Content-Type: text/html; charset=utf-8');
     $uri_strategy = new \Phramework\URIStrategy\URITemplate(
         [
-            ['blog', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
-            ['blog/{id}', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
-            ['blog/{id}/author/{order}', 'APP\\controllers\\author', 'GET_by_blog', API::METHOD_GET],
+            ['/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
+            ['blog/', 'APP\\controllers\\blog', 'GET', API::METHOD_GET],
+            ['blog/{id}', 'APP\\controllers\\blog', 'GETSingle', API::METHOD_GET],
             ['editor', 'APP\\controllers\\editor', 'GET', API::METHOD_GET]
         ]
     );

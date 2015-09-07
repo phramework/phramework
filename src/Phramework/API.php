@@ -363,10 +363,10 @@ class API
 
 
         } catch (exceptions\NotFound $exception) {
-            self::write_error_log(
+            self::writeErrorLog(
                 $exception->getMessage() .
                 (isset($_SERVER['HTTP_REFERER']) ? ' from ' .
-                    Util::user_content($_SERVER['HTTP_REFERER']) : '')
+                    Util::userContent($_SERVER['HTTP_REFERER']) : '')
             );
             self::errorView([
                 'code' => $exception->getCode(),
@@ -377,7 +377,7 @@ class API
                 'code' => $exception->getCode(),
                 'error' => $exception->getMessage()]);
         } catch (exceptions\Permission $exception) {
-            self::write_error_log(
+            self::writeErrorLog(
                 $exception->getMessage()
             );
             self::errorView(['code' => 403,
@@ -385,7 +385,7 @@ class API
                 'title' => 'Permission'
             ]);
         } catch (exceptions\MissingParamenters $exception) {
-            self::write_error_log(
+            self::writeErrorLog(
                 $exception->getMessage() .
                 implode(', ', $exception->getParameters())
             );
@@ -406,7 +406,7 @@ class API
                 ]);
             }
         } catch (exceptions\IncorrectParameters $exception) {
-            self::write_error_log(
+            self::writeErrorLog(
                 $exception->getMessage() . implode(', ', array_keys($exception->getParameters()))
             );
             self::errorView([
@@ -416,7 +416,7 @@ class API
                 'title' => 'incorrect_parameters_exception'
             ]);
         } catch (exceptions\method_not_allowed $exception) {
-            self::write_error_log(
+            self::writeErrorLog(
                 $exception->getMessage()
             );
 
@@ -432,7 +432,7 @@ class API
                 'title' => 'method_not_allowed'
             ]);
         } catch (\Exception $exception) {
-            self::write_error_log(
+            self::writeErrorLog(
                 $exception->getMessage()
             );
             self::errorView([
@@ -586,7 +586,7 @@ class API
         /**
          * On HEAD method dont return response body, only the user's object
          */
-        if (self::get_method() == self::METHOD_HEAD) {
+        if (self::getMethod() == self::METHOD_HEAD) {
             return;
         }
 

@@ -4,10 +4,11 @@ namespace Phramework\URIStrategy;
 use Phramework\API;
 use Phramework\Exceptions\Permission;
 use Phramework\Exceptions\NotFound;
-use \Phramework\Models\Util;
+use Phramework\Exceptions\Server;
+use Phramework\Models\Util;
 
 /**
- * IURIStrategy Interface
+ * IURIStrategy implementation using URI templates
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
@@ -27,66 +28,101 @@ class URITemplate implements IURIStrategy
         echo "</pre>";
     }
 
-    public static function test($template, $uri)
+    public function test($uri_template, $uri)
     {
+        $template = trim($uri_template, '/');
 
+        // espace slash / character
+        $template = str_replace('/', '\/', $template);
+        // replace all named parameters {id} to named regexp matches
+        $template = preg_replace(
+            '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+)\}(.*?)/',
+            '$1(?P<$2>[0-9a-zA-Z]+)$3',
+            $template
+        );
+
+        $regexp = '/^' . $template . '$/';
+
+        $template_parameters = [];
+
+        if (preg_match($regexp, $uri, $template_parameters)) {
+            //keep non integer keys (only named matches)
+            foreach ($template_parameters as $key => $value) {
+                if (is_int($key)) {
+                    unset($template_parameters[$key]);
+                }
+            }
+
+            return [$template_parameters];
+        }
+
+        return false;
     }
 
-    public function invoke($method, $params, $headers)
+    public function uri()
     {
-        header('Content-Type: text/html; charset=utf-8');
-        $REDIRECT_QUERY_STRING = (isset($_SERVER['REDIRECT_QUERY_STRING']) ? $_SERVER['REDIRECT_QUERY_STRING']
-                    : '');
-        $REDIRECT_URL          = $_SERVER['REDIRECT_URL'];
+        $REDIRECT_QUERY_STRING = (
+            isset($_SERVER['REDIRECT_QUERY_STRING']) ? $_SERVER['REDIRECT_QUERY_STRING']
+            : ''
+        );
 
-        //^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
+        $REDIRECT_URL          = $_SERVER['REDIRECT_URL'];
 
         $uri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
-        //$uri = '/' . trim(str_replace($uri, '', $_SERVER['REQUEST_URI']), '/');
         $uri = '/' . trim(str_replace($uri, '', $REDIRECT_URL), '/');
         $uri = urldecode($uri) . '/';
 
         $uri = trim($uri, '/');
 
-        $this->p($uri);
-        $this->p($REDIRECT_QUERY_STRING);
-        $params = [];
-        parse_str($REDIRECT_QUERY_STRING, $params);
-        $this->p($params);
+        $parameters = [];
+        parse_str($REDIRECT_QUERY_STRING, $parameters);
 
-        foreach ($this->templates as $t) {
-            // trim any slashes from begining and the end of the URI parameter
-            $template = trim($t[0], '/');
-            $this->p($t);
-            // espace slash / character
-            $template = str_replace('/', '\/', $template);
-            // replace all named parameters {id} to named regexp matches
-            $template = preg_replace(
-                '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+)\}(.*?)/',
-                '$1(?P<$2>[0-9a-zA-Z]+)$3',
-                $template
-            );
 
-            $regexp = '/^' . $template . '$/';
-            $this->p($regexp);
-            $matches;
+        return [$uri, $parameters];
+    }
 
-            if (preg_match($regexp, $uri, $matches)) {
-                echo '<strong>';
-                $this->p(['We have a match!', $t[1], $t[2]]);
-                $this->p($matches);
+    public function invoke($requestMethod, $requestParameters, $requestHeaders)
+    {
+        // Get request uri and uri parameters
+        list($uri, $uri_parameters) = $this->uri();
 
-                //keep non integer keys (only named matches)
-                foreach ($matches as $key => $value) {
-                    if (is_int($key)) {
-                        unset($matches[$key]);
-                    }
+        foreach ($this->templates as $template) {
+            $uri_template = $template[0];
+            //Test if uri matches the current uri template
+            $test = $this->test($uri_template, $uri);
+
+            if ($test !== false) {
+                list($uri_parameters) = $test;
+
+                $class  = $template[1];
+                $method = $template[2];
+
+                //Merge all available parameters
+                $parameters = array_merge($requestParameters, $uri_parameters, $test[0]);
+
+                /**
+                 * Check if the requested controller and model is callable
+                 * In order to be callable :
+                 * @todo
+                 */
+                if (!is_callable("$class::$method")) {
+                    throw new Server(API::getTranslated('method_NotFound_exception'));
                 }
-                $this->p($matches);
-                echo '</strong>';
-                break;
+
+                //Call method
+                call_user_func(
+                    [$class, $method],
+                    $parameters,
+                    $requestMethod,
+                    $requestHeaders
+                );
+                return true;
             }
         }
+
+        throw new NotFound(API::getTranslated('method_NotFound_exception'));
+
+        return false;
     }
 }

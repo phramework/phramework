@@ -39,7 +39,7 @@ class Search
                         continue;
                     }
                     $operator = Validate::operator($parameters[$key . '_operator']);
-                    $v        = (isset($parameters[$key . '_value']) ? html_entity_decode(Util::user_content($parameters[$key . '_value'])) : '');
+                    $v        = (isset($parameters[$key . '_value']) ? html_entity_decode(Util::userContent($parameters[$key . '_value'])) : '');
                     $fields[$key ] = ['operator' => $operator, 'value' =>  $v ];
                 }
             }

@@ -9,18 +9,40 @@ use APP\models\blog as b;
 
 class blog {
 
-    public static function GET($params) {
+    public static function GET($params, $method, $headers) {
         include(APPPATH. '/models/blog.php');
 
-        if (($id = Request::resource_id($params)) !== FALSE) {
+        /*if (($id = Request::resourceId($params)) !== FALSE) {
+            echo '<pre>';
+            print_r([$params, $method, $headers]);
+            echo '</pre>';
             throw new \Phramework\Exceptions\NotImplemented();
-        }
+        }*/
 
         $posts = b::get_all();
 
         API::view([
             'posts' => $posts
         ], 'blog', 'My blog'); //will load viewers/page/blog.php
+    }
+
+    public static function GETSingle($params, $method, $headers) {
+
+        include(APPPATH. '/models/blog.php');
+
+        $id = Request::requiredId($params);
+
+        $posts = b::get_all();
+
+        array_unshift($posts, []);
+
+        if ($id == 0 || $id > count($posts) - 1) {
+            throw new \Phramework\Exceptions\NotFound('Post not found');
+        }
+
+        API::view([
+            'posts' => [$posts[$id]]
+        ], 'blog', 'My blog #' . $id); //will load viewers/page/blog.php
     }
 
     public static function POST($params) {
