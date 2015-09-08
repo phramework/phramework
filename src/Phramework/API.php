@@ -211,7 +211,7 @@ class API
      * Allowed HTTP methods
      * @var [type]
      */
-    public static $method_whitelist = [
+    public static $methodWhitelist = [
         self::METHOD_GET,
         self::METHOD_POST,
         self::METHOD_DELETE,
