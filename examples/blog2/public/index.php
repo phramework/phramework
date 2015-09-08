@@ -21,14 +21,17 @@ $APP = function() {
     //Include settings
     $settings = require(APPPATH . '/settings.php');
 
-    $uriStrategy = new \Phramework\URIStrategy\URITemplate([
-        ['/', 'APP\\Controllers\\PostController', 'GET', API::METHOD_GET],
-        ['post/', 'APP\\Controllers\\PostController', 'GET', API::METHOD_GET],
-        ['post/{id}', 'APP\\Controllers\\PostController', 'GETSingle', API::METHOD_GET],
-        ['editor', 'APP\\Controllers\\EditorController', 'GET', API::METHOD_GET],
-        ['editor', 'APP\\Controllers\\EditorController', 'POST', API::METHOD_POST],
-        ['secure', 'APP\\Controllers\\SecureController', 'GET', API::METHOD_GET, true]
-    ]);
+    $controller_whitelist = [
+        'post', 'editor'
+    ];
+
+    $uriStrategy = new \Phramework\URIStrategy\ClassBased(
+        $controller_whitelist,
+        ['post', 'editor'],
+        ['post', 'editor'],
+        "APP\\Controllers\\",
+        'Controller'
+    );
 
     //Initialize API
     $API = new API($settings, $uriStrategy);

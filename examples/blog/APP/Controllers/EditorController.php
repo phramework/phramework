@@ -5,9 +5,9 @@ namespace APP\Controllers;
 use Phramework\API;
 use Phramework\Models\Validate;
 use Phramework\Models\Request;
-use APP\Models\Blog as B;
+use APP\Models\Post;
 
-class Editor
+class EditorController
 {
     public static function GET($params)
     {

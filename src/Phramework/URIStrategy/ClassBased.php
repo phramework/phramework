@@ -51,25 +51,17 @@ class ClassBased implements IURIStrategy
      */
     public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
-
         //Get controller from the request (URL parameter)
-        if (!isset($params['controller']) || empty($params['controller'])) {
+        if (!isset($requestParameters['controller']) || empty($requestParameters['controller'])) {
             if (($default_controller = API::getSetting('default_controller'))) {
-                $params['controller'] = $default_controller;
+                $requestParameters['controller'] = $default_controller;
             } else {
                 die(); //Or throw \Exception OR redirect to API documentation
             }
         }
 
-        $controller = $params['controller'];
-        unset($params['controller']);
-
-        //If not authenticated allow only certain controllers to access
-        if (!$requestUser &&
-            !in_array($controller, $this->controller_unauthenticated_whitelist) &&
-            !in_array($controller, $this->controller_public_whitelist)) {
-            throw new Permission(API::getTranslated('unauthenticated_access_exception'));
-        }
+        $controller = $requestParameters['controller'];
+        unset($requestParameters['controller']);
 
         //Check if requested controller and method are allowed
         if (!in_array($controller, $this->controller_whitelist)) {
@@ -78,18 +70,29 @@ class ClassBased implements IURIStrategy
             throw new NotFound(API::getTranslated('method_NotFound_exception'));
         }
 
+        //If not authenticated allow only certain controllers to access
+        if (!$requestUser &&
+            !in_array($controller, $this->controller_unauthenticated_whitelist) &&
+            !in_array($controller, $this->controller_public_whitelist)) {
+            throw new Permission(API::getTranslated('unauthenticated_access_exception'));
+        }
+
         // Append suffix
-        $controller = $controller . ($suffix ? $suffix : '');
+        $controller = $controller . ($this->suffix ? $this->suffix : '');
 
         /**
          * Check if the requested controller and model is callable
          * In order to be callable :
          * 1) The controllers class must be defined as : myname_$suffix
-         * 2) the methods must be defined as : public static function GET($params)
-         *    where $params are the passed parameters
+         * 2) the methods must be defined as : public static function GET($requestParameters)
+         *    where $requestParameters are the passed parameters
          */
         if (!is_callable($this->namespace . "{$controller}::$requestMethod")) {
-            throw new NotFound(API::getTranslated('method_NotFound_exception'));
+            //Retry using capitalized first letter of the class
+            $controller = ucfirst($controller);
+            if (!is_callable($this->namespace . "{$controller}::$requestMethod")) {
+                throw new NotFound(API::getTranslated('method_NotFound_exception'));
+            }
         }
 
         //Call controller's method

@@ -1,0 +1,11 @@
+RewriteEngine On
+
+#Site full url with id
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z]{3,})/([a-zA-Z0-9_|%2520]+).*$ index.php?controller=$1&resource_id=$2 [L,QSA]
+
+#Site full url
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z]{3,}).*$ index.php?controller=$1 [L,QSA]

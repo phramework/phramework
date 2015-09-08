@@ -2,7 +2,7 @@
 
 namespace APP\Models;
 
-class Blog
+class Post
 {
     public static function getAll()
     {
