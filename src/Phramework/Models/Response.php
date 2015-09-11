@@ -10,8 +10,7 @@ use Phramework\API;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0.4
  * @package Phramework
- * @subpackage API
- * @category models
+ * @category Models
  */
 class Response
 {

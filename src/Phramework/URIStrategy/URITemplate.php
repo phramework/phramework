@@ -9,28 +9,38 @@ use Phramework\Models\Util;
 
 /**
  * IURIStrategy implementation using URI templates
+ * 
+ * 
+ * This strategy uses URI templates to validate the requested URI,
+ * if the URI matches a template then the assigned method will be executed.
+ * This class is the preferable strategy if jsonapi is to be used.
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
-class URITemplate implements IURIStrategy
+class URITemplate implements Phramework\URIStrategy\IURIStrategy
 {
     private $templates;
-
+    
+    /**
+     * Create a URI Template strategy
+     * @param Array $templates List of URI template and metainformation objects
+     */
     public function __construct($templates)
     {
         $this->templates = $templates;
     }
-
-    private function p($param)
+    
+    /**
+     * Test an URI template validates the provided URI
+     * @param string $URITemplate URI Template
+     * @param string $URI Provided URI 
+     * @return false|array If the validation of the template is not successful
+     * then false will be returned, else a key value array will be retrned
+     * containing the extracter parameters from the URI template.
+     */
+    public function test($URITemplate, $URI)
     {
-        echo "<pre>";
-        print_r($param);
-        echo "</pre>";
-    }
-
-    public function test($uri_template, $uri)
-    {
-        $template = trim($uri_template, '/');
+        $template = trim($URITemplate, '/');
 
         // espace slash / character
         $template = str_replace('/', '\/', $template);
@@ -43,49 +53,53 @@ class URITemplate implements IURIStrategy
 
         $regexp = '/^' . $template . '$/';
 
-        $template_parameters = [];
+        $templateParameters = [];
 
-        if (preg_match($regexp, $uri, $template_parameters)) {
+        if (preg_match($regexp, $URI, $templateParameters)) {
             //keep non integer keys (only named matches)
-            foreach ($template_parameters as $key => $value) {
+            foreach ($templateParameters as $key => $value) {
                 if (is_int($key)) {
-                    unset($template_parameters[$key]);
+                    unset($templateParameters[$key]);
                 }
             }
 
-            return [$template_parameters];
+            return [$templateParameters];
         }
 
         return false;
     }
-
-    public function uri()
+    
+    /**
+     * Get current URI and GET parameters from the requested URI
+     * @return string[2] Returns an array with current URI and GET parameters
+     */
+    public function URI()
     {
         $REDIRECT_QUERY_STRING = (
             isset($_SERVER['REDIRECT_QUERY_STRING']) ? $_SERVER['REDIRECT_QUERY_STRING']
             : ''
         );
 
-        $REDIRECT_URL          = $_SERVER['REDIRECT_URL'];
+        $REDIRECT_URL = $_SERVER['REDIRECT_URL'];
 
-        $uri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+        $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
-        $uri = '/' . trim(str_replace($uri, '', $REDIRECT_URL), '/');
-        $uri = urldecode($uri) . '/';
+        $URI = '/' . trim(str_replace($URI, '', $REDIRECT_URL), '/');
+        $URI = urldecode($URI) . '/';
 
-        $uri = trim($uri, '/');
+        $URI = trim($URI, '/');
 
         $parameters = [];
         parse_str($REDIRECT_QUERY_STRING, $parameters);
 
 
-        return [$uri, $parameters];
+        return [$URI, $parameters];
     }
 
     public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
         // Get request uri and uri parameters
-        list($uri, $uri_parameters) = $this->uri();
+        list($URI, $URI_parameters) = $this->URI();
 
         foreach ($this->templates as $template) {
             $templateMethod = (isset($template[3]) ? $template[3] : API::METHOD_ANY);
@@ -96,23 +110,23 @@ class URITemplate implements IURIStrategy
                 continue;
             }
 
-            $uri_template = $template[0];
+            $URITemplate = $template[0];
 
             //Test if uri matches the current uri template
-            $test = $this->test($uri_template, $uri);
+            $test = $this->test($URITemplate, $URI);
 
             if ($test !== false) {
                 if ($requiresAuthentication && $requestUser === false) {
                     throw new Permission(API::getTranslated('unauthenticated_access_exception'));
                 }
 
-                list($uri_parameters) = $test;
+                list($URI_parameters) = $test;
 
                 $class   = $template[1];
                 $method  = $template[2];
 
                 //Merge all available parameters
-                $parameters = array_merge($requestParameters, $uri_parameters, $test[0]);
+                $parameters = array_merge($requestParameters, $URI_parameters, $test[0]);
 
                 /**
                  * Check if the requested controller and model is callable
@@ -135,7 +149,5 @@ class URITemplate implements IURIStrategy
         }
 
         throw new NotFound(API::getTranslated('method_NotFound_exception'));
-
-        return false;
     }
 }

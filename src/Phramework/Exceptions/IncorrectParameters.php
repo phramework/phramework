@@ -5,6 +5,7 @@ namespace Phramework\Exceptions;
 /**
  * IncorrectParametersException
  * Used to throw an \Exception, when there are some incorrect formed parameters.
+ * @author Spafaridis Xenophon <nohponex@gmail
  */
 class IncorrectParameters extends \Exception
 {

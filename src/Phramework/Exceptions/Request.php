@@ -5,6 +5,7 @@ namespace Phramework\Exceptions;
 /**
  * RequestException
  * Used to throw an \Exception, when there is something wrong with the request.
+ * @author Spafaridis Xenophon <nohponex@gmail
  */
 class Request extends \Exception
 {

@@ -5,8 +5,7 @@ namespace Phramework\Models;
 /**
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @package Phramework
- * @subpackage API
- * @category models
+ * @category Models
  */
 class Language
 {

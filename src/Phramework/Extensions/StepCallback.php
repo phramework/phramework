@@ -4,6 +4,9 @@ namespace Phramework\Extensions;
 
 use Phramework\API;
 
+/**
+ * @author Spafaridis Xenophon <nohponex@gmail
+ */
 class StepCallback
 {
     /**

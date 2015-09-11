@@ -5,6 +5,7 @@ namespace Phramework\Exceptions;
 /**
  * DatabaseException
  * Used to throw an \Exception, when there is something wrong with a Database request.
+ * @author Spafaridis Xenophon <nohponex@gmail
  */
 class Database extends \Exception
 {

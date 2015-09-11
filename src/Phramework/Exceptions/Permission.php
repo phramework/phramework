@@ -5,6 +5,7 @@ namespace Phramework\Exceptions;
 /**
  * PermissionException
  * Used to throw an \Exception, when there requested resource is not available for current user.
+ * @author Spafaridis Xenophon <nohponex@gmail
  */
 class Permission extends \Exception
 {

@@ -9,12 +9,11 @@ use Phramework\Models\Database;
  * Authentication related functions
  *
  * Implements authentication using HTTP\s BASIC AUTHENTICATION
- * This class should be extended if Database structure differs
+ * This class should be extended, this implementation will allways return false
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
  * @package Phramework
- * @subpackage API
- * @category models
+ * @category Models
  * @todo remove current implementation and provide only utilities fuctions, perhaps it should be an interface
  */
 class Authentication

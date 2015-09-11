@@ -454,7 +454,7 @@ class API
      *
      * This value is based on user's timezone
      * @todo Implement, get user's data
-     * @return integer Returns offset from UTC in minutes
+     * @return int Returns offset from UTC in minutes
      */
     public static function getTimezoneOffset()
     {
@@ -527,6 +527,7 @@ class API
         if (!isset(self::$settings[$key]) || ($second_level && isset(self::$settings[$key][$second_level]))) {
             return $default_value;
         }
+        
         if ($second_level) {
             self::$settings[$key][$second_level];
         }
@@ -596,7 +597,7 @@ class API
 
     /**
      * Write a message to log file
-     * @param String $message message to write
+     * @param string $message message to write
      * @todo improve
      */
     public static function writeErrorLog($message)

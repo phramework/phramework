@@ -5,6 +5,7 @@ namespace Phramework\Exceptions;
 /**
  * MissingParamentersException
  * Used to throw an \Exception, when there are some missing parameters.
+ * @author Spafaridis Xenophon <nohponex@gmail
  */
 class MissingParameters extends \Exception
 {

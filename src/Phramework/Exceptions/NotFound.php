@@ -7,6 +7,7 @@ namespace Phramework\Exceptions;
  *
  * The server has not found anything matching the Request-URI.
  * No indication is given of whether the condition is temporary or permanent.
+ * @author Spafaridis Xenophon <nohponex@gmail
  */
 class NotFound extends \Exception
 {

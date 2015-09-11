@@ -6,12 +6,13 @@ use Phramework\Exceptions\Permission;
 use Phramework\Exceptions\NotFound;
 
 /**
- * IURIStrategy implementation using default (old) class paths
+ * ClassBased strategy will use the controller parameters extracted from URI
+ * and will attempt to include the respective class.
  * @todo document default_controller setting
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
-class ClassBased implements IURIStrategy
+class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 {
     private $controllerWhitelist;
     private $controllerUnauthenticatedWhitelist;
@@ -20,12 +21,12 @@ class ClassBased implements IURIStrategy
     private $suffix;
 
     /**
-     * [__construct description]
-     * @param Array $controllerWhitelist                Array with the allowed controllers
-     * @param Array $controllerUnauthenticatedWhitelist Array with the controllers which can be accessed without authentication
-     * @param Array $controllerPublicWhitelist          Array with the controllers which can be accessed without authentication
-     * @param String $namespace                         Controller's namespace
-     * @param String $suffix                            [Optional] Default is NULL
+     * Initialize ClassBased IURIStrategy
+     * @param array $controllerWhitelist                Array with the allowed controllers
+     * @param array $controllerUnauthenticatedWhitelist Array with the controllers which can be accessed without authentication
+     * @param array $controllerPublicWhitelist          Array with the controllers which can be accessed without authentication
+     * @param string $namespace                         Controller's namespace
+     * @param string $suffix                            [Optional] Default is NULL
      */
     public function __construct(
         $controllerWhitelist,
@@ -35,20 +36,13 @@ class ClassBased implements IURIStrategy
         $suffix = ''
     ) {
 
-        $this->controller_whitelist                 = $controllerWhitelist;
+        $this->controller_whitelist                   = $controllerWhitelist;
         $this->controller_unauthenticated_whitelist = $controllerUnauthenticatedWhitelist;
-        $this->controller_public_whitelist          = $controllerPublicWhitelist;
-        $this->namespace                            = $namespace;
-        $this->suffix                               = $suffix;
+        $this->controller_public_whitelist           = $controllerPublicWhitelist;
+        $this->namespace                               = $namespace;
+        $this->suffix                                  = $suffix;
     }
-    /**
-     * [invoke description]
-     * @param  String $requestMethod [description]
-     * @param  Array $requestParameters        [description]
-     * @param  Array $requestHeaders       [description]
-     * @todo check request method
-     * @return Boolean                [description]
-     */
+    
     public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
         //Get controller from the request (URL parameter)
