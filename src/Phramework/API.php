@@ -46,23 +46,7 @@ if (!function_exists('___')) {
 class API
 {
     protected static $instance;
-    /**
-     * Allowed controllers
-     * @var array
-     */
-    //private static $controller_whitelist;
 
-    /**
-     * Controllers that doesn't require authentication
-     * @var array
-     */
-    //private static $controller_unauthenticated_whitelist;
-
-    /**
-     * Controllers that doesn't require authentication
-     * @var array
-     */
-    //private static $controller_public_whitelist;
     private static $user;
     private static $language;
     private static $settings;
@@ -115,13 +99,13 @@ class API
      * @param array $controller_unauthenticated_whitelist
      * @param array $controller_public_whitelist
      * @param string $mode [optional]
-     * @param object|NULL $translation_object [optional] Set custom translation class
+     * @param object|NULL $translationObject [optional] Set custom translation class
      */
     public function __construct(
         $settings,
-        $URIStrategy_object,
+        $URIStrategyObject,
         $mode = self::MODE_DEFAULT,
-        $translation_object = null
+        $translationObject = null
     ) {
         self::$settings = $settings;
 
@@ -133,14 +117,14 @@ class API
         //Instantiate StepCallback object
         $this->StepCallback = new \Phramework\Extensions\StepCallback();
 
-        if (!is_subclass_of($URIStrategy_object, 'Phramework\URIStrategy\IURIStrategy', true)) {
+        if (!is_subclass_of($URIStrategyObject, 'Phramework\URIStrategy\IURIStrategy', true)) {
             throw new \Phramework\Exceptions\Server('class_is_not_implementing Phramework\URIStrategy\IURIStrategy');
         }
-        self::$URIStrategy = $URIStrategy_object;
+        self::$URIStrategy = $URIStrategyObject;
 
         //If custom translation object is set add it
-        if ($translation_object) {
-            $this->setTranslationObject($translation_object);
+        if ($translationObject) {
+            $this->setTranslationObject($translationObject);
         } else {
             //Or instantiate default translation object
             $this->translation = new \Phramework\Extensions\Translation(
@@ -187,12 +171,12 @@ class API
         return call_user_func([self::$authenticationClass, 'authenticate'], $username, $password);
     }
 
-    public function setTranslationObject($translation_object)
+    public function setTranslationObject($translationObject)
     {
         if (!is_subclass_of($class, 'Phramework\Extensions\translation', true)) {
             throw new \Exception('class_is_not_implementing Phramework\Extensions\translation');
         }
-        $this->translation = $translation_object;
+        $this->translation = $translationObject;
     }
 
     /**
@@ -245,7 +229,7 @@ class API
 
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
-                if (!API\models\Validate::isValidCallback($_GET['callback'])) {
+                if (!Models\Validate::isValidCallback($_GET['callback'])) {
                     throw new exceptions\IncorrectParameters(['callback']);
                 }
                 self::$callback = $_GET['callback'];

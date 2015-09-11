@@ -105,9 +105,9 @@ class Filter
      */
     public static function string($value, $max_length = null)
     {
-        if (!is_string($value)) {
+        /*if (!is_string($value)) {
             throw new \Exception('not_a_string');
-        }
+        }*/
         $value = filter_var(trim($value), FILTER_SANITIZE_STRING);
 
         if ($max_length && mb_strlen($value) > $max_length) {

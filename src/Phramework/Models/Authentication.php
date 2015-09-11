@@ -15,6 +15,7 @@ use Phramework\Models\Database;
  * @package Phramework
  * @subpackage API
  * @category models
+ * @todo remove current implementation and provide only utilities fuctions, perhaps it should be an interface
  */
 class Authentication
 {
@@ -39,44 +40,15 @@ class Authentication
 
     /**
      * Autheticate a user, using user's email and password
-     * @todo Implement validate
+     * Always returns false
+     * You must extend this class and implement this method
      * @param string $email
      * @param string $password
-     * @return array|FALSE Returns false on error or the user object on success
+     * @return array|false Returns false on error or the user object on success
      * @throws \Phramework\Exceptions\Permission
      */
     public static function authenticate($email, $password)
     {
-
-        //Select using user's email
-        $auth = Database::executeAndFetch(
-            'SELECT "id", "username", "email", "password", "language_code", "usergroup", "disabled"'
-            . 'FROM "user" WHERE LOWER("email") = ? LIMIT 1',
-            [strtolower($email)]
-        );
-
-        //Check if user exists
-        if (!$auth) {
-            return false;
-        }
-        //Check if user is disabled
-        if ($auth['disabled']) {
-            throw new \Phramework\Exceptions\Permission(API::getTranslated('disabled_account_exception'));
-        }
-
-        //Verify password hash
-        if (password_verify($password, $auth['password'])) {
-            //Force corrent types
-            $auth['id'] = intval($auth['id']);
-
-            //Return without the password field
-            return \Phramework\Models\Filter::outEntry(
-                $auth,
-                ['password', 'disabled', 'validated']
-            );
-        } else {
-            //In case of incorrect password
-            return false;
-        }
+        return false;
     }
 }
