@@ -222,7 +222,9 @@ class Listing
             '|',
             [OPERATOR_EQUAL, OPERATOR_NOT_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL, OPERATOR_LESS, OPERATOR_LESS_EQUAL]
         );
-        if (in_array('searchable', $model['fields' ][$index]) && preg_match('/^(#|' . $operators . ')[]{0,1}(\d+)$/', $text_unsafe, $matches)) {
+        if (in_array('searchable', $model['fields' ][$index])
+            && preg_match('/^(#|' . $operators . ')[]{0,1}(\d+)$/', $text_unsafe, $matches)
+        ) {
             // $operator $value where field is model's index
             //Replace # with = operator (match #id )
             if ($matches[1] == '#') {

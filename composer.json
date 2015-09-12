@@ -17,6 +17,7 @@
       "Phramework\\": "src/Phramework"
     }
   },
+  "autoload-dev": {},
   "repositories": [{
     "type": "vcs",
     "url": "git@github.com:metaphrase/php-sdk.git"
@@ -31,7 +32,8 @@
   "require-dev": {
     "phpunit/phpunit": "4.*",
     "phpunit/phpunit-skeleton-generator": "*",
-    "squizlabs/php_codesniffer": "2.*"
+    "squizlabs/php_codesniffer": "2.*",
+    "apigen/apigen": "^4.1"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -40,6 +42,7 @@
   },
   "scripts": {
     "test": "phpunit",
-    "phpcs": "./vendor/bin/phpcs -p -s --standard=PSR2 ./src"
+    "phpcs": "./vendor/bin/phpcs -p -s --standard=PSR2 ./src",
+    "doc": "./vendor/bin/apigen generate -s ./src -d ./doc  --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"Phramework\""
   }
 }
