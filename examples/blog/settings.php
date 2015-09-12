@@ -1,7 +1,6 @@
 <?php
 
 $settings = [
-    'language' => 'en',
-    //'default_controller' => 'blog'
+    'language' => 'en'
 ];
 return $settings;
