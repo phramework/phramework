@@ -67,7 +67,12 @@ class Database
         $options = [];
         $options[PDO::MYSQL_ATTR_USE_BUFFERED_QUERY] = true;
 
-        if (!$this::$pdoLink = new PDO("mysql:dbname={$name};host={$host};port={$port};charset=utf8", $username, $password, $options)) {
+        if (!$this::$pdoLink = new PDO(
+            "mysql:dbname={$name};host={$host};port={$port};charset=utf8",
+            $username,
+            $password,
+            $options
+        )) {
             throw new \Phramework\Exceptions\Database('ERROR_DATABASE_CONNECT');
         }
         $this::$pdoLink->query('SET NAMES utf8');
@@ -76,7 +81,9 @@ class Database
 
     private function createPostgresqlConnection($name, $username, $password, $host, $port)
     {
-        if (!$this::$pdoLink = new PDO("pgsql:dbname=$name;host=$host;user=$username;password=$password;port=$port")) {
+        if (!$this::$pdoLink = new PDO(
+            "pgsql:dbname=$name;host=$host;user=$username;password=$password;port=$port"
+        )) {
             throw new \Phramework\Exceptions\Database('ERROR_DATABASE_CONNECT');
         }
     }
@@ -161,7 +168,8 @@ class Database
      *
      * @param string $query
      * @param array Query parameters
-     * @param array $cast_model [optional] Default is NULL, if set then \Phramework\Models\Filter::castEntry will be applied to data
+     * @param array $cast_model [optional] Default is NULL, if set then
+     * \Phramework\Models\Filter::castEntry will be applied to data
      * @return type
      * @throws Phramework\Exceptions\Database
      */
@@ -187,7 +195,8 @@ class Database
      *
      * @param string $query
      * @param array Query parameters
-     * @param array $cast_model [optional] Default is NULL, if set then \Phramework\Models\Filter::cast will be applied to data
+     * @param array $cast_model [optional] Default is NULL, if set then
+     * \Phramework\Models\Filter::cast will be applied to data
      * @return type
      * @throws Phramework\Exceptions\Database
      */
@@ -307,7 +316,8 @@ class Database
      *
      * @param string $query Query string
      * @param array Query parameters
-     * @param array $cast_model [optional] Default is NULL, if set then \Phramework\Models\Filter::castEntry will be applied to data
+     * @param array $cast_model [optional] Default is NULL, if set
+     * then \Phramework\Models\Filter::castEntry will be applied to data
      * @return type
      * @throws Phramework\Exceptions\Database
      */

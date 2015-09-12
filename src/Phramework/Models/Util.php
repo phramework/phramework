@@ -173,8 +173,15 @@ class Util
      * @param array $allowed_filetypes Allowed file extensions. Optional. Default allow all
      * @param boolean $relative_path    Return paths in relative form. Optional. Default FALSE
      */
-    public static function directoryToArray($directory, $recursive = true, $listDirs = false, $listFiles = true, $exclude = '', $allowed_filetypes = [], $relative_path = false)
-    {
+    public static function directoryToArray(
+        $directory,
+        $recursive = true,
+        $listDirs = false,
+        $listFiles = true,
+        $exclude = '',
+        $allowed_filetypes = [],
+        $relative_path = false
+    ) {
         $arrayItems = [];
         $skipByExclude = false;
         $handle = opendir($directory);
@@ -193,7 +200,18 @@ class Util
                 if (!$skip && !$skipByExclude) {
                     if (is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
                         if ($recursive) {
-                            $arrayItems = array_merge($arrayItems, self::directoryToArray($directory . DIRECTORY_SEPARATOR . $file, $recursive, $listDirs, $listFiles, $exclude, $allowed_filetypes, $relative_path));
+                            $arrayItems = array_merge(
+                                $arrayItems,
+                                self::directoryToArray(
+                                    $directory . DIRECTORY_SEPARATOR . $file,
+                                    $recursive,
+                                    $listDirs,
+                                    $listFiles,
+                                    $exclude,
+                                    $allowed_filetypes,
+                                    $relative_path
+                                )
+                            );
                         }
                         if ($listDirs) {
                             $arrayItems[] = ($relative_path ? $file : $directory . DIRECTORY_SEPARATOR . $file);
@@ -233,8 +251,10 @@ class Util
      */
     public static function readableRandomString($length = 8)
     {
-        $conso = [ 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
-        $vocal = [ 'a', 'e', 'i', 'o', 'u'];
+        $conso = [
+            'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'
+        ];
+        $vocal = ['a', 'e', 'i', 'o', 'u'];
 
         $word = '';
         srand((double) microtime() * 1000000);

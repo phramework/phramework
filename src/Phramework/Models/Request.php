@@ -23,7 +23,7 @@ class Request
      * Check if current request is authenticated
      *
      * Optionaly it checks the authenticated user has a specific user_id
-     * @param uint $user_id [optional] Check if current user has the same id with $user_id
+     * @param int $user_id [optional] Check if current user has the same id with $user_id
      * @return array Returns the user object
      */
     public static function checkPermission($user_id = false)
@@ -78,19 +78,24 @@ class Request
      * @param array $parameters  The request parameters
      * @param boolean $INTEGER  Check id's type to be unsigned integer
      * @throws MissingParamenters if id is set and not integer
-     * @return string|integer Returns the id or FALSE if not set, it $INTGER the returned value will be converted to unsigned integer
+     * @return string|integer Returns the id or FALSE if not set,
+     * if $INTGER the returned value will be converted to unsigned integer
      */
     public static function resourceId($parameters, $INTEGER = true)
     {
         //Check if is set AND validate
-        if (isset($parameters['resource_id']) && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false) {
+        if (isset($parameters['resource_id'])
+            && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false
+        ) {
             if ($INTEGER) {
                 return Validate::uint($parameters['resource_id']);
             }
             return $parameters['resource_id'];
         }
 
-        if (isset($parameters['id']) && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['id']) !== false) {
+        if (isset($parameters['id'])
+            && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['id']) !== false
+        ) {
             if ($INTEGER) {
                 return Validate::uint($parameters['id']);
             }
@@ -101,15 +106,17 @@ class Request
 
     /**
      * Require id paramter
-     * @param $parameters Array The request paramters
-     * @param $is_integer Boolean If TRUE validate the id as integer if FALSE as alphanumeric, Default TRUE
+     * @param array $parameters The request paramters
+     * @param boolean $is_integer If TRUE validate the id as integer if FALSE as alphanumeric, Default TRUE
      * @throws MissingParamenters is not set
      * @throws IncorrectParameters if value is not correct
      * @return returns the value of the id parameter
      */
     public static function requiredId($parameters, $INTEGER = true)
     {
-        if (isset($parameters['resource_id']) && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false) {
+        if (isset($parameters['resource_id'])
+            && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false
+        ) {
             $parameters['id'] = $parameters['resource_id'];
         }
         if (!isset($parameters['id'])) {
@@ -117,9 +124,13 @@ class Request
         }
 
         //Validate as unsigned integer
-        if ($INTEGER && filter_var($parameters['id'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) === false) {
+        if ($INTEGER
+            && filter_var($parameters['id'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) === false
+        ) {
             throw new IncorrectParameters(['id']);
-        } elseif (!$INTEGER && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['id']) === false) {
+        } elseif (!$INTEGER
+            && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['id']) === false
+        ) {
             //Validate as alphanumeric
             throw new IncorrectParameters(['id']);
         }

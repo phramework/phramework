@@ -37,5 +37,9 @@
   "prefer-stable": true,
   "archive": {
     "exclude": ["demo/", "examples/", "test/", "/*.test", "tests", "demo.php"]
+  },
+  "scripts": {
+    "test": "phpunit",
+    "phpcs": "./vendor/bin/phpcs -p -s --standard=PSR2 ./src"
   }
 }

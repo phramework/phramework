@@ -168,7 +168,8 @@ class Validate
     /**
      * Define available operators
      */
-    /*public static $operators = [ OPERATOR_EMPTY, OPERATOR_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL,
+    /*public static $operators = [
+        OPERATOR_EMPTY, OPERATOR_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL,
         OPERATOR_ISSET, OPERATOR_LESS, OPERATOR_LESS_EQUAL, OPERATOR_NOT_EMPTY,
         OPERATOR_NOT_EQUAL, OPERATOR_NOT_ISSET, OPERATOR_ISNULL, OPERATOR_NOT_ISNULL,
         OPERATOR_IN, OPERATOR_NOT_IN, OPERATOR_LIKE, OPERATOR_NOT_LIKE];*/
@@ -212,11 +213,17 @@ class Validate
                         if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === false) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            if (isset($value['max']) && $value['max'] !== null && $parameters[$key] > $value['max']) {
+                            if (isset($value['max'])
+                                && $value['max'] !== null
+                                && $parameters[$key] > $value['max']
+                            ) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            } elseif (isset($value['min']) && $value['min'] !== null && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min'])
+                                && $value['min'] !== null
+                                && $parameters[$key] < $value['min']
+                            ) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -234,11 +241,17 @@ class Validate
                         if (filter_var($parameters[$key], FILTER_VALIDATE_INT) === false) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            if (isset($value['max']) && $value['max'] !== null && $parameters[$key] > $value['max']) {
+                            if (isset($value['max'])
+                                && $value['max'] !== null
+                                && $parameters[$key] > $value['max']
+                            ) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            } elseif (isset($value['min']) && $value['min'] !== null && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min'])
+                                && $value['min'] !== null
+                                && $parameters[$key] < $value['min']
+                            ) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -259,11 +272,17 @@ class Validate
                         if (filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === false) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            if (isset($value['max']) && $value['max'] !== null && $parameters[$key] > $value['max']) {
+                            if (isset($value['max'])
+                                && $value['max'] !== null
+                                && $parameters[$key] > $value['max']
+                            ) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            } elseif (isset($value['min']) && $value['min'] !== null && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min'])
+                                && $value['min'] !== null
+                                && $parameters[$key] < $value['min']
+                            ) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -279,11 +298,17 @@ class Validate
                         if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === false) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            if (isset($value['max']) && $value['max'] !== null && $parameters[$key] > $value['max']) {
+                            if (isset($value['max'])
+                                && $value['max'] !== null
+                                && $parameters[$key] > $value['max']
+                            ) {
                                 $temporary_exception_description['failure'] = 'max';
                                 $temporary_exception_description['max'] = $value['max'];
                                 $incorrect[$key] = $temporary_exception_description;
-                            } elseif (isset($value['min']) && $value['min'] !== null && $parameters[$key] < $value['min']) {
+                            } elseif (isset($value['min'])
+                                && $value['min'] !== null
+                                && $parameters[$key] < $value['min']
+                            ) {
                                 $temporary_exception_description['failure'] = 'min';
                                 $temporary_exception_description['min'] = $value['min'];
                                 $incorrect[$key] = $temporary_exception_description;
@@ -314,22 +339,28 @@ class Validate
                         }
                         break;
                     case self::TYPE_EMAIL:
-                        if (empty($parameters[$key]) || filter_var($parameters[$key], FILTER_VALIDATE_EMAIL) === false) {
+                        if (empty($parameters[$key])
+                            || filter_var($parameters[$key], FILTER_VALIDATE_EMAIL) === false
+                        ) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
-                            if (isset($value['max']) && $value['max'] !== null) {
-                                if (mb_strlen($parameters[$key]) > $value['max']) {
+                            if (isset($value['max'])
+                                && $value['max'] !== null
+                                && mb_strlen($parameters[$key]) > $value['max']
+                            ) {
                                     $temporary_exception_description['failure'] = 'max';
                                     $temporary_exception_description['max'] = $value['max'];
                                     $incorrect[$key] = $temporary_exception_description;
-                                }
+
                             }
-                            if (isset($value['min']) && $value['min'] !== null) {
-                                if (mb_strlen($parameters[$key]) < $value['min']) {
-                                    $temporary_exception_description['failure'] = 'min';
-                                    $temporary_exception_description['min'] = $value['min'];
-                                    $incorrect[$key] = $temporary_exception_description;
-                                }
+                            if (isset($value['min'])
+                                && $value['min'] !== null
+                                && mb_strlen($parameters[$key]) < $value['min']
+                            ) {
+                                $temporary_exception_description['failure'] = 'min';
+                                $temporary_exception_description['min'] = $value['min'];
+                                $incorrect[$key] = $temporary_exception_description;
+
                             }
                         }
                         break;
@@ -398,13 +429,19 @@ class Validate
                             $parameters[$key] = [ $parameters[$key]];
                         }
 
-                        if (isset($value['max']) && $value['max'] !== null && count($parameters[$key]) > $value['max']) {
+                        if (isset($value['max'])
+                            && $value['max'] !== null
+                            && count($parameters[$key]) > $value['max']
+                        ) {
                             $temporary_exception_description['failure'] = 'max';
                             $temporary_exception_description['max'] = $value['max'];
                             $incorrect[$key] = $temporary_exception_description;
                         }
 
-                        if (isset($value['min']) && $value['min'] !== null && count($parameters[$key]) < $value['min']) {
+                        if (isset($value['min'])
+                            && $value['min'] !== null
+                            && count($parameters[$key]) < $value['min']
+                        ) {
                             $temporary_exception_description['failure'] = 'min';
                             $temporary_exception_description['min'] = $value['min'];
                             $incorrect[$key] = $temporary_exception_description;
@@ -513,8 +550,8 @@ class Validate
      * Validate a signed integer
      *
      * @param string|integer $input Input value
-     * @param integer|NULL $min Minimum value. [optional] Default is NULL, if NULL then the minum value is skipped
-     * @param integer|NULL $max Maximum value. [optional] Default is NULL, if NULL then the maximum value is skipped
+     * @param integer|null $min Minimum value. [optional] Default is NULL, if NULL then the minum value is skipped
+     * @param integer|null $max Maximum value. [optional] Default is NULL, if NULL then the maximum value is skipped
      * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is int
      * @throws IncorrectParameters If valu type is not correct.
      * @return integer Returns the value of the input value as int
@@ -544,7 +581,7 @@ class Validate
      * Validate an unsigned integer
      * @param string|integer $input Input value
      * @param integer $min Minimum value. Optional default is 0.
-     * @param integer|NULL $max Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * @param integer|null $max Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
      * @param String $field_name Field's name, used in IncorrectParametersException. Optional default is uint
      * @throws IncorrectParameters If valu type is not correct.
      * @return integer Returns the value of the input value as int
@@ -571,9 +608,10 @@ class Validate
     /**
      * Validate a floating point number
      * @param string|float|int $input
-     * @param float|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
-     * @param float|NULL Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is number
+     * @param float|null $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
+     * @param float|null Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is number
      * @return float Returns the input value as float
      * @throws IncorrectParameters If value type is not correct.
      */
@@ -601,9 +639,10 @@ class Validate
     /**
      * Validate a double presision floating point number
      * @param string|double|float|int $input
-     * @param double|NULL $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
-     * @param double|NULL Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is number
+     * @param double|null $min Minimum value. Optional default is NULL, if NULL then the minum value is skipped
+     * @param double|null Maximum value. Optional default is NULL, if NULL then the maximum value is skipped
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is number
      * @return double Returns the input value as double
      * @throws IncorrectParameters If value type is not correct.
      */
@@ -631,7 +670,8 @@ class Validate
     /**
      * Validate an email address
      * @param string $input
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is email
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is email
      * @return string Return the email address
      * @throws IncorrectParameters If value type is not correct.
      */
@@ -651,7 +691,8 @@ class Validate
     /**
      * Validate a url
      * @param string $input
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is url
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is url
      * @return string Return the url
      * @throws IncorrectParameters If value type is not correct.
      */
@@ -671,7 +712,8 @@ class Validate
     /**
      * Validate a permalink id
      * @param string $input
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is permalink
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is permalink
      * @return string Return the permalink
      * @throws IncorrectParameters If value type is not correct.
      */
@@ -691,7 +733,8 @@ class Validate
     /**
      *
      * @param string $input
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is token
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is token
      * @return string Return the token
      * @throws IncorrectParameters If value type is not correct.
      */
@@ -712,7 +755,8 @@ class Validate
      * Check if input value is in allowed values
      * @param string|integer $input Input array to check
      * @param array $values Array of strings or number, defines the allowed input values
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is enum
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is enum
      * @throws IncorrectParameters If valu type is not correct.
      * @return returns the value of the input value
      */
@@ -740,7 +784,8 @@ class Validate
     /**
      * Validate SQL date, datetime
      * @param string $date Input date
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is date
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is date
      * @return string
      * @throws IncorrectParameters If value type is not correct.
      */
@@ -758,7 +803,8 @@ class Validate
      * Validate color
      * @param type $input Input color
      * @param string $type Color value type. Optional, default is hex
-     * @param string $field_name [optional] Field's name, used in IncorrectParametersException. Optional default is color
+     * @param string $field_name [optional] Field's name, used in IncorrectParametersException.
+     * Optional default is color
      * @return string
      * @throws IncorrectParameters If value type is not correct.
      * @todo Implement additional types

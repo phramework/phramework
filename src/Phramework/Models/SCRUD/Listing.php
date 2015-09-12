@@ -67,12 +67,19 @@ class Listing
     public static function parseFilterBy($parameters, $filter_whitelist)
     {
         $operator = OPERATOR_EQUAL;
-        if (isset($parameters['filter_by']) && in_array($parameters['filter_by'], $filter_whitelist) && isset($parameters['filter_value'])) {
+        if (isset($parameters['filter_by'])
+            && in_array($parameters['filter_by'], $filter_whitelist)
+            && isset($parameters['filter_value'])
+        ) {
             //#! validate!
             if (isset($parameters['filter_operator'])) {
                 $operator = Validate::operator($parameters['filter_operator']);
             }
-            return ['field' => $parameters['filter_by'], 'value' => $parameters['filter_value'], 'operator' => $operator ];
+            return [
+                'field' => $parameters['filter_by'],
+                'value' => $parameters['filter_value'],
+                'operator' => $operator
+            ];
         }
         return false;
     }
@@ -93,13 +100,26 @@ class Listing
         //Set limit query string
         $limit = (($page - 1) * ITEMS_PER_PAGE) . ',' . ITEMS_PER_PAGE;
         //Set order query (string
-        $order_value = ($order ? '"' . $order['field']. '" ' . ($order['asc']? 'ASC' : 'DESC') : " \"$table\".\"$index\" DESC");
+        $order_value =
+            ($order ? '"' . $order['field']. '" ' . ($order['asc']? 'ASC' : 'DESC') : " \"$table\".\"$index\" DESC");
         //Set filter query string
 
         $filter_value = ' ';
         if (!$filter) {
-        } elseif (in_array($filter['operator' ], [OPERATOR_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL, OPERATOR_LESS, OPERATOR_LESS_EQUAL, OPERATOR_NOT_EQUAL])) {
-            $filter_value = 'WHERE "' . $table . '"."' . $filter['field']. '" ' . $filter['operator']. '  "' . $filter['value']. '" ';
+        } elseif (in_array(
+            $filter['operator'],
+            [
+                Validate::OPERATOR_EQUAL,
+                Validate::OPERATOR_GREATER,
+                Validate::OPERATOR_GREATER_EQUAL,
+                Validate::OPERATOR_LESS,
+                Validate::OPERATOR_LESS_EQUAL,
+                Validate::OPERATOR_NOT_EQUAL
+            ]
+        )) {
+            $filter_value = 'WHERE "'
+                . $table . '"."'
+                . $filter['field'] . '" ' . $filter['operator']. '  "' . $filter['value']. '" ';
         } elseif (in_array($filter['operator' ], [OPERATOR_ISNULL, OPERATOR_NOT_ISNULL])) {
             $filter_value = 'WHERE ' . $filter['operator']. '("' . $table . '"."' . $filter['field']. '")';
         }
@@ -131,9 +151,20 @@ class Listing
          $filter_value = ' ';
         //Set filter query string
         if (!$filter) {
-        } elseif (in_array($filter['operator' ], [OPERATOR_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL, OPERATOR_LESS, OPERATOR_LESS_EQUAL, OPERATOR_NOT_EQUAL])) {
-            $filter_value = 'WHERE "'. $table . '"."' . $filter['field']. '" ' . $filter['operator']. '  "' . $filter['value']. '" ';
-        } elseif (in_array($filter['operator' ], [OPERATOR_ISNULL, OPERATOR_NOT_ISNULL])) {
+        } elseif (in_array(
+            $filter['operator'],
+            [
+                Validate::OPERATOR_EQUAL,
+                Validate::OPERATOR_GREATER,
+                Validate::OPERATOR_GREATER_EQUAL,
+                Validate::OPERATOR_LESS,
+                Validate::OPERATOR_LESS_EQUAL,
+                Validate::OPERATOR_NOT_EQUAL
+            ]
+        )) {
+            $filter_value = 'WHERE "'
+            . $table . '"."' . $filter['field']. '" ' . $filter['operator']. '  "' . $filter['value']. '" ';
+        } elseif (in_array($filter['operator'], [Validate::OPERATOR_ISNULL, Validate::OPERATOR_NOT_ISNULL])) {
             $filter_value = 'WHERE ' . $filter['operator']. "(\"$table\".\"" . $filter['field']. '`)';
         }
 
@@ -187,7 +218,10 @@ class Listing
         //Decode html unsafe text used in regular expressions
         $text_unsafe = html_entity_decode($text);
 
-        $operators = implode('|', [OPERATOR_EQUAL, OPERATOR_NOT_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL, OPERATOR_LESS, OPERATOR_LESS_EQUAL]);
+        $operators = implode(
+            '|',
+            [OPERATOR_EQUAL, OPERATOR_NOT_EQUAL, OPERATOR_GREATER, OPERATOR_GREATER_EQUAL, OPERATOR_LESS, OPERATOR_LESS_EQUAL]
+        );
         if (in_array('searchable', $model['fields' ][$index]) && preg_match('/^(#|' . $operators . ')[]{0,1}(\d+)$/', $text_unsafe, $matches)) {
             // $operator $value where field is model's index
             //Replace # with = operator (match #id )

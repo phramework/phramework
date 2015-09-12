@@ -22,9 +22,12 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 
     /**
      * Initialize ClassBased IURIStrategy
-     * @param array $controllerWhitelist                Array with the allowed controllers
-     * @param array $controllerUnauthenticatedWhitelist Array with the controllers which can be accessed without authentication
-     * @param array $controllerPublicWhitelist          Array with the controllers which can be accessed without authentication
+     * @param array $controllerWhitelist                Array with the allowed
+     * controllers
+     * @param array $controllerUnauthenticatedWhitelist Array with the
+     * controllers which can be accessed without authentication
+     * @param array $controllerPublicWhitelist          Array with the controllers
+     * which can be accessed without authentication
      * @param string $namespace                         Controller's namespace
      * @param string $suffix                            [Optional] Default is NULL
      */
@@ -42,7 +45,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
         $this->namespace                               = $namespace;
         $this->suffix                                  = $suffix;
     }
-    
+
     public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
         //Get controller from the request (URL parameter)

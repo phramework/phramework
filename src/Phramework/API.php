@@ -267,7 +267,8 @@ class API
             if (isset($headers['Origin'])) {
                 $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
                 //Check if origin host is allowed
-                if ($origin_host && self::getSetting('allowed_referer') && in_array($origin_host, self::getSetting('allowed_referer'))) {
+                if ($origin_host && self::getSetting('allowed_referer')
+                    && in_array($origin_host, self::getSetting('allowed_referer'))) {
                     $origin = $headers['Origin'];
                 }
                 //@TODO @security else deny access
@@ -278,7 +279,10 @@ class API
                 header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $origin);
                 header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
-                header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding');
+                header(
+                    'Access-Control-Allow-Headers: '
+                    . 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding'
+                );
             }
             //Catch OPTIONS request and kill it
             if ($method == self::METHOD_OPTIONS) {
@@ -303,9 +307,11 @@ class API
                     $language = $_GET['this_language'];
                 }
                 unset($_GET['this_language']);
-            } elseif (self::$user && isset(self::$user['language_code'])) { // Use user's langugae
+            } elseif (self::$user && isset(self::$user['language_code'])) {
+                // Use user's langugae
                 $language = self::$user['language_code'];
-            } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::getSetting('languages')) { // Use Accept languge if provided
+            } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::getSetting('languages')) {
+                // Use Accept languge if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
                 if (in_array($a, self::getSetting('languages'))) {
@@ -346,7 +352,10 @@ class API
                     parse_str(file_get_contents('php://input'), $input);
 
                     $params = array_merge($params, $input);
-                } elseif (in_array($headers[Request::HEADER_CONTENT_TYPE], ['application/json', 'application/vnd.api+json'])) {
+                } elseif (in_array(
+                    $headers[Request::HEADER_CONTENT_TYPE],
+                    ['application/json', 'application/vnd.api+json']
+                )) {
                     //@TODO add regexp for json
 
                     $input = trim(file_get_contents('php://input'));
@@ -354,7 +363,7 @@ class API
                     //note if input length is >0 and decode returns null then its bad data
                     //json_last_error()
 
-                    $input = json_decode($input, TRUE);
+                    $input = json_decode($input, true);
 
                     if ($input) {
                         $params = array_merge($params, $input);
@@ -623,7 +632,7 @@ class API
     {
         error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
     }
-    const METHOD_ANY     = false;
+    const METHOD_ANY     = null;
     const METHOD_GET     = 'GET';
     const METHOD_POST    = 'POST';
     const METHOD_PUT     = 'PUT';

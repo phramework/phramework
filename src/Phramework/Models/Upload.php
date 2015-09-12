@@ -20,13 +20,23 @@ class Upload
      * Upload file
      * @param array $parameters The request parameters.
      * @param string $index The paramatern index for example 'file'.
-     * @param array $move If $move is set ( Is not ( null or ==array() or FALSE )) then the uploaded file will be moved to the specified directory. The $move takes indexes 'path' and 'name', the path is the directory the uploaded file will be moved. The name is optional and
+     * @param array $move If $move is set (Is not (null or ==array() or FALSE ))
+     * then the uploaded file will be moved to the specified directory.
+     * The $move takes indexes 'path' and 'name', the path is the directory
+     * the uploaded file will be moved. The name is optional and
      * @param array $allowed_filetypes Optional. Array with allowed extensions.
-     * @param integer $max_size Optional. The maximum size of the uploaded file in bytes. Default value is 10485760 bytes
-     * @param boolean $parse_extension Optional. If TRUE the destination filename will be joined with files extension  Default value is FALSE
+     * @param integer $max_size Optional. The maximum size of the
+     * uploaded file in bytes. Default value is 10485760 bytes
+     * @param boolean $parse_extension Optional. If TRUE the destination
+     * filename will be joined with files extension  Default value is FALSE
      */
-    public static function file($file, $move = [], $allowed_filetypes = [ 'csv'], $max_size = 10485760, $parse_extension = false)
-    {
+    public static function file(
+        $file,
+        $move = [],
+        $allowed_filetypes = ['csv'],
+        $max_size = 10485760,
+        $parse_extension = false
+    ) {
         if (!$file) {
             return 'Select a file';
         }
@@ -76,14 +86,24 @@ class Upload
      * Upload image
      *
      * @param Object $file Reference to uploaded file
-     * @param Array $move Move is an array with two indexes, `path` is required and it points the path be stored, `name` is optional and it tells the file name to be stored if not set if will be copied from original upload file name
+     * @param Array $move Move is an array with two indexes,
+     * `path` is required and it points the path be stored,
+     * `name` is optional and it tells the file name to be stored if not set if
+     * will be copied from original upload file name
      * @param Array $sizes Is an indexed array
      * @param UInt $max_file_size Maximum file size, Optional by default it's 2MB
-     * @param Array $allowed_filetypes Array with allowed image extensions, Optional by default it's 'jpg', 'gif', 'png', 'jpeg'
-     * @return Array|String If return is not array then it's an error Message, If it's array then every index of the requested Sizes parameter containts the file path of the specific size
+     * @param Array $allowed_filetypes Array with allowed image extensions,
+     * Optional by default it's 'jpg', 'gif', 'png', 'jpeg'
+     * @return Array|String If return is not array then it's an error Message,
+     * If it's array then every index of the requested Sizes parameter containts the file path of the specific size
      */
-    public static function image($file, $move = [], $sizes = [], $max_file_size = 2097152, $allowed_filetypes = [ 'jpg', 'gif', 'png', 'jpeg'])
-    {
+    public static function image(
+        $file,
+        $move = [],
+        $sizes = [],
+        $max_file_size = 2097152,
+        $allowed_filetypes = ['jpg', 'gif', 'png', 'jpeg']
+    ) {
         if (!$file) {
             return 'Select a file';
         }
@@ -130,7 +150,9 @@ class Upload
                 continue;
             }
             //Filename
-            $destination = \Util::get_path(isset($move['name']) ? [ $move['path'], $move['name']] : [ $move['path'], \Util::toAscii($filename)]);
+            $destination = \Util::get_path(
+                isset($move['name']) ? [ $move['path'], $move['name']] : [ $move['path'], \Util::toAscii($filename)]
+            );
             //If requires resize
             if ($height > $value[0] || $width > $value[1]) {
                 $destination_name = \Util::get_path([ $destination_name, '_' . $key . ($PNG ? '.png' : 'jpg')]);

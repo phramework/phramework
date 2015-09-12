@@ -23,8 +23,13 @@ class Compress
      * @param String $format Select format mode, Default is gz, gz, zip and tar are available.
      * @return Array Returns a list with the uncompresed files
      */
-    public static function uncompress($compressed_file, $destination_folder, $original_filename = null, $format = 'gz', $allowed_extensions = [ 'csv', 'tsv'])
-    {
+    public static function uncompress(
+        $compressed_file,
+        $destination_folder,
+        $original_filename = null,
+        $format = 'gz',
+        $allowed_extensions = [ 'csv', 'tsv']
+    ) {
         //TODO ADD tar.gz
         $supported_formats = [ 'gz', 'zip', 'tar'];
         if (!in_array($format, $supported_formats)) {
@@ -32,16 +37,35 @@ class Compress
         }
         switch ($format) {
             case 'gz':
-                return self::uncompress_gz($compressed_file, $destination_folder, $original_filename, $allowed_extensions);
+                return self::uncompress_gz(
+                    $compressed_file,
+                    $destination_folder,
+                    $original_filename,
+                    $allowed_extensions
+                );
             case 'zip':
-                return self::uncompress_zip($compressed_file, $destination_folder, $original_filename, $allowed_extensions);
+                return self::uncompress_zip(
+                    $compressed_file,
+                    $destination_folder,
+                    $original_filename,
+                    $allowed_extensions
+                );
             case 'tar':
-                return self::uncompress_tar($compressed_file, $destination_folder, $original_filename, $allowed_extensions);
+                return self::uncompress_tar(
+                    $compressed_file,
+                    $destination_folder,
+                    $original_filename,
+                    $allowed_extensions
+                );
         }
     }
 
-    private static function uncompressZip($compressed_file, $destination_folder, $original_filename = null, $allowed_extensions = [])
-    {
+    private static function uncompressZip(
+        $compressed_file,
+        $destination_folder,
+        $original_filename = null,
+        $allowed_extensions = []
+    ) {
         $zip = new \ZipArchive();
 
         $res = $zip->open($compressed_file);
@@ -70,12 +94,21 @@ class Compress
         return $files;
     }
 
-    private static function uncompressGz($compressed_file, $destination_folder, $original_filename = null, $allowed_extensions = [])
-    {
+    private static function uncompressGz(
+        $compressed_file,
+        $destination_folder,
+        $original_filename = null,
+        $allowed_extensions = []
+    ) {
         //IN ORDER TO WORK CORRECTLY GZ FILES MUST HAVE DOUBLE EXTENSION E.G. name.csv.gz ( STANDARIZE IT ! )
-        //$file_path = Util::get_path( array( $destination_folder, basename( ( $original_filename ? $original_filename : $compressed_file ), '.gz' ) ) );
+        //$file_path = Util::getPath(
+        //    array($destination_folder, basename(($original_filename ? $original_filename : $compressed_file), '.gz'))
+        //);
         //File extension
-        $file_path = Util::get_path([$destination_folder, basename(($original_filename ? $original_filename : $compressed_file), '.gz')]);
+        $file_path = Util::get_path([
+            $destination_folder,
+            basename(($original_filename ? $original_filename : $compressed_file), '.gz')
+        ]);
 
         $sfp = gzopen($compressed_file, "rb");
 
@@ -98,8 +131,12 @@ class Compress
         return basename($file_path);
     }
 
-    private static function uncompressTar($compressed_file, $destination_folder, $original_filename = null, $allowed_extensions = [])
-    {
+    private static function uncompressTar(
+        $compressed_file,
+        $destination_folder,
+        $original_filename = null,
+        $allowed_extensions = []
+    ) {
         try {
             $zip = new \PharData($compressed_file);
         } catch (\UnexpectedValueException $e) {

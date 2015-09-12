@@ -17,7 +17,9 @@ class Email
 
       $HTML = TRUE;
       global $settings;
-      if( !isset( $settings[ 'addresses' ][ $account ] ) || !isset( $settings[ 'addresses' ][ $account ][ 'address' ] ) || !isset( $settings[ 'addresses' ][ $account ][ 'name' ] ) ) {
+      if( !isset( $settings[ 'addresses' ][ $account ] )
+      || !isset( $settings[ 'addresses' ][ $account ][ 'address' ] )
+      || !isset( $settings[ 'addresses' ][ $account ][ 'name' ] ) ) {
       write_error_log( 'mail send account not found : ' . $account );
       $account = 'contact';
       }
@@ -27,7 +29,8 @@ class Email
       require_once "Mail.php";
       require_once "Mail/mime.php";
 
-      $from = $settings[ 'addresses' ][ $account ][ 'name' ] . ' <' . $settings[ 'addresses' ][ $account ][ 'address' ]  . '>';
+      $from = $settings[ 'addresses' ][ $account ][ 'name' ]
+      .   ' <' . $settings[ 'addresses' ][ $account ][ 'address' ]  . '>';
       $to = '<' . $address . '>';
       //$subject = $subject;
       $headers = array(
