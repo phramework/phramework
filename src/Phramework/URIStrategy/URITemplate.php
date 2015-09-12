@@ -9,18 +9,17 @@ use Phramework\Models\Util;
 
 /**
  * IURIStrategy implementation using URI templates
- * 
- * 
+ *
  * This strategy uses URI templates to validate the requested URI,
  * if the URI matches a template then the assigned method will be executed.
  * This class is the preferable strategy if jsonapi is to be used.
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
-class URITemplate implements Phramework\URIStrategy\IURIStrategy
+class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 {
     private $templates;
-    
+
     /**
      * Create a URI Template strategy
      * @param Array $templates List of URI template and metainformation objects
@@ -29,11 +28,11 @@ class URITemplate implements Phramework\URIStrategy\IURIStrategy
     {
         $this->templates = $templates;
     }
-    
+
     /**
      * Test an URI template validates the provided URI
      * @param string $URITemplate URI Template
-     * @param string $URI Provided URI 
+     * @param string $URI Provided URI
      * @return false|array If the validation of the template is not successful
      * then false will be returned, else a key value array will be retrned
      * containing the extracter parameters from the URI template.
@@ -68,7 +67,7 @@ class URITemplate implements Phramework\URIStrategy\IURIStrategy
 
         return false;
     }
-    
+
     /**
      * Get current URI and GET parameters from the requested URI
      * @return string[2] Returns an array with current URI and GET parameters

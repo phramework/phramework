@@ -21,7 +21,7 @@ class JSON implements \Phramework\Viewers\IViewer
         }
 
         //If JSONP requested (if callback is requested though GET)
-        if (($callback = \Phramework\API::get_callback())) {
+        if (($callback = \Phramework\API::getCallback())) {
             echo $callback;
             echo '([';
             echo json_encode($parameters);

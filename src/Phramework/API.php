@@ -55,7 +55,7 @@ class API
     /**
      * Viewer class
      */
-    private static $viewer = 'Phramework\Viewers\json';
+    private static $viewer = 'Phramework\Viewers\JSON';
     /**
      * $URIStrategy object
      */
@@ -266,7 +266,7 @@ class API
             if (isset($headers['Origin'])) {
                 $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
                 //Check if origin host is allowed
-                if ($origin_host && in_array($origin_host, self::getSetting('allowed_referer'))) {
+                if ($origin_host && self::getSetting('allowed_referer') && in_array($origin_host, self::getSetting('allowed_referer'))) {
                     $origin = $headers['Origin'];
                 }
                 //@TODO @security else deny access
@@ -333,14 +333,26 @@ class API
 
             //Merge all REQUEST parameters into $params array
             $params = array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
-            unset($_GET, $_POST, $_FILES);
 
-            //Parse put or delete parameters into $params array
-            if ($method == 'PUT' || $method == 'DELETE') {
-                //Decode and merge params
-                parse_str(file_get_contents('php://input'), $input);
+            //unset($_GET, $_POST, $_FILES);
 
-                $params = array_merge($params, $input);
+            //Parse request body
+            //@Todo needs additional attencion
+            //@Todo add allowed content-types
+            if (in_array($method, [self::METHOD_POST, self::METHOD_PATCH, self::METHOD_PUT, self::METHOD_DELETE])) {
+                if ($headers['Content-Type'] == 'application/x-www-form-urlencoded') {
+                    //Decode and merge params
+                    parse_str(file_get_contents('php://input'), $input);
+
+                    $params = array_merge($params, $input);
+                } elseif (in_array($headers['Content-Type'], ['application/json', 'application/vnd.api+json'])) { //@TODO add regexp for json
+                    $input = file_get_contents('php://input');
+                    $input = json_decode($input, TRUE);
+
+                    if ($input) {
+                        $params = array_merge($params, $input);
+                    }
+                }
             }
 
             //STEP_BEFORE_CALL_METHOD
@@ -527,7 +539,7 @@ class API
         if (!isset(self::$settings[$key]) || ($second_level && isset(self::$settings[$key][$second_level]))) {
             return $default_value;
         }
-        
+
         if ($second_level) {
             self::$settings[$key][$second_level];
         }
