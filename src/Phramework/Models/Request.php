@@ -16,6 +16,9 @@ use Phramework\Exceptions\IncorrectParameters;
  */
 class Request
 {
+    const HEADER_CONTENT_TYPE = 'Content-Type';
+    const HEADER_ACCEPT       = 'Accept';
+
     /**
      * Check if current request is authenticated
      *
@@ -191,7 +194,7 @@ class Request
         }
         return $headers;
     }
-    
+
     /**
      * Merge put paramters into $parameters array
      * @param array $parameters Parameter's array

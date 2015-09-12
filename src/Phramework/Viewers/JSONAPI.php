@@ -3,21 +3,26 @@
 namespace Phramework\Viewers;
 
 /**
- * implementation of IViewer for jsonapi
+ * Implementation of IViewer for jsonapi
+ *
+ * Sends `Content-type: application/vnd.api+json` response to client
+ *
+ * JSONP Support is disabled
  * @author Xenophon Spafaridis <nohponex@gmail.com>
- * @sinse 0.1.2
+ * @link http://jsonapi.org/
+ * @sinse 1.0.0
  */
 class JSONAPI implements \Phramework\Viewers\IViewer
 {
     /**
      * Display output
      *
-     * @param array $parameters Output parameters to display
+     * @param array $parameters Output to display as json
      */
     public function view($parameters)
     {
         if (!headers_sent()) {
-            header('Content-type: application/json;charset=utf-8');
+            header('Content-type: application/vnd.api+json;charset=utf-8');
         }
 
         //include JSON API Object

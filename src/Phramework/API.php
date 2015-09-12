@@ -3,6 +3,7 @@
 namespace Phramework;
 
 use Phramework\Models\Util;
+use Phramework\Models\Request;
 use Phramework\Extensions\StepCallback;
 
 // Tell PHP that we're using UTF-8 strings until the end of the script
@@ -340,13 +341,19 @@ class API
             //@Todo needs additional attencion
             //@Todo add allowed content-types
             if (in_array($method, [self::METHOD_POST, self::METHOD_PATCH, self::METHOD_PUT, self::METHOD_DELETE])) {
-                if ($headers['Content-Type'] == 'application/x-www-form-urlencoded') {
+                if ($headers[Request::HEADER_CONTENT_TYPE] == 'application/x-www-form-urlencoded') {
                     //Decode and merge params
                     parse_str(file_get_contents('php://input'), $input);
 
                     $params = array_merge($params, $input);
-                } elseif (in_array($headers['Content-Type'], ['application/json', 'application/vnd.api+json'])) { //@TODO add regexp for json
-                    $input = file_get_contents('php://input');
+                } elseif (in_array($headers[Request::HEADER_CONTENT_TYPE], ['application/json', 'application/vnd.api+json'])) {
+                    //@TODO add regexp for json
+
+                    $input = trim(file_get_contents('php://input'));
+
+                    //note if input length is >0 and decode returns null then its bad data
+                    //json_last_error()
+
                     $input = json_decode($input, TRUE);
 
                     if ($input) {

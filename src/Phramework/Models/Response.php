@@ -88,4 +88,12 @@ class Response
             header('Expires: ' . date(DATE_RFC822, strtotime($expires)));
         }
     }
+    /**
+     * Returns a list of response headers sent (or ready to send)
+     * @return array
+     */
+    public static function headers()
+    {
+        return headers_list();
+    }
 }
