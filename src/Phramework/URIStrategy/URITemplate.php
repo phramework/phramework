@@ -13,6 +13,15 @@ use Phramework\Models\Util;
  * This strategy uses URI templates to validate the requested URI,
  * if the URI matches a template then the assigned method will be executed.
  * This class is the preferable strategy if jsonapi is to be used.
+ *
+ * It  requires apache .htaccess
+ * ```
+ * RewriteEngine On
+ *
+ * #Required for URITemplate strategy
+ * #RewriteCond %{REQUEST_FILENAME} !-f
+ * #RewriteRule ^(.*)$ index.php [QSA,L]
+ * ```
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
@@ -70,7 +79,6 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
     /**
      * Get current URI and GET parameters from the requested URI
-     * @todo use a fallback value for REDIRECT_URL
      * @return string[2] Returns an array with current URI and GET parameters
      */
     public function URI()
@@ -78,13 +86,21 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
         $REDIRECT_QUERY_STRING = (
             isset($_SERVER['REDIRECT_QUERY_STRING'])
             ? $_SERVER['REDIRECT_QUERY_STRING']
-            : ''
+            : (
+                isset($_SERVER['QUERY_STRING'])
+                ? $_SERVER['QUERY_STRING']
+                : ''
+            )
         );
 
         $REDIRECT_URL = (
             isset($_SERVER['REDIRECT_URL'])
             ? $_SERVER['REDIRECT_URL']
-            : ''
+            : (
+                isset($_SERVER['REQUEST_URI'])
+                ? $_SERVER['REQUEST_URI']
+                : ''
+            )
         );
 
         $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
@@ -95,8 +111,9 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
         $URI = trim($URI, '/');
 
         $parameters = [];
-        parse_str($REDIRECT_QUERY_STRING, $parameters);
 
+        //Extract parametrs from QUERY string
+        parse_str($REDIRECT_QUERY_STRING, $parameters);
 
         return [$URI, $parameters];
     }
