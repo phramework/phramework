@@ -70,16 +70,22 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
     /**
      * Get current URI and GET parameters from the requested URI
+     * @todo use a fallback value for REDIRECT_URL
      * @return string[2] Returns an array with current URI and GET parameters
      */
     public function URI()
     {
         $REDIRECT_QUERY_STRING = (
-            isset($_SERVER['REDIRECT_QUERY_STRING']) ? $_SERVER['REDIRECT_QUERY_STRING']
+            isset($_SERVER['REDIRECT_QUERY_STRING'])
+            ? $_SERVER['REDIRECT_QUERY_STRING']
             : ''
         );
 
-        $REDIRECT_URL = $_SERVER['REDIRECT_URL'];
+        $REDIRECT_URL = (
+            isset($_SERVER['REDIRECT_URL'])
+            ? $_SERVER['REDIRECT_URL']
+            : ''
+        );
 
         $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
