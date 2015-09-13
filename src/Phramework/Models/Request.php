@@ -51,7 +51,7 @@ class Request
      * @param String|Array @ The required parameters
      * @return array Returns the values of required parameters
      */
-    public static function requiredParameters($parameters, $required)
+    public static function requireParameters($parameters, $required)
     {
         $missing = [];
         $return = [];
@@ -112,7 +112,7 @@ class Request
      * @throws IncorrectParameters if value is not correct
      * @return returns the value of the id parameter
      */
-    public static function requiredId($parameters, $INTEGER = true)
+    public static function requireId($parameters, $INTEGER = true)
     {
         if (isset($parameters['resource_id'])
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false
@@ -140,7 +140,7 @@ class Request
     /**
      * Required required values and parse provided parameters into an array
      * Validate the provided request model and return the
-     * @uses \Phramework\Models\Request::requiredParameters
+     * @uses \Phramework\Models\Request::requireParameters
      * @uses \Phramework\Models\Validate::model
      * @param array $parameters
      * @param array $model
@@ -156,7 +156,7 @@ class Request
             }
         }
 
-        \Phramework\Models\Request::requiredParameters($parameters, $required_fields);
+        Request::requireParameters($parameters, $required_fields);
         \Phramework\Models\Validate::model($parameters, $model);
 
         $keys_values = [];

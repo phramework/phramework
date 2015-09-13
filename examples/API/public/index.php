@@ -6,11 +6,13 @@ ini_set('display_errors', '1');
 //This autoload path is for loading current version of phramework
 require __DIR__ . '/../../../vendor/autoload.php';
 //This autoload is for loading this APP and any of dependencies
+//Only for this example
 require __DIR__ . '/../vendor/autoload.php';
 
-use Phramework\API;
+//define controller namespace, as shortcut
+define('NS', 'APP\\Controllers\\');
 
-define('APPPATH', __DIR__ . '/../');
+use Phramework\API;
 
 /**
  * @package examples/post
@@ -19,15 +21,16 @@ define('APPPATH', __DIR__ . '/../');
 $APP = function() {
 
     //Include settings
-    $settings = require(APPPATH . '/settings.php');
+    $settings = include __DIR__ . '/../settings.php';
 
-    $uriStrategy = new \Phramework\URIStrategy\URITemplate([
-        ['book/', 'APP\\Controllers\\BookController', 'GET', API::METHOD_GET],
-        ['book/', 'APP\\Controllers\\BookController', 'POST', API::METHOD_POST]
+    $URIStrategy = new \Phramework\URIStrategy\URITemplate([
+        ['book/', NS . 'BookController', 'GET', API::METHOD_GET],
+        ['book/{id}', NS . 'BookController', 'GETSingle', API::METHOD_GET],
+        ['book/', NS . 'BookController', 'POST', API::METHOD_ANY]
     ]);
 
     //Initialize API
-    $API = new API($settings, $uriStrategy);
+    $API = new API($settings, $URIStrategy);
 
     unset($settings);
 
@@ -36,6 +39,7 @@ $APP = function() {
     //Execute API
     $API->invoke();
 };
+
 /**
  * Execute APP
  */

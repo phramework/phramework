@@ -27,7 +27,7 @@ class PostController
 
     public static function GETSingle($params, $method, $headers)
     {
-        $id = Request::requiredId($params);
+        $id = Request::requireId($params);
 
         $posts = Post::getAll();
 

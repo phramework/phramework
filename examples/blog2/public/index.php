@@ -6,11 +6,11 @@ ini_set('display_errors', '1');
 //This autoload path is for loading current version of phramework
 require __DIR__ . '/../../../vendor/autoload.php';
 //This autoload is for loading this APP and any of dependencies
+//Only for this example
 require __DIR__ . '/../vendor/autoload.php';
 
 use Phramework\API;
 
-define('APPPATH', __DIR__ . '/../');
 
 /**
  * @package examples/post
@@ -19,7 +19,7 @@ define('APPPATH', __DIR__ . '/../');
 $APP = function() {
 
     //Include settings
-    $settings = require(APPPATH . '/settings.php');
+    $settings = include __DIR__ . '/../settings.php';
 
     $controller_whitelist = [
         'post', 'editor'
