@@ -19,33 +19,23 @@ use Phramework\Exceptions\IncorrectParameters;
 class Util
 {
     /**
-     * Get base url of the API
-     * @param type $controller
-     * @param string $suffix
-     * @return string
+     * Get url of the API resource.
+     *
+     * This method uses `api_base` setting to create the url.
+     * @param string $endpoint [Optional]
+     * @param string $suffix [Optional] Will append to the end of url
+     * @return string Returns the created url
      */
-    public static function url($controller = null, $suffix = '')
+    public static function url($endpoint = null, $suffix = '')
     {
         $api_base = API::getSetting('api_base');
 
-        if ($controller) {
-            $suffix = $controller . '/' . $suffix;
+        if ($endpoint) {
+            $suffix = $endpoint . '/' . $suffix;
 
             $suffix = str_replace('//', '/', $suffix);
         }
         return $api_base . $suffix;
-    }
-
-    /**
-     * Get base url of main web interface application tha uses the API
-     * @todo fix
-     * @param type $controller
-     * @param string $suffix
-     * @return string
-     */
-    public static function urlInterface($suffix = '')
-    {
-        return API::getSetting('interface_base') . $suffix;
     }
 
     /**

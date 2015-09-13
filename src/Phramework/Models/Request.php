@@ -74,20 +74,20 @@ class Request
     }
 
     /**
-     * Return resource id if it's set else return FALSE, use resource_id or id paramter if available
+     * Require id parameter if it's set else return NULL, it uses `resource_id` or `id` parameter if available
      * @param array $parameters  The request parameters
-     * @param boolean $INTEGER  Check id's type to be unsigned integer
-     * @throws MissingParamenters if id is set and not integer
-     * @return string|integer Returns the id or FALSE if not set,
-     * if $INTGER the returned value will be converted to unsigned integer
+     * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer, default is true
+     * @throws IncorrectParameters if value is not correct
+     * @return string|int Returns the id or NULL if not set,
+     * if $UINTEGER the returned value will be converted to unsigned integer
      */
-    public static function resourceId($parameters, $INTEGER = true)
+    public static function resourceId($parameters, $UINTEGER = true)
     {
         //Check if is set AND validate
         if (isset($parameters['resource_id'])
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false
         ) {
-            if ($INTEGER) {
+            if ($UINTEGER) {
                 return Validate::uint($parameters['resource_id']);
             }
             return $parameters['resource_id'];
@@ -96,7 +96,7 @@ class Request
         if (isset($parameters['id'])
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['id']) !== false
         ) {
-            if ($INTEGER) {
+            if ($UINTEGER) {
                 return Validate::uint($parameters['id']);
             }
             return $parameters['id'];
@@ -105,14 +105,13 @@ class Request
     }
 
     /**
-     * Require id paramter
+     * Require id parameter, it uses `resource_id` or `id` parameter if available
      * @param array $parameters The request paramters
-     * @param boolean $is_integer If TRUE validate the id as integer if FALSE as alphanumeric, Default TRUE
-     * @throws MissingParamenters is not set
+     * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer, default is true
      * @throws IncorrectParameters if value is not correct
-     * @return returns the value of the id parameter
+     * if $UINTEGER the returned value will be converted to unsigned integer
      */
-    public static function requireId($parameters, $INTEGER = true)
+    public static function requireId($parameters, $UINTEGER = true)
     {
         if (isset($parameters['resource_id'])
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false
@@ -124,17 +123,17 @@ class Request
         }
 
         //Validate as unsigned integer
-        if ($INTEGER
+        if ($UINTEGER
             && filter_var($parameters['id'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) === false
         ) {
             throw new IncorrectParameters(['id']);
-        } elseif (!$INTEGER
+        } elseif (!$UINTEGER
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['id']) === false
         ) {
             //Validate as alphanumeric
             throw new IncorrectParameters(['id']);
         }
-        return ($INTEGER ? intval($parameters['id']) : $parameters['id']);
+        return ($UINTEGER ? intval($parameters['id']) : $parameters['id']);
     }
 
     /**

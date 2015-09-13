@@ -8,6 +8,23 @@ use Phramework\Exceptions\NotFound;
 /**
  * ClassBased strategy will use the controller parameters extracted from URI
  * and will attempt to include the respective class.
+ *
+ * Optionaly apache's configuration via .htaccess can convert the url from
+ * /?controller={controller}&resource_id={resource_id} to /{controller}/resource_id
+ * /?controller={controller} to /{controller}
+ * ```
+ * RewriteEngine On
+ *
+ * #Site full url with id
+ * RewriteCond %{REQUEST_FILENAME} !-f
+ * RewriteCond %{REQUEST_FILENAME} !-d
+ * RewriteRule ^([a-z]{3,})/([a-zA-Z0-9_|%2520]+).*$ index.php?controller=$1&resource_id=$2 [L,QSA]
+
+ * #Site full url
+ * RewriteCond %{REQUEST_FILENAME} !-f
+ * RewriteCond %{REQUEST_FILENAME} !-d
+ * RewriteRule ^([a-z]{3,}).*$ index.php?controller=$1 [L,QSA]
+ * ```
  * @todo document default_controller setting
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0

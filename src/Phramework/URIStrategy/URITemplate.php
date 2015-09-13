@@ -12,15 +12,17 @@ use Phramework\Models\Util;
  *
  * This strategy uses URI templates to validate the requested URI,
  * if the URI matches a template then the assigned method will be executed.
+ *
  * This class is the preferable strategy if jsonapi is to be used.
  *
- * It  requires apache .htaccess
+ * It requires apache configuration via .htaccess
  * ```
  * RewriteEngine On
  *
  * #Required for URITemplate strategy
- * #RewriteCond %{REQUEST_FILENAME} !-f
- * #RewriteRule ^(.*)$ index.php [QSA,L]
+ * RewriteCond %{REQUEST_FILENAME} !-f
+ * RewriteCond %{REQUEST_FILENAME} !-d
+ * RewriteRule ^(.*)$ index.php [QSA,L]
  * ```
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
@@ -31,7 +33,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
     /**
      * Create a URI Template strategy
-     * @param Array $templates List of URI template and metainformation objects
+     * @param array $templates List of URI template and metainformation objects
      */
     public function __construct($templates)
     {
@@ -153,7 +155,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                 /**
                  * Check if the requested controller and model is callable
                  * In order to be callable :
-                 * @todo
+                 * @todo complete documentation
                  */
                 if (!is_callable("$class::$method")) {
                     throw new NotFound(API::getTranslated('method_NotFound_exception'));

@@ -4,9 +4,10 @@ namespace APP\Controllers;
 use Phramework\API;
 use Phramework\Models\Validate;
 use Phramework\Models\Request;
+use Phramework\Models\Util;
 use APP\Models\Book;
 
-class BookController
+class BookController extends \APP\Controller
 {
     public static function GET($params)
     {
@@ -22,15 +23,15 @@ class BookController
         $data = [
             'type' => 'user',
             'id' => (string) $id,
-            'attributes' => $account,
+            'attributes' => [],
             'links' => [
                 'self' => Util::url('user', $id),
             ],
             'relationships' => [
-                'contents' => [
+                'authror' => [
                     'links' => [
-                        'self' => Util::url('user/'.$id.'/relationships/content/'),
-                        'related' => Util::url('user/'.$id.'/content/'),
+                        'self' => Util::url('user/'.$id.'/relationships/authror/'),
+                        'related' => Util::url('user/'.$id.'/authror/'),
                     ],
                 ],
             ],
