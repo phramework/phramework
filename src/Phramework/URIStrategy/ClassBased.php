@@ -9,9 +9,13 @@ use Phramework\Exceptions\NotFound;
  * ClassBased strategy will use the controller parameters extracted from URI
  * and will attempt to include the respective class.
  *
- * Optionaly apache's configuration via .htaccess can convert the url from
- * /?controller={controller}&resource_id={resource_id} to /{controller}/resource_id
- * /?controller={controller} to /{controller}
+ * Optionaly apache's configuration via .htaccess can convert the url from:
+ *
+ * `/?controller={controller}&resource_id={resource_id}` to `/{controller}/resource_id`
+ *
+ * and
+ *
+ * `/?controller={controller}` to `/{controller}`
  * ```
  * RewriteEngine On
  *
