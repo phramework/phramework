@@ -17,7 +17,11 @@
       "Phramework\\": "src/Phramework"
     }
   },
-  "autoload-dev": {},
+  "autoload-dev": {
+    "psr-4": {
+      "Examples\\": "Examples"
+    }
+  },
   "repositories": [{
     "type": "vcs",
     "url": "git@github.com:metaphrase/php-sdk.git"
@@ -38,17 +42,24 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "archive": {
-    "exclude": ["demo/", "examples/", "test/", "/*.test", "tests", "demo.php"]
+    "exclude": [
+      "*",
+      ".*",
+      "!/src/*"
+    ]
   },
   "scripts": {
     "test": [
-      "echo Phramework test routine",
+      "echo \"$(tput setaf 1) $(tput setab 7)\\n\\nPhramework test routine\\n$(tput sgr 0)\"",
       "find src/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
-      "find examples/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
+      "echo \"$(tput setaf 1) $(tput setab 7)\\n\\nPhramework Examples/ test routine\\n$(tput sgr 0)\"",
+      "find Examples/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
+      "echo \"$(tput setaf 1) $(tput setab 7)\\n\\nPhramework tests/ test routine\\n$(tput sgr 0)\"",
       "find tests/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
       "phpunit"
     ],
     "lint": "phpcs -p -s --standard=PSR2 ./src",
+    "lint-examples": "phpcs -p -s --standard=PSR2 ./Examples",
     "doc": "apigen generate -s ./src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"Phramework\""
   }
 }
