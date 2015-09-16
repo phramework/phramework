@@ -347,15 +347,19 @@ class API
             //@Todo needs additional attencion
             //@Todo add allowed content-types
             if (in_array($method, [self::METHOD_POST, self::METHOD_PATCH, self::METHOD_PUT, self::METHOD_DELETE])) {
-                if ($headers[Request::HEADER_CONTENT_TYPE] == 'application/x-www-form-urlencoded') {
+                if (isset($headers[Request::HEADER_CONTENT_TYPE])
+                    && $headers[Request::HEADER_CONTENT_TYPE] == 'application/x-www-form-urlencoded'
+                ) {
                     //Decode and merge params
                     parse_str(file_get_contents('php://input'), $input);
 
                     $params = array_merge($params, $input);
-                } elseif (in_array(
-                    $headers[Request::HEADER_CONTENT_TYPE],
-                    ['application/json', 'application/vnd.api+json']
-                )) {
+                } elseif (isset($headers[Request::HEADER_CONTENT_TYPE])
+                    && in_array(
+                        $headers[Request::HEADER_CONTENT_TYPE],
+                        ['application/json', 'application/vnd.api+json']
+                    )
+                ) {
                     //@TODO add regexp for json
 
                     $input = trim(file_get_contents('php://input'));
