@@ -51,39 +51,47 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
     public function testSuccessProvider()
     {
         return [
-            ['book/', 'book', []],
-            //check parameter
-            ['book/{id}', 'book/1', ['id' => '1']],
-            //check alphanumeric parameter
-            ['book/{id}', 'book/abcdefABCDE0123', ['id' => 'abcdefABCDE0123']],
-            //check relashionship
-            ['book/{id}/author', 'book/1/author', ['id' => '1']],
-            //check two level
-            ['book/author', 'book/author', []],
-            //check two level with alphanumeric parameter
-            ['book/author/{id}', 'book/author/500abc', ['id' => '500abc']],
-            [
+            'simple example check' => ['book/', 'book', []],
+            'check parameter' =>    [
+                'book/{id}', 'book/1', ['id' => '1']
+            ],
+            'check alphanumeric parameter' => [
+                'book/{id}', 'book/abcdefABCDE0123', ['id' => 'abcdefABCDE0123']
+            ],
+            'check relashionship' => [
+                'book/{id}/author', 'book/1/author', ['id' => '1']
+            ],
+            'check two level' => [
+                'book/author', 'book/author', []
+            ],
+            'check two level with alphanumeric parameter' => [
+                'book/author/{id}', 'book/author/500abc', ['id' => '500abc']
+            ],
+            'check relashionship\'s multiple parameters' => [
                 'book/{id}/author/{author_id}',
                 'book/3/author/2',
                 ['id' => '3', 'author_id' => '2']
-            ],
+            ]
         ];
     }
     
     public function testFailureProvider(){
         return [
-            ['book/', 'books'],
-            //check relashionship
-            ['book/{id}/author', 'book/1/authors'],
-            
-            //check relashionship's parameter
-            ['book/{id}', 'book/'],
-            //check relashionship's multiple parameters
-            
-            //test bad request
-            ['book-bad/{id}', 'book'],
-            //test case sensitivity
-            ['BOOK/{id}', 'book/4']
+            'check relashionship' => [
+                'book/', 'books'
+            ],
+            'invalid second level' => [
+                'book/{id}/author', 'book/1/authors'
+            ],
+            'check relashionship\'s parameter' => [
+                'book/{id}', 'book/'
+            ],            
+            'test bad request' => [
+                'book-bad/{id}', 'book'
+            ],
+            'test case sensitivity' => [
+                'BOOK/{id}', 'book/4'
+            ]
         ];
     }
     

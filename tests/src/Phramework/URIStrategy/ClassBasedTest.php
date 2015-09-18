@@ -28,7 +28,7 @@ class ClassBasedTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+        $this->markTestIncomplete();
     }
 
     /**
@@ -37,7 +37,7 @@ class ClassBasedTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvoke()
     {
-        
+        $this->markTestIncomplete();
     }
 
 }

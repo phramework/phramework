@@ -9,6 +9,7 @@ use Phramework\Exceptions\IncorrectParameters;
  * Provides various methods for validating data for varius datatypes.
  *
  * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @todo Make REGEXP_USERNAME etc variables
  * @since 0.0.1
  */
 class Validate
