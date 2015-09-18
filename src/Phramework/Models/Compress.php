@@ -28,7 +28,7 @@ class Compress
         $destination_folder,
         $original_filename = null,
         $format = 'gz',
-        $allowed_extensions = [ 'csv', 'tsv']
+        $allowed_extensions = ['csv', 'tsv']
     ) {
         //TODO ADD tar.gz
         $supported_formats = [ 'gz', 'zip', 'tar'];

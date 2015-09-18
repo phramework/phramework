@@ -296,7 +296,12 @@ class Validate
                         //Replace comma with dot
                         $parameters[$key] = str_replace(',', '.', $parameters[$key]);
 
-                        if (!filter_var($parameters[$key], FILTER_VALIDATE_FLOAT) === false) {
+                        if (filter_var(
+                            $parameters[$key],
+                            FILTER_VALIDATE_FLOAT,
+                            ['options' => ['decimal' => '.']]
+                        ) === false
+                        ) {
                             $incorrect[$key] = $temporary_exception_description;
                         } else {
                             if (isset($value['max'])
@@ -530,7 +535,7 @@ class Validate
      * @param string $subject
      * @return boolean
      */
-    public function isValidCallback($subject)
+    public function isValidJsonpCallback($subject)
     {
         $identifier_syntax
           = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';

@@ -230,7 +230,7 @@ class API
 
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
-                if (!Models\Validate::isValidCallback($_GET['callback'])) {
+                if (!Models\Validate::isValidJsonpCallback($_GET['callback'])) {
                     throw new exceptions\IncorrectParameters(['callback']);
                 }
                 self::$callback = $_GET['callback'];

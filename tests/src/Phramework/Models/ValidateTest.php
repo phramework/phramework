@@ -95,7 +95,6 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
         ];
     }
     
-    
     /**
      * @covers Phramework\Models\Validate::int
      * @dataProvider intSuccessProvider
@@ -106,6 +105,10 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
         
         $this->assertInternalType('integer', $value);
         $this->assertEquals($expected, $value);
+        
+        $this->markTestIncomplete(
+            'missing ranges'
+        );
     }
     
     /**
@@ -158,19 +161,54 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     {
         $value = Validate::uint($input);
     }
-
+    
+    public function floatSuccessProvider()
+    {
+        return [
+            [0.1, (float)0.1],
+            ['0.132', (float)0.132],
+            ['0,132', (float)0.132],
+            ['0.00001', (float)0.00001],
+            [123400, (float)123400],
+            ['-54', (float)-54],
+            ['-54.05', (float)-54.05],
+            [-4, -(float)4]
+        ];
+    }
+    
+    public function floatFailureProvider()
+    {
+        return [
+            ['abc'],
+            ['-10xca'],
+            //['10e10']
+        ];
+    }
+    
     /**
      * @covers Phramework\Models\Validate::float
-     * @todo   Implement testFloat().
+     * @dataProvider floatSuccessProvider
      */
-    public function testFloat()
+    public function testFloatSuccess($input, $expected)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        print_r($input, $expected);
+        
+        $value = Validate::float($input);
+        
+        $this->assertInternalType('float', $value);
+        $this->assertEquals($expected, $value);
     }
-
+    
+    /**
+     * @covers Phramework\Models\Validate::float
+     * @dataProvider floatFailureProvider
+     * @expectedException \Phramework\Exceptions\IncorrectParameters
+     */
+    public function testFloatFailure($input)
+    {
+        $value = Validate::float($input);
+    }
+    
     /**
      * @covers Phramework\Models\Validate::double
      * @todo   Implement testDouble().
