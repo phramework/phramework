@@ -56,7 +56,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
         $controllerWhitelist,
         $controllerUnauthenticatedWhitelist,
         $controllerPublicWhitelist,
-        $namespace,
+        $namespace = '',
         $suffix = ''
     ) {
 

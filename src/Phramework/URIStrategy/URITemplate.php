@@ -45,7 +45,8 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * @param string $URITemplate URI Template
      * @param string $URI Provided URI
      * @return false|array If the validation of the template is not successful
-     * then false will be returned, else a key value array will be retrned
+     * then false will be returned,
+     * else a array with a key-value array in position 0 will be returned
      * containing the extracter parameters from the URI template.
      */
     public function test($URITemplate, $URI)
