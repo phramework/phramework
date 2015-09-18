@@ -58,6 +58,7 @@
       "find tests/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
       "phpunit"
     ],
+    "phpunit" : "phpunit",
     "lint": "phpcs -p -s --standard=PSR2 ./src",
     "lint-examples": "phpcs -p -s --standard=PSR2 ./Examples",
     "doc": "apigen generate -s ./src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"Phramework\""

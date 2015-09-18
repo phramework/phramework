@@ -47,63 +47,70 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
     {
         
     }
-
-    /**
-     * @covers Phramework\URIStrategy\URITemplate::test
-     */
-    public function testTest()
+    
+    public function testSuccessProvider()
     {
-        /**
-         * Define assertions tests
-         * format is [URI template, (clean) URI, expected]
-         */
-        $assertions = [
+        return [
             ['book/', 'book', []],
-            ['book/', 'books', false],
             //check parameter
             ['book/{id}', 'book/1', ['id' => '1']],
             //check alphanumeric parameter
             ['book/{id}', 'book/abcdefABCDE0123', ['id' => 'abcdefABCDE0123']],
             //check relashionship
             ['book/{id}/author', 'book/1/author', ['id' => '1']],
-            //check relashionship
-            ['book/{id}/author', 'book/1/authors', false],
             //check two level
             ['book/author', 'book/author', []],
             //check two level with alphanumeric parameter
             ['book/author/{id}', 'book/author/500abc', ['id' => '500abc']],
-            //check relashionship's parameter
-            ['book/{id}', 'book/', false],
-            //check relashionship's multiple parameters
             [
                 'book/{id}/author/{author_id}',
                 'book/3/author/2',
                 ['id' => '3', 'author_id' => '2']
             ],
-            //test bad request
-            ['book-bad/{id}', 'book', false],
-            //test case sensitivity
-            ['BOOK/{id}', 'book/4', false]
         ];
-        
-        foreach ($assertions as $k => $a) {
-            $value = $this->object->test($a[0], $a[1]);
+    }
+    
+    public function testFailureProvider(){
+        return [
+            ['book/', 'books'],
+            //check relashionship
+            ['book/{id}/author', 'book/1/authors'],
             
-            //debug print_r([$k, $a, $value]);
+            //check relashionship's parameter
+            ['book/{id}', 'book/'],
+            //check relashionship's multiple parameters
             
-            $expected = $a[2];
-            
-            if ($expected === false) {
-                //must be false
-                $this->assertFalse($value);
-            }else{
-                //must be an array
-                $this->assertInternalType('array', $value);
+            //test bad request
+            ['book-bad/{id}', 'book'],
+            //test case sensitivity
+            ['BOOK/{id}', 'book/4']
+        ];
+    }
+    
+    /**
+     * @covers Phramework\URIStrategy\URITemplate::test
+     * @dataProvider testSuccessProvider
+     */
+    public function testTestSuccess($URITemplate, $URI, $expected)
+    {        
+        $value = $this->object->test($URITemplate, $URI);
+      
+        //must be an array
+        $this->assertInternalType('array', $value);
                 
-                //must be a subset
-                $this->assertArraySubset($expected, $value[0], true);
-            }
-        }
+        //must be a subset of $expected
+        $this->assertArraySubset($expected, $value[0], true);
+    }
+    
+    /**
+     * @covers Phramework\URIStrategy\URITemplate::test
+     * @dataProvider testFailureProvider
+     */
+    public function testTestFailure($URITemplate, $URI)
+    {
+        $value = $this->object->test($URITemplate, $URI);
+         
+        $this->assertFalse($value);
     }
 
     /**
@@ -121,6 +128,8 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $parameters);
         //from current $_SERVER values
         $this->assertArraySubset(['spam' => 'true', 'ok' => 'false'], $parameters, false);
+        
+        $this->markTestIncomplete();
     }
 
     /**
@@ -129,7 +138,7 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvoke()
     {
-        
+        $this->markTestIncomplete();
     }
 
 }
