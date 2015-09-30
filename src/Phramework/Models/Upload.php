@@ -117,7 +117,12 @@ class Upload
         $move = [],
         $sizes = [],
         $max_file_size = 2097152,
-        $allowed_filetypes = ['jpg', 'gif', 'png', 'jpeg']
+        $allowed_filetypes = [
+            'jpg',
+            'gif',
+            'png',
+            'jpeg'
+        ]
     ) {
         if (!$file) {
             return 'Select a file';
