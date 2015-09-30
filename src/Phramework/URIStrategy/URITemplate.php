@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,15 +45,30 @@ use Phramework\Models\Util;
  */
 class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 {
+    /**
+     * templates
+     * @var array[]
+     */
     private $templates;
 
     /**
      * Create a URI Template strategy
-     * @param array $templates List of URI template and metainformation objects
+     * @param array[] $templates List of URI template and meta - information objects
+     * @todo specify templates format
      */
     public function __construct($templates)
     {
         $this->templates = $templates;
+    }
+
+    /**
+     * Include additional templates
+     * @param array[] $templates List of URI template and meta - information objects
+     * @todo specify templates format
+     */
+    public function addTemplates($templates)
+    {
+        $this->templates = array_merge($this->templates, $templates);
     }
 
     /**
@@ -64,6 +79,8 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * then false will be returned,
      * else a array with a key-value array in position 0 will be returned
      * containing the extracter parameters from the URI template.
+     * @todo provide options to specify parameters data type (alphanumeric or int)
+     * @todo provide options to define optional parameters
      */
     public function test($URITemplate, $URI)
     {

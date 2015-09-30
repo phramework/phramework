@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ use Phramework\Models\Database;
 use Phramework\Exceptions\Request;
 use Phramework\Exceptions\NotFound;
 
+// @codingStandardsIgnoreStart
 /**
  * update model
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
@@ -98,3 +99,4 @@ class Update
         return $result;
     }
 }
+// @codingStandardsIgnoreEnd

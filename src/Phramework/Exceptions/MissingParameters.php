@@ -6,7 +6,7 @@ namespace Phramework\Exceptions;
  * MissingParamentersException
  * Used to throw an \Exception, when there are some missing parameters.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
 class MissingParameters extends \Exception
 {

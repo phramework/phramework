@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ namespace Phramework\Exceptions;
  * IncorrectParametersException
  * Used to throw an \Exception, when there are some incorrect formed parameters.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
 class IncorrectParameters extends \Exception
 {

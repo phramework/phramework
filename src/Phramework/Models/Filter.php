@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -189,7 +189,7 @@ class Filter
      * Type cast entry's attributs based on the provided model
      *
      * If any TYPE_UNIX_TIMESTAMP are present an additional attribute will
-     * be included with the suffix _formated, the format of the string can be
+     * be included with the suffix _formatted, the format of the string can be
      * changed from timestamp_format setting.
      * @param array $entry
      * @param array $model
@@ -224,7 +224,7 @@ class Filter
                 $converted = gmdate($timestamp_format, $entry[$k]);
 
                 //inject the string version of the timestamp
-                $entry[$k . '_formated'] = $converted;
+                $entry[$k . '_formatted'] = $converted;
             }
         }
 

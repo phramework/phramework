@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,12 +77,17 @@ class Util
     {
         return (substr($string, 0, strlen($search)) == $search);
     }
-
+    
+    // @codingStandardsIgnoreStart
+    /**
+     * Print formatted date
+     */
     public static function _dateFormatted($datetime, $format = 'j M Y G:i')
     {
         $date = new DateTime($datetime);
         echo $date->format($format);
     }
+    // @codingStandardsIgnoreEnd
 
     public static function dateFormatted($datetime, $format = 'j M Y G:i')
     {

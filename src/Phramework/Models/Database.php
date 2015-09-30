@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ use PDO;
  * @since 0
  * @package Phramework
  * @category Models
+ * @todo Add option to convert fetched data into objects insted of array
  */
 class Database
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ namespace Phramework\Exceptions;
  * Used to throw an \Exception, when this method is not allowed
  * to apply to this resource, or the current status of the resource.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
 class MethodNotAllowed extends \Exception
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace Phramework\Exceptions;
  * The server has not found anything matching the Request-URI.
  * No indication is given of whether the condition is temporary or permanent.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
 class NotFound extends \Exception
 {

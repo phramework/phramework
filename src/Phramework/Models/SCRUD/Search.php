@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ namespace Phramework\Models\SCRUD;
 use Phramework\Models\Database;
 use Phramework\Models\Validate;
 
+// @codingStandardsIgnoreStart
 /**
  * Provides varius helper functions for searching
  * @todo Change OPERATOR types from validate
@@ -151,3 +152,5 @@ class Search
         return $data;
     }
 }
+
+// @codingStandardsIgnoreEnd

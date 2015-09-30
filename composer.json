@@ -8,7 +8,7 @@
   ],
   "homepage": "https://nohponex.gr",
   "authors": [{
-    "name": "Xenofon Spafaridis",
+    "name": "Spafaridis Xenofon",
     "email": "nohponex@gmail.com",
     "homepage": "https://nohponex.gr"
   }],
@@ -62,8 +62,8 @@
       "phpunit"
     ],
     "phpunit": "phpunit",
-    "lint": "phpcs -p -s --standard=PSR2 ./src",
-    "lint-examples": "phpcs -p -s --standard=PSR2 ./Examples",
+    "lint": "phpcs -p -s --standard=code-standard.xml ./src",
+    "lint-examples": "phpcs -p -s --standard=code-standard.xml ./Examples",
     "doc": "apigen generate -s ./src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"Phramework\""
   }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015 Spafaridis Xenofon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ use Phramework\Models\Util;
 use Phramework\Models\Request;
 use Phramework\Extensions\StepCallback;
 
+// @codingStandardsIgnoreStart
 // Tell PHP that we're using UTF-8 strings until the end of the script
 mb_internal_encoding('UTF-8');
 
@@ -41,10 +42,12 @@ if (!function_exists('___')) {
         echo API::getTranslated($key);
     }
 }
+// @codingStandardsIgnoreEnd
+
 /**
  * API 'framework' by NohponeX
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @author Spafaridis Xenofon <nohponex@gmail.com>
  * @version 1.0.0
  * @link https://nohponex.gr Developer's website
  * @package API
