@@ -34,6 +34,8 @@ class Execute
      * @param string $executable Path to executable file
      * @param array [optional] $arguments Executable arguments
      * @param string [optional] $output_stream
+     * @uses exec
+     * @todo use sprintf, make it more readable
      */
     public static function async($executable, $arguments = [], $output_stream = '/dev/null')
     {
@@ -53,6 +55,8 @@ class Execute
      * @param array $output [optional] This array will be filled with every
      * line of output from the command. Trailing whitespace, such as \n, is not
      * @return intigerthen the return status of the executed command
+     * @uses exec
+     * @todo use sprintf, make it more readable
      */
     public static function file($executable, $arguments = [], &$output = false)
     {
