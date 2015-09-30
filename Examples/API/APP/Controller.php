@@ -24,7 +24,7 @@ class Controller
     }
 
     /**
-     * If !assert then a not_found exceptions is thrown.
+     * If !assert then a NotFound exception is thrown.
      *
      * @param mixed  $assert
      * @param string $exceptionMessage [Optional] Default is 'resource_not_found'
@@ -39,7 +39,7 @@ class Controller
     }
 
     /**
-     * If !assert then a unknown_error exceptions is thrown.
+     * If !assert then a Exception exception is thrown.
      *
      * @param mixed  $assert
      * @param string $exceptionMessage [Optional] Default is 'unknown_error'

@@ -198,12 +198,12 @@ class API
      * Shortcut function alias of $this->translation->getTranslated
      * @param type $key
      * @param type $parameters
-     * @param type $fallback_value
+     * @param type $fallbackValue
      * @return type
      */
-    public static function getTranslated($key, $parameters = null, $fallback_value = null)
+    public static function getTranslated($key, $parameters = null, $fallbackValue = null)
     {
-        return self::$instance->translation->getTranslated($key, $parameters, $fallback_value);
+        return self::$instance->translation->getTranslated($key, $parameters, $fallbackValue);
     }
 
     /**
@@ -245,7 +245,7 @@ class API
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
                 if (!Models\Validate::isValidJsonpCallback($_GET['callback'])) {
-                    throw new exceptions\IncorrectParameters(['callback']);
+                    throw new Exceptions\IncorrectParameters(['callback']);
                 }
                 self::$callback = $_GET['callback'];
                 unset($_GET['callback']);
@@ -402,7 +402,7 @@ class API
             $this->StepCallback->call(StepCallback::STEP_BEFORE_CLOSE);
 
 
-        } catch (exceptions\NotFound $exception) {
+        } catch (Exceptions\NotFound $exception) {
             self::writeErrorLog(
                 $exception->getMessage() .
                 (isset($_SERVER['HTTP_REFERER']) ? ' from ' .
@@ -412,11 +412,11 @@ class API
                 'code' => $exception->getCode(),
                 'error' => $exception->getMessage()
             ]);
-        } catch (exceptions\Request $exception) {
+        } catch (Exceptions\Request $exception) {
             self::errorView([
                 'code' => $exception->getCode(),
                 'error' => $exception->getMessage()]);
-        } catch (exceptions\Permission $exception) {
+        } catch (Exceptions\Permission $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
@@ -424,7 +424,7 @@ class API
                 'error' => $exception->getMessage(),
                 'title' => 'Permission'
             ]);
-        } catch (exceptions\MissingParamenters $exception) {
+        } catch (Exceptions\MissingParamenters $exception) {
             self::writeErrorLog(
                 $exception->getMessage() .
                 implode(', ', $exception->getParameters())
@@ -445,7 +445,7 @@ class API
                     'title' => 'MissingParamenters'
                 ]);
             }
-        } catch (exceptions\IncorrectParameters $exception) {
+        } catch (Exceptions\IncorrectParameters $exception) {
             self::writeErrorLog(
                 $exception->getMessage() . implode(', ', array_keys($exception->getParameters()))
             );
@@ -455,7 +455,7 @@ class API
                 'incorrect' => $exception->getParameters(),
                 'title' => 'incorrect_parameters_exception'
             ]);
-        } catch (exceptions\method_not_allowed $exception) {
+        } catch (Exceptions\method_not_allowed $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
