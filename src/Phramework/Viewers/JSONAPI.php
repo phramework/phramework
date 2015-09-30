@@ -8,6 +8,7 @@ namespace Phramework\Viewers;
  * Sends `Content-type: application/vnd.api+json` response to client
  *
  * JSONP Support is disabled
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenophon Spafaridis <nohponex@gmail.com>
  * @link http://jsonapi.org/
  * @sinse 1.0.0

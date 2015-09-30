@@ -1,5 +1,19 @@
 <?php
-
+/**
+ * Copyright 2015 Xenofon Spafaridis
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 namespace Phramework;
 
 use Phramework\Models\Util;
@@ -29,15 +43,15 @@ if (!function_exists('___')) {
 }
 /**
  * API 'framework' by NohponeX
- * @license Proprietary This product is allowed only for usage by mathlogic.eu project 'dwaste atlas' and metaphrase
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @version 1.0.0
+ * @link https://nohponex.gr Developer's website
+ * @package API
  * @todo Use parameters, implement alternative authentication methods
  * @todo Create a class for settings
  * @todo Clean GET callback
  * @todo Rething the role of $controller_public_whitelist
- * @author Xenophon Spafaridis <nohponex@gmail.com>
- * @link https://nohponex.gr Developer's website
- * @version 1.0.0
- * @package API
  * @todo remove APPPATH
  * @todo configurable APP\\controllers\\ namespace
  * @todo change default timezone
