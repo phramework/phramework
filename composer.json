@@ -30,14 +30,20 @@
     "php": ">=5.5",
     "lib-curl": ">=7.26.0",
     "ext-pdo": ">=1.0.0",
-    "ext-pdo_pgsql": ">=1.0.2",
+    "ext-json": "*",
     "metaphrase/php-sdk": "~0.1"
+  },
+  "suggest": {
+    "ext-pdo": ">=1.0.0",
+    "ext-pdo_pgsql": ">=1.0.2",
+    "ext-pdo_mysql": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*",
     "phpunit/phpunit-skeleton-generator": "*",
     "squizlabs/php_codesniffer": "2.*",
-    "apigen/apigen": "^4.1"
+    "apigen/apigen": "^4.1",
+    "ext-pdo_sqlite": "*"
   },
   "support": {
     "email": "phramework@nohponex.gr"
