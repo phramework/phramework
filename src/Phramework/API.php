@@ -51,14 +51,9 @@ if (!function_exists('___')) {
  * @version 1.0.0
  * @link https://nohponex.gr Developer's website
  * @package API
- * @todo Use parameters, implement alternative authentication methods
+ * @todo Use parameters
  * @todo Create a class for settings
  * @todo Clean GET callback
- * @todo Rething the role of $controller_public_whitelist
- * @todo remove APPPATH
- * @todo configurable APP\\controllers\\ namespace
- * @todo change default timezone
- * @todo remove _controller suffix
  * @todo Add localization class
  */
 class API
