@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use Phramework\Exceptions\MissingParamenters;
+use Phramework\Exceptions\MissingParameters;
 use Phramework\Exceptions\IncorrectParameters;
 
 /**
@@ -200,7 +200,7 @@ class Validate
      * @return boolean
      * @throws \Exception
      * @throws IncorrectParameters If any field is incorrect
-     * @throws MissingParamenters If any required field is missing
+     * @throws MissingParameters If any required field is missing
      */
     public static function model(&$parameters, $model)
     {
@@ -539,7 +539,7 @@ class Validate
         if ($incorrect) {
             throw new IncorrectParameters($incorrect);
         } elseif ($missing) {
-            throw new MissingParamenters($missing);
+            throw new MissingParameters($missing);
         }
         return true;
     }
