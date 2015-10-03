@@ -306,6 +306,7 @@ class Database
      * @param array Query parameters
      * @return type
      * @throws Phramework\Exceptions\Database
+     * @todo provide documentation
      */
     public static function bindExecute($query, $parameters = [])
     {
