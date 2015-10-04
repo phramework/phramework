@@ -40,6 +40,11 @@ class Validate
     const TYPE_TEXT = 'text';
 
     /**
+     * Alias of Text type
+     */
+    const TYPE_STRING = 'text';
+
+    /**
      * Multiline text type
      */
     const TYPE_TEXTAREA = 'textarea';
