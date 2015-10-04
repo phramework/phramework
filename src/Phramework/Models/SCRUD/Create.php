@@ -76,7 +76,7 @@ class Create
 
         $query .= ' ("' . $query_keys . '") ' . "VALUES ($query_parameter_string )";
 
-        $driver = \Phramework\Models\Database::get_db_driver();
+        $driver = \Phramework\Models\Database::getDbDriver();
         //Return inserted id
         if ($return == self::RETURN_ID) {
             if ($driver == 'postgresql') {
