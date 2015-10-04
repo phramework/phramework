@@ -21,7 +21,6 @@ use Phramework\Models\Database;
 use Phramework\Exceptions\Request;
 use Phramework\Exceptions\NotFound;
 
-// @codingStandardsIgnoreStart
 /**
  * create model
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
@@ -32,59 +31,55 @@ use Phramework\Exceptions\NotFound;
  */
 class Create
 {
-    const RETURN_RECORDS = 1;
+    //const RETURN_RECORDS = 1;
     const RETURN_ID = 0;
+    const RETURN_NUMBER_OF_RECORDS = 2;
 
     /**
-     * Create a new entry method
+     * Create a new record in database
+     * @param  array $attributes  Key-value array with records's attributes
+     * @param  string $table       Table's name
+     * @param  string|null $schema     [Optional] Table's schema, default is null for no schema
+     * @param  [type] $return      Return method type
+     * @return int|array
+     * @todo Check RETURNING id for another primary key attribute
      */
-    public static function create($keys_values, $table, $return = self::RETURN_ID)
-    {
-        /* $table = $model[ 'table' ];
-          $index = $model[ 'index' ];
-
-          if ( in_array( 'created_type', $model ) ){ // && ( !isset( $keys_values[ 'created' ] ) || empty( $keys_values['created'] ) ) ){
-          $keys_values[ 'created' ] = date( 'Y-m-d H:i:s' );
-          }
-          if( in_array( 'created_user_id_type', $model ) ){ // && ( !isset( $keys_values[ 'created_user_id' ] ) || empty( $keys_values[ 'created_user_id' ] ) ) ){
-          $user = Util::check_permission( );
-
-          $keys_values[ 'created_user_id' ] = $user[ 'id' ];
-          }
-          //Get unique fields
-          foreach( $model[ 'fields' ] as $key => $value ){
-          if( in_array( 'unique', $value ) && isset( $keys_values[ $key ] ) ){
-          //Check per field if exists
-          if( Database::execute( "SELECT "$table"."$index" FROM "$table" WHERE "$table"."$key" = ? LIMIT 1", [ $keys_values[ $key ] ] ) ){
-          throw new RequestException( 'Unique field ' . $key . ' already exists at another entry' );
-          }
-          }
-          } */
-        $query_keys   = implode('" , "', array_keys($keys_values));
-        $query_parameter_string = trim(str_repeat('?,', count($keys_values)), ',');
-        $query_values = array_values($keys_values);
+    public static function create(
+        $attributes,
+        $table,
+        $schema = null,
+        $return = self::RETURN_ID
+    ) {
+        //prepare query
+        $query_keys   = implode('" , "', array_keys($attributes));
+        $query_parameter_string = trim(str_repeat('?,', count($attributes)), ',');
+        $query_values = array_values($attributes);
 
         $query = 'INSERT INTO ';
 
-        if (is_array($table) &&
-            isset($table['schema']) &&
-            isset($table['table'])) {
-            $query .= '"' . $table['schema'] . '"' . '."' . $table['table'] . '"';
+        if ($schema !== null) {
+            $query .= sprintf('"%s"."%s"', $schema, $table);
         } else {
-            $query .= '"' . $table . '"';
+            $query .= sprintf('"%s"', $table);
         }
 
-        $query .= ' ("' . $query_keys . '") ' . "VALUES ($query_parameter_string )";
+        $query .= sprintf(
+            ' ("%s") VALUES (%s)',
+            $query_keys,
+            $query_parameter_string
+        );
 
         $driver = \Phramework\Models\Database::getDbDriver();
-        //Return inserted id
+
         if ($return == self::RETURN_ID) {
+            //Return inserted id
             if ($driver == 'postgresql') {
                 $query .= ' RETURNING id';
             }
+
             return Database::executeLastInsertId($query, $query_values);
-        //Return number of rows affected
         } else {
+            //Return number of records affected
             if ($driver == 'postgresql') {
                 $query .= 'RETURNING ' . '*';
             }
@@ -93,5 +88,3 @@ class Create
         }
     }
 }
-
-// @codingStandardsIgnoreStart
