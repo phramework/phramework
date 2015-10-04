@@ -2,6 +2,6 @@
 
 $settings = [
     'language' => 'en',
-    'api_base' => 'http://localhost/phramework/examples/API/public/'
+    'api_base' => 'http://localhost/Phramework/Examples/API/public/'
 ];
 return $settings;

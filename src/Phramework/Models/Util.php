@@ -16,10 +16,10 @@
  */
 namespace Phramework\Models;
 
-use Phramework\API;
-use Phramework\Exceptions\Permission;
-use Phramework\Exceptions\MissingParamenters;
-use Phramework\Exceptions\IncorrectParameters;
+use \Phramework\API;
+use \Phramework\Exceptions\Permission;
+use \Phramework\Exceptions\MissingParamenters;
+use \Phramework\Exceptions\IncorrectParameters;
 
 /**
  * Utility class
@@ -77,7 +77,7 @@ class Util
     {
         return (substr($string, 0, strlen($search)) == $search);
     }
-    
+
     // @codingStandardsIgnoreStart
     /**
      * Print formatted date

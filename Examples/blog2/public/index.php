@@ -12,7 +12,7 @@ use Phramework\API;
  * @package examples/post
  * Define APP as function
  */
-$APP = function() {
+$APP = function () {
 
     //Include settings
     $settings = include __DIR__ . '/../settings.php';

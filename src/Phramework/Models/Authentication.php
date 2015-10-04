@@ -16,8 +16,8 @@
  */
 namespace Phramework\Models;
 
-use Phramework\API;
-use Phramework\Models\Database;
+use \Phramework\API;
+use \Phramework\Models\Database;
 
 /**
  * Authentication related functions

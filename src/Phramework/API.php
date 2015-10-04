@@ -16,9 +16,9 @@
  */
 namespace Phramework;
 
-use Phramework\Models\Util;
-use Phramework\Models\Request;
-use Phramework\Extensions\StepCallback;
+use \Phramework\Models\Util;
+use \Phramework\Models\Request;
+use \Phramework\Extensions\StepCallback;
 
 // @codingStandardsIgnoreStart
 // Tell PHP that we're using UTF-8 strings until the end of the script

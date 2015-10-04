@@ -16,10 +16,10 @@
  */
 namespace Phramework\Models;
 
-use Phramework\API;
-use Phramework\Exceptions\Permission;
-use Phramework\Exceptions\MissingParamenters;
-use Phramework\Exceptions\IncorrectParameters;
+use \Phramework\API;
+use \Phramework\Exceptions\Permission;
+use \Phramework\Exceptions\MissingParamenters;
+use \Phramework\Exceptions\IncorrectParameters;
 
 /**
  * Request related functions

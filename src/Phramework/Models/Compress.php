@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use Phramework\Models\Util;
+use \Phramework\Models\Util;
 
 /**
  * Compress class

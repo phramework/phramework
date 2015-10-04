@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use Phramework\API;
+use \Phramework\API;
 
 /**
  * Response class

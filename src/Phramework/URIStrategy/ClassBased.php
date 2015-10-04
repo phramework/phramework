@@ -16,9 +16,9 @@
  */
 namespace Phramework\URIStrategy;
 
-use Phramework\API;
-use Phramework\Exceptions\Permission;
-use Phramework\Exceptions\NotFound;
+use \Phramework\API;
+use \Phramework\Exceptions\Permission;
+use \Phramework\Exceptions\NotFound;
 
 /**
  * ClassBased strategy will use the controller parameters extracted from URI

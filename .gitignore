@@ -6,3 +6,4 @@ error_log.txt
 node_modules/
 composer.lock
 npm-debug.log
+localsettings.php

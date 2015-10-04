@@ -16,8 +16,8 @@
  */
 namespace Phramework\Models;
 
-use Phramework\Exceptions\MissingParameters;
-use Phramework\Exceptions\IncorrectParameters;
+use \Phramework\Exceptions\MissingParameters;
+use \Phramework\Exceptions\IncorrectParameters;
 
 /**
  * Provides various methods for validating data for varius datatypes.

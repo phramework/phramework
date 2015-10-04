@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use PDO;
+use \PDO;
 
 /**
  * Basic mysql postgresql and  model using PDO

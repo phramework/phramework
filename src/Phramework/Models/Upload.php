@@ -16,8 +16,8 @@
  */
 namespace Phramework\Models;
 
-use Phramework\Models\Util;
-use Phramework\Exceptions\NotFound;
+use \Phramework\Models\Util;
+use \Phramework\Exceptions\NotFound;
 
 /**
  * Upload class

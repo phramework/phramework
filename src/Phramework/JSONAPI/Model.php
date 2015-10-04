@@ -1,5 +1,19 @@
 <?php
-
+/**
+ * Copyright 2015 Spafaridis Xenofon
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 namespace Phramework\JSONAPI;
 
 use \Phramework\API;
@@ -16,7 +30,7 @@ class Model
      * **Must** be overwriten
      * @var string
      */
-    protected static $type = null;;
+    protected static $type = null;
 
     /**
      * Resource's table name
@@ -166,7 +180,9 @@ class Model
      */
     public static function relationshipExists($relationshipKey)
     {
-        return isset(static::$relationships[$relationshipKey]);
+        $relationships = static::getRelationships();
+
+        return isset($relationships[$relationshipKey]);
     }
 
     /**
@@ -304,7 +320,7 @@ class Model
                     if ($relationshipType == Relationship::TYPE_TO_MANY) {
                         $callMethod = [
                             $relationshipObject->getRelationshipClass(),
-                            'getBy' . $resource->type
+                            'getBy' . ucfirst($resource->type)
                         ];
                         //Check if method exists
                         if (is_callable($callMethod)) {
@@ -378,12 +394,16 @@ class Model
      * @throws \Phramework\Exceptions\Server If relationship's class method is
      * not defined
      * @throws \Phramework\Exceptions\Server If resources's class
-     * getBy idAttribute method is not defined
+     * `'getBy' . ucfirst(idAttribute)` method is not defined
      */
-    public static function getRelationshipData($relationshipKey, $idAttributeValue)
-    {
-        if (!isset(static::relationshipExists($relationshipKey)) {
-            throw new \Phramework\Exceptions\Server('Not a valid relationship key');
+    public static function getRelationshipData(
+        $relationshipKey,
+        $idAttributeValue
+    ) {
+        if (!static::relationshipExists($relationshipKey)) {
+            throw new \Phramework\Exceptions\Server(
+                'Not a valid relationship key'
+            );
         }
 
         $relationship = self::getRelationships()[$relationshipKey];
@@ -392,7 +412,7 @@ class Model
             case Relationship::TYPE_TO_ONE:
                 $callMethod = [
                     static::class,
-                    'getBy' . self::getIdAttribute()
+                    'getBy' . ucfirst(self::getIdAttribute())
                 ];
 
                 if (!is_callable($callMethod)) {
@@ -419,7 +439,7 @@ class Model
             default:
                 $callMethod = [
                     $relationship->getRelationshipClass(),
-                    'getBy' . self::getType()
+                    'getBy' . ucfirst(self::getType())
                 ];
 
                 if (!is_callable($callMethod)) {

@@ -8,9 +8,9 @@ ini_set('display_errors', '1');
 require __DIR__ . '/../../../vendor/autoload.php';
 
 //define controller namespace, as shortcut
-define('NS', 'Examples\\API\\APP\\Controllers\\');
+define('NS', 'Examples\\JSONAPI\\APP\\Controllers\\');
 
-use Phramework\API;
+use \Phramework\API;
 
 /**
  * @package examples/post
@@ -22,9 +22,10 @@ $APP = function () {
     $settings = include __DIR__ . '/../settings.php';
 
     $URIStrategy = new \Phramework\URIStrategy\URITemplate([
-        ['book/', NS . 'BookController', 'GET', API::METHOD_GET],
-        ['book/{id}', NS . 'BookController', 'GETSingle', API::METHOD_GET],
-        ['book/', NS . 'BookController', 'POST', API::METHOD_ANY]
+        ['test/', NS . 'TestController', 'GET', API::METHOD_GET],
+        ['test/', NS . 'TestController', 'POST', API::METHOD_POST],
+        ['test/{id}', NS . 'TestController', 'GETById', API::METHOD_GET],
+        ['test/{id}/relationships/{relationship}', NS . 'TestController', 'byIdRelationships', API::METHOD_ANY],
     ]);
 
     //Initialize API

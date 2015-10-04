@@ -16,11 +16,11 @@
  */
 namespace Phramework\URIStrategy;
 
-use Phramework\API;
-use Phramework\Exceptions\Permission;
-use Phramework\Exceptions\NotFound;
-use Phramework\Exceptions\Server;
-use Phramework\Models\Util;
+use \Phramework\API;
+use \Phramework\Exceptions\Permission;
+use \Phramework\Exceptions\NotFound;
+use \Phramework\Exceptions\Server;
+use \Phramework\Models\Util;
 
 /**
  * IURIStrategy implementation using URI templates
@@ -154,6 +154,17 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
         return [$URI, $parameters];
     }
 
+    /**
+     * [invoke description]
+     * @param  [type] $requestMethod     [description]
+     * @param  [type] $requestParameters [description]
+     * @param  [type] $requestHeaders    [description]
+     * @param  [type] $requestUser       [description]
+     * @throws NotFound
+     * @throws NotFound
+     * @throws Permission
+     * @return [type]                    [description]
+     */
     public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
         // Get request uri and uri parameters
@@ -175,7 +186,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
             if ($test !== false) {
                 if ($requiresAuthentication && $requestUser === false) {
-                    throw new Permission(API::getTranslated('unauthenticated_access_exception'));
+                    throw new Permission(API::getTranslated('Unauthenticated Access'));
                 }
 
                 list($URI_parameters) = $test;
@@ -192,7 +203,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                  * @todo complete documentation
                  */
                 if (!is_callable("$class::$method")) {
-                    throw new NotFound(API::getTranslated('method_NotFound_exception'));
+                    throw new NotFound(API::getTranslated('Method not found'));
                 }
 
                 //Call method
@@ -206,6 +217,6 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             }
         }
 
-        throw new NotFound(API::getTranslated('method_NotFound_exception'));
+        throw new NotFound(API::getTranslated('Method not found'));
     }
 }
