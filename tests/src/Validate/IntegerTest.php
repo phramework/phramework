@@ -150,6 +150,13 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
         );
     }
     
+    /**
+     * @covers Phramework\Validate\Integer::getType
+     */
+    public function testGetType()
+    {
+        $this->assertEquals('integer', $this->object->getType());
+    }
     
 
 }

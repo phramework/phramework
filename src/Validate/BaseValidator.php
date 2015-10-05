@@ -30,7 +30,16 @@ class BaseValidator
      * @var string
      */
     protected static $type = 'string';
-
+    
+    /**
+     * Get validator's type
+     * @return string
+     */
+    public static function getType()
+    {
+        return static::$type;
+    }
+    
     /**
      * Validator's attributes
      * @var string[]
