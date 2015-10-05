@@ -16,6 +16,7 @@
  */
 namespace Phramework\Validate;
 
+use \Phramework\Models\Filter;
 use \Phramework\Exceptions\MissingParameters;
 use \Phramework\Exceptions\IncorrectParameters;
 
@@ -25,7 +26,7 @@ use \Phramework\Exceptions\IncorrectParameters;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @todo Make REGEXP_USERNAME etc variables
- * @since 0.0.1
+ * @since 1.0.0
  */
 class Validate
 {

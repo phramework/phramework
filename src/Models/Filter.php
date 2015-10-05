@@ -16,6 +16,8 @@
  */
 namespace Phramework\Models;
 
+use \Phramework\Validate\Validate;
+
 /**
  * Provides various methods for filtering data
  *

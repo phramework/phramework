@@ -17,17 +17,20 @@
 namespace Phramework\Validate;
 
 /**
- * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
- * @since 1.0.0
+* @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+* @author Spafaridis Xenophon <nohponex@gmail.com>
+* @since 1.0.0
  */
-interface IPrimitive
+class ValidateStatus extends \stdClass
 {
-    /**
-     * Validate value
-     * @see \Phramework\Validate\ValidateStatus for ValidateStatus object
-     * @param  mixed $value Value to validate
-     * @return ValidateStatus
-     */
-    public function validate($value);
+    public $value;
+    public $status;
+    public $errorObject;
+
+    public function __construct($value, $status = false, $errorObject = null)
+    {
+        $this->value  = $value;
+        $this->status = $status;
+        $this->errorObject = $errorObject;
+    }
 }

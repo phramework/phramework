@@ -14,7 +14,7 @@
   }],
   "autoload": {
     "psr-4": {
-      "Phramework\\": "src/Phramework"
+      "Phramework\\": "src"
     }
   },
   "autoload-dev": {

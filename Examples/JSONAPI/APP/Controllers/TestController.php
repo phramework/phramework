@@ -8,6 +8,7 @@ use \Phramework\Models\Filter;
 use \Phramework\Models\Request;
 use \Examples\JSONAPI\APP\Models\Test;
 
+use \Phramework\Validate\Integer;
 /**
  * Controller for /test endpoint
  */
@@ -100,8 +101,21 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         $resource->attributes['created_user_id'] = 1;
 
         $valdationModel = [
-            'int' => new \Phramework\Validate\Integer(0,0, true)
+            'fields' => [
+                'id'     => new Integer(0, 100),
+                'weight' => new Integer(-10,10),
+            ],
+            'required' => ['length']
         ];
+        $valdationModel['fields']['id']->multipleOf = 4;
+        var_dump($valdationModel['fields']['id']);
+        var_dump($valdationModel['fields']['id']->toJSON());
+
+        var_dump($valdationModel['fields']['id']->validate(1));
+        var_dump($valdationModel['fields']['id']->validate(-10));
+        var_dump($valdationModel['fields']['id']->validate(8));
+        var_dump($valdationModel['fields']['id']->validate('10'));
+        die();
 
         //Create a new record using request resource's attributes and return id
         $id = Test::post($resource->attributes);

@@ -17,32 +17,96 @@
 namespace Phramework\Validate;
 
 use \Phramework\Exceptions\IncorrectParameters;
+use \Phramework\Validate\ValidateStatus;
 
-class Integer implements IPrimitive
+//require __DIR__ . '/IPrimitive.php';
+
+/**
+ * @property integer|null minimun
+ * @property integer|null maximum
+ * @property integer|null exclusiveMinimum
+ * @property integer|null exclusiveMaximum
+ * @property integer multipleOf
+ * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
+ * *5.1.  Validation keywords for numeric instances (number and integer)*
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @since 1.0.0
+ */
+class Integer extends \Phramework\Validate\BaseValidator implements \Phramework\Validate\IPrimitive
 {
-    protected $min = null;
-    protected $max = null;
+    /**
+     * Overwrite base class attributes
+     * @var array
+     */
+    protected static $typeAttributes = [
+        'minimum',
+        'maximum',
+        'exclusiveMinimum',
+        'exclusiveMaximum',
+        'multipleOf'
+    ];
 
-    public function __constructor($min, $max, $required)
-    {
+    /**
+     * Overwrite base class type
+     * @var string
+     */
+    protected static $type = 'integer';
 
+    public function __construct(
+        $minimum = null,
+        $maximum = null,
+        $exclusiveMinimum = null,
+        $exclusiveMaximum = null,
+        $multipleOf = null
+    ) {
+        parent::__construct();
+
+        $this->minimum = $minimum;
+        $this->maximum = $maximum;
+        $this->exclusiveMinimum = $exclusiveMinimum;
+        $this->exclusiveMaximum = $exclusiveMaximum;
+        $this->multipleOf = $multipleOf;
     }
 
+    /**
+     * Validate value
+     * @see \Phramework\Validate\ValidateStatus for ValidateStatus object
+     * @param  mixed $value Value to validate
+     * @return ValidateStatus
+     */
     public function validate($value)
     {
+        $return = new ValidateStatus($value, false);
+
+        //Apply all rules
+
         if (filter_var($value, FILTER_VALIDATE_INT) === false) {
-            return new \stdObject();
-        }
-
-        if ($this->max !== null && $value > $this->max) {
             //error
-        }
-
-        if ($this->min !== null && $value < $this->min) {
+        } elseif ($this->maximum !== null && $value > $this->maximum) {
             //error
+        } elseif ($this->exclusiveMaximum !== null
+            && $value >= $this->exclusiveMaximum
+        ) {
+            //error
+        } elseif ($this->minimum !== null && $value < $this->minimum) {
+            //error
+        } elseif ($this->exclusiveMinimum !== null
+            && $value <= $this->exclusiveMinimum
+        ) {
+            //error
+        } elseif ($this->multipleOf !== null
+            && ((int)$value % $this->multipleOf) !== 0
+        ) {
+            //error
+        } else {
+            $return->returnObject = null;
+            //Set status to success
+            $return->status = true;
+            //Type cast
+            $return->value  = (int)($value);
         }
 
-        //Cast datatype
-        return (int)($value);
+        return $return;
     }
 }
