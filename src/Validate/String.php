@@ -60,7 +60,7 @@ class String extends \Phramework\Validate\BaseValidator implements \Phramework\V
      * @param  mixed $value Value to validate
      * @return ValidateResult
      * @uses https://secure.php.net/manual/en/function.is-string.php
-     * @uses https://secure.php.net/manual/en/function.preg-match.php for pattern
+     * @uses filter_var with FILTER_VALIDATE_REGEXP for pattern
      */
     public function validate($value)
     {
@@ -75,7 +75,9 @@ class String extends \Phramework\Validate\BaseValidator implements \Phramework\V
         ) {
             //error
         } elseif ($this->pattern !== null
-            && !preg_match($this->pattern, $value)
+            && filter_var($value, FILTER_VALIDATE_REGEXP, [
+                'options' => ['regexp' => $this->pattern]
+            ]) === false
         ) {
             //error
         } else {
