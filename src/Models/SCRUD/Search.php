@@ -17,7 +17,7 @@
 namespace Phramework\Models\SCRUD;
 
 use Phramework\Models\Database;
-use Phramework\Models\Validate;
+use Phramework\Validate\Validate;
 
 // @codingStandardsIgnoreStart
 /**

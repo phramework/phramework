@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Models;
+namespace Phramework\Validate;
 
 use \Phramework\Exceptions\MissingParameters;
 use \Phramework\Exceptions\IncorrectParameters;

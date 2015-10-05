@@ -52,7 +52,7 @@ class StepCallback
     {
 
         //Check if step is allowed
-        \Phramework\Models\Validate::enum($step, [
+        \Phramework\Validate\Validate::enum($step, [
             self::STEP_BEFORE_REQUIRE_CONTROLLER,
             self::STEP_BEFORE_CALL_METHOD,
             self::STEP_BEFORE_CLOSE,

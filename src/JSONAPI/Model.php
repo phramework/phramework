@@ -215,11 +215,11 @@ class Model
      * Filtered and fixed values will be updated on original $attributes
      * argument
      * @param array $attributes [description]
-     * @uses \Phramework\Models\Validate
+     * @uses \Phramework\Validate\Validate
      */
     public static function validate(&$attributes)
     {
-        \Phramework\Models\Validate::model(
+        \Phramework\Validate\Validate::model(
             $attributes,
             self::getValidationModel()
         );

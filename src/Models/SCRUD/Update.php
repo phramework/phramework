@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models\SCRUD;
 
-use Phramework\Models\Validate;
+use Phramework\Validate\Validate;
 use Phramework\Models\Database;
 use Phramework\Exceptions\Request;
 use Phramework\Exceptions\NotFound;

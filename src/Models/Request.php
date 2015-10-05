@@ -155,7 +155,7 @@ class Request
      * Required required values and parse provided parameters into an array
      * Validate the provided request model and return the
      * @uses \Phramework\Models\Request::requireParameters
-     * @uses \Phramework\Models\Validate::model
+     * @uses \Phramework\Validate\Validate::model
      * @param array $parameters
      * @param array $model
      * @return array Return the keys => values collection
@@ -171,7 +171,7 @@ class Request
         }
 
         Request::requireParameters($parameters, $required_fields);
-        \Phramework\Models\Validate::model($parameters, $model);
+        \Phramework\Validate\Validate::model($parameters, $model);
 
         $keys_values = [];
         foreach ($model as $key => $value) {

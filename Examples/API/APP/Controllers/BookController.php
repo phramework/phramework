@@ -2,7 +2,7 @@
 namespace Examples\API\APP\Controllers;
 
 use Phramework\API;
-use Phramework\Models\Validate;
+use Phramework\Validate\Validate;
 use Phramework\Models\Request;
 use Phramework\Models\Util;
 use Examples\API\APP\Models\Book;

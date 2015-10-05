@@ -3,7 +3,7 @@
 namespace Examples\blog2\APP\Controllers;
 
 use Phramework\API;
-use Phramework\Models\Validate;
+use Phramework\Validate\Validate;
 use Phramework\Models\Request;
 use Examples\blog2\APP\Models\Post;
 

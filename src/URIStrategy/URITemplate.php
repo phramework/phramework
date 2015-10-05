@@ -91,7 +91,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
         // replace all named parameters {id} to named regexp matches
         $template = preg_replace(
             '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+)\}(.*?)/',
-            '$1(?P<$2>[0-9a-zA-Z]+)$3',
+            '$1(?P<$2>[0-9a-zA-Z_]+)$3',
             $template
         );
 

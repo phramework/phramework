@@ -3,7 +3,7 @@
 namespace Examples\JSONAPI\APP\Controllers;
 
 use \Phramework\API;
-use \Phramework\Models\Validate;
+use \Phramework\Validate\Validate;
 use \Phramework\Models\Filter;
 use \Phramework\Models\Request;
 use \Examples\JSONAPI\APP\Models\Test;
@@ -99,6 +99,10 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         //Append created_user_id @todo add real value
         $resource->attributes['created_user_id'] = 1;
 
+        $valdationModel = [
+            'int' => new \Phramework\Validate\Integer(0,0, true)
+        ];
+
         //Create a new record using request resource's attributes and return id
         $id = Test::post($resource->attributes);
 
@@ -159,11 +163,11 @@ class TestController extends \Examples\JSONAPI\APP\Controller
 
         //Check if relationship exists
         self::exists(Test::relationshipExists($relationship), 'Relationship not found');
-	
+
 	//Check if method is allowed
 	$allowedMethods = [API::METHOD_GET];
 	Validate::enum($method, $allowedMethods);
-	
+
         //see http://localhost:8080/v1/authors/2/relationships/books
         $data = Test::getRelationshipData($relationship, $id);
 

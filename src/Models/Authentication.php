@@ -45,7 +45,7 @@ class Authentication
         }
 
         //Validate authentication credentials
-        \Phramework\Models\Validate::email($_SERVER['PHP_AUTH_USER']);
+        \Phramework\Validate\Validate::email($_SERVER['PHP_AUTH_USER']);
 
         $auth = self::authenticate($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 

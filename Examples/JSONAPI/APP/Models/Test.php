@@ -3,7 +3,7 @@
 namespace Examples\JSONAPI\APP\Models;
 
 use \Phramework\Models\Database;
-use \Phramework\Models\Validate;
+use \Phramework\Validate\Validate;
 use \Phramework\JSONAPI\Relationship;
 
 class Test extends \Phramework\JSONAPI\Model
