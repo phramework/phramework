@@ -16,12 +16,12 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Exceptions\IncorrectParameters;
 use \Phramework\Validate\ValidateResult;
 
-//require __DIR__ . '/IPrimitive.php';
-
+//require __DIR__ . '/IPrimitive.php'; //used for generator
+//require __DIR__ . '/BaseValidator.php'; //used for generator
 /**
+ * Number validator
  * @property float|null minimun
  * @property float|null maximum
  * @property boolean|null exclusiveMinimum

@@ -12,7 +12,7 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
      * @var Integer
      */
     protected $object;
-    
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -29,11 +29,11 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+
     }
-    
+
     public function validateSuccessProvider()
-    {   
+    {
         //input, expected
         return [
             ['100', 100],
@@ -43,9 +43,9 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
             [-99, -99]
         ];
     }
-    
+
     public function validateFailureProvider()
-    {   
+    {
         //input
         return [
             ['-0x'],
@@ -58,7 +58,7 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
             ['-1000000000']
         ];
     }
-    
+
     /**
      * @covers Phramework\Validate\Integer::fromJSON
      * @dataProvider validateSuccessProvider
@@ -70,57 +70,21 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
             "minimum" : -1000,
             "maximum" : 1000
         }';
-        
+
         $object = Integer::fromJSON($json);
-        
+
         $this->validateSuccess($object, $input, $expected);
     }
 
-    /**
-     * @covers Phramework\Validate\Integer::toJSON
-     * @todo   Implement testToJSON().
-     */
-    public function testToJSON()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Phramework\Validate\Integer::__get
-     * @todo   Implement test__get().
-     */
-    public function test__get()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Phramework\Validate\Integer::__set
-     * @todo   Implement test__set().
-     */
-    public function test__set()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-    
     private function validateSuccess(Integer $object, $input, $expected)
     {
         $return = $object->validate($input);
-        
+
         $this->assertEquals(true, $return->status);
         $this->assertInternalType('integer', $return->value);
         $this->assertEquals($expected, $return->value);
     }
-    
+
     /**
      * @covers Phramework\Validate\Integer::validate
      * @dataProvider validateSuccessProvider
@@ -128,14 +92,9 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
     public function testValidateSuccess($input, $expected)
     {
         $this->validateSuccess($this->object, $input, $expected);
-        /*$return = $this->object->validate($input);
-        
-        $this->assertInternalType('integer', $return->value);
-        $this->assertEquals($expected, $return->value);
-        $this->assertEquals(true, $return->status);*/
     }
-    
-    
+
+
     /**
      * @covers Phramework\Validate\Integer::validate
      * @dataProvider validateFailureProvider
@@ -143,14 +102,14 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
     public function testValidateFailure($input)
     {
         $return = $this->object->validate($input);
-        
+
         $this->assertEquals(false, $return->status);
-        
+
         $this->markTestIncomplete(
                 'Test Exclusive and multipleOf'
         );
     }
-    
+
     /**
      * @covers Phramework\Validate\Integer::getType
      */
@@ -158,6 +117,6 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('integer', $this->object->getType());
     }
-    
+
 
 }

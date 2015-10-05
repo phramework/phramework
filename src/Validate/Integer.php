@@ -16,12 +16,10 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Exceptions\IncorrectParameters;
 use \Phramework\Validate\ValidateResult;
 
-//require __DIR__ . '/IPrimitive.php';
-
 /**
+ * Integer validator
  * @uses \Phramework\Validate\Number As base implementation's rules to
  * validate that the value is a number and then applies additional rules
  * to validate that this is a interger
