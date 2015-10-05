@@ -28,7 +28,7 @@
   }],
   "require": {
     "php": ">=5.5",
-    "lib-curl": ">=7.26.0",
+    "lib-curl": "*",
     "ext-pdo": ">=1.0.0",
     "ext-json": "*",
     "metaphrase/php-sdk": "~0.1"
