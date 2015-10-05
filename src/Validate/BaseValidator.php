@@ -93,9 +93,12 @@ class BaseValidator
      * Create validator from validation object
      * @param  \stdClass $object Validation object
      * @return BaseValidator
+     * @todo use $isFromBase to initialize Validator by name
      */
     public static function fromObject($object)
     {
+        $isFromBase = (static::class === self::class);
+
         //test type if set
         if (isset($object->type) && $object->type !== static::$type) {
             throw new \Exception('Incorrect type');

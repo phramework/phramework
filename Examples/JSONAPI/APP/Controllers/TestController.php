@@ -9,6 +9,7 @@ use \Phramework\Models\Request;
 use \Examples\JSONAPI\APP\Models\Test;
 
 use \Phramework\Validate\Integer;
+use \Phramework\Validate\Number;
 /**
  * Controller for /test endpoint
  */
@@ -102,19 +103,19 @@ class TestController extends \Examples\JSONAPI\APP\Controller
 
         $valdationModel = [
             'fields' => [
-                'id'     => new Integer(0, 100),
+                'id'     => new Number(0, 100),
                 'weight' => new Integer(-10,10),
             ],
-            'required' => ['length']
+            'required' => ['weight']
         ];
-        $valdationModel['fields']['id']->multipleOf = 4;
-        var_dump($valdationModel['fields']['id']);
-        var_dump($valdationModel['fields']['id']->toJSON());
+        $idValidator = $valdationModel['fields']['weight'];
 
-        var_dump($valdationModel['fields']['id']->validate(1));
-        var_dump($valdationModel['fields']['id']->validate(-10));
-        var_dump($valdationModel['fields']['id']->validate(8));
-        var_dump($valdationModel['fields']['id']->validate('10'));
+        var_dump($idValidator->toJSON());
+
+        var_dump($idValidator->validate(1));
+        var_dump($idValidator->validate(-10)); //expect false
+        var_dump($idValidator->validate(8.3));
+        var_dump($idValidator->validate('10.1'));
         die();
 
         //Create a new record using request resource's attributes and return id
