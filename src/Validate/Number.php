@@ -17,7 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Exceptions\IncorrectParameters;
-use \Phramework\Validate\ValidateStatus;
+use \Phramework\Validate\ValidateResult;
 
 //require __DIR__ . '/IPrimitive.php';
 
@@ -71,13 +71,13 @@ class Number extends \Phramework\Validate\BaseValidator implements \Phramework\V
 
     /**
      * Validate value
-     * @see \Phramework\Validate\ValidateStatus for ValidateStatus object
+     * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateStatus
+     * @return ValidateResult
      */
     public function validate($value)
     {
-        $return = new ValidateStatus($value, false);
+        $return = new ValidateResult($value, false);
 
         if (is_string($value)) {
             //Replace comma with dot

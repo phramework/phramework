@@ -21,7 +21,7 @@ namespace Phramework\Validate;
 * @author Spafaridis Xenophon <nohponex@gmail.com>
 * @since 1.0.0
  */
-class ValidateStatus extends \stdClass
+class ValidateResult extends \stdClass
 {
     public $value;
     public $status;

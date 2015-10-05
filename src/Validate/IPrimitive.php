@@ -25,9 +25,9 @@ interface IPrimitive
 {
     /**
      * Validate value
-     * @see \Phramework\Validate\ValidateStatus for ValidateStatus object
+     * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
-     * @return ValidateStatus
+     * @return ValidateResult
      */
     public function validate($value);
 }
