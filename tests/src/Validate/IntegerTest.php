@@ -60,10 +60,10 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Validate\Integer::fromJSON
+     * @covers Phramework\Validate\Integer::createFromJSON
      * @dataProvider validateSuccessProvider
      */
-    public function testFromJSON($input, $expected)
+    public function testCreateFromJSON($input, $expected)
     {
         $json = '{
             "type": "integer",
@@ -71,11 +71,14 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
             "maximum" : 1000
         }';
 
-        $object = Integer::fromJSON($json);
+        $object = Integer::createFromJSON($json);
 
         $this->validateSuccess($object, $input, $expected);
     }
 
+    /**
+     * Helper method
+     */
     private function validateSuccess(Integer $object, $input, $expected)
     {
         $return = $object->validate($input);

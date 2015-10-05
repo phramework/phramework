@@ -21,9 +21,13 @@ use \Phramework\Models\Filter;
 
 /**
  * String validator
+ * @property integer $minLength Minimum number of its characters, default is 0
+ * @property integer|null $maxLength Maximum number of its characters
+ * @property string|null $pattern Regular expresion pattern for validating
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
+ * @see ECMA 262 regular expression dialect for regular expression pattern
  */
 class String extends \Phramework\Validate\BaseValidator implements \Phramework\Validate\IPrimitive
 {

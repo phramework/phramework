@@ -17,7 +17,7 @@
 namespace Phramework\Validate;
 
 /**
- * Description of BaseValidator
+ * BaseValidator, every validator **MUST** extend this class
  *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
@@ -27,10 +27,11 @@ class BaseValidator
 {
     /**
      * Validator's type
+     * Must be overwriten, default is 'string'
      * @var string
      */
     protected static $type = 'string';
-    
+
     /**
      * Get validator's type
      * @return string
@@ -39,9 +40,10 @@ class BaseValidator
     {
         return static::$type;
     }
-    
+
     /**
      * Validator's attributes
+     * Can be overwriten
      * @var string[]
      */
     protected static $typeAttributes = [];
@@ -104,19 +106,22 @@ class BaseValidator
      * @return BaseValidator
      * @todo use $isFromBase to initialize Validator by name
      */
-    public static function fromObject($object)
+    public static function createFromObject($object)
     {
         $isFromBase = (static::class === self::class);
 
-        //test type if set
-        if (isset($object->type) && $object->type !== static::$type) {
+        //Test type if it's set
+        if (property_exists($object, 'type') && $object->type !== static::$type) {
             throw new \Exception('Incorrect type');
         }
-
+        //Initialize a new Validator object, type of current class
         $class = new static();
 
+        //For each Validator's attribute
         foreach (static::getTypeAttributes() as $attribute) {
-            if (isset($object->{$attribute})) {
+            //Check if provided object contains this attribute
+            if (property_exists($object, $attribute)) {
+                //Use attributes value in Validator object
                 $class->{$attribute} = $object->{$attribute};
             }
         }
@@ -129,10 +134,10 @@ class BaseValidator
      * @param  array $object Validation array
      * @return BaseValidator
      */
-    public static function fromArray($array)
+    public static function createFromArray($array)
     {
         $object = (object)($array);
-        return static::fromObject($object);
+        return static::createFromObject($object);
 
     }
 
@@ -141,10 +146,10 @@ class BaseValidator
      * @param  string $object Validation json encoded object
      * @return BaseValidator
      */
-    public static function fromJSON($json)
+    public static function createFromJSON($json)
     {
         $object = json_decode($json);
-        return static::fromObject($object);
+        return static::createFromObject($object);
     }
 
     /**
