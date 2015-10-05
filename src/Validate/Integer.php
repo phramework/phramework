@@ -27,8 +27,8 @@ use \Phramework\Validate\ValidateResult;
  * to validate that this is a interger
  * @property integer|null minimun
  * @property integer|null maximum
- * @property integer|null exclusiveMinimum
- * @property integer|null exclusiveMaximum
+ * @property boolean|null exclusiveMinimum
+ * @property boolean|null exclusiveMaximum
  * @property integer multipleOf
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
@@ -72,12 +72,11 @@ class Integer extends \Phramework\Validate\Number
 
         //Apply additional rules
         if ($return->status == true) {
-
             if (filter_var($value, FILTER_VALIDATE_INT) === false) {
                 //error
                 $return->status = false;
             } else {
-                $return->returnObject = null;
+                $return->errorObject = null;
                 //Set status to success
                 $return->status = true;
                 //Type cast

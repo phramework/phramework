@@ -24,8 +24,8 @@ use \Phramework\Validate\ValidateResult;
 /**
  * @property float|null minimun
  * @property float|null maximum
- * @property float|null exclusiveMinimum
- * @property float|null exclusiveMaximum
+ * @property boolean|null exclusiveMinimum
+ * @property boolean|null exclusiveMaximum
  * @property float multipleOf
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor13
  * *5.1.  Validation keywords for numeric instances (number and integer)*
@@ -87,16 +87,16 @@ class Number extends \Phramework\Validate\BaseValidator implements \Phramework\V
 
         if (filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
             //error
-        } elseif ($this->maximum !== null && $value > $this->maximum) {
-            //error
-        } elseif ($this->exclusiveMaximum !== null
-            && $value >= $this->exclusiveMaximum
+        } elseif ($this->maximum !== null
+            && ($value > $this->maximum
+                || $this->exclusiveMaximum === true && $value >= $this->maximum
+            )
         ) {
             //error
-        } elseif ($this->minimum !== null && $value < $this->minimum) {
-            //error
-        } elseif ($this->exclusiveMinimum !== null
-            && $value <= $this->exclusiveMinimum
+        } elseif ($this->minimum !== null
+            && ($value < $this->minimum
+                || $this->exclusiveMinimum === true && $value <= $this->minimum
+            )
         ) {
             //error
         } elseif ($this->multipleOf !== null
@@ -104,7 +104,7 @@ class Number extends \Phramework\Validate\BaseValidator implements \Phramework\V
         ) {
             //error
         } else {
-            $return->returnObject = null;
+            $return->errorObject = null;
             //Set status to success
             $return->status = true;
             //Type cast

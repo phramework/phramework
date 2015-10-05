@@ -104,7 +104,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         $valdationModel = [
             'fields' => [
                 'id'     => new Number(0, 100),
-                'weight' => new Integer(-10,10),
+                'weight' => new Integer(-10,10, true),
             ],
             'required' => ['weight']
         ];

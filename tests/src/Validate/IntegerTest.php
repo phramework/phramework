@@ -20,7 +20,7 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Integer(-1000,1000);
+        $this->object = new Integer(-1000,1000,true);
     }
 
     /**
@@ -52,6 +52,7 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
             ['abc'],
             ['+xyz'],
             ['++30'],
+            [-1000], //should fail becaus of exclusiveMinimum
             [-10000000],
             [10000000],
             ['-1000000000']
