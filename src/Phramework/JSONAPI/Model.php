@@ -25,6 +25,14 @@ use \Phramework\JSONAPI\Relationship;
 class Model
 {
     /**
+     * Model's method prefix
+     */
+    const GET_RELATIONSHIP_BY_PREFIX = 'getRelationshipBy';
+    /**
+     * Model's method prefix
+     */
+    const GET_BY_PREFIX = 'getBy';
+    /**
      * Resource's type, used to describe resource objects that share
      * common attributes and relationships
      * **Must** be overwriten
@@ -320,7 +328,7 @@ class Model
                     if ($relationshipType == Relationship::TYPE_TO_MANY) {
                         $callMethod = [
                             $relationshipObject->getRelationshipClass(),
-                            'getBy' . ucfirst($resource->type)
+                            self::GET_RELATIONSHIP_BY_PREFIX . ucfirst($resource->type)
                         ];
                         //Check if method exists
                         if (is_callable($callMethod)) {
@@ -394,7 +402,8 @@ class Model
      * @throws \Phramework\Exceptions\Server If relationship's class method is
      * not defined
      * @throws \Phramework\Exceptions\Server If resources's class
-     * `'getBy' . ucfirst(idAttribute)` method is not defined
+     * `self::GET_RELATIONSHIP_BY_PREFIX . ucfirst(idAttribute)` method isn't
+     * defined
      */
     public static function getRelationshipData(
         $relationshipKey,
@@ -412,7 +421,7 @@ class Model
             case Relationship::TYPE_TO_ONE:
                 $callMethod = [
                     static::class,
-                    'getBy' . ucfirst(self::getIdAttribute())
+                    self::GET_BY_PREFIX . ucfirst(self::getIdAttribute())
                 ];
 
                 if (!is_callable($callMethod)) {
@@ -439,7 +448,7 @@ class Model
             default:
                 $callMethod = [
                     $relationship->getRelationshipClass(),
-                    'getBy' . ucfirst(self::getType())
+                    self::GET_RELATIONSHIP_BY_PREFIX . ucfirst(self::getType())
                 ];
 
                 if (!is_callable($callMethod)) {

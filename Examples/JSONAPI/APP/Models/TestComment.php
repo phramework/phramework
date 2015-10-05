@@ -13,7 +13,7 @@ class TestComment extends \Phramework\JSONAPI\Model
         'test_id' => ['type' => Validate::TYPE_UINT, Validate::REQUIRED]
     ];
 
-    public static function getByTest($testId)
+    public static function getRelationshipByTest($testId)
     {
         return Database::executeAndFetchAllArray(
             'SELECT `id` FROM `test_comment`
