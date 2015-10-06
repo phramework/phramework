@@ -46,7 +46,19 @@ class BaseValidator
      * Can be overwriten
      * @var string[]
      */
-    protected static $typeAttributes = [];
+    protected static $typeAttributes = [
+    ];
+
+    /**
+     * Common valdator attributes
+     * @var string[]
+     */
+    protected static $commonAttributes = [
+        'title',
+        'description',
+        'default',
+        'format'
+    ];
 
     /**
      * Get validator's attributes
@@ -65,6 +77,12 @@ class BaseValidator
 
     protected function __construct()
     {
+        //Append common attributes
+        foreach (static::$commonAttributes as $attribute) {
+            $this->attributes[$attribute] = null;
+        }
+
+        //Append type attributes
         foreach (static::$typeAttributes as $attribute) {
             $this->attributes[$attribute] = null;
         }

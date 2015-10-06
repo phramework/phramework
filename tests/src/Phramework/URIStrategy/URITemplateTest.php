@@ -12,7 +12,7 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
      * @var URITemplate
      */
     protected $object;
-    
+
     /**
      * Define templates for testing
      * @var array
@@ -21,7 +21,7 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
         'book/', 'BookController', 'GET', \Phramework\API::METHOD_ANY,
         'author/', 'AuthorController', 'POST', \Phramework\API::METHOD_ANY
     ];
-    
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -32,10 +32,10 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
         ini_set('display_errors', '1');
 
         $this->object = new URITemplate($this->testTemplates);
-        
+
         $_SERVER['QUERY_STRING'] = 'spam=true&ok=false';
         $_SERVER['REQUEST_URI'] = '/api/book/1?spam=true&ok=false';
-        
+
         $_SERVER['SCRIPT_NAME'] = '/api/index.php';
     }
 
@@ -45,9 +45,9 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+
     }
-    
+
     public function testSuccessProvider()
     {
         return [
@@ -74,7 +74,7 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
             ]
         ];
     }
-    
+
     public function testFailureProvider(){
         return [
             'check relashionship' => [
@@ -85,7 +85,7 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
             ],
             'check relashionship\'s parameter' => [
                 'book/{id}', 'book/'
-            ],            
+            ],
             'test bad request' => [
                 'book-bad/{id}', 'book'
             ],
@@ -94,22 +94,22 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
             ]
         ];
     }
-    
+
     /**
      * @covers Phramework\URIStrategy\URITemplate::test
      * @dataProvider testSuccessProvider
      */
     public function testTestSuccess($URITemplate, $URI, $expected)
-    {        
+    {
         $value = $this->object->test($URITemplate, $URI);
-      
+
         //must be an array
         $this->assertInternalType('array', $value);
-                
+
         //must be a subset of $expected
         $this->assertArraySubset($expected, $value[0], true);
     }
-    
+
     /**
      * @covers Phramework\URIStrategy\URITemplate::test
      * @dataProvider testFailureProvider
@@ -117,7 +117,7 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
     public function testTestFailure($URITemplate, $URI)
     {
         $value = $this->object->test($URITemplate, $URI);
-         
+
         $this->assertFalse($value);
     }
 
@@ -127,16 +127,16 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
     public function testURI()
     {
         list($URI, $parameters) = $this->object->URI();
-                
+
         //check types
         $this->assertInternalType('string', $URI);
         $this->assertInternalType('array', $parameters);
-        
+
         $this->assertInternalType('array', $parameters);
         $this->assertCount(2, $parameters);
         //from current $_SERVER values
         $this->assertArraySubset(['spam' => 'true', 'ok' => 'false'], $parameters, false);
-        
+
         $this->markTestIncomplete();
     }
 
