@@ -109,8 +109,8 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         //proper
         $validationObject = new Object(
             [
-                'length'     => new Number(0, 100),
-                'weight' => new Integer(-10,10, true),
+                'length'     => ((new Number(0, 100))->setTitle('xxx')->setDefault('123')),
+                'weight' => new Integer(-10, 10, true),
             ],
             ['weight']
         );

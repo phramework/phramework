@@ -108,6 +108,7 @@ class BaseValidator
      * @param string $key   Attribute's key
      * @param mixed $value  Attribute's value
      * @throws \Exception If key not found
+     * @return BaseValidator Return's this validator object
      */
     public function __set($key, $value)
     {
@@ -116,6 +117,27 @@ class BaseValidator
         }
 
         $this->attributes[$key] = $value;
+
+        return $this;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function setDescription($description)
+    {
+        return $this->__set('description', $description);
+    }
+
+    public function setDefault($default)
+    {
+        $this->default = $default;
+
+        return $this;
     }
 
     /**
