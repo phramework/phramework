@@ -19,7 +19,12 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Object(1,2, ['ok']);
+        $properties = [
+            'str' => new \Phramework\Validate\String(2,4),
+            'ok' => new \Phramework\Validate\Boolean(),
+        ];
+
+        $this->object = new Object($properties, ['ok']);
     }
 
     /**
@@ -36,7 +41,8 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         //input
         return [
             [['ok' => true]],
-            [(object)(['ok' => 'set', 'okk' => 'hello'])]
+            [(object)['ok' => 'true', 'okk' => '123']],
+            [(object)['ok' => false, 'okk' => ]]
         ];
     }
 
@@ -48,7 +54,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
             [['ok']], //`ok` is not an object key
             [['abc']],
             [(object)(['okk' => 'hello'])], //because missing ok
-            [['ok'=>1, 'okk' => '2', 'xyz' => true]], //because of maxProperties 2
+            [['ok'=> 'omg', 'okk' => '2', 'xyz' => true]], //because of ok is not boolean
         ];
     }
 
@@ -59,10 +65,10 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     public function testValidateSuccess($input)
     {
         $return = $this->object->validate($input);
+        var_dump($return);
 
         $this->assertEquals(true, $return->status);
         $this->assertInternalType('object', $return->value);
-        //$this->assertEquals($expected, $return->value);
 
     }
 
@@ -109,6 +115,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     public function testAddPropertySuccess()
     {
         $key = 'my_key';
+        $property = new Object();
         $this->object->addProperty($key, $property);
 
         $this->assertTrue(

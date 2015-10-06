@@ -21,6 +21,7 @@ use \Phramework\Validate\ValidateResult;
 
 /**
  * Boolean validator
+ * @property boolean default
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
@@ -33,9 +34,11 @@ class Boolean extends BaseValidator implements \Phramework\Validate\IPrimitive
      */
     protected static $type = 'boolean';
 
-    public function __construct()
+    public function __construct($default = null)
     {
         parent::__construct();
+
+        $this->default = $default;
     }
 
     /**

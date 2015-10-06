@@ -25,12 +25,17 @@ use \Phramework\Models\Filter;
  * @property integer minProperties Default is 0
  * @property integer|null maxProperties
  * @property array required, Default is []
+ * @property BaseValidator[] properties, Default is []
  * @property object|boolean additionalProperties
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @see http://json-schema.org/latest/json-schema-validation.html#anchor53
  * 5.4.  Validation keywords for objects
  * @since 1.0.0
+ * @todo Implement patternProperties
+ * @todo Implement additionalProperties
+ * @todo Implement dependencies
+ * @todo Can it have default?
  */
 class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
 {
@@ -51,19 +56,19 @@ class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
     ];
 
     public function __construct(
+        $properties = [],
+        $required = [],
+        $additionalProperties = null,
         $minProperties = 0,
         $maxProperties = null,
-        $required = [],
-        $properties = [],
-        $additionalProperties = null,
         $patternProperties = null
     ) {
         parent::__construct();
 
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
-        $this->required = $required;
         $this->properties = $properties;
+        $this->required = $required;
         $this->additionalProperties = $additionalProperties;
     }
 
@@ -72,6 +77,7 @@ class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
      * @return ValidateResult
+     * @todo if array, remove elements without keys
      */
     public function validate($value)
     {
@@ -82,39 +88,73 @@ class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
         }
 
         if (!is_object($value)) {
+            $return->errorObject = 'not an object';
             //error
             goto err;
         }
 
-        $properties = get_object_vars($value);
+        $valueProperties = get_object_vars($value);
 
-        $propertiesCount = count($properties);
+        $valuePropertiesCount = count($valueProperties);
 
-        if ($propertiesCount < $this->minProperties) {
+        if ($valuePropertiesCount < $this->minProperties) {
             //error
+            $return->errorObject = 'minProperties';
             goto err;
         } elseif ($this->maxProperties !== null
-            && $propertiesCount > $this->maxProperties
+            && $valuePropertiesCount > $this->maxProperties
         ) {
+            $return->errorObject = 'maxProperties';
             //error
             goto err;
         }
 
+        //Check if required properties are set and find if any of them are missing
         if ($this->required !== null || !empty($this->required)) {
-            //find missing properties
+            //Find missing properties
             $missingProperties = [];
 
-            foreach ($this->required as $property) {
-                if (!array_key_exists($property, $value)) {
-                    //push to missing
-                    $missingProperties[] = $property;
+            foreach ($this->required as $key) {
+                if (!array_key_exists($key, $valueProperties)) {
+                    //Push key to missing
+                    $missingProperties[] = $key;
                 }
             }
 
             if (!empty($missingProperties)) {
                 //error, missing properties
+                $return->errorObject = 'required properties';
                 goto err;
             }
+        }
+
+        $overalPropertyStatus = true;
+
+        //Validate all validator's properties
+        foreach ($this->properties as $key => $property) {
+            //If this property key exists in given $value, validate it
+            if (array_key_exists($key, $valueProperties)) {
+                $propertyValue = $valueProperties[$key];
+                $propertyValidateResult = $property->validate($propertyValue);
+
+                //Determine $overalPropertyStatus
+                $overalPropertyStatus = $overalPropertyStatus && $propertyValidateResult->status;
+
+                //use type casted value
+                $value->{$key} = $propertyValidateResult->value;
+
+            } else {
+                //Else use default property's value
+                $value->{$key} = $property->default;
+            }
+        }
+
+        if (!$overalPropertyStatus) {
+            $return->status = $overalPropertyStatus;
+            $return->errorObject = 'properties validation';
+            //error
+            //todo here we must collect all errorObjects
+            goto err;
         }
 
         //success
@@ -123,6 +163,7 @@ class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
         //Apply type casted
         $return->value = $value;
 
+        return $return;
 
         err:
         return $return;
@@ -155,8 +196,8 @@ class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
             throw new \Exception('Property key exists');
         }
 
+        //Add this key, value to
         $this->properties += [$key => $property];
     }
-
 
 }

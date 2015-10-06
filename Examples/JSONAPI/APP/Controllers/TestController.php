@@ -10,6 +10,9 @@ use \Examples\JSONAPI\APP\Models\Test;
 
 use \Phramework\Validate\Integer;
 use \Phramework\Validate\Number;
+use \Phramework\Validate\Object;
+use \Phramework\Validate\Boolean;
+
 /**
  * Controller for /test endpoint
  */
@@ -101,22 +104,79 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         //Append created_user_id @todo add real value
         $resource->attributes['created_user_id'] = 1;
 
-        $valdationModel = [
-            'fields' => [
-                'id'     => new Number(0, 100),
+        $input = ['weight' => 5, 'length' => 1.02];
+
+        //proper
+        $validationObject = new Object(
+            [
+                'length'     => new Number(0, 100),
+                'weight' => new Integer(-10,10, true),
+            ],
+            ['weight']
+        );
+
+    //    var_dump($validationObject);
+    //    var_dump($validationObject->validate($input));
+
+        //equivalent using arrays
+        /*$validationObject = Object::createFromArray([
+            'properties' => [
+                'length' => new Number(0, 100),
                 'weight' => new Integer(-10,10, true),
             ],
             'required' => ['weight']
+        ]);
+
+        var_dump($validationObject);
+        var_dump($validationObject->validate($input));*/
+
+
+        $input2 = [
+            'weight' => '5',
+            'obj' => [
+                'valid' => 'true',
+                'number' => 10.2,
+            ]
         ];
-        $idValidator = $valdationModel['fields']['weight'];
 
-        var_dump($idValidator->toJSON());
+        $validationObject = new Object(
+            [ //properties
+                'weight' => new Integer(-10,10, true),
+                'obj' => new Object(
+                    [ //properties
+                        'valid' => new Boolean(),
+                        'number' => new Number(0,100),
+                    ],
+                    ['valid'] //required
+                )
+            ],
+            ['weight'] //required
+        );
 
-        var_dump($idValidator->validate(1));
-        var_dump($idValidator->validate(-10)); //expect false
-        var_dump($idValidator->validate(8.3));
-        var_dump($idValidator->validate('10.1'));
+        //var_dump($validationObject);
+        var_dump($validationObject->validate($input2));
         die();
+        /*//equivalent using JSON
+        $validationObject = Object::createFromJSON('
+        {
+            "properties": {
+                "length": {
+                    "type" : "number",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "weight": {
+                    "type" : "integer",
+                    "minimum": -10,
+                    "maximum": 10,
+                    "exclusiveMinimum": true
+                }
+            },
+            "required": ["weight"]
+        }');*/
+
+        //var_dump($validationObject);
+        //var_dump($validationObject->validate($input));
 
         //Create a new record using request resource's attributes and return id
         $id = Test::post($resource->attributes);

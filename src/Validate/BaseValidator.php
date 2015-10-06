@@ -97,7 +97,7 @@ class BaseValidator
     public function __get($key)
     {
         if (!array_key_exists($key, $this->attributes)) {
-            throw new \Exception('Unknown key');
+            throw new \Exception('Unknown key "' . $key . '" to get');
         }
 
         return $this->attributes[$key];
@@ -112,7 +112,7 @@ class BaseValidator
     public function __set($key, $value)
     {
         if (!array_key_exists($key, $this->attributes)) {
-            throw new \Exception('Unknown key');
+            throw new \Exception('Unknown key "' . $key . '" to set');
         }
 
         $this->attributes[$key] = $value;
@@ -130,8 +130,9 @@ class BaseValidator
 
         //Test type if it's set
         if (property_exists($object, 'type') && $object->type !== static::$type) {
-            throw new \Exception('Incorrect type');
+            throw new \Exception('Incorrect type ' . $object->type . ' from base ' . $isFromBase);
         }
+
         //Initialize a new Validator object, type of current class
         $class = new static();
 
@@ -139,8 +140,26 @@ class BaseValidator
         foreach (static::getTypeAttributes() as $attribute) {
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
-                //Use attributes value in Validator object
-                $class->{$attribute} = $object->{$attribute};
+                if ($attribute == 'properties') {
+
+                    $properties = (array)$object->{$attribute};
+
+                    $createdProperties = [];
+
+                    foreach ($properties as $key => $property) {
+                        if (!is_object($property)) {
+                            throw new \Exception ('Expected object for property value');
+                        }
+
+                        $createdProperties[$key] =
+                        BaseValidator::createFromObject($property);
+                    }
+                    //push to class
+                    //$class->{$attribute} = $createdProperties;
+                } else {
+                    //Use attributes value in Validator object
+                    $class->{$attribute} = $object->{$attribute};
+                }
             }
         }
 
