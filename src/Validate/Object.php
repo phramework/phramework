@@ -36,6 +36,7 @@ use \Phramework\Models\Filter;
  * @todo Implement additionalProperties
  * @todo Implement dependencies
  * @todo Can it have default?
+ * @todo Check if required property is set in properties
  */
 class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
 {

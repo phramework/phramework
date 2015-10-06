@@ -42,7 +42,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         return [
             [['ok' => true]],
             [(object)['ok' => 'true', 'okk' => '123']],
-            [(object)['ok' => false, 'okk' => ]]
+            [(object)['ok' => false, 'okk' => 'xyz' ]]
         ];
     }
 
