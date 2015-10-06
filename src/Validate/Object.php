@@ -200,5 +200,4 @@ class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
         //Add this key, value to
         $this->properties += [$key => $property];
     }
-
 }

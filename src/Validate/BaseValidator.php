@@ -141,14 +141,13 @@ class BaseValidator
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
                 if ($attribute == 'properties') {
-
                     $properties = (array)$object->{$attribute};
 
                     $createdProperties = [];
 
                     foreach ($properties as $key => $property) {
                         if (!is_object($property)) {
-                            throw new \Exception ('Expected object for property value');
+                            throw new \Exception('Expected object for property value');
                         }
 
                         $createdProperties[$key] =
