@@ -65,7 +65,6 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     public function testValidateSuccess($input)
     {
         $return = $this->object->validate($input);
-        var_dump($return);
 
         $this->assertEquals(true, $return->status);
         $this->assertInternalType('object', $return->value);
