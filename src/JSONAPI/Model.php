@@ -215,8 +215,8 @@ class Model
 
     /**
      * Prepare a collection of resources
-     * @param  array[] $records Multiple records fetched from database
-     * @return stdClass[]
+     * @param  array[]|\stdClass[] $records Multiple records fetched from database
+     * @return \stdClass[]
      */
     public static function collection($records = [])
     {
@@ -248,8 +248,8 @@ class Model
 
     /**
      * Prepare an individual resource
-     * @param  array $record An individual record fetched from database
-     * @return stdClass|null
+     * @param  array|\stdClass $record An individual record fetched from database
+     * @return \stdClass|null
      */
     public static function resource($record)
     {
@@ -257,10 +257,14 @@ class Model
             return null;
         }
 
+        if (is_array($record)) {
+            $record = (object)$record;
+        }
+
         $resource = new \stdClass();
 
         $resource->type = static::getType();
-        $resource->id   = (string)$record[static::getIdAttribute()];
+        $resource->id   = (string)$record->{static::getIdAttribute()};
 
         //Initialize attributes object (used for represantation order)
         $resource->attributes = (object)[];

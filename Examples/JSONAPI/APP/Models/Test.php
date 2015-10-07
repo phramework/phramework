@@ -46,7 +46,7 @@ class Test extends \Phramework\JSONAPI\Model
     /**
      * Get collection of resources
      *
-     * @return stdClass[]
+     * @return \stdClass[]
      */
     public static function get()
     {
@@ -67,7 +67,7 @@ class Test extends \Phramework\JSONAPI\Model
     /**
      * Get a single entry by id
      * @param int $id Resource's id
-     * @return stdClass|null
+     * @return \stdClass|null
      */
     public static function getById($id)
     {

@@ -490,7 +490,7 @@ class Phramework
 
     /**
      * Get current user
-     * @return stdClass|false Get current user's object,
+     * @return \stdClass|false Get current user's object,
      * false in case of non authenticated request
      */
     public static function getUser()

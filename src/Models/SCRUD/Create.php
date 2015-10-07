@@ -75,6 +75,9 @@ class Create
             //Return inserted id
             if ($driver == 'postgresql') {
                 $query .= ' RETURNING id';
+
+                $id = Database::executeAndFetch($query, $query_values);
+                return $id['id'];
             }
 
             return Database::executeLastInsertId($query, $query_values);

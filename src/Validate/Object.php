@@ -175,11 +175,13 @@ class Object extends \Phramework\Validate\BaseValidator
      * @param  array|stdClass $value [description]
      * @throws \Phramework\Exceptions\MissingParameters
      * @throws \Phramework\Exceptions\IncorrectParameters
-     * @return stdClass        [description]
+     * @return \stdClass        [description]
      * @todo find out if MissingParameters
      * @todo add errors
+     * @todo additionalProperties
      */
-    public function parse($value) {
+    public function parse($value)
+    {
         if (is_array($value)) {
             $value = (object)$value;
         }
