@@ -1,7 +1,7 @@
 <?php
 namespace Examples\API\APP\Controllers;
 
-use Phramework\API;
+use Phramework\Phramework;
 use Phramework\Validate\Validate;
 use Phramework\Models\Request;
 use Phramework\Models\Util;
@@ -49,7 +49,7 @@ class BookController extends \Examples\API\APP\Controller
     }
     public static function POST($params, $method, $headers)
     {
-        API::view([
+        Phramework::view([
             'params' => $params,
             'method' => $method
         ]);

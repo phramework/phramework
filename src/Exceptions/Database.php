@@ -33,7 +33,7 @@ class Database extends \Exception
      */
     public function __construct($message, $error = null)
     {
-        if (\Phramework\API::getSetting('debug') && $error) {
+        if (\Phramework\Phramework::getSetting('debug') && $error) {
             parent::__construct($error, 666);
         } else {
             parent::__construct($message, 666);

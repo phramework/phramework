@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use \Phramework\API;
+use \Phramework\Phramework;
 use \Phramework\Models\Database;
 
 /**

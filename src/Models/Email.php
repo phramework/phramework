@@ -119,7 +119,7 @@ class Email
     public static function send($address, $subject, $body, $account = 'default')
     {
         $HTML     = true;
-        $accounts = \Phramework\API::getSetting('email');
+        $accounts = \Phramework\Phramework::getSetting('email');
 
         if (!$accounts || !isset($accounts['default'])) {
             throw new \Exception('email setting is required');

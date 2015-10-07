@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use \Phramework\API;
+use \Phramework\Phramework;
 use \Phramework\Exceptions\Permission;
 use \Phramework\Exceptions\MissingParamenters;
 use \Phramework\Exceptions\IncorrectParameters;
@@ -43,7 +43,7 @@ class Util
      */
     public static function url($endpoint = null, $suffix = '')
     {
-        $api_base = API::getSetting('api_base');
+        $api_base = Phramework::getSetting('api_base');
 
         if ($endpoint) {
             $suffix = $endpoint . '/' . $suffix;

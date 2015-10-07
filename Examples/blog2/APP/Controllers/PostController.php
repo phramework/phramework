@@ -2,7 +2,7 @@
 
 namespace Examples\blog2\APP\Controllers;
 
-use Phramework\API;
+use Phramework\Phramework;
 use Phramework\Validate\Validate;
 use Phramework\Models\Request;
 use Examples\blog2\APP\Models\Post;
@@ -17,7 +17,7 @@ class PostController
 
         $posts = Post::getAll();
 
-        API::view([
+        Phramework::view([
             'posts' => $posts,
         ], 'blog', 'My blog'); //will load viewers/page/blog.php
     }
@@ -34,7 +34,7 @@ class PostController
             throw new \Phramework\Exceptions\NotFound('Post not found');
         }
 
-        API::view([
+        Phramework::view([
             'posts' => [$posts[$id]],
         ], 'blog', 'My blog #' . $id); //will load viewers/page/blog.php
     }

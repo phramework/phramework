@@ -26,7 +26,7 @@ class Controller
      * View JSONAPI data
      * @param stdClass $data
      * @uses \Phramework\Viewers\JSONAPI
-     * @todo use \Phramework\API::view
+     * @todo use \Phramework\Phramework::view
      */
     public static function viewData($data, $links = null, $meta = null)
     {

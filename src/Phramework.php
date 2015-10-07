@@ -31,7 +31,7 @@ mb_http_output('UTF-8');
 if (!function_exists('__')) {
     function __($key)
     {
-        return API::getTranslated($key);
+        return Phramework::getTranslated($key);
     }
 }
 
@@ -39,7 +39,7 @@ if (!function_exists('__')) {
 if (!function_exists('___')) {
     function ___($key)
     {
-        echo API::getTranslated($key);
+        echo Phramework::getTranslated($key);
     }
 }
 // @codingStandardsIgnoreEnd
@@ -50,13 +50,12 @@ if (!function_exists('___')) {
  * @author Spafaridis Xenofon <nohponex@gmail.com>
  * @version 1.0.0
  * @link https://nohponex.gr Developer's website
- * @package API
  * @todo Use parameters
  * @todo Create a class for settings
  * @todo Clean GET callback
  * @todo Add localization class
  */
-class API
+class Phramework
 {
     protected static $instance;
 
@@ -68,7 +67,7 @@ class API
     /**
      * Viewer class
      */
-    private static $viewer = 'Phramework\Viewers\JSON';
+    private static $viewer = '\Phramework\Viewers\JSON';
     /**
      * $URIStrategy object
      */
@@ -305,6 +304,11 @@ class API
             //Authenticate request (check authentication)
             self::$user = call_user_func(array(self::$authenticationClass, 'check'));
 
+            //In case of array returned force type to be object
+            if (is_array(self::$user)) {
+                self::$user = (object)self::$user;
+            }
+
             //STEP_AFTER_AUTHENTICATION_CHECK
             $this->StepCallback->call(StepCallback::STEP_AFTER_AUTHENTICATION_CHECK);
 
@@ -319,9 +323,9 @@ class API
                     $language = $_GET['this_language'];
                 }
                 unset($_GET['this_language']);
-            } elseif (self::$user && isset(self::$user['language_code'])) {
+            } elseif (self::$user && property_exists(self::$user, 'language_code')) {
                 // Use user's langugae
-                $language = self::$user['language_code'];
+                $language = self::$user->language_code;
             } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::getSetting('languages')) {
                 // Use Accept languge if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
@@ -343,7 +347,7 @@ class API
             //Override method HEAD.
             // When HEAD method is called the GET method will be executed but no response boy will be send
             // we update the value of local variable $method sinse then original
-            // requested method is stored at API::$method
+            // requested method is stored at Phramework::$method
             //if ($method == self::METHOD_HEAD) {
             //    $method = self::METHOD_GET;
             //}
@@ -486,7 +490,8 @@ class API
 
     /**
      * Get current user
-     * @return array|FALSE Get current user's object
+     * @return stdClass|false Get current user's object,
+     * false in case of non authenticated request
      */
     public static function getUser()
     {

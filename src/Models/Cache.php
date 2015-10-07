@@ -58,7 +58,7 @@ class Cache
                 self::$instance = new \Memcached();
                 self::$instance->addServer('localhost', 11211);
 
-                if (($prefix = \Phramework\API::getSetting('cache_prefix'))) {
+                if (($prefix = \Phramework\Phramework::getSetting('cache_prefix'))) {
                     self::$prefix = $prefix;
                 }
             }

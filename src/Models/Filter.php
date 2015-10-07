@@ -182,7 +182,7 @@ class Filter
             case Validate::TYPE_UNIX_TIMESTAMP:
                 //Add the timezone offset (in minutes)
                 $value = intval($value) +
-                    (\Phramework\API::getTimezoneOffset()*60);
+                    (\Phramework\Phramework::getTimezoneOffset()*60);
                 break;
         }
     }
@@ -203,7 +203,7 @@ class Filter
             return $entry;
         }
 
-        $timestamp_format = \Phramework\API::getSetting(
+        $timestamp_format = \Phramework\Phramework::getSetting(
             'timestamp_format',
             null,
             'Y-m-d\TH:i:s\Z'

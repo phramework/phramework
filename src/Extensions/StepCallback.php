@@ -16,7 +16,7 @@
  */
 namespace Phramework\Extensions;
 
-use Phramework\API;
+use Phramework\Phramework;
 
 /**
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
@@ -60,7 +60,7 @@ class StepCallback
 
         if (!is_callable($callback)) {
             throw new \Exception(
-                API::getTranslated('callback_is_not_function_exception')
+                Phramework::getTranslated('callback_is_not_function_exception')
             );
         }
 
@@ -86,7 +86,7 @@ class StepCallback
         foreach ($this->stepCallback[$step] as $s) {
             if (!is_callable($s)) {
                 throw new \Exception(
-                    API::getTranslated('callback_is_not_function_exception')
+                    Phramework::getTranslated('callback_is_not_function_exception')
                 );
             }
             return $s();
