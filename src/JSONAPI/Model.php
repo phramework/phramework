@@ -83,7 +83,7 @@ class Model
      * This object contains the rules applied to fetched data from database in
      * order to have correct data types.
      * @uses static::$cast If cast is not null
-     * @uses static::$validationModel If static::$cast is null, it uses
+     * @uses static::getValidationModel If static::$cast is null, it uses
      * validationModel's attributes to extract the cast chema
      * @return array
      */
@@ -95,7 +95,7 @@ class Model
         }
 
         //Use validationModel's attributes to extract the cast chema
-        if (($validationModel = self::getValidationModel()) != []) {
+        if (($validationModel = static::getValidationModel()) != []) {
             $cast = [];
 
             foreach ($validationModel as $key => $attribute) {
@@ -110,11 +110,6 @@ class Model
 
         return [];
     }
-    /*
-     * Resource's relationships
-     * @var Relationship[]
-     */
-    protected static $relationships = [];
 
     /**
      * Get resource's type
@@ -169,7 +164,7 @@ class Model
      */
     public static function getSelfLink($append = '')
     {
-        return Phramework::getSetting('base') . self::getEndpoint() . '/' . $append;
+        return Phramework::getSetting('base') . static::getEndpoint() . '/' . $append;
     }
 
     /**
@@ -178,7 +173,7 @@ class Model
      */
     public static function getRelationships()
     {
-        return static::$relationships;
+        return [];
     }
 
     /**
@@ -194,19 +189,12 @@ class Model
     }
 
     /**
-     * Resource's validation model
-     * used by Validate::model method to validate a new record
-     * @var array[]
-     */
-    protected static $validationModel = [];
-
-    /**
      * Get resource's validation model
      * @return array[]
      */
     public static function getValidationModel()
     {
-        return static::$validationModel;
+        return [];
     }
 
     /**
@@ -221,7 +209,7 @@ class Model
     {
         \Phramework\Validate\Validate::model(
             $attributes,
-            self::getValidationModel()
+            static::getValidationModel()
         );
     }
 
@@ -240,13 +228,13 @@ class Model
 
         foreach ($records as $record) {
             //Convert this record to resource object
-            $resource = self::resource($record);
+            $resource = static::resource($record);
 
             //attach links.safe to this resource
             if ($resource) {
                 //Inlude links object
                 $resource->links = [
-                    'self' => self::getSelfLink($resource->id)
+                    'self' => static::getSelfLink($resource->id)
                 ];
 
                 //Push to collection
@@ -271,14 +259,14 @@ class Model
 
         $resource = new \stdClass();
 
-        $resource->type = self::getType();
-        $resource->id   = (string)$record[self::getIdAttribute()];
+        $resource->type = static::getType();
+        $resource->id   = (string)$record[static::getIdAttribute()];
 
         //Initialize attributes object (used for represantation order)
         $resource->attributes = (object)[];
 
         //Attach relationships if resource's relationships are set
-        if (($relationships = self::getRelationships())) {
+        if (($relationships = static::getRelationships())) {
             //Initialize relationships object
             $resource->relationships = [];
 
@@ -289,10 +277,10 @@ class Model
 
                 //Set relationship links
                 $relationshipEntry->links = [
-                    'self' => self::getSelfLink(
+                    'self' => static::getSelfLink(
                         $resource->id . '/relationships/' . $relationship
                     ),
-                    'related' => self::getSelfLink(
+                    'related' => static::getSelfLink(
                         $resource->id . '/' . $relationship
                     )
                 ];
@@ -377,20 +365,10 @@ class Model
     ) {
         return \Phramework\Models\SCRUD\Create::create(
             $attributes,
-            self::getTable(),
-            self::getSchema(),
+            static::getTable(),
+            static::getSchema(),
             $return
         );
-    }
-
-    /**
-     * Set the value of Relationships
-     *
-     * @param Relationship[] relationships
-     */
-    public static function setRelationships($relationships)
-    {
-        static::$relationships = $relationships;
     }
 
     /**
@@ -415,13 +393,13 @@ class Model
             );
         }
 
-        $relationship = self::getRelationships()[$relationshipKey];
+        $relationship = static::getRelationships()[$relationshipKey];
 
         switch ($relationship->getRelationshipType()) {
             case Relationship::TYPE_TO_ONE:
                 $callMethod = [
                     static::class,
-                    self::GET_BY_PREFIX . ucfirst(self::getIdAttribute())
+                    self::GET_BY_PREFIX . ucfirst(static::getIdAttribute())
                 ];
 
                 if (!is_callable($callMethod)) {
@@ -448,7 +426,7 @@ class Model
             default:
                 $callMethod = [
                     $relationship->getRelationshipClass(),
-                    self::GET_RELATIONSHIP_BY_PREFIX . ucfirst(self::getType())
+                    self::GET_RELATIONSHIP_BY_PREFIX . ucfirst(static::getType())
                 ];
 
                 if (!is_callable($callMethod)) {

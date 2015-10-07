@@ -15,16 +15,33 @@ class Test extends \Phramework\JSONAPI\Model
     /*
      * Define validation model
      */
-    protected static $validationModel = [
-        'id'      => ['type' => Validate::TYPE_UINT],
-        'created_user_id' => ['type' => Validate::TYPE_UINT],
-        'title' => [
-            'type' => Validate::TYPE_TEXT,
-            'min' => 2,
-            'max' => 6,
-            Validate::REQUIRED
-        ]
-    ];
+    public static function getValidationModel()
+    {
+        return [
+            'id'      => ['type' => Validate::TYPE_UINT],
+            'created_user_id' => ['type' => Validate::TYPE_UINT],
+            'title' => [
+                'type' => Validate::TYPE_TEXT,
+                'min' => 2,
+                'max' => 6,
+                Validate::REQUIRED
+            ]
+        ];
+    }
+
+    public static function getRelationships()
+    {
+        return [
+            'created' => new Relationship('created_user_id', 'user'),
+            'comment' => new Relationship(
+                'test_comment_id',
+                'test_comment',
+                Relationship::TYPE_TO_MANY,
+                TestComment::class,
+                'test_id'
+            )
+        ];
+    }
 
     /**
      * Get collection of resources
@@ -72,13 +89,4 @@ class Test extends \Phramework\JSONAPI\Model
     }*/
 }
 
-Test::setRelationships([
-    'created' => new Relationship('created_user_id', 'user'),
-    'comment' => new Relationship(
-        'test_comment_id',
-        'test_comment',
-        Relationship::TYPE_TO_MANY,
-        TestComment::class,
-        'test_id'
-    )
-]);
+//Test::setRelationships();

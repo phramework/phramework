@@ -8,10 +8,13 @@ use \Phramework\JSONAPI\Relationship;
 
 class TestComment extends \Phramework\JSONAPI\Model
 {
-    protected static $validationModel = [
-        'id'      => ['type' => Validate::TYPE_UINT],
-        'test_id' => ['type' => Validate::TYPE_UINT, Validate::REQUIRED]
-    ];
+    public static function getValidationModel()
+    {
+        return [
+            'id'      => ['type' => Validate::TYPE_UINT],
+            'test_id' => ['type' => Validate::TYPE_UINT, Validate::REQUIRED]
+        ];
+    }
 
     public static function getRelationshipByTest($testId)
     {
