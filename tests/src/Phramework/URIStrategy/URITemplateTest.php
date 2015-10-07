@@ -18,8 +18,8 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $testTemplates = [
-        'book/', 'BookController', 'GET', \Phramework\API::METHOD_ANY,
-        'author/', 'AuthorController', 'POST', \Phramework\API::METHOD_ANY
+        'book/', 'BookController', 'GET', \Phramework\Phramework::METHOD_ANY,
+        'author/', 'AuthorController', 'POST', \Phramework\Phramework::METHOD_ANY
     ];
 
     /**

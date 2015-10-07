@@ -2,7 +2,7 @@
 
 namespace Examples\blog\APP\Controllers;
 
-use Phramework\API;
+use Phramework\Phramework;
 use Phramework\Validate\Validate;
 use Phramework\Models\Request;
 use Examples\blog\APP\Models\Post;
@@ -11,7 +11,7 @@ class EditorController
 {
     public static function GET($params)
     {
-        API::view([], 'editor', 'Blog\'s Editor');
+        Phramework::view([], 'editor', 'Blog\'s Editor');
     }
 
     public static function POST($params)
@@ -49,7 +49,7 @@ class EditorController
         \Phramework\Models\Response::created('http://localhost/post/'. $id .'/');
 
         //Sample output
-        API::view([
+        Phramework::view([
             'post' => $post,
         ], 'post', 'Blog post');
     }

@@ -12,15 +12,15 @@ use Examples\JSONAPI\APP\Models\Request;
 class Controller extends \Phramework\JSONAPI\Controller
 {
     /**
-     * Shortcut to \Phramework\API::view.
+     * Shortcut to \Phramework\Phramework::view.
      *
      * @param array $params
      *
-     * @uses \Phramework\API::view
+     * @uses \Phramework\Phramework::view
      */
     protected static function view($params = [])
     {
-        \Phramework\API::view($params);
+        \Phramework\Phramework::view($params);
     }
 
     /**

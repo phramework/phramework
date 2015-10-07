@@ -2,7 +2,7 @@
 
 namespace Examples\JSONAPI\APP\Controllers;
 
-use \Phramework\API;
+use \Phramework\Phramework;
 use \Phramework\Validate\Validate;
 use \Phramework\Models\Filter;
 use \Phramework\Models\Request;
@@ -241,7 +241,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         self::exists(Test::relationshipExists($relationship), 'Relationship not found');
 
 	//Check if method is allowed
-	$allowedMethods = [API::METHOD_GET];
+	$allowedMethods = [Phramework::METHOD_GET];
 	Validate::enum($method, $allowedMethods);
 
         //see http://localhost:8080/v1/authors/2/relationships/books

@@ -35,4 +35,20 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromJSON
+     */
+    public function testCreateFromJSON()
+    {
+        $json = '{
+            "type": "integer",
+            "minimum" : -1000,
+            "maximum" : 1000
+        }';
+
+        $object = Integer::createFromJSON($json);
+
+        $this->assertTrue(is_subclass_of($object, '\Phramework\Validate\BaseValidator'));
+    }
+
 }

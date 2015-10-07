@@ -16,7 +16,7 @@
  */
 namespace Phramework\URIStrategy;
 
-use \Phramework\API;
+use \Phramework\Phramework;
 use \Phramework\Exceptions\Permission;
 use \Phramework\Exceptions\NotFound;
 
@@ -87,7 +87,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
     {
         //Get controller from the request (URL parameter)
         if (!isset($requestParameters['controller']) || empty($requestParameters['controller'])) {
-            if (($default_controller = API::getSetting('default_controller'))) {
+            if (($default_controller = Phramework::getSetting('default_controller'))) {
                 $requestParameters['controller'] = $default_controller;
             } else {
                 die(); //Or throw \Exception OR redirect to API documentation
@@ -99,16 +99,16 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 
         //Check if requested controller and method are allowed
         if (!in_array($controller, $this->controller_whitelist)) {
-            throw new NotFound(API::getTranslated('controller_NotFound_exception'));
-        } elseif (!in_array($requestMethod, API::$methodWhitelist)) {
-            throw new NotFound(API::getTranslated('method_NotFound_exception'));
+            throw new NotFound(Phramework::getTranslated('controller_NotFound_exception'));
+        } elseif (!in_array($requestMethod, Phramework::$methodWhitelist)) {
+            throw new NotFound(Phramework::getTranslated('method_NotFound_exception'));
         }
 
         //If not authenticated allow only certain controllers to access
         if (!$requestUser &&
             !in_array($controller, $this->controller_unauthenticated_whitelist) &&
             !in_array($controller, $this->controller_public_whitelist)) {
-            throw new Permission(API::getTranslated('unauthenticated_access_exception'));
+            throw new Permission(Phramework::getTranslated('unauthenticated_access_exception'));
         }
 
         // Append suffix
@@ -125,7 +125,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
             //Retry using capitalized first letter of the class
             $controller = ucfirst($controller);
             if (!is_callable($this->namespace . "{$controller}::$requestMethod")) {
-                throw new NotFound(API::getTranslated('method_NotFound_exception'));
+                throw new NotFound(Phramework::getTranslated('method_NotFound_exception'));
             }
         }
 

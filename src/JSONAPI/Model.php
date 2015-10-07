@@ -16,7 +16,7 @@
  */
 namespace Phramework\JSONAPI;
 
-use \Phramework\API;
+use \Phramework\Phramework;
 use \Phramework\JSONAPI\Relationship;
 
 /**
@@ -165,11 +165,11 @@ class Model
      * Get link to resource's self
      * @param  string $append [description]
      * @return string
-     * @uses API::getSetting
+     * @uses Phramework::getSetting
      */
     public static function getSelfLink($append = '')
     {
-        return API::getSetting('base') . self::getEndpoint() . '/' . $append;
+        return Phramework::getSetting('base') . self::getEndpoint() . '/' . $append;
     }
 
     /**

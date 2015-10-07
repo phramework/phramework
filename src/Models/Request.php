@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use \Phramework\API;
+use \Phramework\Phramework;
 use \Phramework\Exceptions\Permission;
 use \Phramework\Exceptions\MissingParamenters;
 use \Phramework\Exceptions\IncorrectParameters;
@@ -43,18 +43,18 @@ class Request
      */
     public static function checkPermission($user_id = false)
     {
-        $user = \Phramework\API::getUser();
+        $user = \Phramework\Phramework::getUser();
         //If user is not authenticated throw an \Exception
         if (!$user) {
             throw new Permission(
-                API::getTranslated('user_authentication_required_exception')
+                Phramework::getTranslated('user_authentication_required_exception')
             );
         }
 
         //Check if speficied user is same as current user
         if ($user_id && $user['id'] != $user_id) {
             throw new Permission(
-                API::getTranslated('insufficient_permissions_exception')
+                Phramework::getTranslated('insufficient_permissions_exception')
             );
         }
         return $user;

@@ -10,7 +10,7 @@ require __DIR__ . '/../../../vendor/autoload.php';
 //define controller namespace, as shortcut
 define('NS', 'Examples\\JSONAPI\\APP\\Controllers\\');
 
-use \Phramework\API;
+use \Phramework\Phramework;
 
 /**
  * @package examples/post
@@ -22,21 +22,21 @@ $APP = function () {
     $settings = include __DIR__ . '/../settings.php';
 
     $URIStrategy = new \Phramework\URIStrategy\URITemplate([
-        ['test/', NS . 'TestController', 'GET', API::METHOD_GET],
-        ['test/', NS . 'TestController', 'POST', API::METHOD_POST],
-        ['test/{id}', NS . 'TestController', 'GETById', API::METHOD_GET],
-        ['test/{id}/relationships/{relationship}', NS . 'TestController', 'byIdRelationships', API::METHOD_ANY],
+        ['test/', NS . 'TestController', 'GET', Phramework::METHOD_GET],
+        ['test/', NS . 'TestController', 'POST', Phramework::METHOD_POST],
+        ['test/{id}', NS . 'TestController', 'GETById', Phramework::METHOD_GET],
+        ['test/{id}/relationships/{relationship}', NS . 'TestController', 'byIdRelationships', Phramework::METHOD_ANY],
     ]);
 
     //Initialize API
-    $API = new API($settings, $URIStrategy);
+    $phramework = new Phramework($settings, $URIStrategy);
 
     unset($settings);
 
-    $API->setViewerClass('Phramework\Viewers\JSONAPI');
+    $phramework->setViewerClass('\Phramework\Viewers\JSONAPI');
 
     //Execute API
-    $API->invoke();
+    $phramework->invoke();
 };
 
 /**

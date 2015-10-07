@@ -31,7 +31,15 @@ abstract class BaseValidator
      * @var string
      */
     protected static $type = 'string';
-    public abstract function validate($value);
+
+    /**
+    * Validate value
+    * @see \Phramework\Validate\ValidateResult for ValidateResult object
+    * @param  mixed $value Value to validate
+    * @return ValidateResult
+     */
+    abstract public function validate($value);
+
     /**
      * Get validator's type
      * @return string

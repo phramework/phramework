@@ -6,7 +6,7 @@ ini_set('display_errors', '1');
 //This autoload path is for loading current version of phramework
 require __DIR__ . '/../../../vendor/autoload.php';
 
-use Phramework\API;
+use \Phramework\Phramework;
 
 /**
  * @package examples/post
@@ -25,20 +25,21 @@ $APP = function () {
         $controller_whitelist,
         ['post', 'editor'],
         ['post', 'editor'],
-        "Examples\blog2\APP\\Controllers\\",
+        "\\Examples\blog2\APP\\Controllers\\",
         'Controller'
     );
 
     //Initialize API
-    $API = new API($settings, $uriStrategy);
+    $phramework = new Phramework($settings, $uriStrategy);
 
     unset($settings);
 
-    $API->setViewerClass('\Examples\blog2\APP\Viewers\Viewer');
+    $phramework->setViewerClass('\Examples\blog2\APP\Viewers\Viewer');
 
     //Execute API
-    $API->invoke();
+    $phramework->invoke();
 };
+
 /**
  * Execute APP
  */

@@ -16,7 +16,7 @@
  */
 namespace Phramework\URIStrategy;
 
-use \Phramework\API;
+use \Phramework\Phramework;
 use \Phramework\Exceptions\Permission;
 use \Phramework\Exceptions\NotFound;
 use \Phramework\Exceptions\Server;
@@ -171,11 +171,11 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
         list($URI, $URI_parameters) = $this->URI();
 
         foreach ($this->templates as $template) {
-            $templateMethod = (isset($template[3]) ? $template[3] : API::METHOD_ANY);
+            $templateMethod = (isset($template[3]) ? $template[3] : Phramework::METHOD_ANY);
             $requiresAuthentication = (isset($template[4]) ? $template[4] : false);
 
             // Ignore if not a valid method
-            if ($templateMethod != API::METHOD_ANY && $templateMethod != $requestMethod) {
+            if ($templateMethod != Phramework::METHOD_ANY && $templateMethod != $requestMethod) {
                 continue;
             }
 
@@ -186,7 +186,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
             if ($test !== false) {
                 if ($requiresAuthentication && $requestUser === false) {
-                    throw new Permission(API::getTranslated('Unauthenticated Access'));
+                    throw new Permission(Phramework::getTranslated('Unauthenticated Access'));
                 }
 
                 list($URI_parameters) = $test;
@@ -203,7 +203,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                  * @todo complete documentation
                  */
                 if (!is_callable("$class::$method")) {
-                    throw new NotFound(API::getTranslated('Method not found'));
+                    throw new NotFound(Phramework::getTranslated('Method not found'));
                 }
 
                 //Call method
@@ -217,6 +217,6 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             }
         }
 
-        throw new NotFound(API::getTranslated('Method not found'));
+        throw new NotFound(Phramework::getTranslated('Method not found'));
     }
 }

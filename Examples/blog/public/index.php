@@ -6,9 +6,9 @@ ini_set('display_errors', '1');
 //This autoload path is for loading current version of phramework
 require __DIR__ . '/../../../vendor/autoload.php';
 
-define('NS', 'Examples\\blog\\APP\\Controllers\\');
+define('NS', '\\Examples\\blog\\APP\\Controllers\\');
 
-use Phramework\API;
+use \Phramework\Phramework;
 
 /**
  * @package examples/post
@@ -20,23 +20,23 @@ $APP = function() {
     $settings = include __DIR__ . '/../settings.php';
 
     $uriStrategy = new \Phramework\URIStrategy\URITemplate([
-        ['/', NS .'PostController', 'GET', API::METHOD_GET],
-        ['post/', NS . 'PostController', 'GET', API::METHOD_GET],
-        ['post/{id}', NS . 'PostController', 'GETSingle', API::METHOD_GET],
-        ['editor',  NS . 'EditorController', 'GET', API::METHOD_GET],
-        ['editor', NS . 'EditorController', 'POST', API::METHOD_POST],
-        ['secure', NS . 'SecureController', 'GET', API::METHOD_GET, true]
+        ['/', NS .'PostController', 'GET', Phramework::METHOD_GET],
+        ['post/', NS . 'PostController', 'GET', Phramework::METHOD_GET],
+        ['post/{id}', NS . 'PostController', 'GETSingle', Phramework::METHOD_GET],
+        ['editor',  NS . 'EditorController', 'GET', Phramework::METHOD_GET],
+        ['editor', NS . 'EditorController', 'POST', Phramework::METHOD_POST],
+        ['secure', NS . 'SecureController', 'GET', Phramework::METHOD_GET, true]
     ]);
 
     //Initialize API
-    $API = new API($settings, $uriStrategy);
+    $phramework = new Phramework($settings, $uriStrategy);
 
     unset($settings);
 
-    $API->setViewerClass('Examples\blog\APP\Viewers\Viewer');
+    $phramework->setViewerClass('Examples\blog\APP\Viewers\Viewer');
 
     //Execute API
-    $API->invoke();
+    $phramework->invoke();
 };
 
 /**
