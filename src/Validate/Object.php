@@ -88,7 +88,7 @@ class Object extends \Phramework\Validate\BaseValidator
         }
 
         if (!is_object($value)) {
-            $return->errorObject = 'not an object';
+            $return->errorObject = 'Not an object or array';
             //error
             goto err;
         }
@@ -170,6 +170,36 @@ class Object extends \Phramework\Validate\BaseValidator
     }
 
     /**
+     * This method use this validator to parse data from $value argument
+     * and return a clean object
+     * @param  array|stdClass $value [description]
+     * @throws \Phramework\Exceptions\MissingParameters
+     * @throws \Phramework\Exceptions\IncorrectParameters
+     * @return stdClass        [description]
+     * @todo find out if MissingParameters
+     * @todo add errors
+     */
+    public function parse($value) {
+        if (is_array($value)) {
+            $value = (object)$value;
+        }
+
+        $validateResult = $this->validate($value);
+
+        if (!$validateResult->status) {
+            //temp hack
+            if ($validateResult->errorObject == 'required properties') {
+                throw new \Phramework\Exceptions\MissingParameters([]);
+            }
+            throw new \Phramework\Exceptions\IncorrectParameters([]);
+        }
+
+        $castedValue = $validateResult->value;
+
+        return $castedValue;
+    }
+
+    /**
      * Add properties to this object validator
      * @param array $properties [description]
      * @throws \Exception If properties is not an array
@@ -183,6 +213,8 @@ class Object extends \Phramework\Validate\BaseValidator
         foreach ($properties as $key => $property) {
             $this->addProperty($key, $property);
         }
+
+        return $this;
     }
 
     /**
@@ -198,5 +230,7 @@ class Object extends \Phramework\Validate\BaseValidator
 
         //Add this key, value to
         $this->properties += [$key => $property];
+
+        return $this;
     }
 }

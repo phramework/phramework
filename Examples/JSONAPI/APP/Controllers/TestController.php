@@ -155,7 +155,8 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         );
 
         //var_dump($validationObject);
-        var_dump($validationObject->validate($input2));
+        //var_dump($validationObject->validate($input2));
+        var_dump($validationObject->parse($input2));
         die();
         /*//equivalent using JSON
         $validationObject = Object::createFromJSON('
