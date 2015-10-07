@@ -167,7 +167,7 @@ abstract class BaseValidator
         $class = new static();
 
         //For each Validator's attribute
-        foreach (static::getTypeAttributes() as $attribute) {
+        foreach (array_merge(static::getTypeAttributes(), static::$commonAttributes) as $attribute) {
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
                 if ($attribute == 'properties') {
@@ -245,7 +245,7 @@ abstract class BaseValidator
     public function toArray()
     {
         $object = ['type' => static::$type];
-        foreach (static::getTypeAttributes() as $attribute) {
+        foreach (array_merge(static::getTypeAttributes(), static::$commonAttributes) as $attribute) {
             $value = $this->{$attribute};
             if ($value !== null) {
                 $object[$attribute] = $value;

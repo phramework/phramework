@@ -67,12 +67,34 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
         $json = '{
             "type": "integer",
             "minimum" : -1000,
-            "maximum" : 1000
+            "maximum" : 1000,
+            "title": "int",
+            "default": 10,
+            "x-extra": "not existing"
         }';
 
-        $object = Integer::createFromJSON($json);
+        $validatorObject = Integer::createFromJSON($json);
 
-        $this->validateSuccess($object, $input, $expected);
+        $this->assertSame(
+            'int',
+            $validatorObject->title,
+            'Title must be passed'
+        );
+
+        $this->assertSame(
+            10,
+            $validatorObject->default,
+            'Default must be passed'
+        );
+
+        $this->assertObjectNotHasAttribute(
+            'x-extra',
+            $validatorObject,
+            'Attribute must not exists'
+        );
+
+        //use helper function to validate $input against this validator
+        $this->validateSuccess($validatorObject, $input, $expected);
     }
 
     /**
