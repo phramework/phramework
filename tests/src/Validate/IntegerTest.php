@@ -19,7 +19,7 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Integer(-1000,1000,true);
+        $this->object = new Integer(-1000, 1000, true);
     }
 
     /**
@@ -82,9 +82,9 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
     {
         $return = $object->validate($input);
 
-        $this->assertEquals(true, $return->status);
+        $this->assertTrue($return->status);
         $this->assertInternalType('integer', $return->value);
-        $this->assertEquals($expected, $return->value);
+        $this->assertSame($expected, $return->value);
     }
 
     /**
@@ -105,7 +105,7 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertEquals(false, $return->status);
+        $this->assertFalse($return->status);
 
         $this->markTestIncomplete(
                 'Test Exclusive and multipleOf'

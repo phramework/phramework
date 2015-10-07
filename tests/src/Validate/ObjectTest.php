@@ -66,7 +66,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertEquals(true, $return->status);
+        $this->assertTrue( $return->status);
         $this->assertInternalType('object', $return->value);
 
     }
@@ -79,7 +79,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertEquals(false, $return->status);
+        $this->assertFalse($return->status);
     }
 
     /**
@@ -186,7 +186,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('object', $record->obj);
         $this->assertInternalType('float', $record->obj->not_required);
         $this->assertEquals(5, $record->weight);
-        $this->assertEquals(true, $record->obj->valid);
+        $this->assertTrue( $record->obj->valid);
         $this->assertEquals(5.5, $record->obj->not_required);
     }
 

@@ -77,7 +77,7 @@ class BooleanTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('boolean', $return->value);
         $this->assertEquals($expected, $return->value);
-        $this->assertEquals(true, $return->status);
+        $this->assertTrue($return->status);
     }
 
     /**

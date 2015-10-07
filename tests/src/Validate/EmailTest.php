@@ -63,7 +63,7 @@ class EmailTest extends \PHPUnit_Framework_TestCase
         $return = $this->object->validate($input);
 
         $this->assertInternalType('string', $return->value);
-        $this->assertEquals(true, $return->status);
+        $this->assertTrue($return->status);
     }
 
     /**
@@ -74,7 +74,7 @@ class EmailTest extends \PHPUnit_Framework_TestCase
     {
         $return = $this->object->validate($input);
 
-        $this->assertEquals(false, $return->status);
+        $this->assertFalse($return->status);
     }
 
     /**
