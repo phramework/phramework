@@ -230,7 +230,7 @@ class Model
             //Convert this record to resource object
             $resource = static::resource($record);
 
-            //attach links.safe to this resource
+            //Attach links.self to this resource
             if ($resource) {
                 //Inlude links object
                 $resource->links = [
@@ -257,7 +257,7 @@ class Model
             return null;
         }
 
-        if (is_array($record)) {
+        if (!is_object($record) && is_array($record)) {
             $record = (object)$record;
         }
 
@@ -293,13 +293,13 @@ class Model
                 $relationshipType = $relationshipObject->getRelationshipType();
                 $type = $relationshipObject->getType();
 
-                if (isset($record[$attribute]) && $record[$attribute]) {
+                if (isset($record->{$attribute}) && $record->{$attribute}) {
                     //If relationship data exists in record's attributes use them
 
                     //In case of TYPE_TO_ONE attach single object to data
                     if ($relationshipType == Relationship::TYPE_TO_ONE) {
                         $relationshipEntry->data = (object)[
-                            'id' => (string)$record[$attribute],
+                            'id' => (string)$record->{$attribute},
                             'type' => $type
                         ];
 
@@ -307,7 +307,7 @@ class Model
                     } elseif ($relationshipType == Relationship::TYPE_TO_MANY) {
                         $relationshipEntry->data = [];
 
-                        foreach ($record[$attribute] as $k => $d) {
+                        foreach ($record->{$attribute} as $k => $d) {
                             //Push object
                             $relationshipEntry->data[] = (object)[
                                 'id' => (string)$d,
@@ -343,7 +343,7 @@ class Model
                 }
 
                 //Unset this attribute (MUST not be visible in resource's attibutes)
-                unset($record[$attribute]);
+                unset($record->{$attribute});
 
                 //Push reletionship to relationships
                 $resource->relationships[$relationship] = $relationshipEntry;

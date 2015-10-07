@@ -18,7 +18,7 @@ namespace Phramework\Models;
 
 use \Phramework\Phramework;
 use \Phramework\Exceptions\Permission;
-use \Phramework\Exceptions\MissingParamenters;
+use \Phramework\Exceptions\MissingParameters;
 use \Phramework\Exceptions\IncorrectParameters;
 
 /**

@@ -18,7 +18,7 @@ namespace Phramework\Models;
 
 use \Phramework\Phramework;
 use \Phramework\Exceptions\Permission;
-use \Phramework\Exceptions\MissingParamenters;
+use \Phramework\Exceptions\MissingParameters;
 use \Phramework\Exceptions\IncorrectParameters;
 
 /**
@@ -82,7 +82,7 @@ class Request
         }
 
         if (count($missing)) {
-            throw new MissingParamenters($missing);
+            throw new MissingParameters($missing);
         }
 
         return $return;
@@ -134,7 +134,7 @@ class Request
             $parameters['id'] = $parameters['resource_id'];
         }
         if (!isset($parameters['id'])) {
-            throw new MissingParamenters(['id']);
+            throw new MissingParameters(['id']);
         }
 
         //Validate as unsigned integer

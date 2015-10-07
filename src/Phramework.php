@@ -426,7 +426,7 @@ class Phramework
                 'error' => $exception->getMessage(),
                 'title' => 'Permission'
             ]);
-        } catch (Exceptions\MissingParamenters $exception) {
+        } catch (Exceptions\MissingParameters $exception) {
             self::writeErrorLog(
                 $exception->getMessage() .
                 implode(', ', $exception->getParameters())
@@ -437,14 +437,14 @@ class Phramework
                     'code' => $exception->getCode(),
                     'error' => $exception->getMessage(),
                     'missing' => $exception->getParameters(),
-                    'title' => 'MissingParamenters'
+                    'title' => 'MissingParameters'
                 ]);
             } else {
                 self::errorView([
                     'code' => $exception->getCode(),
                     'error' => $exception->getMessage(),
                     'missing' => $exception->getParameters(),
-                    'title' => 'MissingParamenters'
+                    'title' => 'MissingParameters'
                 ]);
             }
         } catch (Exceptions\IncorrectParameters $exception) {
