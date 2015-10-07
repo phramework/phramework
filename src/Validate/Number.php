@@ -16,7 +16,6 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\BaseValidator;
 use \Phramework\Validate\ValidateResult;
 
 //require __DIR__ . '/IPrimitive.php'; //used for generator
@@ -34,7 +33,7 @@ use \Phramework\Validate\ValidateResult;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class Number extends BaseValidator implements \Phramework\Validate\IPrimitive
+class Number extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class attributes

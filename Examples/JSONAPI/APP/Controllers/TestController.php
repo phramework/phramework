@@ -146,6 +146,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
                     [ //properties
                         'valid' => new Boolean(),
                         'number' => new Number(0,100),
+                        'not_required' => (new Number(0,100))->setDefault(5),
                     ],
                     ['valid'] //required
                 )

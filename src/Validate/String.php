@@ -16,7 +16,6 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\ValidateResult;
 use \Phramework\Models\Filter;
 
 /**
@@ -29,7 +28,7 @@ use \Phramework\Models\Filter;
  * @since 1.0.0
  * @see ECMA 262 regular expression dialect for regular expression pattern
  */
-class String extends \Phramework\Validate\BaseValidator implements \Phramework\Validate\IPrimitive
+class String extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type

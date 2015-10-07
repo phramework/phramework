@@ -30,7 +30,7 @@ use \Phramework\Models\Filter;
  * @since 1.0.0
  * @todo Cannot be named Array
  */
-class ArrayClass extends \Phramework\Validate\BaseValidator implements \Phramework\Validate\IPrimitive
+class ArrayClass extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type

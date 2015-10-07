@@ -16,7 +16,6 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\BaseValidator;
 use \Phramework\Validate\ValidateResult;
 use \Phramework\Models\Filter;
 
@@ -38,7 +37,7 @@ use \Phramework\Models\Filter;
  * @todo Can it have default?
  * @todo Check if required property is set in properties
  */
-class Object extends BaseValidator implements \Phramework\Validate\IPrimitive
+class Object extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type

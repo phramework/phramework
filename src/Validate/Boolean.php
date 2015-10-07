@@ -16,7 +16,6 @@
  */
 namespace Phramework\Validate;
 
-use \Phramework\Validate\BaseValidator;
 use \Phramework\Validate\ValidateResult;
 
 /**
@@ -26,7 +25,7 @@ use \Phramework\Validate\ValidateResult;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class Boolean extends BaseValidator implements \Phramework\Validate\IPrimitive
+class Boolean extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type

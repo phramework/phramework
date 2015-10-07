@@ -23,7 +23,7 @@ namespace Phramework\Validate;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 1.0.0
  */
-class BaseValidator
+abstract class BaseValidator
 {
     /**
      * Validator's type
@@ -31,7 +31,7 @@ class BaseValidator
      * @var string
      */
     protected static $type = 'string';
-
+    public abstract function validate($value);
     /**
      * Get validator's type
      * @return string
