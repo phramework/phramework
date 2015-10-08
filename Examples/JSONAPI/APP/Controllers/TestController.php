@@ -36,9 +36,15 @@ class TestController extends \Examples\JSONAPI\APP\Controller
 
         $data = Test::get();
 
+        $include = self::getRequestInclude($params);
+
+        $includedData = Test::getIncludedData($data, $include);
+
         self::viewData(
             $data,
-            ['self' => Test::getSelfLink()]
+            ['self' => Test::getSelfLink()],
+            null,
+            $includedData
         );
     }
 
@@ -59,9 +65,15 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         //Check if resource exists
         self::exists($data);
 
+        $include = self::getRequestInclude($params);
+
+        $includedData = Test::getIncludedData($data, $include);
+
         self::viewData(
             $data,
-            ['self' => Test::getSelfLink($id)]
+            ['self' => Test::getSelfLink($id)],
+            null,
+            $includedData
         );
     }
 

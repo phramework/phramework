@@ -32,13 +32,19 @@ class Test extends \Phramework\JSONAPI\Model
     public static function getRelationships()
     {
         return [
-            'created' => new Relationship('created_user_id', 'user'),
+            'created' => new Relationship(
+                'created_user_id',
+                'user',
+                Relationship::TYPE_TO_ONE,
+                User::class,
+                'id'
+            ),
             'comment' => new Relationship(
                 'test_comment_id',
                 'test_comment',
                 Relationship::TYPE_TO_MANY,
                 TestComment::class,
-                'test_id'
+                'id'
             )
         ];
     }
@@ -88,5 +94,3 @@ class Test extends \Phramework\JSONAPI\Model
 
     }*/
 }
-
-//Test::setRelationships();

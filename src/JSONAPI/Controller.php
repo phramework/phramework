@@ -31,12 +31,14 @@ class Controller
     public static function viewData($data, $links = null, $meta = null, $included = null)
     {
         $temp = [
-            'data' => $data
+
         ];
 
         if ($links) {
             $temp['links'] = $links;
         }
+
+        $temp['data'] = $data;
 
         if ($meta) {
             $temp['meta'] = $meta;

@@ -467,6 +467,7 @@ class Model
      * @param  object $primaryData Primary data object
      * @param  string[] $include     An array with the keys of relationships to include
      * @return object[]              An array with all included related data
+     * @todo handle Relationship resource cannot be accessed
      */
     public static function getIncludedData($primaryData, $include = [])
     {
@@ -554,7 +555,7 @@ class Model
                 );
 
                 if (!$resource) {
-                    throw new \Exception('Relationship resource cannot be accessed');
+                    //throw new \Exception('Relationship resource cannot be accessed');
                 }
 
                 //push to included
