@@ -459,4 +459,111 @@ class Model
                 break;
         }
     }
+
+
+    /**
+     * Get jsonapi's included object, selected by include argument,
+     * using id's of relationship's data from resources in primary data object
+     * @param  object $primaryData Primary data object
+     * @param  string[] $include     An array with the keys of relationships to include
+     * @return object[]              An array with all included related data
+     */
+    public static function getIncludedData($primaryData, $include = [])
+    {
+        //hold relationshipKeys as key and ids of their related data as value
+        $temp = [];
+
+        //check if relationship exists
+        foreach ($include as $relationshipKey) {
+            if (!static::relationshipExists($relationshipKey)) {
+                throw new \Phramework\Exceptions\Request('Included relationship not found');
+            }
+            //Will hold ids of related data
+            $temp[$relationshipKey] = [];
+        }
+
+        if (empty($include)) {
+            return [];
+        }
+
+        if (empty($primaryData)) {
+            return [];
+        }
+
+        //iterate through all primary data
+
+        //if a single resource
+        if (!is_array($primaryData)) {
+            $primaryData = [$primaryData];
+        }
+
+        foreach ($primaryData as $resource) {
+            //ignore if relationships are not set
+            if (!property_exists($resource, 'relationships')) {
+                continue;
+            }
+
+            foreach ($include as $relationshipKey) {
+                //ignore if this relationship is not set
+                if (!isset($resource->relationships[$relationshipKey])) {
+                    continue;
+                }
+
+                //if single
+                $relationshipData = $resource->relationships[$relationshipKey]->data;
+
+                if (!$relationshipData || empty($relationshipData)) {
+                    continue;
+                }
+
+                //if a single resource
+                if (!is_array($relationshipData)) {
+                    $relationshipData = [$relationshipData];
+                }
+
+                foreach ($relationshipData as $primaryKeyAndType) {
+                    //push primary key (use type? $primaryKeyAndType->type)
+                    $temp[$relationshipKey][] = $primaryKeyAndType->id;
+                }
+            }
+        }
+
+        $included = [];
+
+        //remove duplicates
+        foreach ($include as $relationshipKey) {
+            $relationship = static::getRelationship($relationshipKey);
+
+            $callMethod = [
+                $relationship->getRelationshipClass(),
+                self::GET_BY_PREFIX
+                . ucfirst($relationship->getRelationshipIdAttribute())
+            ];
+
+            if (!is_callable($callMethod)) {
+                throw new \Phramework\Exceptions\Server(
+                    $callMethod[0] . '::' . $callMethod[1]
+                    . ' is not implemented'
+                );
+            }
+
+            foreach (array_unique($temp[$relationshipKey]) as $idAttribute) {
+                $resource = call_user_func(
+                    $callMethod,
+                    $idAttribute
+                );
+
+                if (!$resource) {
+                    throw new \Exception('Relationship resource cannot be accessed');
+                }
+
+                //push to included
+                $included[] = $resource;
+            }
+        }
+
+        //fetch related resources using GET_BY_PREFIX{{idAttribute}} method
+
+        return $included;
+    }
 }
