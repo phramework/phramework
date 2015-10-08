@@ -205,7 +205,7 @@ class Phramework
 
     /**
      * Allowed HTTP methods
-     * @var [type]
+     * @var string[]
      */
     public static $methodWhitelist = [
         self::METHOD_GET,
@@ -351,8 +351,6 @@ class Phramework
             //if ($method == self::METHOD_HEAD) {
             //    $method = self::METHOD_GET;
             //}
-
-            //is callable
 
             //Merge all REQUEST parameters into $params array
             $params = array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
@@ -653,6 +651,7 @@ class Phramework
     {
         error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
     }
+    
     const METHOD_ANY     = null;
     const METHOD_GET     = 'GET';
     const METHOD_POST    = 'POST';
