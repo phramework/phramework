@@ -52,7 +52,7 @@ class Request
         }
 
         //Check if speficied user is same as current user
-        if ($user_id && $user['id'] != $user_id) {
+        if ($user_id !== false && $user->id != $user_id) {
             throw new Permission(
                 Phramework::getTranslated('insufficient_permissions_exception')
             );
@@ -65,9 +65,14 @@ class Request
      * @param Array @parameters Request's parameters
      * @param String|Array @ The required parameters
      * @return array Returns the values of required parameters
+     * @todo accept objects
      */
     public static function requireParameters($parameters, $required)
     {
+        if (!is_array($parameters) && is_object($parameters)) {
+            $parameters = (array)$parameters;
+        }
+
         $missing = [];
         $return = [];
         if (!is_array($required)) {
@@ -95,9 +100,14 @@ class Request
      * @throws IncorrectParameters if value is not correct
      * @return string|int Returns the id or NULL if not set,
      * if $UINTEGER the returned value will be converted to unsigned integer
+     * @todo accept objects
      */
     public static function resourceId($parameters, $UINTEGER = true)
     {
+        if (!is_array($parameters) && is_object($parameters)) {
+            $parameters = (array)$parameters;
+        }
+
         //Check if is set AND validate
         if (isset($parameters['resource_id'])
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false
@@ -125,9 +135,14 @@ class Request
      * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer, default is true
      * @throws IncorrectParameters if value is not correct
      * if $UINTEGER the returned value will be converted to unsigned integer
+     * @todo accept objects
      */
     public static function requireId($parameters, $UINTEGER = true)
     {
+        if (!is_array($parameters) && is_object($parameters)) {
+            $parameters = (array)$parameters;
+        }
+
         if (isset($parameters['resource_id'])
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['resource_id']) !== false
         ) {
@@ -159,9 +174,14 @@ class Request
      * @param array $parameters
      * @param array $model
      * @return array Return the keys => values collection
+     * @todo accept objects
      */
     public static function parseModel($parameters, $model)
     {
+        if (!is_array($parameters) && is_object($parameters)) {
+            $parameters = (array)$parameters;
+        }
+
         $required_fields = [];
         foreach ($model as $key => $value) {
             if (in_array('required', $value, true) === true

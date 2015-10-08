@@ -241,9 +241,9 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         //Check if relationship exists
         self::exists(Test::relationshipExists($relationship), 'Relationship not found');
 
-	//Check if method is allowed
-	$allowedMethods = [Phramework::METHOD_GET];
-	Validate::enum($method, $allowedMethods);
+        //Check if method is allowed
+        $allowedMethods = [Phramework::METHOD_GET];
+        Validate::enum($method, $allowedMethods);
 
         //see http://localhost:8080/v1/authors/2/relationships/books
         $data = Test::getRelationshipData($relationship, $id);
