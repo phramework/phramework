@@ -65,14 +65,14 @@ class Relationship
      * @param string|class|null $relationshipClass [optional]
      * Relationship's class, default is null
      * @param string|null $relationshipIdAttribute [optional]
-     * Relationship's id attribute
+     * Relationship's id attribute, default is `id`
      */
     public function __construct(
         $attribute,
         $relationshipResourceType,
         $relationshipType = self::TYPE_TO_ONE,
         $relationshipClass = null,
-        $relationshipIdAttribute = null
+        $relationshipIdAttribute = 'id'
     ) {
         $this->attribute = $attribute;
         $this->relationshipResourceType = $relationshipResourceType;
@@ -128,6 +128,6 @@ class Relationship
      */
     public function getRelationshipIdAttribute()
     {
-        return $this->$relationshipIdAttribute;
+        return $this->relationshipIdAttribute;
     }
 }

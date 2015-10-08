@@ -28,7 +28,7 @@ class Controller
      * @uses \Phramework\Viewers\JSONAPI
      * @todo use \Phramework\Phramework::view
      */
-    public static function viewData($data, $links = null, $meta = null)
+    public static function viewData($data, $links = null, $meta = null, $included = null)
     {
         $temp = [
             'data' => $data
@@ -42,9 +42,74 @@ class Controller
             $temp['meta'] = $meta;
         }
 
-        (new \Phramework\Viewers\JSONAPI())->view($temp);
+        if ($included) {
+            $temp['included'] = $included;
+        }
+
+        \Phramework\Phramework::view($temp);
 
         unset($temp);
+    }
+
+    /**
+     * Extract included related resources from parameters
+     * @param  array|object $params Request parameters
+     * @return null|array
+     */
+    protected static function getRequestInclude($params = [])
+    {
+        //work with arrays
+        if (!is_array($params) && is_object($params)) {
+            $params = array($params);
+        }
+
+        if (!isset($params['include']) || empty($params['include'])) {
+            return [];
+        }
+
+        $include = [];
+
+        //split parameter using , (for multiple values)
+        foreach (explode(',', $params['include']) as $i) {
+            $include[] = trim($i);
+        }
+
+        return array_unique($include);
+    }
+
+    /**
+     * Get request data attributes.
+     * The request is expected to have json api structure
+     * Like the following example:
+     * ```
+     * [
+     *    data => [
+     *        'type' => 'user',
+     *        'attributes' => [
+     *            'email'    => 'nohponex@gmail.com',
+     *            'password' => 'XXXXXXXXXXXXXXXXXX'
+     *        ]
+     *    ]
+     * ]
+     * ```
+     * @param  array|object $params Request parameters
+     * @uses Request::requireParameters
+     * @return \stdClass
+     */
+    protected static function getRequestAttributes($params = [])
+    {
+        //work with arrays
+        if (!is_array($params) && is_object($params)) {
+            $params = array($params);
+        }
+
+        //require data
+        Request::requireParameters($params, ['data']);
+
+        //require data['attributes']
+        Request::requireParameters($params['data'], ['attributes']);
+
+        return (object)$params['data']['attributes'];
     }
 
     /**
@@ -53,8 +118,7 @@ class Controller
      * Unsupported request to create a resource with a client-generated ID
      * @package JSONAPI
      * @throws \Phamework\Exceptions\Forbidden
-     * @param  [type] $resource [description]
-     * @return [type]           [description]
+     * @param  object $resource [description]
      */
     public static function checkIfUnsupportedRequestWithId($resource)
     {

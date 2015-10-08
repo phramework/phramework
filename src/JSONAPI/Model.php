@@ -176,6 +176,16 @@ class Model
         return [];
     }
 
+    public static function getRelationship($relationshipKey)
+    {
+        $relationships = static::getRelationships();
+
+        if (!isset($relationships[$relationshipKey])) {
+            throw new \Exception('Not a valid relationship key');
+        }
+
+        return $relationships[$relationshipKey];
+    }
     /**
      * Check if relationship exists
      * @param  string $relationship Relationship's key (alias)
@@ -397,7 +407,7 @@ class Model
             );
         }
 
-        $relationship = static::getRelationships()[$relationshipKey];
+        $relationship = static::getRelationship($relationshipKey);
 
         switch ($relationship->getRelationshipType()) {
             case Relationship::TYPE_TO_ONE:
