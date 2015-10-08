@@ -2,7 +2,7 @@
 
 namespace Examples\JSONAPI\APP;
 
-use Examples\JSONAPI\APP\Models\Request;
+use \Examples\JSONAPI\APP\Models\Request;
 
 /**
  * Base controller

@@ -35,7 +35,7 @@ abstract class BaseValidator
     /**
     * Validate value
     * @see \Phramework\Validate\ValidateResult for ValidateResult object
-    * @param  mixed $value Value to validate
+    * @param  mixed $value Input value to validate
     * @return ValidateResult
      */
     abstract public function validate($value);
@@ -146,6 +146,33 @@ abstract class BaseValidator
         $this->default = $default;
 
         return $this;
+    }
+
+    /**
+     * This method use this validator to parse data from $value argument
+     * and return a clean object
+     * @param  array|stdClass $value Input value to validate
+     * @throws \Phramework\Exceptions\MissingParameters
+     * @throws \Phramework\Exceptions\IncorrectParameters
+     * @return \stdClass        [description]
+     * @todo find out if MissingParameters
+     * @todo add errors
+     */
+    public function parse($value)
+    {
+        $validateResult = $this->validate($value);
+
+        if (!$validateResult->status) {
+            //temp hack
+            if ($validateResult->errorObject == 'required properties') {
+                throw new \Phramework\Exceptions\MissingParameters([]);
+            }
+            throw new \Phramework\Exceptions\IncorrectParameters([]);
+        }
+
+        $castedValue = $validateResult->value;
+
+        return $castedValue;
     }
 
     /**

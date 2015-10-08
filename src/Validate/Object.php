@@ -172,7 +172,7 @@ class Object extends \Phramework\Validate\BaseValidator
     /**
      * This method use this validator to parse data from $value argument
      * and return a clean object
-     * @param  array|stdClass $value [description]
+     * @param  array|stdClass $value Input value to validate
      * @throws \Phramework\Exceptions\MissingParameters
      * @throws \Phramework\Exceptions\IncorrectParameters
      * @return \stdClass        [description]
@@ -186,19 +186,7 @@ class Object extends \Phramework\Validate\BaseValidator
             $value = (object)$value;
         }
 
-        $validateResult = $this->validate($value);
-
-        if (!$validateResult->status) {
-            //temp hack
-            if ($validateResult->errorObject == 'required properties') {
-                throw new \Phramework\Exceptions\MissingParameters([]);
-            }
-            throw new \Phramework\Exceptions\IncorrectParameters([]);
-        }
-
-        $castedValue = $validateResult->value;
-
-        return $castedValue;
+        return parent::parse($value);
     }
 
     /**
