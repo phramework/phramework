@@ -16,6 +16,8 @@
  */
 namespace Phramework\JSONAPI;
 
+use \Phramework\Models\Request;
+
 /**
  * Base JSONAPI controller
  * @package JSONAPI

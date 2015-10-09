@@ -38,7 +38,7 @@ class Username extends \Phramework\Validate\String
      */
     protected static $type = 'username';
 
-    protected static $usernamePattern = '/^[A-Za-z0-9_\.]{3,24}$/';
+    protected static $usernamePattern = '/^[A-Za-z0-9_\.]{3,32}$/';
 
     public static function setUsernamePattern($pattern)
     {
