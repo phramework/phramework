@@ -26,22 +26,6 @@ mb_internal_encoding('UTF-8');
 
 // Tell PHP that we'll be outputting UTF-8 to the browser
 mb_http_output('UTF-8');
-
-//TODO remove
-if (!function_exists('__')) {
-    function __($key)
-    {
-        return Phramework::getTranslated($key);
-    }
-}
-
-//TODO remove
-if (!function_exists('___')) {
-    function ___($key)
-    {
-        echo Phramework::getTranslated($key);
-    }
-}
 // @codingStandardsIgnoreEnd
 
 /**
@@ -67,7 +51,7 @@ class Phramework
     /**
      * Viewer class
      */
-    private static $viewer = '\Phramework\Viewers\JSON';
+    private static $viewer = \Phramework\Viewers\JSON::class;//'\Phramework\Viewers\JSON';
     /**
      * $URIStrategy object
      */
@@ -130,7 +114,7 @@ class Phramework
         $this->StepCallback = new \Phramework\Extensions\StepCallback();
 
         if (!is_subclass_of($URIStrategyObject, 'Phramework\URIStrategy\IURIStrategy', true)) {
-            throw new \Phramework\Exceptions\Server('class_is_not_implementing Phramework\URIStrategy\IURIStrategy');
+            throw new \Phramework\Exceptions\ServerException('class_is_not_implementing Phramework\URIStrategy\IURIStrategy');
         }
         self::$URIStrategy = $URIStrategyObject;
 
@@ -219,8 +203,8 @@ class Phramework
 
     /**
      * Execute the API
-     * @throws Exceptions\Permission
-     * @throws Exceptions\NotFound
+     * @throws \Phramework\Exceptions\PermissionException
+     * @throws \Phramework\Exceptions\NotFoundException
      * @todo change default timezone
      * @todo change default language
      * TODO @security deny access to any else referalls
@@ -242,7 +226,7 @@ class Phramework
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
                 if (!Models\Validate::isValidJsonpCallback($_GET['callback'])) {
-                    throw new Exceptions\IncorrectParameters(['callback']);
+                    throw new \Phramework\Exceptions\IncorrectParametersException(['callback']);
                 }
                 self::$callback = $_GET['callback'];
                 unset($_GET['callback']);
@@ -265,7 +249,7 @@ class Phramework
             //Check if the requested HTTP method method is allowed
             // @todo check error code
             if (!in_array($method, self::$methodWhitelist)) {
-                throw new Exceptions\Request(self::getTranslated('Method not allowed'));
+                throw new \Phramework\Exceptions\RequestExceptionException(self::getTranslated('Method not allowed'));
             }
 
             //Default value of response's header origin
@@ -402,7 +386,7 @@ class Phramework
             $this->StepCallback->call(StepCallback::STEP_BEFORE_CLOSE);
 
 
-        } catch (Exceptions\NotFound $exception) {
+        } catch (\Phramework\Exceptions\NotFoundException $exception) {
             self::writeErrorLog(
                 $exception->getMessage() .
                 (isset($_SERVER['HTTP_REFERER']) ? ' from ' .
@@ -412,11 +396,11 @@ class Phramework
                 'code' => $exception->getCode(),
                 'error' => $exception->getMessage()
             ]);
-        } catch (Exceptions\Request $exception) {
+        } catch (\Phramework\Exceptions\RequestExceptionException $exception) {
             self::errorView([
                 'code' => $exception->getCode(),
                 'error' => $exception->getMessage()]);
-        } catch (Exceptions\Permission $exception) {
+        } catch (\Phramework\Exceptions\PermissionException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
@@ -424,7 +408,7 @@ class Phramework
                 'error' => $exception->getMessage(),
                 'title' => 'Permission'
             ]);
-        } catch (Exceptions\MissingParameters $exception) {
+        } catch (\Phramework\Exceptions\MissingParametersException $exception) {
             self::writeErrorLog(
                 $exception->getMessage() .
                 implode(', ', $exception->getParameters())
@@ -445,7 +429,7 @@ class Phramework
                     'title' => 'MissingParameters'
                 ]);
             }
-        } catch (Exceptions\IncorrectParameters $exception) {
+        } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
             self::writeErrorLog(
                 $exception->getMessage() . implode(', ', array_keys($exception->getParameters()))
             );
@@ -455,7 +439,7 @@ class Phramework
                 'incorrect' => $exception->getParameters(),
                 'title' => 'incorrect_parameters_exception'
             ]);
-        } catch (Exceptions\method_not_allowed $exception) {
+        } catch (\Phramework\Exceptions\MethodNotAllowedException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
@@ -589,7 +573,7 @@ class Phramework
     public static function setViewerClass($class)
     {
         if (!is_subclass_of($class, '\Phramework\Viewers\IViewer', true)) {
-            throw new \Exception('class_is_not_implementing Phramework\Viewers\IViewer');
+            throw new \Exception('Class is not implementing \Phramework\Viewers\IViewer');
         }
         self::$viewer = $class;
     }
@@ -651,7 +635,7 @@ class Phramework
     {
         error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
     }
-    
+
     const METHOD_ANY     = null;
     const METHOD_GET     = 'GET';
     const METHOD_POST    = 'POST';

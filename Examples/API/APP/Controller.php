@@ -24,17 +24,17 @@ class Controller
     }
 
     /**
-     * If !assert then a NotFound exception is thrown.
+     * If !assert then a NotFoundException exception is thrown.
      *
      * @param mixed  $assert
      * @param string $exceptionMessage [Optional] Default is 'resource_not_found'
      *
-     * @throws \Phramework\Exceptions\NotFound
+     * @throws \Phramework\Exceptions\NotFoundException
      */
     protected static function exists($assert, $exceptionMessage = 'resource_not_found')
     {
         if (!$assert) {
-            throw new \Phramework\Exceptions\NotFound($exceptionMessage);
+            throw new \Phramework\Exceptions\NotFoundException($exceptionMessage);
         }
     }
 

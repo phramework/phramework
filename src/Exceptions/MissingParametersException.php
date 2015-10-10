@@ -8,7 +8,7 @@ namespace Phramework\Exceptions;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
-class MissingParameters extends \Exception
+class MissingParametersException extends \Exception
 {
     //Array with the parameters
     private $parameters;

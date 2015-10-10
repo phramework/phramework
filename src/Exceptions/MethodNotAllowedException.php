@@ -17,29 +17,32 @@
 namespace Phramework\Exceptions;
 
 /**
- * PermissionException
- * Used to throw an \Exception, when there requested resource is not available for current user.
+ * MethodNotAllowedException
+ * Used to throw an \Exception, when this method is not allowed
+ * to apply to this resource, or the current status of the resource.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
-class Permission extends \Exception
+class MethodNotAllowedException extends \Exception
 {
-    //The return url
-    private $return;
+    //Array with the Allowed methods
+    private $allowedMethods;
 
     /**
      *
-     * @param string $message \Exception message
-     * @param string $return Return url. Optional, default is FALSE.
+     * @param array $message \Exception message
+     * @param array $allowedMethods Allowed methods, should be returned in allow header.
+     * @param integer $code Error code, Optional default 405
      */
-    public function __construct($message, $return = false)
+    public function __construct($message, $allowedMethods = [], $code = 405)
     {
-        parent::__construct($message, 403);
-        $this->return = $return;
+        parent::__construct($message, $code);
+        $this->$allowedMethods = $allowedMethods;
     }
 
-    public function getReturn()
+
+    public function getAllowedMethods()
     {
-        return $this->return;
+        return  $this->$allowedMethods;
     }
 }

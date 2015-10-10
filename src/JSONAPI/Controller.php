@@ -121,13 +121,13 @@ class Controller
      *
      * Unsupported request to create a resource with a client-generated ID
      * @package JSONAPI
-     * @throws \Phamework\Exceptions\Forbidden
+     * @throws \Phamework\Phramework\Exceptions\ForbiddenException
      * @param  object $resource [description]
      */
     public static function checkIfUnsupportedRequestWithId($resource)
     {
         if (isset($resource->id)) {
-            throw new \Phamework\Exceptions\Forbidden(
+            throw new \Phamework\Phramework\Exceptions\ForbiddenException(
                 'Unsupported request to create a resource with a client-generated ID'
             );
         }

@@ -53,7 +53,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
      * @param  array $headers  Request headers
-     * @throws \Phramework\Exceptions\NotFound If resource doesn't exist or is
+     * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
      */
     public static function GETById($params, $method, $headers)
@@ -98,7 +98,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      *   }
      * }
      * ```
-     * @throws \Phramework\Exceptions\Forbidden If id is set
+     * @throws \Phramework\Exceptions\MissingParametersException\Forbidden If id is set
      */
     public static function POST($params, $method, $headers)
     {
@@ -216,7 +216,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
      * @param  array $headers  Request headers
-     * @throws \Phramework\Exceptions\NotFound If resource doesn't exist or is
+     * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
      */
     public static function PATCH($params, $method, $headers)
@@ -229,7 +229,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
      * @param  array $headers  Request headers
-     * @throws \Phramework\Exceptions\NotFound If resource doesn't exist or is
+     * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
      */
     public static function DELETE($params, $method, $headers)

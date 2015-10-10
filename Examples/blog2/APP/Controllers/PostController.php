@@ -31,7 +31,7 @@ class PostController
         array_unshift($posts, []);
 
         if ($id == 0 || $id > count($posts) - 1) {
-            throw new \Phramework\Exceptions\NotFound('Post not found');
+            throw new \Phramework\Exceptions\NotFoundException('Post not found');
         }
 
         Phramework::view([

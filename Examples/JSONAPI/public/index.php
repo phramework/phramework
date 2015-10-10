@@ -24,7 +24,7 @@ $APP = function () {
     $URIStrategy = new \Phramework\URIStrategy\URITemplate([
         ['test/', NS . 'TestController', 'GET', Phramework::METHOD_GET],
         ['test/', NS . 'TestController', 'POST', Phramework::METHOD_POST],
-        ['test/{id}', NS . 'TestController', 'GETById', Phramework::METHOD_GET],
+        ['test/{id}', NS . 'TestController', 'GETById', [Phramework::METHOD_GET, Phramework::METHOD_PATCH]],
         ['test/{id}/relationships/{relationship}', NS . 'TestController', 'byIdRelationships', Phramework::METHOD_ANY],
     ]);
 

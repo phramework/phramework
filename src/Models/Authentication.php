@@ -59,7 +59,7 @@ class Authentication
      * @param string $email
      * @param string $password
      * @return array|false Returns false on error or the user object on success
-     * @throws \Phramework\Exceptions\Permission
+     * @throws \Phramework\Exceptions\PermissionException
      */
     public static function authenticate($email, $password)
     {

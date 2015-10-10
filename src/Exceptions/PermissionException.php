@@ -17,18 +17,29 @@
 namespace Phramework\Exceptions;
 
 /**
- * Forbidden
+ * PermissionException
+ * Used to throw an \Exception, when there requested resource is not available for current user.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
- * @since 1.0.0
  */
-class Forbidden extends \Exception
+class PermissionException extends \Exception
 {
+    //The return url
+    private $return;
+
     /**
+     *
      * @param string $message \Exception message
+     * @param string $return Return url. Optional, default is FALSE.
      */
-    public function __construct($message)
+    public function __construct($message, $return = false)
     {
         parent::__construct($message, 403);
+        $this->return = $return;
+    }
+
+    public function getReturn()
+    {
+        return $this->return;
     }
 }

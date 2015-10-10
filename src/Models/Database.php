@@ -16,6 +16,7 @@
  */
 namespace Phramework\Models;
 
+use \Phramework\Exceptions\DatabaseException;
 use \PDO;
 
 /**
@@ -49,7 +50,7 @@ class Database
      * @param string|NULL $password Connection password
      * @param string $host Connection host, default is localhost
      * @param integer $port Connection port, default is 3306
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     protected function __construct($driver, $name, $username, $password, $host = 'localhost', $port = 3306)
     {
@@ -65,7 +66,7 @@ class Database
             // $this::$pdoLink ->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             $this::$pdoLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -89,7 +90,7 @@ class Database
             $password,
             $options
         )) {
-            throw new \Phramework\Exceptions\Database('ERROR_DATABASE_CONNECT');
+            throw new DatabaseException('ERROR_DATABASE_CONNECT');
         }
         $this::$pdoLink->query('SET NAMES utf8');
         $this::$pdoLink->query('SET SQL_MODE=ANSI_QUOTES');
@@ -100,7 +101,7 @@ class Database
         if (!$this::$pdoLink = new PDO(
             "pgsql:dbname=$name;host=$host;user=$username;password=$password;port=$port"
         )) {
-            throw new \Phramework\Exceptions\Database('ERROR_DATABASE_CONNECT');
+            throw new DatabaseException('ERROR_DATABASE_CONNECT');
         }
     }
 
@@ -147,7 +148,7 @@ class Database
      * @param string $query
      * @param array $parameters
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function execute($query, $parameters = [])
     {
@@ -156,7 +157,7 @@ class Database
             $statement->execute($parameters);
             return $statement->rowCount();
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -166,7 +167,7 @@ class Database
      * @param string $query
      * @param array Query parameters
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function executeLastInsertId($query, $parameters = [])
     {
@@ -175,7 +176,7 @@ class Database
             $statement->execute($parameters);
             return Database::$pdoLink->lastInsertId();
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -187,7 +188,7 @@ class Database
      * @param array $cast_model [optional] Default is NULL, if set then
      * \Phramework\Models\Filter::castEntry will be applied to data
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function executeAndFetch($query, $parameters = [], $cast_model = null)
     {
@@ -202,7 +203,7 @@ class Database
                 : $data
             );
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -214,7 +215,7 @@ class Database
      * @param array $cast_model [optional] Default is NULL, if set then
      * \Phramework\Models\Filter::cast will be applied to data
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function executeAndFetchAll($query, $parameters = [], $cast_model = null)
     {
@@ -229,7 +230,7 @@ class Database
                 : $data
             );
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -238,7 +239,7 @@ class Database
      * @param string $query
      * @param array Query parameters
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function executeAndFetchArray($query, $parameters = [])
     {
@@ -249,7 +250,7 @@ class Database
             $statement->closeCursor();
             return $data;
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -258,7 +259,7 @@ class Database
      * @param string $query Query string
      * @param array Query parameters
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function executeAndFetchAllArray($query, $parameters = [])
     {
@@ -269,7 +270,7 @@ class Database
             $statement->closeCursor();
             return $data;
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -279,7 +280,7 @@ class Database
      * @param string $query Query string
      * @param array Query parameters
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function bindExecuteLastInsertId($query, $parameters = [])
     {
@@ -295,7 +296,7 @@ class Database
             $statement->execute();
             return Database::$pdoLink->lastInsertId();
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -305,7 +306,7 @@ class Database
      * @param string $query Query string
      * @param array Query parameters
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      * @todo provide documentation
      */
     public static function bindExecute($query, $parameters = [])
@@ -324,7 +325,7 @@ class Database
             $statement->execute();
             return $statement->rowCount();
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -336,7 +337,7 @@ class Database
      * @param array $cast_model [optional] Default is NULL, if set
      * then \Phramework\Models\Filter::castEntry will be applied to data
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function bindExecuteAndFetch($query, $parameters = [], $cast_model = null)
     {
@@ -358,7 +359,7 @@ class Database
                 : $data
             );
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 
@@ -370,7 +371,7 @@ class Database
      * @param array $cast_model [optional] Default is NULL, if set then
      * \Phramework\Models\Filter::castEntry will be applied to data
      * @return type
-     * @throws Phramework\Exceptions\Database
+     * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function bindExecuteAndFetchAll($query, $parameters = [], $cast_model = null)
     {
@@ -392,7 +393,7 @@ class Database
                 : $data
             );
         } catch (\Exception $e) {
-            throw new \Phramework\Exceptions\Database('Database Error', $e->getMessage());
+            throw new DatabaseException('Database Error', $e->getMessage());
         }
     }
 }

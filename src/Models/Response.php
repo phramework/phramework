@@ -49,7 +49,7 @@ class Response
             //header('HTTP/1.0 204 No Content', true, 204);
             http_response_code(204);
         } else {
-            throw new \Phramework\Exceptions\Server();
+            throw new \Phramework\Exceptions\ServerException();
         }
     }
 
@@ -68,7 +68,7 @@ class Response
             http_response_code(201);
             header('Location: ' . $location);
         } else {
-            throw new \Phramework\Exceptions\Server();
+            throw new \Phramework\Exceptions\ServerException();
         }
     }
 
@@ -88,7 +88,7 @@ class Response
         if (!headers_sent()) {
             http_response_code(202);
         } else {
-            throw new \Phramework\Exceptions\Server();
+            throw new \Phramework\Exceptions\ServerException();
         }
     }
 

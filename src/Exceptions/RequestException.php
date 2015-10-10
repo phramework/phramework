@@ -17,17 +17,26 @@
 namespace Phramework\Exceptions;
 
 /**
- * Not found exception
- *
- * The server has not found anything matching the Request-URI.
- * No indication is given of whether the condition is temporary or permanent.
+ * RequestException
+ * Used to throw an \Exception, when there is something wrong with the request.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @todo cleanup codes
  */
-class NotFound extends \Exception
+class RequestException extends \Exception
 {
-    public function __construct($message, $code = 404)
+    /**
+     *
+     * @param array $message \Exception message
+     * @param integer $code Error code, Optional default 400
+     */
+    public function __construct($message, $code = 400)
     {
+        //Known error codes
+        $errors = [];
+        if (isset($errors[$code])) {
+            $message = $errors[$code];
+        }
         parent::__construct($message, $code);
     }
 }

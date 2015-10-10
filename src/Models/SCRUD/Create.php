@@ -18,8 +18,8 @@ namespace Phramework\Models\SCRUD;
 
 use Phramework\Validate\Validate;
 use Phramework\Models\Database;
-use Phramework\Exceptions\Request;
-use Phramework\Exceptions\NotFound;
+use Phramework\Phramework\Exceptions\RequestExceptionException;
+use Phramework\Phramework\Exceptions\NotFoundException;
 
 /**
  * create model

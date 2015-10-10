@@ -17,8 +17,8 @@
 namespace Phramework\URIStrategy;
 
 use \Phramework\Phramework;
-use \Phramework\Exceptions\Permission;
-use \Phramework\Exceptions\NotFound;
+use \Phramework\Exceptions\PermissionException;
+use \Phramework\Exceptions\NotFoundException;
 use \Phramework\Exceptions\Server;
 use \Phramework\Models\Util;
 
@@ -160,9 +160,9 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * @param  [type] $requestParameters [description]
      * @param  [type] $requestHeaders    [description]
      * @param  [type] $requestUser       [description]
-     * @throws NotFound
-     * @throws NotFound
-     * @throws Permission
+     * @throws NotFoundException
+     * @throws NotFoundException
+     * @throws PermissionException
      * @return [type]                    [description]
      */
     public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
@@ -175,7 +175,9 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             $requiresAuthentication = (isset($template[4]) ? $template[4] : false);
 
             // Ignore if not a valid method
-            if ($templateMethod != Phramework::METHOD_ANY && $templateMethod != $requestMethod) {
+            if ((is_array($templateMethod) && !in_array($requestMethod, $templateMethod))
+                    || (!is_array($templateMethod) && $templateMethod != Phramework::METHOD_ANY && $templateMethod !== $requestMethod)
+            ) {
                 continue;
             }
 
@@ -186,7 +188,9 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
             if ($test !== false) {
                 if ($requiresAuthentication && $requestUser === false) {
-                    throw new Permission(Phramework::getTranslated('Unauthenticated Access'));
+                    throw new PermissionException(
+                        Phramework::getTranslated('Unauthenticated Access')
+                    );
                 }
 
                 list($URI_parameters) = $test;
@@ -203,7 +207,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                  * @todo complete documentation
                  */
                 if (!is_callable("$class::$method")) {
-                    throw new NotFound(Phramework::getTranslated('Method not found'));
+                    throw new NotFoundException(Phramework::getTranslated('Method not found'));
                 }
 
                 //Call method
@@ -217,6 +221,6 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             }
         }
 
-        throw new NotFound(Phramework::getTranslated('Method not found'));
+        throw new NotFoundException(Phramework::getTranslated('Method not found'));
     }
 }

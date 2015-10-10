@@ -390,10 +390,10 @@ class Model
      * @param  static $relationshipKey  [description]
      * @param  string $idAttributeValue [description]
      * @return [type]                   [description]
-     * @throws \Phramework\Exceptions\Server If relationship doesn't exist
-     * @throws \Phramework\Exceptions\Server If relationship's class method is
+     * @throws \Phramework\Exceptions\ServerException If relationship doesn't exist
+     * @throws \Phramework\Exceptions\ServerException If relationship's class method is
      * not defined
-     * @throws \Phramework\Exceptions\Server If resources's class
+     * @throws \Phramework\Exceptions\ServerException If resources's class
      * `self::GET_RELATIONSHIP_BY_PREFIX . ucfirst(idAttribute)` method isn't
      * defined
      */
@@ -402,7 +402,7 @@ class Model
         $idAttributeValue
     ) {
         if (!static::relationshipExists($relationshipKey)) {
-            throw new \Phramework\Exceptions\Server(
+            throw new \Phramework\Exceptions\ServerException(
                 'Not a valid relationship key'
             );
         }
@@ -417,7 +417,7 @@ class Model
                 ];
 
                 if (!is_callable($callMethod)) {
-                    throw new \Phramework\Exceptions\Server(
+                    throw new \Phramework\Exceptions\ServerException(
                         $callMethod[0] . '::' . $callMethod[1]
                         . ' is not implemented'
                     );
@@ -444,7 +444,7 @@ class Model
                 ];
 
                 if (!is_callable($callMethod)) {
-                    throw new \Phramework\Exceptions\Server(
+                    throw new \Phramework\Exceptions\ServerException(
                         $callMethod[0] . '::' . $callMethod[1]
                         . ' is not implemented'
                     );
@@ -477,7 +477,7 @@ class Model
         //check if relationship exists
         foreach ($include as $relationshipKey) {
             if (!static::relationshipExists($relationshipKey)) {
-                throw new \Phramework\Exceptions\Request('Included relationship not found');
+                throw new \Phramework\Exceptions\RequestExceptionException('Included relationship not found');
             }
             //Will hold ids of related data
             $temp[$relationshipKey] = [];
@@ -542,7 +542,7 @@ class Model
             ];
 
             if (!is_callable($callMethod)) {
-                throw new \Phramework\Exceptions\Server(
+                throw new \Phramework\Exceptions\ServerException(
                     $callMethod[0] . '::' . $callMethod[1]
                     . ' is not implemented'
                 );

@@ -193,7 +193,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\Object::parse
      * @expectedException Exception
-     * @todo \Phramework\Exceptions\MissingParameters
+     * @todo \Phramework\Exceptions\MissingParametersException
      */
     public function testParseFailure()
     {
@@ -226,7 +226,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\Object::parse
      * @expectedException Exception
-     * @todo \Phramework\Exceptions\IncorrectParameters
+     * @todo \Phramework\Exceptions\IncorrectParametersException
      */
     public function testParseFailure2()
     {

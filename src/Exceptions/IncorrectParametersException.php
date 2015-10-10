@@ -17,26 +17,28 @@
 namespace Phramework\Exceptions;
 
 /**
- * DatabaseException
- * Used to throw an \Exception, when there is something wrong with a Database request.
+ * IncorrectParametersException
+ * Used to throw an \Exception, when there are some incorrect formed parameters.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
-class Database extends \Exception
+class IncorrectParametersException extends \Exception
 {
+    //Array with the parameters
+    private $parameters;
+
     /**
-     * Database \Exception
      *
-     * @todo Notify administrators
-     * @param string $message \Exception message
-     * @param string $error Internal error message
+     * @param array $parameters Array with the names of incorrect parameters
      */
-    public function __construct($message, $error = null)
+    public function __construct($parameters)
     {
-        if (\Phramework\Phramework::getSetting('debug') && $error) {
-            parent::__construct($error, 666);
-        } else {
-            parent::__construct($message, 666);
-        }
+        parent::__construct('incorrect_parameters_exception', 400);
+        $this->parameters = $parameters;
+    }
+
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 }

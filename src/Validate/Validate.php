@@ -17,8 +17,8 @@
 namespace Phramework\Validate;
 
 use \Phramework\Models\Filter;
-use \Phramework\Exceptions\MissingParameters;
-use \Phramework\Exceptions\IncorrectParameters;
+use \Phramework\Exceptions\MissingParametersException;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Provides various methods for validating data for varius datatypes.
@@ -180,7 +180,7 @@ class Validate
 
         if ($callback($value, $model, $output) === false) {
             //Incorrect
-            throw new IncorrectParameters([$field_name]);
+            throw new IncorrectParametersException([$field_name]);
         } else {
             //update output
             return $output;
@@ -543,7 +543,7 @@ class Validate
             }
         }
         if ($incorrect) {
-            throw new IncorrectParameters($incorrect);
+            throw new IncorrectParametersException($incorrect);
         } elseif ($missing) {
             throw new MissingParameters($missing);
         }
@@ -823,7 +823,7 @@ class Validate
                 return $date;
             }
         }
-        throw new IncorrectParameters([ $field_name]);
+        throw new IncorrectParametersException([ $field_name]);
     }
 
     /**
@@ -859,7 +859,7 @@ class Validate
     public static function operator($operator, $field_name = 'operator')
     {
         if (!in_array($operator, self::$operators)) {
-            throw new IncorrectParameters([ $field_name]);
+            throw new IncorrectParametersException([ $field_name]);
         }
         return $operator;
     }

@@ -17,28 +17,19 @@
 namespace Phramework\Exceptions;
 
 /**
- * IncorrectParametersException
- * Used to throw an \Exception, when there are some incorrect formed parameters.
+ * Not Implemented exception
+ *
+ * The server does not support the functionality required to fulfill the request.
+ * This is the appropriate response when the server does not recognize the
+ * request method and is not capable of supporting it for any resource.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @since 1.0.0
  */
-class IncorrectParameters extends \Exception
+class NotImplementedException extends \Exception
 {
-    //Array with the parameters
-    private $parameters;
-
-    /**
-     *
-     * @param array $parameters Array with the names of incorrect parameters
-     */
-    public function __construct($parameters)
+    public function __construct($message = 'Not Implemented', $code = 501)
     {
-        parent::__construct('incorrect_parameters_exception', 400);
-        $this->parameters = $parameters;
-    }
-
-    public function getParameters()
-    {
-        return $this->parameters;
+        parent::__construct($message, $code);
     }
 }

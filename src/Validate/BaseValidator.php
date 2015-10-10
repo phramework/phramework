@@ -152,8 +152,8 @@ abstract class BaseValidator
      * This method use this validator to parse data from $value argument
      * and return a clean object
      * @param  array|stdClass $value Input value to validate
-     * @throws \Phramework\Exceptions\MissingParameters
-     * @throws \Phramework\Exceptions\IncorrectParameters
+     * @throws \Phramework\Exceptions\MissingParametersException
+     * @throws \Phramework\Exceptions\IncorrectParametersException
      * @return \stdClass        [description]
      * @todo find out if MissingParameters
      * @todo add errors
@@ -165,9 +165,9 @@ abstract class BaseValidator
         if (!$validateResult->status) {
             //temp hack
             if ($validateResult->errorObject == 'required properties') {
-                throw new \Phramework\Exceptions\MissingParameters([]);
+                throw new \Phramework\Exceptions\MissingParametersException([]);
             }
-            throw new \Phramework\Exceptions\IncorrectParameters([]);
+            throw new \Phramework\Exceptions\IncorrectParametersException([]);
         }
 
         $castedValue = $validateResult->value;

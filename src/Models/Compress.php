@@ -89,7 +89,7 @@ class Compress
         $res = $zip->open($compressed_file);
 
         if ($res !== true) {
-            throw new \Phramework\Exceptions\Request('Cannot open zip archive', $res);
+            throw new \Phramework\Exceptions\RequestExceptionException('Cannot open zip archive', $res);
         }
 
         $files = [];
@@ -158,7 +158,7 @@ class Compress
         try {
             $zip = new \PharData($compressed_file);
         } catch (\UnexpectedValueException $e) {
-            throw new \Phramework\Exceptions\Request('Cannot open tar archive');
+            throw new \Phramework\Exceptions\RequestExceptionException('Cannot open tar archive');
         }
 
         $files = [];

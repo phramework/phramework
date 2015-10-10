@@ -17,26 +17,18 @@
 namespace Phramework\Exceptions;
 
 /**
- * RequestException
- * Used to throw an \Exception, when there is something wrong with the request.
+ * Forbidden
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
- * @todo cleanup codes
+ * @since 1.0.0
  */
-class Request extends \Exception
+class ForbiddenException extends \Exception
 {
     /**
-     *
-     * @param array $message \Exception message
-     * @param integer $code Error code, Optional default 400
+     * @param string $message \Exception message
      */
-    public function __construct($message, $code = 400)
+    public function __construct($message)
     {
-        //Known error codes
-        $errors = [];
-        if (isset($errors[$code])) {
-            $message = $errors[$code];
-        }
-        parent::__construct($message, $code);
+        parent::__construct($message, 403);
     }
 }

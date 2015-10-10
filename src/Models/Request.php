@@ -17,9 +17,9 @@
 namespace Phramework\Models;
 
 use \Phramework\Phramework;
-use \Phramework\Exceptions\Permission;
-use \Phramework\Exceptions\MissingParameters;
-use \Phramework\Exceptions\IncorrectParameters;
+use \Phramework\Exceptions\PermissionException;
+use \Phramework\Exceptions\MissingParametersException;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Request related functions
@@ -46,14 +46,14 @@ class Request
         $user = \Phramework\Phramework::getUser();
         //If user is not authenticated throw an \Exception
         if (!$user) {
-            throw new Permission(
+            throw new PermissionException(
                 Phramework::getTranslated('user_authentication_required_exception')
             );
         }
 
         //Check if speficied user is same as current user
         if ($user_id !== false && $user->id != $user_id) {
-            throw new Permission(
+            throw new PermissionException(
                 Phramework::getTranslated('insufficient_permissions_exception')
             );
         }
@@ -87,7 +87,7 @@ class Request
         }
 
         if (count($missing)) {
-            throw new MissingParameters($missing);
+            throw new MissingParametersException($missing);
         }
 
         return $return;
@@ -149,19 +149,19 @@ class Request
             $parameters['id'] = $parameters['resource_id'];
         }
         if (!isset($parameters['id'])) {
-            throw new MissingParameters(['id']);
+            throw new MissingParametersException(['id']);
         }
 
         //Validate as unsigned integer
         if ($UINTEGER
             && filter_var($parameters['id'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) === false
         ) {
-            throw new IncorrectParameters(['id']);
+            throw new IncorrectParametersException(['id']);
         } elseif (!$UINTEGER
             && preg_match(Validate::REGEXP_RESOURCE_ID, $parameters['id']) === false
         ) {
             //Validate as alphanumeric
-            throw new IncorrectParameters(['id']);
+            throw new IncorrectParametersException(['id']);
         }
         return ($UINTEGER ? intval($parameters['id']) : $parameters['id']);
     }

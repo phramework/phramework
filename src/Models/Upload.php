@@ -17,7 +17,7 @@
 namespace Phramework\Models;
 
 use \Phramework\Models\Util;
-use \Phramework\Exceptions\NotFound;
+use \Phramework\Exceptions\MissingParametersException\NotFoundException;
 
 /**
  * Upload class

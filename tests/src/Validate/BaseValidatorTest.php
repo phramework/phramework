@@ -107,7 +107,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\BaseValidator::parse
      * @expectedException Exception
-     * @todo \Phramework\Exceptions\MissingParameters
+     * @todo \Phramework\Exceptions\MissingParametersException
      */
     public function testParseFailure()
     {
@@ -140,7 +140,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Phramework\Validate\BaseValidator::parse
      * @expectedException Exception
-     * @todo \Phramework\Exceptions\IncorrectParameters
+     * @todo \Phramework\Exceptions\IncorrectParametersException
      */
     public function testParseFailure2()
     {

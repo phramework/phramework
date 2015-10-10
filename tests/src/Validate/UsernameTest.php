@@ -47,7 +47,7 @@ class UsernameTest extends \PHPUnit_Framework_TestCase
         //input
         return [
             ['too short' =>  'ni'],
-            ['too long' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
+            ['too long' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
             ['invalid character' => 'nohponεξ'],
             ['invalid character +' => '+nohponex'],
             ['invalid character @' => '@nohponex'],
