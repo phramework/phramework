@@ -113,8 +113,10 @@ class Phramework
         //Instantiate StepCallback object
         $this->StepCallback = new \Phramework\Extensions\StepCallback();
 
-        if (!is_subclass_of($URIStrategyObject, 'Phramework\URIStrategy\IURIStrategy', true)) {
-            throw new \Phramework\Exceptions\ServerException('class_is_not_implementing Phramework\URIStrategy\IURIStrategy');
+        if (!is_subclass_of($URIStrategyObject, '\Phramework\URIStrategy\IURIStrategy', true)) {
+            throw new \Phramework\Exceptions\ServerException(
+                'class_is_not_implementing \Phramework\URIStrategy\IURIStrategy'
+            );
         }
         self::$URIStrategy = $URIStrategyObject;
 

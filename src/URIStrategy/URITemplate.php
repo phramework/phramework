@@ -176,7 +176,10 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
             // Ignore if not a valid method
             if ((is_array($templateMethod) && !in_array($requestMethod, $templateMethod))
-                    || (!is_array($templateMethod) && $templateMethod != Phramework::METHOD_ANY && $templateMethod !== $requestMethod)
+                    || (!is_array($templateMethod)
+                        && $templateMethod != Phramework::METHOD_ANY
+                        && $templateMethod !== $requestMethod
+                    )
             ) {
                 continue;
             }

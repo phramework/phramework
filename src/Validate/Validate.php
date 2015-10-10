@@ -545,7 +545,7 @@ class Validate
         if ($incorrect) {
             throw new IncorrectParametersException($incorrect);
         } elseif ($missing) {
-            throw new MissingParameters($missing);
+            throw new MissingParametersException($missing);
         }
         return true;
     }
