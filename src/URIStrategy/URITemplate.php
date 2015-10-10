@@ -19,7 +19,8 @@ namespace Phramework\URIStrategy;
 use \Phramework\Phramework;
 use \Phramework\Exceptions\PermissionException;
 use \Phramework\Exceptions\NotFoundException;
-use \Phramework\Exceptions\Server;
+use \Phramework\Exceptions\MethodNotAllowedException;
+use \Phramework\Exceptions\ServerException;
 use \Phramework\Models\Util;
 
 /**
@@ -208,9 +209,10 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                  * Check if the requested controller and model is callable
                  * In order to be callable :
                  * @todo complete documentation
+                 * @todo log to server
                  */
                 if (!is_callable("$class::$method")) {
-                    throw new NotFoundException(Phramework::getTranslated('Method not found'));
+                    throw new ServerException(Phramework::getTranslated('Method not found'));
                 }
 
                 //Call method
@@ -224,6 +226,6 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             }
         }
 
-        throw new NotFoundException(Phramework::getTranslated('Method not found'));
+        throw new MethodNotAllowedException(Phramework::getTranslated('Method not found'));
     }
 }
