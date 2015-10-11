@@ -30,7 +30,7 @@ use \Phramework\Models\Filter;
  * @since 1.0.0
  * @todo Cannot be named Array
  */
-class ArrayClass extends \Phramework\Validate\BaseValidator
+class ArrayValidator extends \Phramework\Validate\BaseValidator
 {
     /**
      * Overwrite base class type
@@ -46,9 +46,20 @@ class ArrayClass extends \Phramework\Validate\BaseValidator
         'uniqueItems'
     ];
 
-    public function __construct()
-    {
+    public function __construct(
+        $minItems = 0,
+        $maxItems = null,
+        $additionalItems = null,
+        $items = null,
+        $uniqueItems = false
+    ) {
+        parent::__construct();
 
+        $this->minItems = $minItems;
+        $this->maxItems = $maxItems;
+        $this->additionalItems = $additionalItems;
+        $this->items = $items;
+        $this->uniqueItems = $uniqueItems;
     }
 
     /**
@@ -56,11 +67,39 @@ class ArrayClass extends \Phramework\Validate\BaseValidator
      * @see \Phramework\Validate\ValidateResult for ValidateResult object
      * @param  mixed $value Value to validate
      * @return ValidateResult
+     * @todo incomplete
      */
     public function validate($value)
     {
         $return = new ValidateResult($value, false);
 
+        if (!is_array($value)) {
+            $return->errorObject = 'properties validation';
+            //error
+            goto err;
+        } else {
+            $propertiesCount = count($value);
+
+            if ($propertiesCount < $this->minItems) {
+                //error
+                $return->errorObject = 'minItems';
+                goto err;
+            } elseif ($this->maxItems !== null
+                && $propertiesCount > $this->maxItems
+            ) {
+                $return->errorObject = 'maxItems';
+                //error
+                goto err;
+            }
+
+
+        }
+
+        //Success
+        $return->errorObject = null;
+        $return->status = true;
+
+        err:
         return $return;
     }
 }
