@@ -14,6 +14,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     protected $bool;
     protected $int;
     protected $str;
+    protected $uint;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -24,6 +25,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->bool = new Boolean;
         $this->int = new Integer;
         $this->str = new String;
+        $this->uint = new UnsignedInteger;
     }
 
     /**
@@ -46,9 +48,70 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
             "maximum" : 1000
         }';
 
-        $object = Integer::createFromJSON($json);
+        $validationObject = Integer::createFromJSON($json);
 
-        $this->assertTrue(is_subclass_of($object, '\Phramework\Validate\BaseValidator'));
+        $this->assertInstanceOf(BaseValidator::class, $validationObject);
+
+        $this->assertSame(
+            -1000,
+            $validationObject->minimum
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromJSON
+     */
+    public function testCreateFromJSON2()
+    {
+        $json = '
+        {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "enum",
+                  "values": ["user"]
+                },
+                "order": {
+                  "type": "unsignedinteger",
+                  "default" : 0
+                }
+              },
+              "required": ["type"]
+            }
+          }
+        }';
+
+        $validationObject = Object::createFromJSON($json);
+
+        $this->assertInstanceOf(Object::class, $validationObject);
+        $this->assertInternalType(
+            'array',
+            $validationObject->properties
+        );
+        $this->assertInstanceOf(Object::class, $validationObject->properties['data']);
+
+        $data = $validationObject->properties['data'];
+
+        $this->assertInstanceOf(
+            Enum::class,
+            $data->properties['type']
+        );
+        $this->assertInstanceOf(
+            UnsignedInteger::class,
+            $data->properties['order']
+        );
+        $this->assertInternalType(
+            'array',
+            $data->properties['type']->values
+        );
+
+        $this->assertSame(
+            0,
+            $data->properties['order']->default
+        );
     }
 
     /**
@@ -168,6 +231,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $record = $validationObject->parse($input);
+
     }
 
     /**

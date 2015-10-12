@@ -183,19 +183,23 @@ abstract class BaseValidator
      */
     public static function createFromObject($object)
     {
-        $isFromBase = (static::class === self::class);
+        //$isFromBase = (static::class === self::class);
 
         //Test type if it's set
         if (property_exists($object, 'type') && $object->type !== static::$type) {
             if (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
+                //if already loaded
                 $className = __NAMESPACE__ . '\\' . $object->type;
                 $class = new $className();
             } elseif ($object->type == 'array') {
                 $class = new ArrayValidator();
+            } else if(file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
+                $className = __NAMESPACE__ . '\\' . ucfirst($object->type);
+                $class = new $className();
+            }else if(TRUE) {
+                $className = $object->type;
+                $class = new $className();
             } else {
-
-                //Search for type
-                //get_declared_classes()
                 throw new \Exception(sprintf(
                     'Incorrect type %s from %s',
                     $object->type,
@@ -214,15 +218,17 @@ abstract class BaseValidator
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
                 if ($attribute == 'properties') {
+                    //get properties as array
                     $properties = (array)$object->{$attribute};
 
-                    $createdProperties = [];
+                    $createdProperties = [];// = new \stdClass();
 
                     foreach ($properties as $key => $property) {
                         if (!is_object($property)) {
-                            throw new \Exception(
-                                'Expected object for property value'
-                            );
+                            throw new \Exception(sprintf(
+                                'Expected object for property value %',
+                                $key
+                            ));
                         }
 
                         $createdProperties[$key] =
@@ -303,7 +309,7 @@ abstract class BaseValidator
             }
             if (static::$type == 'object' && $attribute == 'properties') {
                 foreach ($object[$attribute] as $key => $property) {
-                    $object[$attribute][$key] = $property->toArray();
+                    $object[$attribute]->{$key} = $property->toArray();
                 }
             }
         }
