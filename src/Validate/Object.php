@@ -69,6 +69,10 @@ class Object extends \Phramework\Validate\BaseValidator
         $this->maxProperties = $maxProperties;
 
         if (is_array($properties)) {
+            /*$p = new \stdClass();
+            foreach ($properties as $k => $v) {
+                $p->{$k} = $v;
+            }*/
             $properties = (object)$properties;
         }
 
@@ -90,6 +94,10 @@ class Object extends \Phramework\Validate\BaseValidator
 
         if (!is_object($value) && is_array($value)) {
             $value = (object)($value);
+        }
+
+        if (is_array($this->properties)) {
+            $this->properties = (object)$this->properties;
         }
 
         if (!is_object($value)) {

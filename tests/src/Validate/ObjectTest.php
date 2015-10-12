@@ -72,6 +72,102 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\Object::validate
+     */
+    public function testValidateRecursiveSuccess()
+    {
+        $validationObject = new Object(
+            [
+                'order' => (new UnsignedInteger())->setDefault(0),
+                'request' => (new Object([
+                        'url' => new String(3,256),
+                        'method' => (new String(3,10))->setDefault('GET'),
+                        'response' => new Object(
+                            [
+                                'statusCode' => (new UnsignedInteger(100, 999))
+                                    ->setDefault(200),
+                                'default' => (new UnsignedInteger(100, 999))
+                                    ->setDefault(200),
+                                'ruleObjects' => (new ArrayValidator())
+                            ],
+                            ['statusCode', 'ruleObjects']
+                        )
+                    ],
+                    ['url', 'response']
+                ))
+            ],
+            ['request']
+        );
+
+        $this->assertInstanceOf(BaseValidator::class, $validationObject);
+        $this->assertInstanceOf(Object::class, $validationObject);
+        $this->assertInstanceOf(
+            UnsignedInteger::class,
+            $validationObject->properties->order
+        );
+        $this->assertInstanceOf(
+            Object::class,
+            $validationObject->properties->request
+        );
+        $this->assertInstanceOf(
+            String::class,
+            $validationObject->properties->request->properties->method
+        );
+        $this->assertSame(
+            'GET',
+            $validationObject->properties->request->properties->method->default
+        );
+        $this->assertInstanceOf(
+            Object::class,
+            $validationObject->properties->request->properties->response
+        );
+        $this->assertInstanceOf(
+            ArrayValidator::class,
+            $validationObject->properties->request->properties->response->properties->ruleObjects
+        );
+        $this->assertInstanceOf(
+            UnsignedInteger::class,
+            $validationObject->properties->request->properties->response->properties->statusCode
+        );
+        $this->assertSame(
+            200,
+            $validationObject->properties->request->properties->response->properties->statusCode->default
+        );
+
+        $parsed = $validationObject->parse(
+            [
+                'order' => 5,
+                'request' => [
+                    'url' => 'account/',
+                    'response' => [
+                        'statusCode' => 400,
+                        'ruleObjects' => ['abc', 'cda']
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertSame(
+            5,
+            $parsed->order
+        );
+
+        $this->assertSame(
+            400,
+            $parsed->request->response->statusCode
+        );
+
+        $this->assertSame(
+            200,
+            $parsed->request->response->default
+        );
+
+        $this->assertInternalType(
+            'array',
+            $parsed->request->response->ruleObjects
+        );
+    }
+    /**
      * @dataProvider validateFailureProvider
      * @covers Phramework\Validate\Object::validate
      */

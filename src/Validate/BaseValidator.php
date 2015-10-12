@@ -121,8 +121,15 @@ abstract class BaseValidator
     public function __set($key, $value)
     {
         if (!array_key_exists($key, $this->attributes)) {
-            throw new \Exception('Unknown key "' . $key . '" to set');
+            throw new \Exception(sprintf(
+                'Unknown key "%s" to set',
+                $key
+            ));
         }
+
+        /*if ($key == 'properties' && is_array($value)) {
+            $value = (object)$value;
+        }*/
 
         $this->attributes[$key] = $value;
 
