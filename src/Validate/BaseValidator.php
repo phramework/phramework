@@ -188,48 +188,46 @@ abstract class BaseValidator
      * @return BaseValidator
      * @todo use $isFromBase to initialize Validator by name
      */
-    public static function createFromObject($object)
-    {
-        //$isFromBase = (static::class === self::class);
+     public static function createFromObject($object)
+     {
+         $isFromBase = (static::class === self::class);
 
-        //Test type if it's set
-        if (property_exists($object, 'type') && $object->type !== static::$type) {
-            if (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
-                //if already loaded
-                $className = __NAMESPACE__ . '\\' . $object->type;
-                $class = new $className();
-            } elseif ($object->type == 'array') {
-                $class = new ArrayValidator();
-            } elseif ($object->type == 'unsignedinteger') {
-                $class = new UnsignedInteger();
-            } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
-                $className = __NAMESPACE__ . '\\' . ucfirst($object->type);
-                $class = new $className();
-            } else {
-                $className = $object->type;
+         //Test type if it's set
+         if (property_exists($object, 'type')) {// && $object->type !== static::$type) {
+             if (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
+                 //if already loaded
+                 $className = __NAMESPACE__ . '\\' . $object->type;
+                 $class = new $className();
+             } elseif ($object->type == 'array') {
+                 $class = new ArrayValidator();
+             } elseif ($object->type == 'unsignedinteger') {
+                 $class = new UnsignedInteger();
+             } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
+                 $className = __NAMESPACE__ . '\\' . ucfirst($object->type);
+                 $class = new $className();
+             } else {
+                 $className = $object->type;
 
-                try {
-                    $ref = new \ReflectionClass($className);
-                    $class = new $className();
-                } catch (Exception $e) {
-                    //Wont catch the fatal error
-                    throw new \Exception(sprintf(
-                        'Incorrect type %s from %s',
-                        $object->type,
-                        static::class
-                    ));
-                }
-            /*} else {
-                throw new \Exception(sprintf(
-                    'Incorrect type %s from %s',
-                    $object->type,
-                    static::class
-                ));
-            */
-            }
-        } else {
-            $class = new static();
-        }
+                 try {
+                     $ref = new \ReflectionClass($className);
+                     $class = new $className();
+                 } catch (Exception $e) {
+                     //Wont catch the fatal error
+                     throw new \Exception(sprintf(
+                         'Incorrect type %s from %s',
+                         $object->type,
+                         static::class
+                     ));
+                 }
+             }
+         } elseif (!$isFromBase || $object->type == static::$type) {
+             $class = new static();
+         } else {
+             throw new \Exception(sprintf(
+                 'Type is required when creating from %s',
+                 self::class
+             ));
+         }
 
         //For each Validator's attribute
         foreach (array_merge($class::getTypeAttributes(), $class::$commonAttributes) as $attribute) {

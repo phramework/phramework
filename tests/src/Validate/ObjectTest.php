@@ -98,7 +98,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
             ],
             ['request']
         );
-
+        
         $this->assertInstanceOf(BaseValidator::class, $validationObject);
         $this->assertInstanceOf(Object::class, $validationObject);
         $this->assertInstanceOf(
