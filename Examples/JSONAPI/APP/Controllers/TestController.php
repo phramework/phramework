@@ -8,10 +8,13 @@ use \Phramework\Models\Filter;
 use \Phramework\Models\Request;
 use \Examples\JSONAPI\APP\Models\Test;
 
+use \Phramework\Validate\UnsignedInteger;
+use \Phramework\Validate\Enum;
 use \Phramework\Validate\Integer;
 use \Phramework\Validate\Number;
 use \Phramework\Validate\Object;
 use \Phramework\Validate\Boolean;
+use \Phramework\Validate\String;
 
 /**
  * Controller for /test endpoint
@@ -118,76 +121,36 @@ class TestController extends \Examples\JSONAPI\APP\Controller
 
         $input = ['weight' => 5, 'length' => 1.02];
 
-        //proper
-        $validationObject = new Object(
+        $validatorRequest = new Object(
             [
-                'length'     => ((new Number(0, 100))->setTitle('xxx')->setDefault('123')),
-                'weight' => new Integer(-10, 10, true),
+                'url' => new String(1, 1024),
+                'method' => (new Enum(Phramework::$methodWhitelist, true))
+                    ->setDefault(Phramework::METHOD_GET),
+                //'headers' => new ArrayValidator()
             ],
-            ['weight']
+            ['url']
+        );
+        $validatorResponse = new Object(
+            [
+                'statusCode' => new UnsignedInteger(100,999)
+            ],
+            ['statusCode']
         );
 
-    //    var_dump($validationObject);
-    //    var_dump($validationObject->validate($input));
-
-        //equivalent using arrays
-        /*$validationObject = Object::createFromArray([
-            'properties' => [
-                'length' => new Number(0, 100),
-                'weight' => new Integer(-10,10, true),
+        //Setup validator for parsed test
+        $validator = new Object(
+            [
+                'order' => (new Integer(-99999999,-99999999))
+                    ->setDefault(0),
+                'request' => $validatorRequest,
+                'response' => $validatorResponse
             ],
-            'required' => ['weight']
-        ]);
-
-        var_dump($validationObject);
-        var_dump($validationObject->validate($input));*/
-
-
-        $input2 = [
-            'weight' => '5',
-            'obj' => [
-                'valid' => 'true',
-                'number' => 10.2,
-            ]
-        ];
-
-        $validationObject = new Object(
-            [ //properties
-                'weight' => new Integer(-10,10, true),
-                'obj' => new Object(
-                    [ //properties
-                        'valid' => new Boolean(),
-                        'number' => new Number(0,100),
-                        'not_required' => (new Number(0,100))->setDefault(5),
-                    ],
-                    ['valid'] //required
-                )
-            ],
-            ['weight'] //required
+            ['request', 'response']
         );
 
-        //var_dump($validationObject);
-        //var_dump($validationObject->validate($input2));
-        var_dump($validationObject->parse($input2));
-        die();
-        /*//equivalent using JSON
-        $validationObject = Object::createFromJSON('
-        {
-            "properties": {
-                "length": {
-                    "type" : "number",
-                    "minimum": 0,
-                    "maximum": 100
-                },
-                "weight": {
-                    "type" : "integer",
-                    "minimum": -10,
-                    "maximum": 10,
-                    "exclusiveMinimum": true
-                }
-            },
-            "required": ["weight"]
-        }');*/
+        echo 'validator:' . PHP_EOL;
+        echo json_encode($validator->toObject(), JSON_PRETTY_PRINT);
+        echo PHP_EOL;
 
         //var_dump($validationObject);
         //var_dump($validationObject->validate($input));

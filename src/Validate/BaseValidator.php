@@ -249,10 +249,13 @@ abstract class BaseValidator
      * Export validator to json encoded string
      * @return string
      */
-    public function toJSON()
+    public function toJSON($JSON_PRETTY_PRINT = false)
     {
         $object = $this->toArray();
-        return json_encode($object);
+        return json_encode(
+            $object,
+            ($JSON_PRETTY_PRINT ? JSON_PRETTY_PRINT : 0)
+        );
     }
 
     /**
@@ -272,10 +275,18 @@ abstract class BaseValidator
     public function toArray()
     {
         $object = ['type' => static::$type];
-        foreach (array_merge(static::getTypeAttributes(), static::$commonAttributes) as $attribute) {
+        foreach (array_merge(
+            static::getTypeAttributes(),
+            static::$commonAttributes
+        ) as $attribute) {
             $value = $this->{$attribute};
             if ($value !== null) {
                 $object[$attribute] = $value;
+            }
+            if (static::$type == 'object' && $attribute == 'properties') {
+                foreach ($object[$attribute] as $key => $property) {
+                    $object[$attribute][$key] = $property->toArray();
+                }
             }
         }
         return $object;
