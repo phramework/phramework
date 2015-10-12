@@ -24,7 +24,7 @@ use \Phramework\Models\Filter;
  * @property integer minProperties Default is 0
  * @property integer|null maxProperties
  * @property array required, Default is []
- * @property BaseValidator[] properties, Default is []
+ * @property object properties, Default is empty object
  * @property object|boolean additionalProperties
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
@@ -67,6 +67,10 @@ class Object extends \Phramework\Validate\BaseValidator
 
         $this->minProperties = $minProperties;
         $this->maxProperties = $maxProperties;
+
+        if (is_array($properties)) {
+            $properties = (object)$properties;
+        }
         $this->properties = $properties;
         $this->required = $required;
         $this->additionalProperties = $additionalProperties;
@@ -191,13 +195,17 @@ class Object extends \Phramework\Validate\BaseValidator
 
     /**
      * Add properties to this object validator
-     * @param array $properties [description]
+     * @param array||stdClass $properties [description]
      * @throws \Exception If properties is not an array
      */
     public function addProperties($properties)
     {
-        if (!is_array($properties)) {
-            throw new \Exception('Expected array');
+        if (empty($properties) || !count((array)$properties)) {
+            throw new \Exception('Empty properties given');
+        }
+
+        if (!is_array($properties) && !is_object($properties)) {
+            throw new \Exception('Expected array or object');
         }
 
         foreach ($properties as $key => $property) {
@@ -214,12 +222,12 @@ class Object extends \Phramework\Validate\BaseValidator
      */
     public function addProperty($key, BaseValidator $property)
     {
-        if (array_key_exists($key, $this->properties)) {
+        if (property_exists($this->properties, $key)) {
             throw new \Exception('Property key exists');
         }
 
         //Add this key, value to
-        $this->properties += [$key => $property];
+        $this->properties->{$key} = $property;
 
         return $this;
     }

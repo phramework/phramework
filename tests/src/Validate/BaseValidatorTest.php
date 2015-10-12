@@ -88,29 +88,29 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(Object::class, $validationObject);
         $this->assertInternalType(
-            'array',
+            'object',
             $validationObject->properties
         );
-        $this->assertInstanceOf(Object::class, $validationObject->properties['data']);
+        $this->assertInstanceOf(Object::class, $validationObject->properties->data);
 
-        $data = $validationObject->properties['data'];
+        $data = $validationObject->properties->data;
 
         $this->assertInstanceOf(
             Enum::class,
-            $data->properties['type']
+            $data->properties->type
         );
         $this->assertInstanceOf(
             UnsignedInteger::class,
-            $data->properties['order']
+            $data->properties->order
         );
         $this->assertInternalType(
             'array',
-            $data->properties['type']->values
+            $data->properties->type->values
         );
 
         $this->assertSame(
             0,
-            $data->properties['order']->default
+            $data->properties->order->default
         );
     }
 

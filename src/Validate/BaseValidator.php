@@ -219,9 +219,9 @@ abstract class BaseValidator
             if (property_exists($object, $attribute)) {
                 if ($attribute == 'properties') {
                     //get properties as array
-                    $properties = (array)$object->{$attribute};
+                    $properties = $object->{$attribute};
 
-                    $createdProperties = [];// = new \stdClass();
+                    $createdProperties = new \stdClass();
 
                     foreach ($properties as $key => $property) {
                         if (!is_object($property)) {
@@ -231,7 +231,7 @@ abstract class BaseValidator
                             ));
                         }
 
-                        $createdProperties[$key] =
+                        $createdProperties->{$key} =
                         BaseValidator::createFromObject($property);
                     }
                     //push to class
