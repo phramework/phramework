@@ -453,7 +453,7 @@ class Phramework
 
             self::errorView([
                 'code' => 400,
-                'error' => $exception->getMessage() . ' : ' . implode(', ', array_keys($exception->getParameters())),
+                'error' => $exception->getMessage(),
                 'allow' => $exception->getAllowedMethods(),
                 'title' => 'method_not_allowed'
             ]);

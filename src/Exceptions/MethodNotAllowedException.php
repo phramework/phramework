@@ -37,12 +37,12 @@ class MethodNotAllowedException extends \Exception
     public function __construct($message, $allowedMethods = [], $code = 405)
     {
         parent::__construct($message, $code);
-        $this->$allowedMethods = $allowedMethods;
+        $this->allowedMethods = $allowedMethods;
     }
 
 
     public function getAllowedMethods()
     {
-        return  $this->$allowedMethods;
+        return  $this->allowedMethods;
     }
 }

@@ -187,7 +187,11 @@ abstract class BaseValidator
 
         //Test type if it's set
         if (property_exists($object, 'type') && $object->type !== static::$type) {
-            throw new \Exception('Incorrect type ' . $object->type . ' from base ' . $isFromBase);
+            throw new \Exception(sprintf(
+                'Incorrect type %s from base %s',
+                $object->type,
+                self::class
+            ));
         }
 
         //Initialize a new Validator object, type of current class
@@ -204,7 +208,9 @@ abstract class BaseValidator
 
                     foreach ($properties as $key => $property) {
                         if (!is_object($property)) {
-                            throw new \Exception('Expected object for property value');
+                            throw new \Exception(
+                                'Expected object for property value'
+                            );
                         }
 
                         $createdProperties[$key] =
