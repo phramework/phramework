@@ -87,14 +87,16 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddPropertiesSuccess()
     {
-        $originalPropertiesCount = count((array)$this->object->properties);
+        $originalPropertiesCount = count(get_object_vars(
+            $this->object->properties
+        ));
         $properties = ['new_property' => new Object()];
         $this->object->addProperties($properties);
 
         //Test if number of properties is increased by count of added properties
         $this->assertEquals(
             $originalPropertiesCount + count($properties),
-            count((array)$this->object->properties)
+            count(get_object_vars($this->object->properties))
         );
     }
 

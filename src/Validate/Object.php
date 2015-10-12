@@ -71,6 +71,7 @@ class Object extends \Phramework\Validate\BaseValidator
         if (is_array($properties)) {
             $properties = (object)$properties;
         }
+
         $this->properties = $properties;
         $this->required = $required;
         $this->additionalProperties = $additionalProperties;
