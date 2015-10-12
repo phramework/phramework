@@ -45,7 +45,7 @@ class Enum extends \Phramework\Validate\BaseValidator
     ];
 
     public function __construct(
-        $values,
+        $values = [],
         $validateType = false,
         $default = null
     ) {

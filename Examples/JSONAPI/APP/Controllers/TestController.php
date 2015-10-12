@@ -148,9 +148,33 @@ class TestController extends \Examples\JSONAPI\APP\Controller
             ['request', 'response']
         );
 
-        echo 'validator:' . PHP_EOL;
-        echo json_encode($validator->toObject(), JSON_PRETTY_PRINT);
-        echo PHP_EOL;
+//        echo 'validator:' . PHP_EOL;
+//        echo json_encode($validator->toObject(), JSON_PRETTY_PRINT);
+//        echo PHP_EOL;
+
+        $json = '
+        {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "enum",
+                  "values": ["user"]
+                },
+                "order": {
+                  "type": "unsignedinteger"
+                }
+              },
+              "required": ["type"]
+            }
+          }
+        }';
+
+        $o = Object::createFromJSON($json);
+        echo $o->toJSON(true);
+        die();
 
         //var_dump($validationObject);
         //var_dump($validationObject->validate($input));

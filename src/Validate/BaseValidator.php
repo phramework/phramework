@@ -187,18 +187,30 @@ abstract class BaseValidator
 
         //Test type if it's set
         if (property_exists($object, 'type') && $object->type !== static::$type) {
-            throw new \Exception(sprintf(
-                'Incorrect type %s from base %s',
-                $object->type,
-                self::class
-            ));
+            if (class_exists(__NAMESPACE__ . '\\' . $object->type)) {
+                $className = __NAMESPACE__ . '\\' . $object->type;
+                $class = new $className();
+            } elseif ($object->type == 'array') {
+                $class = new ArrayValidator();
+            } else {
+
+                //Search for type
+                //get_declared_classes()
+                throw new \Exception(sprintf(
+                    'Incorrect type %s from %s',
+                    $object->type,
+                    static::class
+                ));
+            }
+        } else {
+            $class = new static();
         }
 
         //Initialize a new Validator object, type of current class
-        $class = new static();
+
 
         //For each Validator's attribute
-        foreach (array_merge(static::getTypeAttributes(), static::$commonAttributes) as $attribute) {
+        foreach (array_merge($class::getTypeAttributes(), $class::$commonAttributes) as $attribute) {
             //Check if provided object contains this attribute
             if (property_exists($object, $attribute)) {
                 if ($attribute == 'properties') {
@@ -217,7 +229,7 @@ abstract class BaseValidator
                         BaseValidator::createFromObject($property);
                     }
                     //push to class
-                    //$class->{$attribute} = $createdProperties;
+                    $class->{$attribute} = $createdProperties;
                 } else {
                     //Use attributes value in Validator object
                     $class->{$attribute} = $object->{$attribute};
