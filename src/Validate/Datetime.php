@@ -42,10 +42,9 @@ class Datetime extends \Phramework\Validate\String
     /**
      * @todo add options for only date, or only time
      */
-    public function __construct(
-    ) {
-        parent::__construct(
-        );
+    public function __construct()
+    {
+        parent::__construct();
     }
 
     /**
@@ -69,7 +68,6 @@ class Datetime extends \Phramework\Validate\String
                 $matches
             )) {
                 if (checkdate($matches[2], $matches[3], $matches[1])) {
-
                     $return->errorObject = null;
                     //Set status to success
                     $return->status = true;

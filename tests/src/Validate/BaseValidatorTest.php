@@ -25,7 +25,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->bool = new Boolean;
         $this->int = new Integer;
         $this->str = new String;
-        $this->uint = new UnsignedInteger;
+        //$this->uint = new UnsignedInteger;
     }
 
     /**
@@ -62,6 +62,42 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
      * @covers Phramework\Validate\BaseValidator::createFromJSON
      */
     public function testCreateFromJSON2()
+    {
+        $json = '{
+            "type": "unsignedinteger",
+            "minimum" : -1000,
+            "maximum" : 1000
+        }';
+
+        $validationObject = BaseValidator::createFromJSON($json);
+
+        $this->assertInstanceOf(BaseValidator::class, $validationObject);
+
+        $this->assertSame(
+            -1000,
+            $validationObject->minimum
+        );
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromJSON
+     * @expectedException Exception
+     */
+    public function testCreateFromJSONFailure()
+    {
+        $json = '{
+            "type": "xyz",
+            "minimum" : -1000,
+            "maximum" : 1000
+        }';
+
+        $validationObject = Integer::createFromJSON($json);
+    }
+
+    /**
+     * @covers Phramework\Validate\BaseValidator::createFromJSON
+     */
+    public function testCreateFromJSON3()
     {
         $json = '
         {

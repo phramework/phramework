@@ -193,25 +193,36 @@ abstract class BaseValidator
                 $class = new $className();
             } elseif ($object->type == 'array') {
                 $class = new ArrayValidator();
-            } else if(file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
+            } elseif ($object->type == 'unsignedinteger') {
+                $class = new UnsignedInteger();
+            } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
                 $className = __NAMESPACE__ . '\\' . ucfirst($object->type);
                 $class = new $className();
-            }else if(TRUE) {
-                $className = $object->type;
-                $class = new $className();
             } else {
+                $className = $object->type;
+
+                try {
+                    $ref = new \ReflectionClass($className);
+                    $class = new $className();
+                } catch (Exception $e) {
+                    //Wont catch the fatal error
+                    throw new \Exception(sprintf(
+                        'Incorrect type %s from %s',
+                        $object->type,
+                        static::class
+                    ));
+                }
+            /*} else {
                 throw new \Exception(sprintf(
                     'Incorrect type %s from %s',
                     $object->type,
                     static::class
                 ));
+            */
             }
         } else {
             $class = new static();
         }
-
-        //Initialize a new Validator object, type of current class
-
 
         //For each Validator's attribute
         foreach (array_merge($class::getTypeAttributes(), $class::$commonAttributes) as $attribute) {

@@ -63,7 +63,7 @@ class URL extends \Phramework\Validate\String
 
         //Apply additional rules
         if ($return->status == true) {
-            if (filter_var($value,  FILTER_VALIDATE_URL) === false) {
+            if (filter_var($value, FILTER_VALIDATE_URL) === false) {
                 //error
                 $return->status = false;
             } else {
