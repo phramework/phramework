@@ -399,7 +399,8 @@ class Model
      */
     public static function getRelationshipData(
         $relationshipKey,
-        $idAttributeValue
+        $idAttributeValue,
+        $additionalArguments = []
     ) {
         if (!static::relationshipExists($relationshipKey)) {
             throw new \Phramework\Exceptions\ServerException(
@@ -424,9 +425,9 @@ class Model
                 }
 
                 //We have to get this type's resource
-                $resource = call_user_func(
+                $resource = call_user_func_array(
                     $callMethod,
-                    $idAttributeValue
+                    array_merge([$idAttributeValue], $additionalArguments)
                 );
 
                 if (!$resource) {
@@ -452,9 +453,9 @@ class Model
                 //also we could attempt to use GetById like the above TO_ONE
                 //to use relationships data
 
-                return call_user_func(
+                return call_user_func_array(
                     $callMethod,
-                    $idAttributeValue
+                    array_merge([$idAttributeValue], $additionalArguments)
                 );
                 break;
         }
