@@ -474,15 +474,14 @@ class Model
         $primaryData,
         $include = [],
         $additionalArguments = []
-    )
-    {
+    ) {
         //hold relationshipKeys as key and ids of their related data as value
         $temp = [];
 
         //check if relationship exists
         foreach ($include as $relationshipKey) {
             if (!static::relationshipExists($relationshipKey)) {
-                throw new \Phramework\Exceptions\RequestExceptionException('Included relationship not found');
+                throw new \Phramework\Exceptions\RequestException('Included relationship not found');
             }
             //Will hold ids of related data
             $temp[$relationshipKey] = [];
