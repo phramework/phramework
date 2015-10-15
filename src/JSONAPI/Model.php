@@ -470,7 +470,11 @@ class Model
      * @return object[]              An array with all included related data
      * @todo handle Relationship resource cannot be accessed
      */
-    public static function getIncludedData($primaryData, $include = [])
+    public static function getIncludedData(
+        $primaryData,
+        $include = [],
+        $additionalArguments = []
+    )
     {
         //hold relationshipKeys as key and ids of their related data as value
         $temp = [];
@@ -550,9 +554,16 @@ class Model
             }
 
             foreach (array_unique($temp[$relationshipKey]) as $idAttribute) {
-                $resource = call_user_func(
+
+                $additionalArgument = (
+                    isset($additionalArguments[$relationshipKey])
+                    ? $additionalArguments[$relationshipKey]
+                    : []
+                );
+
+                $resource = call_user_func_array(
                     $callMethod,
-                    $idAttribute
+                    array_merge([$idAttribute], $additionalArgument)
                 );
 
                 if (!$resource) {
