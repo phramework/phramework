@@ -400,6 +400,7 @@ class Model
     public static function getRelationshipData(
         $relationshipKey,
         $idAttributeValue,
+        $additionalGetArguments = [],
         $additionalArguments = []
     ) {
         if (!static::relationshipExists($relationshipKey)) {
@@ -427,7 +428,7 @@ class Model
                 //We have to get this type's resource
                 $resource = call_user_func_array(
                     $callMethod,
-                    array_merge([$idAttributeValue], $additionalArguments)
+                    array_merge([$idAttributeValue], $additionalGetArguments)
                 );
 
                 if (!$resource) {

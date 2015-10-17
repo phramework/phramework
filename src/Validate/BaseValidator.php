@@ -104,6 +104,10 @@ abstract class BaseValidator
      */
     public function __get($key)
     {
+        if ($key === 'type') {
+            return $this->getType();
+        }
+
         if (!array_key_exists($key, $this->attributes)) {
             throw new \Exception('Unknown key "' . $key . '" to get');
         }
@@ -200,6 +204,8 @@ abstract class BaseValidator
                 $class = new $className();
             } elseif ($object->type == 'array') {
                 $class = new ArrayValidator();
+            } elseif ($object->type == 'url') {
+                $class = new URL();
             } elseif ($object->type == 'unsignedinteger') {
                 $class = new UnsignedInteger();
             } elseif (file_exists(__DIR__ . '/' . ucfirst($object->type) . '.php')) {
