@@ -272,15 +272,17 @@ class Phramework
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
                 $origin = ''; //TODO Exctract origin from request url
             }
+            
             if (!headers_sent()) {
                 header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $origin);
-                header('Access-Control-Allow-Methods: GET, POST, PUT, HEAD, DELETE, OPTIONS');
+                header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, HEAD, DELETE, OPTIONS');
                 header(
                     'Access-Control-Allow-Headers: '
                     . 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding'
                 );
             }
+            
             //Catch OPTIONS request and kill it
             if ($method == self::METHOD_OPTIONS) {
                 header('HTTP/1.1 200 OK');
@@ -324,8 +326,6 @@ class Phramework
             //Set language variable
             self::$language = $language;
             $this->translation->setLanguageCode($language);
-
-
 
             //STEP_BEFORE_REQUIRE_CONTROLLER
             $this->StepCallback->call(StepCallback::STEP_BEFORE_REQUIRE_CONTROLLER);
