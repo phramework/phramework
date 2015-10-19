@@ -270,7 +270,7 @@ class Phramework
                 }
                 //@TODO @security else deny access
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
-                $origin = ''; //TODO Exctract origin from request url
+                $origin = '*'; //TODO Exctract origin from request url
             }
             
             if (!headers_sent()) {
