@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Integer validator
@@ -72,6 +73,12 @@ class Integer extends \Phramework\Validate\Number
         if ($return->status == true) {
             if (filter_var($value, FILTER_VALIDATE_INT) === false) {
                 //error
+                $return->errorObject = new IncorrectParametersException([
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'type'
+                    ]
+                ]);
                 $return->status = false;
             } else {
                 $return->errorObject = null;

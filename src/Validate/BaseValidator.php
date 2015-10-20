@@ -175,10 +175,12 @@ abstract class BaseValidator
 
         if (!$validateResult->status) {
             //temp hack
-            if ($validateResult->errorObject == 'required properties') {
+            /*if ($validateResult->errorObject == 'required properties') {
                 throw new \Phramework\Exceptions\MissingParametersException([]);
             }
             throw new \Phramework\Exceptions\IncorrectParametersException([]);
+            */
+            throw $validateResult->errorObject;
         }
 
         $castedValue = $validateResult->value;
@@ -217,7 +219,7 @@ abstract class BaseValidator
                 try {
                     $ref = new \ReflectionClass($className);
                     $class = new $className();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     //Wont catch the fatal error
                     throw new \Exception(sprintf(
                         'Incorrect type %s from %s',

@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
 use \Phramework\Models\Filter;
 
 /**
@@ -76,23 +77,37 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         if (!is_array($value)) {
             $return->errorObject = 'properties validation';
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'type'
+                ]
+            ]);
             goto err;
         } else {
             $propertiesCount = count($value);
 
             if ($propertiesCount < $this->minItems) {
                 //error
-                $return->errorObject = 'minItems';
+                $return->errorObject = new IncorrectParametersException(
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'minItems'
+                    ]
+                );
                 goto err;
             } elseif ($this->maxItems !== null
                 && $propertiesCount > $this->maxItems
             ) {
-                $return->errorObject = 'maxItems';
+                $return->errorObject = new IncorrectParametersException(
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'maxItems'
+                    ]
+                );
                 //error
                 goto err;
             }
-
-
         }
 
         //Success

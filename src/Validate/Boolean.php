@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Boolean validator
@@ -58,8 +59,15 @@ class Boolean extends \Phramework\Validate\BaseValidator
 
         if ($filterValue === null) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'type'
+                ]
+            ]);
         } else {
             $return->errorObject = null;
+
             //Set status to success
             $return->status = true;
             //Type cast

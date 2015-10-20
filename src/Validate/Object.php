@@ -17,6 +17,8 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
+use \Phramework\Exceptions\MissingParametersException;
 use \Phramework\Models\Filter;
 
 /**
@@ -91,7 +93,7 @@ class Object extends \Phramework\Validate\BaseValidator
     public function validate($value)
     {
         $return = new ValidateResult($value, false);
-
+        $failure = null;
         if (!is_object($value) && is_array($value)) {
             $value = (object)($value);
         }
@@ -101,7 +103,7 @@ class Object extends \Phramework\Validate\BaseValidator
         }
 
         if (!is_object($value)) {
-            $return->errorObject = 'Not an object or array';
+            $failure = 'type';
             //error
             goto err;
         }
@@ -112,12 +114,12 @@ class Object extends \Phramework\Validate\BaseValidator
 
         if ($valuePropertiesCount < $this->minProperties) {
             //error
-            $return->errorObject = 'minProperties';
+            $failure = 'minProperties';
             goto err;
         } elseif ($this->maxProperties !== null
             && $valuePropertiesCount > $this->maxProperties
         ) {
-            $return->errorObject = 'maxProperties';
+            $failure = 'maxProperties';
             //error
             goto err;
         }
@@ -136,15 +138,18 @@ class Object extends \Phramework\Validate\BaseValidator
 
             if (!empty($missingProperties)) {
                 //error, missing properties
-                $return->errorObject = 'required properties';
-                goto err;
+                $return->errorObject = new MissingParametersException(
+                    $missingProperties
+                );
+                return $return;
             }
         }
 
         $overalPropertyStatus = true;
-
+        $errorObjects = [];
         //Validate all validator's properties
         foreach ($this->properties as $key => $property) {
+
             //If this property key exists in given $value, validate it
             if (array_key_exists($key, $valueProperties)) {
                 $propertyValue = $valueProperties[$key];
@@ -152,7 +157,9 @@ class Object extends \Phramework\Validate\BaseValidator
 
                 //Determine $overalPropertyStatus
                 $overalPropertyStatus = $overalPropertyStatus && $propertyValidateResult->status;
-
+                if (!$propertyValidateResult->status) {
+                    $errorObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                }
                 //use type casted value
                 $value->{$key} = $propertyValidateResult->value;
 
@@ -164,10 +171,16 @@ class Object extends \Phramework\Validate\BaseValidator
 
         if (!$overalPropertyStatus) {
             $return->status = $overalPropertyStatus;
-            $return->errorObject = 'properties validation';
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                 'type' => static::getType(),
+                 'failure' => 'properties',
+                 'properties' => $errorObjects
+                ]
+            ]);
             //todo here we must collect all errorObjects
-            goto err;
+            return $return;
         }
 
         //success
@@ -179,6 +192,10 @@ class Object extends \Phramework\Validate\BaseValidator
         return $return;
 
         err:
+        $return->errorObject = new IncorrectParametersException([
+            'type' => static::getType(),
+            'failure' => $failure
+        ]);
         return $return;
     }
 

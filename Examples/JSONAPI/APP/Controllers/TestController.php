@@ -105,6 +105,39 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      */
     public static function POST($params, $method, $headers)
     {
+        /*var_dump(
+            (new Number(0, 1))->parse(3)
+        );*/
+        $validator = new Object(
+            [
+                'int' => new Integer(),
+                'my_string' => new String(0,1),
+                'obje' => (new Object(
+                    [
+                        'int' => new Integer(),
+                        'my_string' => new String(0,1)
+                    ],
+                    ['int']
+                ))
+            ],
+            ['int', 'obje']
+        );
+
+        var_dump(
+            $validator->parse([
+                'int' => 1.10,
+                'my_string' => 'dasdasds',
+                'obje' => [
+                    'int' => 'acdc'
+                ]
+            ])
+        );
+        die();
+        var_dump(
+            (new Number(0, 1))->validate("azure")
+        );
+        die();
+
         //Extract resource object from request parameters
         $resource = (object)$params['data'];
 
@@ -120,6 +153,8 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         $resource->attributes['created_user_id'] = 1;
 
         $input = ['weight' => 5, 'length' => 1.02];
+
+
 
         $validatorRequest = new Object(
             [

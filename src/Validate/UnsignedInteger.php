@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * UnsignedInteger validator
@@ -75,7 +76,12 @@ class UnsignedInteger extends \Phramework\Validate\Integer
         if ($return->status == true) {
             if ($return->value < 0) {
                 $return->status = false;
-                $return->errorObject = 'Negative integer';
+                $return->errorObject = new IncorrectParametersException([
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'type'
+                    ]
+                ]);
             }
         }
 

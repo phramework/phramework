@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 //require __DIR__ . '/IPrimitive.php'; //used for generator
 //require __DIR__ . '/BaseValidator.php'; //used for generator
@@ -83,26 +84,50 @@ class Number extends \Phramework\Validate\BaseValidator
             //Replace comma with dot
             $value = str_replace(',', '.', $value);
         }
+        
         //Apply all rules
-
         if (filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'type'
+                ]
+            ]);
         } elseif ($this->maximum !== null
             && ($value > $this->maximum
                 || $this->exclusiveMaximum === true && $value >= $this->maximum
             )
         ) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'maximum'
+                ]
+            ]);
         } elseif ($this->minimum !== null
             && ($value < $this->minimum
                 || $this->exclusiveMinimum === true && $value <= $this->minimum
             )
         ) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'minimum'
+                ]
+            ]);
         } elseif ($this->multipleOf !== null
             && ((float)$value % $this->multipleOf) !== 0
         ) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'multipleOf'
+                ]
+            ]);
         } else {
             $return->errorObject = null;
             //Set status to success

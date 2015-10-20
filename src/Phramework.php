@@ -272,7 +272,7 @@ class Phramework
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
                 $origin = '*'; //TODO Exctract origin from request url
             }
-            
+
             if (!headers_sent()) {
                 header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $origin);
@@ -282,7 +282,7 @@ class Phramework
                     . 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Encoding'
                 );
             }
-            
+
             //Catch OPTIONS request and kill it
             if ($method == self::METHOD_OPTIONS) {
                 header('HTTP/1.1 200 OK');
@@ -437,9 +437,9 @@ class Phramework
             );
             self::errorView([
                 'code' => 400,
-                'error' => $exception->getMessage() . ' : ' . implode(', ', array_keys($exception->getParameters())),
+                'error' => $exception->getMessage(),
                 'incorrect' => $exception->getParameters(),
-                'title' => 'incorrect_parameters_exception'
+                'title' => 'Incorrect parameters exception'
             ]);
         } catch (\Phramework\Exceptions\MethodNotAllowedException $exception) {
             self::writeErrorLog(

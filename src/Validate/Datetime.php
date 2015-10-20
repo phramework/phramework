@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Datetime validator
@@ -61,20 +62,31 @@ class Datetime extends \Phramework\Validate\String
         $return = parent::validate($value);
 
         //Apply additional rules
-        if ($return->status == true) {
-            if (preg_match(
-                '/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/',
-                $value,
-                $matches
-            )) {
-                if (checkdate($matches[2], $matches[3], $matches[1])) {
-                    $return->errorObject = null;
-                    //Set status to success
-                    $return->status = true;
-                }
+        if ($return->status == true && (preg_match(
+            '/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/',
+            $value,
+            $matches
+        )) ) {
+            if (checkdate($matches[2], $matches[3], $matches[1])) {
+                $return->errorObject = null;
+                //Set status to success
+                $return->status = true;
+            } else {
+                goto err;
             }
+        } else {
+            goto err;
         }
 
+        return $return;
+
+        err:
+        $return->errorObject = new IncorrectParametersException([
+            [
+                'type' => static::getType(),
+                'failure' => 'format'
+            ]
+        ]);
         return $return;
     }
 }

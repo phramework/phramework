@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Validate\ValidateResult;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * Email validator
@@ -64,6 +65,12 @@ class Email extends \Phramework\Validate\String
         if ($return->status == true) {
             if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
                 //error
+                $return->errorObject = new IncorrectParametersException([
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'format'
+                    ]
+                ]);
                 $return->status = false;
             } else {
                 $return->errorObject = null;

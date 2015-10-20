@@ -17,6 +17,7 @@
 namespace Phramework\Validate;
 
 use \Phramework\Models\Filter;
+use \Phramework\Exceptions\IncorrectParametersException;
 
 /**
  * String validator
@@ -71,18 +72,42 @@ class String extends \Phramework\Validate\BaseValidator
 
         if (!is_string($value)) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'type'
+                ]
+            ]);
         } elseif (mb_strlen($value) < $this->minLength) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'minLength'
+                ]
+            ]);
         } elseif ($this->maxLength !== null
             && mb_strlen($value) > $this->maxLength
         ) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'maxLength'
+                ]
+            ]);
         } elseif ($this->pattern !== null
             && filter_var($value, FILTER_VALIDATE_REGEXP, [
                 'options' => ['regexp' => $this->pattern]
             ]) === false
         ) {
             //error
+            $return->errorObject = new IncorrectParametersException([
+                [
+                    'type' => static::getType(),
+                    'failure' => 'pattern'
+                ]
+            ]);
         } else {
             $return->errorObject = null;
             //Set status to success
