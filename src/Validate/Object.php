@@ -160,15 +160,19 @@ class Object extends \Phramework\Validate\BaseValidator
                 $overalPropertyStatus = $overalPropertyStatus && $propertyValidateResult->status;
                 
                 if (!$propertyValidateResult->status) {
-                    switch (get_class($propertyValidateResult->errorObject)) {
-                        case MissingParametersException::class:
-                            $missingObjects[$key] = $propertyValidateResult->errorObject->getParameters();
-                            break;
-                        case IncorrectParametersException::class:
-                            $errorObjects[$key] = $propertyValidateResult->errorObject->getParameters();
-                            break;
-                        default:
-                            $errorObjects[$key] = [];
+                    if (!$propertyValidateResult->errorObject) {
+                         $errorObjects[$key] = [];
+                    } else {
+                        switch (get_class($propertyValidateResult->errorObject)) {
+                            case MissingParametersException::class:
+                                $missingObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                                break;
+                            case IncorrectParametersException::class:
+                                $errorObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                                break;
+                            default:
+                                $errorObjects[$key] = [];
+                        }
                     }
                     
                 }

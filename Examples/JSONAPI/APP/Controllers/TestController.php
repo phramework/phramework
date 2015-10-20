@@ -15,6 +15,7 @@ use \Phramework\Validate\Number;
 use \Phramework\Validate\Object;
 use \Phramework\Validate\Boolean;
 use \Phramework\Validate\String;
+use \Phramework\Validate\ArrayValidator;
 
 /**
  * Controller for /test endpoint
@@ -122,7 +123,28 @@ class TestController extends \Examples\JSONAPI\APP\Controller
             ],
             ['some_int', 'some_object']
         );
-
+        
+        $validator = new Object(
+            [
+                'arr' => new ArrayValidator(
+                    1,
+                    5,
+                    new Integer(1,100),
+                    null,
+                    true
+                )
+            ],
+            ['arr']
+        );
+        
+        var_dump($validator->parse([
+            'arr' => [
+                1, 2, '13'
+            ]
+        ]));
+        
+        die();
+        
         var_dump(
             $validator->parse([
                 'some_int' => 1.10,

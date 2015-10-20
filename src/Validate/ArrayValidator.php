@@ -50,16 +50,16 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
     public function __construct(
         $minItems = 0,
         $maxItems = null,
-        $additionalItems = null,
         $items = null,
+        $additionalItems = null,
         $uniqueItems = false
     ) {
         parent::__construct();
 
         $this->minItems = $minItems;
         $this->maxItems = $maxItems;
-        $this->additionalItems = $additionalItems;
         $this->items = $items;
+        $this->additionalItems = $additionalItems;
         $this->uniqueItems = $uniqueItems;
     }
 
@@ -83,7 +83,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                     'failure' => 'type'
                 ]
             ]);
-            goto err;
+            return $return;
         } else {
             $propertiesCount = count($value);
 
@@ -95,7 +95,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                         'failure' => 'minItems'
                     ]
                 );
-                goto err;
+                return $return;
             } elseif ($this->maxItems !== null
                 && $propertiesCount > $this->maxItems
             ) {
@@ -106,15 +106,54 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
                     ]
                 );
                 //error
-                goto err;
+                return $return;
             }
+        }
+        
+        if ($this->items !== null) {
+            $errorItems = [];
+            //Currently we support only a signle type
+            foreach ($value as $k => $v) {
+                $validateItems = $this->items->validate($v);
+                
+                if (!$validateItems->status) {
+                    $errorItems[$k] = $validateItems->errorObject->getParameters()[0];
+                } else {
+                    $value[$k] = $validateItems->value;
+                }
+            }
+            
+            if (!empty($errorItems)) {
+                $return->errorObject = new IncorrectParametersException(
+                    [
+                        'type' => static::getType(),
+                        'failure' => 'items',
+                        'items' => [
+                            $errorItems
+                        ]
+                    ]
+                );
+                return $return;
+            }
+        }
+        
+        //Check if contains duplicate items
+        if ($this->uniqueItems && count($value) !== count(array_unique($value))) {
+            $return->errorObject = new IncorrectParametersException(
+                [
+                    'type' => static::getType(),
+                    'failure' => 'uniqueItems'
+                ]
+            );
+            return $return;
         }
 
         //Success
         $return->errorObject = null;
         $return->status = true;
-
-        err:
+        //typecasted 
+        $return->value = $value;
+        
         return $return;
     }
 }
