@@ -110,25 +110,25 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         );*/
         $validator = new Object(
             [
-                'int' => new Integer(),
+                'some_int' => new Integer(),
                 'my_string' => new String(0,1),
-                'obje' => (new Object(
+                'some_object' => (new Object(
                     [
-                        'int' => new Integer(),
+                        'another_int' => new Integer(),
                         'my_string' => new String(0,1)
                     ],
                     ['int']
                 ))
             ],
-            ['int', 'obje']
+            ['some_int', 'some_object']
         );
 
         var_dump(
             $validator->parse([
-                'int' => 1.10,
+                'some_int' => 1.10,
                 'my_string' => 'dasdasds',
-                'obje' => [
-                    'int' => 'acdc'
+                'some_object' => [
+                    
                 ]
             ])
         );

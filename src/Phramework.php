@@ -346,14 +346,25 @@ class Phramework
             //Parse request body
             //@Todo needs additional attencion
             //@Todo add allowed content-types
-            if (in_array($method, [self::METHOD_POST, self::METHOD_PATCH, self::METHOD_PUT, self::METHOD_DELETE])) {
+            if (in_array(
+                $method,
+                [
+                    self::METHOD_POST,
+                    self::METHOD_PATCH,
+                    self::METHOD_PUT,
+                    self::METHOD_DELETE
+                ]
+            )) {
                 if (isset($headers[Request::HEADER_CONTENT_TYPE])
-                    && $headers[Request::HEADER_CONTENT_TYPE] == 'application/x-www-form-urlencoded'
+                    && $headers[Request::HEADER_CONTENT_TYPE]
+                        == 'application/x-www-form-urlencoded'
                 ) {
                     //Decode and merge params
                     parse_str(file_get_contents('php://input'), $input);
-
-                    $params = array_merge($params, $input);
+                    
+                    if ($input && !empty($input)) {
+                        $params = array_merge($params, $input);
+                    }
                 } elseif (isset($headers[Request::HEADER_CONTENT_TYPE])
                     && in_array(
                         $headers[Request::HEADER_CONTENT_TYPE],
@@ -368,8 +379,14 @@ class Phramework
                     //json_last_error()
 
                     $input = json_decode($input, true);
-
-                    if ($input) {
+                    
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        throw new \Phramework\Exceptions\RequestException(
+                            'JSON parse error - ' . json_last_error_msg()
+                        );
+                    }
+                        
+                    if ($input && !empty($input)) {
                         $params = array_merge($params, $input);
                     }
                 }
@@ -394,53 +411,58 @@ class Phramework
                 (isset($_SERVER['HTTP_REFERER']) ? ' from ' .
                     Util::userContent($_SERVER['HTTP_REFERER']) : '')
             );
-            self::errorView([
-                'code' => $exception->getCode(),
-                'error' => $exception->getMessage()
-            ]);
+            
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'title' => $exception->getMessage()
+            ]]);
         } catch (\Phramework\Exceptions\RequestExceptionException $exception) {
-            self::errorView([
-                'code' => $exception->getCode(),
-                'error' => $exception->getMessage()]);
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'title' => $exception->getMessage()
+            ]]);
         } catch (\Phramework\Exceptions\PermissionException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
-            self::errorView(['code' => 403,
-                'error' => $exception->getMessage(),
-                'title' => 'Permission'
-            ]);
+            
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'title' => $exception->getMessage()
+            ]]);
         } catch (\Phramework\Exceptions\MissingParametersException $exception) {
             self::writeErrorLog(
-                $exception->getMessage() .
-                implode(', ', $exception->getParameters())
+                $exception->getMessage()
             );
 
             if (self::getSetting('debug')) {
-                self::errorView([
-                    'code' => $exception->getCode(),
-                    'error' => $exception->getMessage(),
-                    'missing' => $exception->getParameters(),
-                    'title' => 'MissingParameters'
-                ]);
-            } else {
-                self::errorView([
-                    'code' => $exception->getCode(),
-                    'error' => $exception->getMessage(),
-                    'missing' => $exception->getParameters(),
-                    'title' => 'MissingParameters'
-                ]);
+                //todo
             }
+            
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'meta' => [
+                    'missing' => $exception->getParameters()
+                ],
+                'title' => $exception->getMessage()
+            ]]);
         } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
             self::writeErrorLog(
-                $exception->getMessage() . implode(', ', array_keys($exception->getParameters()))
+                $exception->getMessage()
             );
-            self::errorView([
-                'code' => 400,
-                'error' => $exception->getMessage(),
-                'incorrect' => $exception->getParameters(),
-                'title' => 'Incorrect parameters exception'
-            ]);
+            
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'meta' => [
+                    'incorrect' => $exception->getParameters()
+                ],
+                'title' => $exception->getMessage()
+            ]]);
         } catch (\Phramework\Exceptions\MethodNotAllowedException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
@@ -451,21 +473,34 @@ class Phramework
                 header('Allow: ' . implode(', ', $exception->getAllowedMethods()));
             }
 
-            self::errorView([
-                'code' => 400,
-                'error' => $exception->getMessage(),
-                'allow' => $exception->getAllowedMethods(),
-                'title' => 'method_not_allowed'
-            ]);
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'meta' => [
+                    'allow' => $exception->getAllowedMethods()
+                ],
+                'title' => $exception->getMessage()
+            ]]);
+        } catch (\Phramework\Exceptions\RequestException $exception) {
+            self::writeErrorLog(
+                $exception->getMessage()
+            );
+            
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'title' => 'Request Εrror'
+            ]]);
         } catch (\Exception $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
-            self::errorView([
-                'code' => 400,
-                'error' => $exception->getMessage(),
-                'title' => 'error'
-            ]);
+            
+            self::errorView([[
+                'status' => 400,
+                'detail' => $exception->getMessage(),
+                'title' => 'Εrror'
+            ]]);
         } finally {
             //Try to close the databse
             Models\Database::close();
@@ -575,7 +610,9 @@ class Phramework
     public static function setViewerClass($class)
     {
         if (!is_subclass_of($class, '\Phramework\Viewers\IViewer', true)) {
-            throw new \Exception('Class is not implementing \Phramework\Viewers\IViewer');
+            throw new \Exception(
+                'Class is not implementing \Phramework\Viewers\IViewer'
+            );
         }
         self::$viewer = $class;
     }
@@ -586,15 +623,15 @@ class Phramework
      * and the 'code' message the error code,
      * note that if headers are not send the response code will set with the 'code' value.
      */
-    private static function errorView($params)
+    private static function errorView($errors, $code = 400)
     {
         if (!headers_sent()) {
-            http_response_code(
-                (isset($params['code']) ? $params['code'] : 400)
-            );
+            http_response_code($code);
         }
-
-        self::view($params);
+        
+        self::view([
+            'errors' => $errors
+        ]);
     }
 
     /**

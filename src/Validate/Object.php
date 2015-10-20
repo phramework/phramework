@@ -147,9 +147,10 @@ class Object extends \Phramework\Validate\BaseValidator
 
         $overalPropertyStatus = true;
         $errorObjects = [];
+        $missingObjects = [];
+        
         //Validate all validator's properties
         foreach ($this->properties as $key => $property) {
-
             //If this property key exists in given $value, validate it
             if (array_key_exists($key, $valueProperties)) {
                 $propertyValue = $valueProperties[$key];
@@ -157,9 +158,21 @@ class Object extends \Phramework\Validate\BaseValidator
 
                 //Determine $overalPropertyStatus
                 $overalPropertyStatus = $overalPropertyStatus && $propertyValidateResult->status;
+                
                 if (!$propertyValidateResult->status) {
-                    $errorObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                    switch (get_class($propertyValidateResult->errorObject)) {
+                        case MissingParametersException::class:
+                            $missingObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                            break;
+                        case IncorrectParametersException::class:
+                            $errorObjects[$key] = $propertyValidateResult->errorObject->getParameters();
+                            break;
+                        default:
+                            $errorObjects[$key] = [];
+                    }
+                    
                 }
+                
                 //use type casted value
                 $value->{$key} = $propertyValidateResult->value;
 
@@ -172,13 +185,25 @@ class Object extends \Phramework\Validate\BaseValidator
         if (!$overalPropertyStatus) {
             $return->status = $overalPropertyStatus;
             //error
-            $return->errorObject = new IncorrectParametersException([
-                [
+            $errorObject = [
+            ];
+            
+            if (!empty($errorObjects)) {
+                $errorObject[] = [
                  'type' => static::getType(),
                  'failure' => 'properties',
                  'properties' => $errorObjects
-                ]
-            ]);
+                ];
+            }
+            
+            if (!empty($missingObjects)) {
+                $errorObject[] = [
+                 'type' => static::getType(),
+                 'failure' => 'missing',
+                 'properties' => $missingObjects
+                ];
+            }
+            $return->errorObject = new IncorrectParametersException($errorObject);
             //todo here we must collect all errorObjects
             return $return;
         }

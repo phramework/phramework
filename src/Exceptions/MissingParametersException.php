@@ -19,7 +19,7 @@ class MissingParametersException extends \Exception
      */
     public function __construct($parameters)
     {
-        parent::__construct('Missing parameters exception', 400);
+        parent::__construct('Missing parameters', 422);
         $this->parameters = $parameters;
     }
 

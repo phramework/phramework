@@ -83,8 +83,12 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
         $this->suffix                                  = $suffix;
     }
 
-    public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
-    {
+    public function invoke(
+        $requestMethod,
+        $requestParameters,
+        $requestHeaders,
+        $requestUser
+    ) {
         //Get controller from the request (URL parameter)
         if (!isset($requestParameters['controller']) || empty($requestParameters['controller'])) {
             if (($default_controller = Phramework::getSetting('default_controller'))) {
@@ -99,16 +103,18 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 
         //Check if requested controller and method are allowed
         if (!in_array($controller, $this->controller_whitelist)) {
-            throw new NotFoundException(Phramework::getTranslated('controller_NotFoundException_exception'));
+            throw new NotFoundException('Menthod not found');
         } elseif (!in_array($requestMethod, Phramework::$methodWhitelist)) {
-            throw new NotFoundException(Phramework::getTranslated('method_NotFoundException_exception'));
+            throw new \Phramework\Exceptions\MethodNotAllowedException(
+                'Menthod not found'
+            );
         }
 
         //If not authenticated allow only certain controllers to access
         if (!$requestUser &&
             !in_array($controller, $this->controller_unauthenticated_whitelist) &&
             !in_array($controller, $this->controller_public_whitelist)) {
-            throw new PermissionException(Phramework::getTranslated('unauthenticated_access_exception'));
+            throw new \Phramework\Exceptions\UnauthorizedException();
         }
 
         // Append suffix
@@ -125,7 +131,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
             //Retry using capitalized first letter of the class
             $controller = ucfirst($controller);
             if (!is_callable($this->namespace . "{$controller}::$requestMethod")) {
-                throw new NotFoundException(Phramework::getTranslated('method_NotFoundException_exception'));
+                throw new NotFoundException('Menthod not found');
             }
         }
 

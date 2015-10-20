@@ -34,9 +34,9 @@ class DatabaseException extends \Exception
     public function __construct($message, $error = null)
     {
         if (\Phramework\Phramework::getSetting('debug') && $error) {
-            parent::__construct($error, 666);
+            parent::__construct($error, 500);
         } else {
-            parent::__construct($message, 666);
+            parent::__construct($message, 500);
         }
     }
 }

@@ -192,9 +192,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
             if ($test !== false) {
                 if ($requiresAuthentication && $requestUser === false) {
-                    throw new PermissionException(
-                        Phramework::getTranslated('Unauthenticated Access')
-                    );
+                    throw new \Phramework\Exceptions\UnauthorizedException();
                 }
 
                 list($URI_parameters) = $test;
@@ -212,7 +210,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                  * @todo log to server
                  */
                 if (!is_callable("$class::$method")) {
-                    throw new ServerException(Phramework::getTranslated('Method not found'));
+                    throw new NotFoundException('Method not found');
                 }
 
                 //Call method
@@ -226,6 +224,6 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             }
         }
 
-        throw new MethodNotAllowedException(Phramework::getTranslated('Method not found'));
+        throw new NotFoundException('Method not found');
     }
 }

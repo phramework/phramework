@@ -1,11 +1,4 @@
 <h1>Error</h1>
 <pre>
-<?php print_r($error); ?>
+<?php print_r($errors); ?>
 </pre>
-<?php
-if (isset($incorrect)) {
-    echo '<pre>';
-    print_r($incorrect);
-    echo '</pre>';
-}
-?>

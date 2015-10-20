@@ -108,7 +108,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
               "properties": {
                 "type": {
                   "type": "enum",
-                  "values": ["user"]
+                  "enum": ["user"]
                 },
                 "order": {
                   "type": "unsignedinteger",
@@ -141,7 +141,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertInternalType(
             'array',
-            $data->properties->type->values
+            $data->properties->type->enum
         );
 
         $this->assertSame(

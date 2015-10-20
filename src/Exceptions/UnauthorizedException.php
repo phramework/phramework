@@ -17,28 +17,29 @@
 namespace Phramework\Exceptions;
 
 /**
- * IncorrectParametersException
- * Used to throw an \Exception, when there are some incorrect formed parameters.
+ * PermissionException
+ * Used to throw an \Exception, when there requested resource is not available for current user.
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
-class IncorrectParametersException extends \Exception
+class UnauthorizedException extends \Exception
 {
-    //Array with the parameters
-    private $parameters;
+    //The return url
+    private $return;
 
     /**
      *
-     * @param array $parameters Array with the names of incorrect parameters
+     * @param string $message \Exception message
+     * @param string $return Return url. Optional, default is FALSE.
      */
-    public function __construct($parameters)
+    public function __construct($message = 'Unauthorized', $return = false)
     {
-        parent::__construct('Incorrect parameters', 422);
-        $this->parameters = $parameters;
+        parent::__construct($message, 401);
+        $this->return = $return;
     }
 
-    public function getParameters()
+    public function getReturn()
     {
-        return $this->parameters;
+        return $this->return;
     }
 }

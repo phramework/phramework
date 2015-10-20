@@ -554,7 +554,6 @@ class Model
             }
 
             foreach (array_unique($temp[$relationshipKey]) as $idAttribute) {
-
                 $additionalArgument = (
                     isset($additionalArguments[$relationshipKey])
                     ? $additionalArguments[$relationshipKey]

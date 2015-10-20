@@ -41,18 +41,18 @@ class Enum extends \Phramework\Validate\BaseValidator
      * @var array
      */
     protected static $typeAttributes = [
-        'values',
+        'enum',
         'validateType'
     ];
 
     public function __construct(
-        $values = [],
+        $enum = [],
         $validateType = false,
         $default = null
     ) {
         parent::__construct();
 
-        $this->values  = $values;
+        $this->enum  = $enum;
         $this->validateType = $validateType;
         $this->default = $default;
     }
@@ -71,7 +71,7 @@ class Enum extends \Phramework\Validate\BaseValidator
             throw new \Exception('Arrays and objects are not allowed');
         }
 
-        foreach ($this->values as $v) {
+        foreach ($this->enum as $v) {
             if ($value == $v) {
                 if ($this->validateType && gettype($value) !== gettype($v)) {
                     //ignore
@@ -87,8 +87,11 @@ class Enum extends \Phramework\Validate\BaseValidator
             }
         }
 
-        //Rrror
-        $return->errorObject = 'Not found';
+        //Error
+        $return->errorObject = new IncorrectParametersException([[
+            'type' => static::getType(),
+            'failure' => 'enum'
+        ]]);
 
         return $return;
     }
