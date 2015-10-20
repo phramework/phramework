@@ -57,6 +57,9 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
             'simple example check' => [
                 'book/', 'book', []
             ],
+            'simple' => [
+                'authentication', 'http://localhost/authentication', []
+            ],
             'check parameter' =>    [
                 'book/{id}', 'book/1', ['id' => '1']
             ],

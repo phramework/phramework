@@ -96,11 +96,11 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             $template
         );
 
-        $regexp = '/^' . $template . '$/';
+        $regexp = '/' . $template . '$/';
 
         $templateParameters = [];
 
-        if (preg_match($regexp, $URI, $templateParameters)) {
+        if (!!preg_match($regexp, $URI, $templateParameters)) {
             //keep non integer keys (only named matches)
             foreach ($templateParameters as $key => $value) {
                 if (is_int($key)) {
@@ -121,7 +121,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
     public function URI()
     {
         $REDIRECT_QUERY_STRING = (
-            isset($_SERVER['REDIRECT_QUERY_STRING'])
+            FALSE && isset($_SERVER['REDIRECT_QUERY_STRING'])
             ? $_SERVER['REDIRECT_QUERY_STRING']
             : (
                 isset($_SERVER['QUERY_STRING'])
@@ -129,16 +129,15 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                 : ''
             )
         );
-
-        $REDIRECT_URL = (
-            isset($_SERVER['REDIRECT_URL'])
-            ? $_SERVER['REDIRECT_URL']
-            : (
-                isset($_SERVER['REQUEST_URI'])
-                ? $_SERVER['REQUEST_URI']
-                : ''
-            )
-        );
+        
+        $REDIRECT_URL = '';
+        
+        if (isset($_SERVER['REDIRECT_URL'])) {
+           $REDIRECT_URL = $_SERVER['REDIRECT_URL'];
+        } elseif (isset($_SERVER['REQUEST_URI'])) {
+            $url_parts = parse_url($_SERVER['REQUEST_URI']);
+            $REDIRECT_URL = $url_parts['path'];
+        }
 
         $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
@@ -151,7 +150,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
         //Extract parametrs from QUERY string
         parse_str($REDIRECT_QUERY_STRING, $parameters);
-
+        var_dump([$URI, $parameters]);
         return [$URI, $parameters];
     }
 
