@@ -282,7 +282,7 @@ class Phramework
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
                 $origin = '*'; //TODO Exctract origin from request url
             }
-            
+
             //Send access control headers
             if (!headers_sent()) {
                 header('Access-Control-Allow-Credentials: true');
@@ -378,7 +378,7 @@ class Phramework
                 ) {
                     //Decode and merge params
                     parse_str(file_get_contents('php://input'), $input);
-                    
+
                     if ($input && !empty($input)) {
                         $params = array_merge($params, $input);
                     }
@@ -396,13 +396,13 @@ class Phramework
                     //json_last_error()
 
                     $input = json_decode($input, true);
-                    
+
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         throw new \Phramework\Exceptions\RequestException(
                             'JSON parse error - ' . json_last_error_msg()
                         );
                     }
-                        
+
                     if ($input && !empty($input)) {
                         $params = array_merge($params, $input);
                     }
@@ -426,32 +426,30 @@ class Phramework
 
         } catch (\Phramework\Exceptions\NotFoundException $exception) {
             self::writeErrorLog(
-                $exception->getMessage() .
-                (isset($_SERVER['HTTP_REFERER']) ? ' from ' .
-                    Util::userContent($_SERVER['HTTP_REFERER']) : '')
+                $exception->getMessage()
             );
-            
+
             self::errorView([[
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
                 'title' => $exception->getMessage()
-            ]]);
+            ]], $exception->getCode());
         } catch (\Phramework\Exceptions\RequestExceptionException $exception) {
             self::errorView([[
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
                 'title' => $exception->getMessage()
-            ]]);
+            ]], $exception->getCode());
         } catch (\Phramework\Exceptions\PermissionException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
-            
+
             self::errorView([[
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
                 'title' => $exception->getMessage()
-            ]]);
+            ]], $exception->getCode());
         } catch (\Phramework\Exceptions\MissingParametersException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
@@ -460,7 +458,7 @@ class Phramework
             if (self::getSetting('debug')) {
                 //todo
             }
-            
+
             self::errorView([[
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
@@ -468,12 +466,12 @@ class Phramework
                     'missing' => $exception->getParameters()
                 ],
                 'title' => $exception->getMessage()
-            ]]);
+            ]], $exception->getCode());
         } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
-            
+
             self::errorView([[
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
@@ -481,7 +479,7 @@ class Phramework
                     'incorrect' => $exception->getParameters()
                 ],
                 'title' => $exception->getMessage()
-            ]]);
+            ]], $exception->getCode());
         } catch (\Phramework\Exceptions\MethodNotAllowedException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
@@ -499,22 +497,22 @@ class Phramework
                     'allow' => $exception->getAllowedMethods()
                 ],
                 'title' => $exception->getMessage()
-            ]]);
+            ]], $exception->getCode());
         } catch (\Phramework\Exceptions\RequestException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
-            
+
             self::errorView([[
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
                 'title' => 'Request Εrror'
-            ]]);
+            ]], $exception->getCode());
         } catch (\Exception $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
-            
+
             self::errorView([[
                 'status' => 400,
                 'detail' => $exception->getMessage(),
@@ -649,7 +647,7 @@ class Phramework
         if (!headers_sent()) {
             http_response_code($code);
         }
-        
+
         self::view([
             'errors' => $errors
         ]);

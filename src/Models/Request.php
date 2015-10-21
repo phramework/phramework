@@ -46,15 +46,13 @@ class Request
         $user = \Phramework\Phramework::getUser();
         //If user is not authenticated throw an \Exception
         if (!$user) {
-            throw new PermissionException(
-                Phramework::getTranslated('user_authentication_required_exception')
-            );
+            throw new \Phramework\Exceptions\UnauthorizedException();
         }
 
         //Check if speficied user is same as current user
         if ($user_id !== false && $user->id != $user_id) {
             throw new PermissionException(
-                Phramework::getTranslated('insufficient_permissions_exception')
+                'Insufficient permissions'
             );
         }
         return $user;
