@@ -115,7 +115,7 @@ class Phramework
 
         if (!is_subclass_of($URIStrategyObject, '\Phramework\URIStrategy\IURIStrategy', true)) {
             throw new \Phramework\Exceptions\ServerException(
-                'class_is_not_implementing \Phramework\URIStrategy\IURIStrategy'
+                'Class is not implementing Phramework\URIStrategy\IURIStrategy'
             );
         }
         self::$URIStrategy = $URIStrategyObject;
@@ -127,7 +127,7 @@ class Phramework
             //Or instantiate default translation object
             $this->translation = new \Phramework\Extensions\Translation(
                 self::getSetting('language'),
-                self::getSetting('translation', 'track_missing_keys')
+                self::getSetting('translation', 'track_missing_keys', null, false)
             );
         }
 
@@ -142,7 +142,7 @@ class Phramework
     /**
      * Authentication class (Full namespace)
      */
-    private static $authenticationClass = 'Phramework\Models\Authentication';
+    private static $authenticationClass = '\Phramework\Models\Authentication';
 
     /**
      * Set authentication class
@@ -150,8 +150,10 @@ class Phramework
      */
     public static function setAuthenticationClass($class)
     {
-        if (!is_subclass_of($class, 'Phramework\Models\Authentication', true)) {
-            throw new \Exception('class_is_not_implementing Phramework\Models\Authentication');
+        if (!is_subclass_of($class, '\Phramework\Models\Authentication', true)) {
+            throw new \Exception(
+                'Class is not implementing Phramework\Models\Authentication'
+            );
         }
         self::$authenticationClass = $class;
     }
@@ -171,8 +173,10 @@ class Phramework
 
     public function setTranslationObject($translationObject)
     {
-        if (!is_subclass_of($class, 'Phramework\Extensions\translation', true)) {
-            throw new \Exception('class_is_not_implementing Phramework\Extensions\translation');
+        if (!is_subclass_of($translationObject, '\Phramework\Extensions\translation', true)) {
+            throw new \Exception(
+                'Class is not implementing Phramework\Extensions\translation'
+            );
         }
         $this->translation = $translationObject;
     }
@@ -227,8 +231,10 @@ class Phramework
 
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
-                if (!Models\Validate::isValidJsonpCallback($_GET['callback'])) {
-                    throw new \Phramework\Exceptions\IncorrectParametersException(['callback']);
+                if (!\Phramework\Validate\Validate::isValidJsonpCallback($_GET['callback'])) {
+                    throw new \Phramework\Exceptions\IncorrectParametersException(
+                        ['callback']
+                    );
                 }
                 self::$callback = $_GET['callback'];
                 unset($_GET['callback']);
@@ -246,12 +252,16 @@ class Phramework
 
             //Get method from the request (HTTP) method
             $method = self::$method =
-                isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::METHOD_GET;
+                isset($_SERVER['REQUEST_METHOD'])
+                ? $_SERVER['REQUEST_METHOD']
+                : self::METHOD_GET;
 
             //Check if the requested HTTP method method is allowed
             // @todo check error code
             if (!in_array($method, self::$methodWhitelist)) {
-                throw new \Phramework\Exceptions\RequestExceptionException(self::getTranslated('Method not allowed'));
+                throw new \Phramework\Exceptions\RequestExceptionException(
+                    'Method not allowed'
+                );
             }
 
             //Default value of response's header origin
@@ -272,7 +282,8 @@ class Phramework
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
                 $origin = '*'; //TODO Exctract origin from request url
             }
-
+            
+            //Send access control headers
             if (!headers_sent()) {
                 header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $origin);
@@ -290,7 +301,9 @@ class Phramework
             }
 
             //Authenticate request (check authentication)
-            self::$user = call_user_func(array(self::$authenticationClass, 'check'));
+            self::$user = call_user_func(
+                [self::$authenticationClass, 'check']
+            );
 
             //In case of array returned force type to be object
             if (is_array(self::$user)) {
@@ -298,7 +311,9 @@ class Phramework
             }
 
             //STEP_AFTER_AUTHENTICATION_CHECK
-            $this->StepCallback->call(StepCallback::STEP_AFTER_AUTHENTICATION_CHECK);
+            $this->StepCallback->call(
+                StepCallback::STEP_AFTER_AUTHENTICATION_CHECK
+            );
 
             //Default language value
             $language = self::getSetting('language');
@@ -328,7 +343,9 @@ class Phramework
             $this->translation->setLanguageCode($language);
 
             //STEP_BEFORE_REQUIRE_CONTROLLER
-            $this->StepCallback->call(StepCallback::STEP_BEFORE_REQUIRE_CONTROLLER);
+            $this->StepCallback->call(
+                StepCallback::STEP_BEFORE_REQUIRE_CONTROLLER
+            );
 
             //Override method HEAD.
             // When HEAD method is called the GET method will be executed but no response boy will be send
@@ -393,7 +410,9 @@ class Phramework
             }
 
             //STEP_BEFORE_CALL_METHOD
-            $this->StepCallback->call(StepCallback::STEP_BEFORE_CALL_METHOD);
+            $this->StepCallback->call(
+                StepCallback::STEP_BEFORE_CALL_METHOD
+            );
 
             //Call controller's method
             self::$URIStrategy->invoke($method, $params, $headers, self::$user);
@@ -592,7 +611,9 @@ class Phramework
      */
     public static function getSetting($key, $second_level = null, $default_value = null)
     {
-        if (!isset(self::$settings[$key]) || ($second_level && isset(self::$settings[$key][$second_level]))) {
+        if (!isset(self::$settings[$key])
+            || ($second_level && isset(self::$settings[$key][$second_level]))
+        ) {
             return $default_value;
         }
 

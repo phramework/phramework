@@ -34,10 +34,9 @@ use \Phramework\Models\Filter;
  * 5.4.  Validation keywords for objects
  * @since 1.0.0
  * @todo Implement patternProperties
- * @todo Implement additionalProperties
+ * @todo Implement additionalProperties "additionalProperties": { "type": "string" }
  * @todo Implement dependencies
  * @todo Can it have default?
- * @todo Check if required property is set in properties
  */
 class Object extends \Phramework\Validate\BaseValidator
 {
@@ -71,10 +70,6 @@ class Object extends \Phramework\Validate\BaseValidator
         $this->maxProperties = $maxProperties;
 
         if (is_array($properties)) {
-            /*$p = new \stdClass();
-            foreach ($properties as $k => $v) {
-                $p->{$k} = $v;
-            }*/
             $properties = (object)$properties;
         }
 
