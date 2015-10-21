@@ -134,13 +134,16 @@ class TestController extends \Examples\JSONAPI\APP\Controller
                     true
                 )
             ],
-            ['arr']
+            ['arr'],
+            false
         );
         
         var_dump($validator->parse([
+            'buzz' => 5,
             'arr' => [
-                1, 2, '13'
-            ]
+                1, 2, '13xs'
+            ],
+            'xxxx' => 4
         ]));
         
         die();

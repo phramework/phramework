@@ -207,11 +207,32 @@ class Object extends \Phramework\Validate\BaseValidator
                  'properties' => $missingObjects
                 ];
             }
+            
             $return->errorObject = new IncorrectParametersException($errorObject);
-            //todo here we must collect all errorObjects
+            
             return $return;
         }
-
+        
+        //Check if additionalProperties are set
+        if ($this->additionalProperties === false) {
+            $foundAdditionalProperties = [];
+        
+            foreach ($valueProperties as $key => $property) {
+                if (!property_exists($this->properties, $key)) {
+                    $foundAdditionalProperties[] = $key;
+                }
+            }
+            var_dump($foundAdditionalProperties);
+            if (!empty($foundAdditionalProperties)) {
+                $return->errorObject = new IncorrectParametersException([
+                 'type' => static::getType(),
+                 'failure' => 'additionalProperties',
+                 'properties' => $foundAdditionalProperties
+                ]);
+                return $return;
+            }
+        }
+        
         //success
         $return->status = true;
 
