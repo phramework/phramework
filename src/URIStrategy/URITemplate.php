@@ -96,7 +96,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             $template
         );
 
-        $regexp = '/' . $template . '$/';
+        $regexp = '/^' . $template . '$/';
 
         $templateParameters = [];
 
