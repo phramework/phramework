@@ -120,25 +120,18 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      */
     public function URI()
     {
-        $REDIRECT_QUERY_STRING = (
-            FALSE && isset($_SERVER['REDIRECT_QUERY_STRING'])
-            ? $_SERVER['REDIRECT_QUERY_STRING']
-            : (
-                isset($_SERVER['QUERY_STRING'])
-                ? $_SERVER['QUERY_STRING']
-                : ''
-            )
-        );
+        $REDIRECT_QUERY_STRING =
+            isset($_SERVER['QUERY_STRING'])
+            ? $_SERVER['QUERY_STRING']
+            : '';
         
         $REDIRECT_URL = '';
         
-        if (isset($_SERVER['REDIRECT_URL'])) {
-           $REDIRECT_URL = $_SERVER['REDIRECT_URL'];
-        } elseif (isset($_SERVER['REQUEST_URI'])) {
+        if (isset($_SERVER['REQUEST_URI'])) {
             $url_parts = parse_url($_SERVER['REQUEST_URI']);
             $REDIRECT_URL = $url_parts['path'];
         }
-
+        
         $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
         $URI = '/' . trim(str_replace($URI, '', $REDIRECT_URL), '/');
@@ -150,7 +143,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
         //Extract parametrs from QUERY string
         parse_str($REDIRECT_QUERY_STRING, $parameters);
-        var_dump([$URI, $parameters]);
+        
         return [$URI, $parameters];
     }
 

@@ -151,7 +151,7 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         //Success
         $return->errorObject = null;
         $return->status = true;
-        //typecasted 
+        //typecasted
         $return->value = $value;
         
         return $return;
