@@ -449,6 +449,16 @@ class Phramework
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
                 'title' => $exception->getMessage()
+            ]], $exception->getCode);
+        } catch (\Phramework\Exceptions\UnauthorizedException $exception) {
+            self::writeErrorLog(
+                $exception->getMessage()
+            );
+
+            self::errorView([[
+                'status' => $exception->getCode(),
+                'detail' => $exception->getMessage(),
+                'title' => $exception->getMessage()
             ]], $exception->getCode());
         } catch (\Phramework\Exceptions\MissingParametersException $exception) {
             self::writeErrorLog(
