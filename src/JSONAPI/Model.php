@@ -630,7 +630,11 @@ class Model
      * This method will update `{{filter}}` string inside query parameter with
      * the provided filter directives
      * @param  string  $query    Query
-     * @param  object  $filter
+     * @param  object  $filter   This object has 3 attributes:
+     * primary, relationships and attributes
+     * - primary integer[]
+     * - relationships integer[]
+     * - attributes [] (each array item [$key, $operator, $operant])
      * @param  boolean $hasWhere If query already has an WHERE
      * @return string            Query
      */
@@ -644,10 +648,10 @@ class Model
         if ($filter && $filter->primary) {
             $additionalFilter[] = sprintf(
                 '%s "%s"."%s" IN (%s)',
-                ($hasWhere ? "AND" : "WHERE"),
+                ($hasWhere ? 'AND' : 'WHERE'),
                 static::$table,
                 static::$idAttribute,
-                implode(',', $filter->{static::$type})
+                implode(',', $filter->primary)
             );
 
             $hasWhere = true;
@@ -667,7 +671,7 @@ class Model
             if ($relationship->getRelationshipType() === Relationship::TYPE_TO_ONE) {
                 $additionalFilter[] = sprintf(
                     '%s "%s"."%s" IN (%s)',
-                    ($hasWhere ? "AND" : "WHERE"),
+                    ($hasWhere ? 'AND' : 'WHERE'),
                     static::$table, //$relationshipclass::getTable(),
                     $relationship->getAttribute(),
                     implode(',', $filter->relationships[$key])
@@ -685,7 +689,7 @@ class Model
             if (in_array($operator, Operator::getOrderableOperators())) {
                 $additionalFilter[] = sprintf(
                     '%s "%s"."%s" %s %s',
-                    ($hasWhere ? "AND" : "WHERE"),
+                    ($hasWhere ? 'AND' : 'WHERE'),
                     static::$table,
                     $key,
                     $operator,
@@ -699,7 +703,7 @@ class Model
 
                 $additionalFilter[] = sprintf(
                     '%s "%s"."%s" %s',
-                    ($hasWhere ? "AND" : "WHERE"),
+                    ($hasWhere ? 'AND' : 'WHERE'),
                     static::$table,
                     $key,
                     (

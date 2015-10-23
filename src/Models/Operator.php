@@ -21,6 +21,7 @@ namespace Phramework\Models;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @package Phramework
  * @category Models
+ * @since 1.0.0
  */
 class Operator
 {
