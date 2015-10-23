@@ -51,16 +51,17 @@ class ArrayValidator extends \Phramework\Validate\BaseValidator
         $minItems = 0,
         $maxItems = null,
         $items = null,
-        $additionalItems = null,
-        $uniqueItems = false
+        $uniqueItems = false,
+        $additionalItems = null
     ) {
         parent::__construct();
 
         $this->minItems = $minItems;
         $this->maxItems = $maxItems;
         $this->items = $items;
-        $this->additionalItems = $additionalItems;
         $this->uniqueItems = $uniqueItems;
+        $this->additionalItems = $additionalItems;
+        
     }
 
     /**

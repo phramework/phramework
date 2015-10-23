@@ -86,6 +86,7 @@ class Model
      * @uses static::getValidationModel If static::$cast is null, it uses
      * validationModel's attributes to extract the cast chema
      * @return array
+     * @todo Rewrite validationModel's attributes
      */
     public static function getCast()
     {
@@ -95,7 +96,7 @@ class Model
         }
 
         //Use validationModel's attributes to extract the cast chema
-        if (($validationModel = static::getValidationModel()) != []) {
+        /*if (($validationModel = static::getValidationModel()) != []) {
             $cast = [];
 
             foreach ($validationModel as $key => $attribute) {
@@ -106,7 +107,7 @@ class Model
             }
 
             return $cast;
-        }
+        }*/
 
         return [];
     }
@@ -200,11 +201,11 @@ class Model
 
     /**
      * Get resource's validation model
-     * @return array[]
+     * @return \Phramework\Validate\Object
      */
     public static function getValidationModel()
     {
-        return [];
+        return null;
     }
 
     /**
@@ -368,10 +369,12 @@ class Model
     }
 
     /**
-     * Create record in database
+     * Create a record in database
      * @param  array $attributes [description]
-     * @param  [type] $return   [description]
-     * @return [type]           [description]
+     * @param  \Phramework\Models\SCRUD\Create::RETURN_ID Return type,
+     * default is RETURN_ID
+     * @return mixed
+     * @todo disable post ?
      */
     public static function post(
         $attributes,
@@ -383,6 +386,15 @@ class Model
             static::getSchema(),
             $return
         );
+    }
+
+    /**
+     * Get filterable attributes
+     * @return array
+     */
+    public static function getFilterable()
+    {
+        return [];
     }
 
     /**
@@ -476,23 +488,22 @@ class Model
         $include = [],
         $additionalArguments = []
     ) {
-        //hold relationshipKeys as key and ids of their related data as value
+        //Store relationshipKeys as key and ids of their related data as value
         $temp = [];
 
         //check if relationship exists
         foreach ($include as $relationshipKey) {
             if (!static::relationshipExists($relationshipKey)) {
-                throw new \Phramework\Exceptions\RequestException('Included relationship not found');
+                throw new \Phramework\Exceptions\RequestException(
+                    'Include relationship not found'
+                );
             }
+
             //Will hold ids of related data
             $temp[$relationshipKey] = [];
         }
 
-        if (empty($include)) {
-            return [];
-        }
-
-        if (empty($primaryData)) {
+        if (empty($include) || empty($primaryData)) {
             return [];
         }
 
@@ -577,5 +588,144 @@ class Model
         //fetch related resources using GET_BY_PREFIX{{idAttribute}} method
 
         return $included;
+    }
+
+    /**
+     * This method will update `{{page}}` string inside query parameter with
+     * the provided pagination directives
+     * @param  string  $query    Query
+     * @param  object  $page
+     * @return string            Query
+     */
+    protected static function handlePagination($query, $page = null)
+    {
+        $additionallPagination = [];
+
+        if ($page !== null) {
+            if (isset($page->limit)) {
+                $additionallPagination[] = sprintf(
+                    'LIMIT %s',
+                    $page->limit
+                );
+            }
+
+            if (isset($page->offset)) {
+                $additionallPagination[] = sprintf(
+                    'OFFSET %s',
+                    $page->offset
+                );
+            }
+        }
+
+        $query = str_replace(
+            '{{pagination}}',
+            implode("\n", $additionallPagination),
+            $query
+        );
+
+        return $query;
+    }
+
+    /**
+     * This method will update `{{filter}}` string inside query parameter with
+     * the provided filter directives
+     * @param  string  $query    Query
+     * @param  object  $filter
+     * @param  boolean $hasWhere If query already has an WHERE
+     * @return string            Query
+     */
+    protected static function handleFilter(
+        $query,
+        $filter = null,
+        $hasWhere = true
+    ) {
+        $additionalFilter = [];
+
+        if ($filter && $filter->primary) {
+            $additionalFilter[] = sprintf(
+                '%s "%s"."%s" IN (%s)',
+                ($hasWhere ? "AND" : "WHERE"),
+                static::$table,
+                static::$idAttribute,
+                implode(',', $filter->{static::$type})
+            );
+
+            $hasWhere = true;
+        }
+
+        $relationships = static::getRelationships();
+
+        foreach ($filter->relationships as $key => $value) {
+            if (!static::relationshipExists($key)) {
+                throw new \Exception(sprintf(
+                    'Relationship "%s" not found',
+                    $key
+                ));
+            }
+            $relationship = $relationships[$key];
+            $relationshipClass = $relationship->getRelationshipClass();
+            if ($relationship->getRelationshipType() === Relationship::TYPE_TO_ONE) {
+
+                $additionalFilter[] = sprintf(
+                    '%s "%s"."%s" IN (%s)',
+                    ($hasWhere ? "AND" : "WHERE"),
+                    static::$table, //$relationshipclass::getTable(),
+                    $relationship->getAttribute(),
+                    implode(',', $filter->relationships[$key])
+                );
+                $hasWhere = true;
+            } else {
+                throw new \Phramework\Exceptions\NotImplementedException(
+                    'Filtering by TYPE_TO_MANY relationships are not implemented'
+                );
+            }
+        }
+
+        foreach ($filter->attributes as $value) {
+            list($key, $operator, $operant) = $value;
+            if (in_array($operator, Operator::getOrderableOperators())) {
+                $additionalFilter[] = sprintf(
+                    '%s "%s"."%s" %s %s',
+                    ($hasWhere ? "AND" : "WHERE"),
+                    static::$table,
+                    $key,
+                    $operator,
+                    $operant
+                );
+            } elseif (in_array($operator, Operator::getNullableOperators())) {
+
+                //Define a transformation matrix, operator to SQL operator
+                $transformation = [
+                    Operator::OPERATOR_NOT_ISNULL => 'IS NOT NULL'
+                ];
+
+                $additionalFilter[] = sprintf(
+                    '%s "%s"."%s" %s',
+                    ($hasWhere ? "AND" : "WHERE"),
+                    static::$table,
+                    $key,
+                    (
+                        array_key_exists($operator, $transformation)
+                        ? $transformation[$operator]
+                        : $operator
+                    )
+                );
+            } else {
+                throw new \Phramework\Exceptions\NotImplementedException(sprintf(
+                    'Filtering by operator "%s" is not implemented',
+                    $operator
+                ));
+            }
+
+            $hasWhere = true;
+        }
+
+        $query = str_replace(
+            '{{filter}}',
+            implode("\n", $additionalFilter),
+            $query
+        );
+
+        return $query;
     }
 }
