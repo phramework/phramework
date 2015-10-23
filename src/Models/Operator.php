@@ -124,7 +124,7 @@ class Operator
             $matches
         )) {
             return [$matches[1], $matches[2]];
-        } else if (!!preg_match(
+        } elseif (!!preg_match(
             '/^(' . implode('|', Operator::getNullableOperators()) . ')$/',
             $operatorValueString,
             $matches

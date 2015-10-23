@@ -665,7 +665,6 @@ class Model
             $relationship = $relationships[$key];
             $relationshipClass = $relationship->getRelationshipClass();
             if ($relationship->getRelationshipType() === Relationship::TYPE_TO_ONE) {
-
                 $additionalFilter[] = sprintf(
                     '%s "%s"."%s" IN (%s)',
                     ($hasWhere ? "AND" : "WHERE"),
@@ -693,7 +692,6 @@ class Model
                     $operant
                 );
             } elseif (in_array($operator, Operator::getNullableOperators())) {
-
                 //Define a transformation matrix, operator to SQL operator
                 $transformation = [
                     Operator::OPERATOR_NOT_ISNULL => 'IS NOT NULL'
