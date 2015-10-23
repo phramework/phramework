@@ -17,6 +17,7 @@
 namespace Phramework\JSONAPI;
 
 use \Phramework\Phramework;
+use \Phramework\Models\Operator;
 use \Phramework\JSONAPI\Relationship;
 
 /**

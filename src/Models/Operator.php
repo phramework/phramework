@@ -44,22 +44,22 @@ class Operator
     const OPERATOR_NOT_IN = 'NOT IN';
 
     public static $operators = [
-        OPERATOR_EMPTY,
-        OPERATOR_EQUAL,
-        OPERATOR_GREATER,
-        OPERATOR_GREATER_EQUAL,
-        OPERATOR_ISSET,
-        OPERATOR_LESS,
-        OPERATOR_LESS_EQUAL,
-        OPERATOR_NOT_EMPTY,
-        OPERATOR_NOT_EQUAL,
-        OPERATOR_NOT_ISSET,
-        OPERATOR_ISNULL,
-        OPERATOR_NOT_ISNULL,
-        OPERATOR_IN,
-        OPERATOR_NOT_IN,
-        OPERATOR_LIKE,
-        OPERATOR_NOT_LIKE
+        Operator::OPERATOR_EMPTY,
+        Operator::OPERATOR_EQUAL,
+        Operator::OPERATOR_GREATER,
+        Operator::OPERATOR_GREATER_EQUAL,
+        Operator::OPERATOR_ISSET,
+        Operator::OPERATOR_LESS,
+        Operator::OPERATOR_LESS_EQUAL,
+        Operator::OPERATOR_NOT_EMPTY,
+        Operator::OPERATOR_NOT_EQUAL,
+        Operator::OPERATOR_NOT_ISSET,
+        Operator::OPERATOR_ISNULL,
+        Operator::OPERATOR_NOT_ISNULL,
+        Operator::OPERATOR_IN,
+        Operator::OPERATOR_NOT_IN,
+        Operator::OPERATOR_LIKE,
+        Operator::OPERATOR_NOT_LIKE
     ];
 
     public static function validate($operator)
