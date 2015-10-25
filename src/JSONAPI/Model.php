@@ -638,6 +638,7 @@ class Model
      * - attributes [] (each array item [$key, $operator, $operant])
      * @param  boolean $hasWhere If query already has an WHERE
      * @return string            Query
+     * @todo check if query work both in MySQL and postgre
      */
     protected static function handleFilter(
         $query,
@@ -703,7 +704,7 @@ class Model
                 ];
 
                 $additionalFilter[] = sprintf(
-                    '%s "%s"."%s" %s',
+                    '%s "%s"."%s" %s \'%s\'',
                     ($hasWhere ? 'AND' : 'WHERE'),
                     static::$table,
                     $key,
