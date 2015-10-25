@@ -67,6 +67,8 @@ abstract class BaseValidator
         'default',
         'format'
     ];
+    
+    public $default;
 
     /**
      * Get validator's attributes
@@ -232,7 +234,7 @@ abstract class BaseValidator
             $class = new static();
         } else {
             throw new \Exception(sprintf(
-                'Type is required when creating from %s',
+                'Type is required when creating from "%s"',
                 self::class
             ));
         }

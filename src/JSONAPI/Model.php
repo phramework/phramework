@@ -371,7 +371,7 @@ class Model
 
     /**
      * Create a record in database
-     * @param  array $attributes [description]
+     * @param  array $attributes
      * @param  \Phramework\Models\SCRUD\Create::RETURN_ID Return type,
      * default is RETURN_ID
      * @return mixed
@@ -386,6 +386,23 @@ class Model
             static::getTable(),
             static::getSchema(),
             $return
+        );
+    }
+    
+    /**
+     * Update selected attributes of a database record
+     * @param  mixex $id id attribute's value
+     * @param  array $attributes Key-value array with fields to update
+     * @return number of updated rows
+     * @todo add limit
+     */
+    public static function patch($id, $attributes)
+    {
+        return \Phramework\Models\SCRUD\Update::update(
+            $id,
+            (array)$attributes,
+            static::getTable(),
+            static::getIdAttribute()
         );
     }
 

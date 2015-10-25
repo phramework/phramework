@@ -175,7 +175,7 @@ class Object extends \Phramework\Validate\BaseValidator
                 //use type casted value
                 $value->{$key} = $propertyValidateResult->value;
 
-            } else {
+            } elseif (property_exists($property, 'default')) {
                 //Else use default property's value
                 $value->{$key} = $property->default;
             }
@@ -183,9 +183,9 @@ class Object extends \Phramework\Validate\BaseValidator
 
         if (!$overalPropertyStatus) {
             $return->status = $overalPropertyStatus;
+            
             //error
-            $errorObject = [
-            ];
+            $errorObject = [];
             
             if (!empty($errorObjects)) {
                 $errorObject[] = [
@@ -217,7 +217,7 @@ class Object extends \Phramework\Validate\BaseValidator
                     $foundAdditionalProperties[] = $key;
                 }
             }
-            var_dump($foundAdditionalProperties);
+            
             if (!empty($foundAdditionalProperties)) {
                 $return->errorObject = new IncorrectParametersException([
                  'type' => static::getType(),

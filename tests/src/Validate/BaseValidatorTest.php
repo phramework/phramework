@@ -179,7 +179,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $record = $validationObject->parse($input);
-
+        var_dump($record->obj);
         $this->assertInternalType('object', $record);
         $this->assertInternalType('object', $record->obj);
         $this->assertInternalType('float', $record->obj->not_required);
