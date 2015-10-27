@@ -414,6 +414,15 @@ class Model
     {
         return [];
     }
+    
+    /**
+     * Get attributes that can be updated using PATCH
+     * @return array
+     */
+    public static function getMutable()
+    {
+        return [];
+    }
 
     /**
      * Get records from a relationship link
