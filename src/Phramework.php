@@ -449,7 +449,7 @@ class Phramework
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
                 'title' => $exception->getMessage()
-            ]], $exception->getCode);
+            ]], $exception->getCode());
         } catch (\Phramework\Exceptions\UnauthorizedException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
