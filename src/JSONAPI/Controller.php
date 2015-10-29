@@ -17,6 +17,11 @@
 namespace Phramework\JSONAPI;
 
 use \Phramework\Models\Request;
+use \Phramework\Validate\Validate;
+use \Phramework\Models\Util;
+use \Phramework\Models\Filter;
+use \Phramework\Models\Operator;
+use \Phramework\Exceptions\RequestException;
 
 /**
  * Base JSONAPI controller
@@ -25,6 +30,52 @@ use \Phramework\Models\Request;
 class Controller
 {
     /**
+     * Shortcut to \Phramework\Phramework::view.
+     * @uses \Phramework\Phramework::view
+     * @param array|object $parameters Response parameters
+     * @uses \Phramework\Phramework::view
+     */
+    protected static function view($parameters = [])
+    {
+        \Phramework\Phramework::view($parameters);
+    }
+
+    /**
+     * If !assert then a NotFoundException exceptions is thrown.
+     *
+     * @param mixed  $assert
+     * @param string $exceptionMessage [Optional] Default is
+     * 'Resource not found'
+     * @throws \Phramework\Exceptions\NotFoundException
+     */
+    protected static function exists(
+        $assert,
+        $exceptionMessage = 'Resource not found'
+    ) {
+        if (!$assert) {
+            throw new \Phramework\Exceptions\NotFoundException(
+                $exceptionMessage
+            );
+        }
+    }
+
+    /**
+     * If !assert then a unknown_error exceptions is thrown.
+     *
+     * @param mixed  $assert
+     * @param string $exceptionMessage [Optional] Default is 'unknown_error'
+     * @throws \Exception
+     */
+    protected static function testUnknownError(
+        $assert,
+        $exceptionMessage = 'Unknown Error'
+    ) {
+        if (!$assert) {
+            throw new \Exception($exceptionMessage);
+        }
+    }
+
+    /**
      * View JSONAPI data
      * @param stdClass $data
      * @uses \Phramework\Viewers\JSONAPI
@@ -32,9 +83,7 @@ class Controller
      */
     public static function viewData($data, $links = null, $meta = null, $included = null)
     {
-        $temp = [
-
-        ];
+        $temp = [];
 
         if ($links) {
             $temp['links'] = $links;
@@ -131,5 +180,397 @@ class Controller
                 'Unsupported request to create a resource with a client-generated ID'
             );
         }
+    }
+
+    /**
+     * handles GET requests
+     * @param  array  $params  Request parameters
+     * @param  string $modelClass                      Resource's primary model
+     * to be used
+     * @param  array $additionalGetArguments           [Optional] Array with any
+     * additional arguments that the primary data is requiring
+     * @param  array $additionalRelationshipsArguments [Optional] Array with any
+     * additional arguemnt primary data's relationships are requiring
+     * @param  boolean $filterable                     [Optional] Deafult is
+     * true, if true allowes `filter` URI parameters to be parsed for filtering
+     */
+    protected static function handleGET(
+        $params,
+        $modelClass,
+        $additionalGetArguments = [],
+        $additionalRelationshipsArguments = [],
+        $filterable = true,
+        $filterableJSON = false
+    ) {
+        $page = null;
+
+        $filter = (object)[
+            'primary' => null,
+            'relationships' => [],
+            'attributes' => [],
+            'attributesJSON' => []
+        ];
+
+        if ($filterable && isset($params['filter'])) {
+            foreach ($params['filter'] as $filterKey => $filterValue) {
+                //todo validate as int
+
+                if ($filterKey === $modelClass::getType()) {
+                    $values = array_map(
+                        'intval',
+                        array_map('trim', explode(',', trim($filterValue)))
+                    );
+                    $filter->primary = $values;
+                } elseif ($modelClass::relationshipExists($filterKey)) {
+                    $values = array_map(
+                        'intval',
+                        array_map('trim', explode(',', trim($filterValue)))
+                    );
+
+                    $filter->relationships[$filterKey] = $values;
+
+                    //when TYPE_TO_ONE it's easy to filter
+                } else {
+                    $validationModel = $modelClass::getValidationModel();
+
+                    $filterable = $modelClass::getFilterable();
+
+                    $isJSONFilter = false;
+
+                    //Check if $filterKeyParts and key contains . dot character
+                    if ($filterableJSON && strpos($filterKey, '.') !== false) {
+                        $filterKeyParts = explode('.', $filterKey);
+
+                        if (count($filterKeyParts) > 2) {
+                            throw new RequestException(
+                                'Second level filtering for JSON objects is not available'
+                            );
+                        }
+
+                        $filterSubkey = $filterKeyParts[1];
+
+                        //Hack check $filterSubkey if valid using regexp
+                        Validate::regexp(
+                            $filterSubkey,
+                            '/^[a-zA-Z_\-0-9]{1,30}$/',
+                            'filter[' . $filterKey . ']'
+                        );
+
+                        $filterKey = $filterKeyParts[0];
+
+                        $isJSONFilter = true;
+                    }
+
+                    if (!key_exists($filterKey, $filterable)) {
+                        throw new RequestException(sprintf(
+                            'Filter key "%s" not allowed',
+                            $filterKey
+                        ));
+                    }
+
+                    $operatorClass = $filterable[$filterKey];
+
+                    if ($isJSONFilter && ($operatorClass & Operator::CLASS_JSONOBJECT) === 0) {
+                        throw new RequestException(sprintf(
+                            'Filter key "%s" is not accepting JSON object filtering',
+                            $filterKey
+                        ));
+                    }
+
+                    //All must be arrays
+                    if (!is_array($filterValue)) {
+                        $filterValue = [$filterValue];
+                    }
+
+                    foreach ($filterValue as $singleFilterValue) {
+                        $singleFilterValue = urldecode($singleFilterValue);
+
+                        list($operator, $operant) = Operator::parse($singleFilterValue);
+
+                        //Validate operator (check if it's in allowed operators class)
+                        if (!in_array(
+                            $operator,
+                            Operator::getByClassFlags($operatorClass)
+                        )) {
+                            throw new RequestException(sprintf(
+                                'Not allowed operator for field "%s"',
+                                $filterKey
+                            ));
+                        }
+
+                        if ((in_array($operator, Operator::getNullableOperators()))) {
+                            //Do nothing for nullable operators
+                        } else {
+                            if (!$validationModel
+                                || !isset($validationModel->properties->{$filterKey})
+                            ) {
+                                throw new \Exception(sprintf(
+                                    'Attribute "%s" doesn\'t have a validation model',
+                                    $filterKey
+                                ));
+                            }
+
+                            if ($isJSONFilter) {
+                                //unparsable
+                            } else {
+                                //Validate operant value
+                                $operant = $validationModel->properties
+                                    ->{$filterKey}->parse($operant);
+                            }
+                        }
+                        if ($isJSONFilter) {
+                            //Push tuple to attribute filters
+                            $filter->attributesJSON[] = [$filterKey, $filterSubkey, $operator, $operant];
+                        } else {
+                            //Push tuple to attribute filters
+                            $filter->attributes[] = [$filterKey, $operator, $operant];
+                        }
+                    }
+                }
+
+            }
+        }
+
+        //Parse pagination
+        if (isset($params['page'])) {
+            $tempPage = [];
+
+            if (isset($params['page']['offset'])) {
+                $tempPage['offset'] =
+                    (new \Phramework\Validate\UnsignedInteger())
+                        ->parse($params['page']['offset']);
+            }
+
+            if (isset($params['page']['limit'])) {
+                $tempPage['limit'] =
+                    (new \Phramework\Validate\UnsignedInteger())
+                        ->parse($params['page']['limit']);
+            }
+
+            if (!empty($tempPage)) {
+                $page = (object)$tempPage;
+            }
+        }
+
+        //Push pagination $page object to end of arguments
+        $additionalGetArguments[] = $page;
+
+        if ($filterable) {
+            //Push filters to end of arguments
+            $additionalGetArguments[] = $filter;
+        }
+
+        $data = call_user_func_array(
+            [$modelClass, 'get'],
+            $additionalGetArguments
+        );
+
+        $includedData = $modelClass::getIncludedData(
+            $data,
+            static::getRequestInclude($params),
+            $additionalRelationshipsArguments
+        );
+
+        static::viewData(
+            $data,
+            ['self' => $modelClass::getSelfLink()],
+            null,
+            $includedData
+        );
+    }
+
+    /**
+     * handles GETById requests
+     * @param  array  $params                          Request parameters
+     * @param  integer|string $id                      Requested resource's id
+     * @param  string $modelClass                      Resource's primary model
+     * to be used
+     * @param  array $additionalGetArguments           [Optional] Array with any
+     * additional arguments that the primary data is requiring
+     * @param  array $additionalRelationshipsArguments [Optional] Array with any
+     * additional arguemnt primary data's relationships are requiring
+     */
+    protected static function handleGETByid(
+        $params,
+        $id,
+        $modelClass,
+        $additionalGetArguments = [],
+        $additionalRelationshipsArguments = []
+    ) {
+        //Rewrite resource's id
+        $id = Request::requireId($params);
+
+        $data = call_user_func_array(
+            [
+                $modelClass,
+                $modelClass::GET_BY_PREFIX . ucfirst($modelClass::getIdAttribute())
+            ],
+            array_merge([$id], $additionalGetArguments)
+        );
+
+        //Check if resource exists
+        static::exists($data);
+
+        $includedData = $modelClass::getIncludedData(
+            $data,
+            static::getRequestInclude($params),
+            $additionalRelationshipsArguments
+        );
+
+        static::viewData(
+            $data,
+            ['self' => $modelClass::getSelfLink($id)],
+            null,
+            $includedData
+        );
+    }
+
+    /**
+     * @todo allow null values
+     * @param  array  $params                          Request parameters
+     * @param  string $method                          Request method
+     * @param  array  $headers                         Request headers
+     * @param  integer|string $id                      Requested resource's id
+     * @param  string $modelClass                      Resource's primary model
+     * to be used
+     * @param  array $additionalGetArguments           [Optional] Array with any
+     * additional arguments that the primary data is requiring
+     */
+    protected static function handlePATCH(
+        $params,
+        $method,
+        $headers,
+        $id,
+        $modelClass,
+        $additionalGetArguments = []
+    ) {
+        $validationModel = new \Phramework\Validate\Object(
+            [],
+            [],
+            false
+        );
+
+        $classValidationModel = $modelClass::getValidationModel();
+
+        foreach ($modelClass::getMutable() as $mutable) {
+            if (!isset($classValidationModel->properties->{$mutable})) {
+                throw new \Exception(sprintf(
+                    'Validation model for attribute "%s" is not set!',
+                    $mutable
+                ));
+            }
+
+            $validationModel->addProperty(
+                $mutable,
+                $classValidationModel->properties->{$mutable}
+            );
+        }
+
+        $requestAttributes = static::getRequestAttributes($params);
+
+        $attributes = $validationModel->parse($requestAttributes);
+
+        foreach ($attributes as $key => $attribute) {
+            if ($attribute === null) {
+                unset($attributes->{$key});
+            }
+        }
+
+        if (count($attributes) === 0) {
+            throw new RequestException('No fields updated');
+        }
+
+        //Fetch data, to check if resource exists
+        $data = call_user_func_array(
+            [
+                $modelClass,
+                $modelClass::GET_BY_PREFIX . ucfirst($modelClass::getIdAttribute())
+            ],
+            array_merge([$id], $additionalGetArguments)
+        );
+
+        //Check if resource exists
+        static::exists($data);
+
+        $patch = $modelClass::patch($id, (array)$attributes);
+
+        return static::viewData(
+            $modelClass::resource(['id' => $id]),
+            ['self' => $modelClass::getSelfLink($id)]
+        );
+    }
+
+    /**
+     * Handle handleByIdRelationships requests
+     * @param  array  $params                          Request parameters
+     * @param  string $method                          Request method
+     * @param  array  $headers                         Request headers
+     * @param  integer|string $id                      Resource's id
+     * @param  string $relationship                    Requested relationship
+     * key
+     * @param  string $modelClass                      Resource's primary model
+     * to be used
+     * @param string[] $allowedMethods                 Allowed methods
+     * @param  array $additionalGetArguments           [Optional] Array with any
+     * additional arguments that the primary data is requiring
+     * @param  array $additionalRelationshipsArguments [Optional] Array with any
+     * additional arguments primary data's relationships are requiring
+     */
+    protected static function handleByIdRelationships(
+        $params,
+        $method,
+        $headers,
+        $id,
+        $relationship,
+        $modelClass,
+        $allowedMethods,
+        $additionalGetArguments = [],
+        $additionalRelationshipsArguments = []
+    ) {
+        $id = Request::requireId($params);
+
+        $relationship = Filter::string($params['relationship']);
+
+        //Check if relationship exists
+        static::exists(
+            $modelClass::relationshipExists($relationship),
+            'Relationship not found'
+        );
+
+        $object = call_user_func_array(
+            [
+                $modelClass,
+                $modelClass::GET_BY_PREFIX . ucfirst($modelClass::getIdAttribute())
+            ],
+            array_merge([$id], $additionalGetArguments)
+        );
+
+        //Check if object exists
+        static::exists($object);
+
+        //Check if requested method is allowed
+        Validate::enum($method, $allowedMethods);
+
+        //Fetch relationship data
+        $data = $modelClass::getRelationshipData(
+            $relationship,
+            $id,
+            $additionalGetArguments,
+            (
+                isset($additionalRelationshipsArguments[$relationship])
+                ? $additionalRelationshipsArguments[$relationship]
+                : []
+            )
+        );
+
+        //Add links
+        $links = [
+            'self'    =>
+                $modelClass::getSelfLink($id) . '/relationships/' . $relationship,
+            'related' =>
+                $modelClass::getSelfLink($id) . '/' . $relationship
+        ];
+
+        static::viewData($data, $links);
     }
 }
