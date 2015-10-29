@@ -76,6 +76,7 @@ class Operator
     const CLASS_COMPARABLE = 1;
     const CLASS_ORDERABLE = 2;
     const CLASS_NULLABLE = 64;
+    const CLASS_JSONOBJECT = 128;
 
     public static function getByClassFlags($classFlags)
     {

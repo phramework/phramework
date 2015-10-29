@@ -388,7 +388,7 @@ class Model
             $return
         );
     }
-    
+
     /**
      * Update selected attributes of a database record
      * @param  mixex $id id attribute's value
@@ -414,7 +414,7 @@ class Model
     {
         return [];
     }
-    
+
     /**
      * Get attributes that can be updated using PATCH
      * @return array
@@ -661,7 +661,8 @@ class Model
      * primary, relationships and attributes
      * - primary integer[]
      * - relationships integer[]
-     * - attributes [] (each array item [$key, $operator, $operant])
+     * - attributes [] (each array item [$attribute, $operator, $operant])
+     * - attributesJSON [] (each array item [$attribute, $key, $operator, $operant])
      * @param  boolean $hasWhere If query already has an WHERE
      * @return string            Query
      * @todo check if query work both in MySQL and postgre
@@ -747,6 +748,31 @@ class Model
                 ));
             }
 
+            $hasWhere = true;
+        }
+
+        $filterJSON = $filter->attributesJSON;
+        //hack.
+
+        foreach ($filterJSON as $value) {
+            list($attribute, $key, $operator, $operant) = $value;
+
+            if (in_array($operator, Operator::getOrderableOperators())) {
+                $additionalFilter[] = sprintf(
+                    '%s "%s"."%s"->>\'%s\' %s \'%s\'',
+                    ($hasWhere ? 'AND' : 'WHERE'),
+                    static::$table,
+                    $attribute,
+                    $key,
+                    $operator,
+                    $operant
+                );
+            } else {
+                throw new \Phramework\Exceptions\NotImplementedException(sprintf(
+                    'Filtering JSON by operator "%s" is not implemented',
+                    $operator
+                ));
+            }
             $hasWhere = true;
         }
 
