@@ -372,24 +372,24 @@ class Phramework
                     self::METHOD_DELETE
                 ]
             )) {
-                if (isset($headers[Request::HEADER_CONTENT_TYPE])
-                    && $headers[Request::HEADER_CONTENT_TYPE]
-                        == 'application/x-www-form-urlencoded'
-                ) {
+                $CONTENT_TYPE = null;
+                if (isset($headers[Request::HEADER_CONTENT_TYPE])) {
+                    $CONTENT_TYPE = explode(';', $headers[Request::HEADER_CONTENT_TYPE]);
+                    $CONTENT_TYPE = $CONTENT_TYPE[0];
+                }
+
+                if ($CONTENT_TYPE === 'application/x-www-form-urlencoded') {
                     //Decode and merge params
                     parse_str(file_get_contents('php://input'), $input);
 
                     if ($input && !empty($input)) {
                         $params = array_merge($params, $input);
                     }
-                } elseif (isset($headers[Request::HEADER_CONTENT_TYPE])
-                    && in_array(
-                        $headers[Request::HEADER_CONTENT_TYPE],
-                        ['application/json', 'application/vnd.api+json']
-                    )
-                ) {
-                    //@TODO add regexp for json
-
+                } elseif (in_array(
+                    $CONTENT_TYPE,
+                    ['application/json', 'application/vnd.api+json'],
+                    true
+                )) {
                     $input = trim(file_get_contents('php://input'));
 
                     //note if input length is >0 and decode returns null then its bad data
@@ -516,7 +516,7 @@ class Phramework
             self::errorView([[
                 'status' => $exception->getCode(),
                 'detail' => $exception->getMessage(),
-                'title' => 'Request Εrror'
+                'title' => 'Request Error'
             ]], $exception->getCode());
         } catch (\Exception $exception) {
             self::writeErrorLog(
@@ -526,7 +526,7 @@ class Phramework
             self::errorView([[
                 'status' => 400,
                 'detail' => $exception->getMessage(),
-                'title' => 'Εrror'
+                'title' => 'Error'
             ]]);
         } finally {
             //Try to close the databse
@@ -680,7 +680,7 @@ class Phramework
         /**
          * On HEAD method dont return response body, only the user's object
          */
-        if (self::getMethod() == self::METHOD_HEAD) {
+        if (self::getMethod() === self::METHOD_HEAD) {
             return;
         }
 
