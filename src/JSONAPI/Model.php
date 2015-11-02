@@ -22,6 +22,10 @@ use \Phramework\JSONAPI\Relationship;
 
 /**
  * Base JSONAPI Model
+ * @package JSONAPI
+ * @since 1.0.0
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
 class Model
 {
@@ -394,7 +398,7 @@ class Model
      * @param  mixex $id id attribute's value
      * @param  array $attributes Key-value array with fields to update
      * @return number of updated rows
-     * @todo add limit
+     * @todo add query limit
      */
     public static function patch($id, $attributes)
     {
@@ -426,9 +430,9 @@ class Model
 
     /**
      * Get records from a relationship link
-     * @param  static $relationshipKey  [description]
-     * @param  string $idAttributeValue [description]
-     * @return [type]                   [description]
+     * @param  static $relationshipKey
+     * @param  string $idAttributeValue
+     * @return stdClass|stdClass[]
      * @throws \Phramework\Exceptions\ServerException If relationship doesn't exist
      * @throws \Phramework\Exceptions\ServerException If relationship's class method is
      * not defined
@@ -659,10 +663,10 @@ class Model
      * @param  string  $query    Query
      * @param  object  $filter   This object has 3 attributes:
      * primary, relationships and attributes
-     * - primary integer[]
-     * - relationships integer[]
-     * - attributes [] (each array item [$attribute, $operator, $operant])
-     * - attributesJSON [] (each array item [$attribute, $key, $operator, $operant])
+     * - integer[] $primary
+     * - integer[] $relationships
+     * - array $attributes (each array item [$attribute, $operator, $operant])
+     * - array $attributesJSON (each array item [$attribute, $key, $operator, $operant])
      * @param  boolean $hasWhere If query already has an WHERE
      * @return string            Query
      * @todo check if query work both in MySQL and postgre

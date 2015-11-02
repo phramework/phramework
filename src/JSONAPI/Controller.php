@@ -26,6 +26,9 @@ use \Phramework\Exceptions\RequestException;
 /**
  * Base JSONAPI controller
  * @package JSONAPI
+ * @since 1.0.0
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ * @author Spafaridis Xenophon <nohponex@gmail.com>
  */
 class Controller
 {
@@ -95,7 +98,7 @@ class Controller
             $temp['meta'] = $meta;
         }
 
-        if ($included) {
+        if ($included === null) {
             $temp['included'] = $included;
         }
 
