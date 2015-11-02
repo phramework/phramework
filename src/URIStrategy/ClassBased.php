@@ -103,10 +103,10 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 
         //Check if requested controller and method are allowed
         if (!in_array($controller, $this->controller_whitelist)) {
-            throw new NotFoundException('Menthod not found');
+            throw new NotFoundException('Method not found');
         } elseif (!in_array($requestMethod, Phramework::$methodWhitelist)) {
             throw new \Phramework\Exceptions\MethodNotAllowedException(
-                'Menthod not found'
+                'Method not found'
             );
         }
 
@@ -131,7 +131,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
             //Retry using capitalized first letter of the class
             $controller = ucfirst($controller);
             if (!is_callable($this->namespace . "{$controller}::$requestMethod")) {
-                throw new NotFoundException('Menthod not found');
+                throw new NotFoundException('Method not found');
             }
         }
 

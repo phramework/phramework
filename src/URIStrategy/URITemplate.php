@@ -124,14 +124,14 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
             isset($_SERVER['QUERY_STRING'])
             ? $_SERVER['QUERY_STRING']
             : '';
-        
+
         $REDIRECT_URL = '';
-        
+
         if (isset($_SERVER['REQUEST_URI'])) {
             $url_parts = parse_url($_SERVER['REQUEST_URI']);
             $REDIRECT_URL = $url_parts['path'];
         }
-        
+
         $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
         $URI = '/' . trim(str_replace($URI, '', $REDIRECT_URL), '/');
@@ -143,20 +143,20 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
         //Extract parametrs from QUERY string
         parse_str($REDIRECT_QUERY_STRING, $parameters);
-        
+
         return [$URI, $parameters];
     }
 
     /**
      * [invoke description]
-     * @param  [type] $requestMethod     [description]
-     * @param  [type] $requestParameters [description]
-     * @param  [type] $requestHeaders    [description]
-     * @param  [type] $requestUser       [description]
+     * @param  string $requestMethod     [description]
+     * @param  array $requestParameters [description]
+     * @param  array $requestHeaders    [description]
+     * @param  stdObject|false $requestUser       [description]
      * @throws NotFoundException
      * @throws NotFoundException
      * @throws PermissionException
-     * @return [type]                    [description]
+     * @todo Use named parameters in future if available by PHP
      */
     public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
     {
@@ -206,11 +206,16 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                 }
 
                 //Call method
-                call_user_func(
+                call_user_func_array(
                     [$class, $method],
-                    $parameters,
-                    $requestMethod,
-                    $requestHeaders
+                    array_merge(
+                        [
+                            $parameters,
+                            $requestMethod,
+                            $requestHeaders
+                        ],
+                        $URI_parameters
+                    )
                 );
                 return true;
             }

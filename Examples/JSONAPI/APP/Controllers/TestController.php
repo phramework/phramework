@@ -60,9 +60,9 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
      */
-    public static function GETById($params, $method, $headers)
+    public static function GETById($params, $method, $headers, $id, $coll)
     {
-        $id = Validate::uint($params['id']);
+        $id = Validate::uint($id);
 
         $data = Test::getById($id);
 
@@ -131,7 +131,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
             ],
             ['url']
         );
-        
+
         $validatorResponse = new Object(
             [
                 'statusCode' => new UnsignedInteger(100,999)

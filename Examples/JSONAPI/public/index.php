@@ -13,7 +13,7 @@ define('NS', 'Examples\\JSONAPI\\APP\\Controllers\\');
 use \Phramework\Phramework;
 
 /**
- * @package examples/post
+ * @package examples/JSONAPI
  * Define APP as function
  */
 $APP = function () {
