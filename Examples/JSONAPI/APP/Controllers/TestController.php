@@ -106,63 +106,6 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      */
     public static function POST($params, $method, $headers)
     {
-        /*var_dump(
-            (new Number(0, 1))->parse(3)
-        );*/
-        $validator = new Object(
-            [
-                'some_int' => new Integer(),
-                'my_string' => new String(0,1),
-                'some_object' => (new Object(
-                    [
-                        'another_int' => new Integer(),
-                        'my_string' => new String(0,1)
-                    ],
-                    ['int']
-                ))
-            ],
-            ['some_int', 'some_object']
-        );
-        
-        $validator = new Object(
-            [
-                'arr' => new ArrayValidator(
-                    1,
-                    5,
-                    new Integer(1,100),
-                    null,
-                    true
-                )
-            ],
-            ['arr'],
-            false
-        );
-        
-        var_dump($validator->parse([
-            'buzz' => 5,
-            'arr' => [
-                1, 2, '13xs'
-            ],
-            'xxxx' => 4
-        ]));
-        
-        die();
-        
-        var_dump(
-            $validator->parse([
-                'some_int' => 1.10,
-                'my_string' => 'dasdasds',
-                'some_object' => [
-                    
-                ]
-            ])
-        );
-        die();
-        var_dump(
-            (new Number(0, 1))->validate("azure")
-        );
-        die();
-
         //Extract resource object from request parameters
         $resource = (object)$params['data'];
 
@@ -179,8 +122,6 @@ class TestController extends \Examples\JSONAPI\APP\Controller
 
         $input = ['weight' => 5, 'length' => 1.02];
 
-
-
         $validatorRequest = new Object(
             [
                 'url' => new String(1, 1024),
@@ -190,6 +131,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
             ],
             ['url']
         );
+        
         $validatorResponse = new Object(
             [
                 'statusCode' => new UnsignedInteger(100,999)
@@ -207,9 +149,6 @@ class TestController extends \Examples\JSONAPI\APP\Controller
             ],
             ['request', 'response']
         );
-
-        //var_dump($validationObject);
-        //var_dump($validationObject->validate($input));
 
         //Create a new record using request resource's attributes and return id
         $id = Test::post($resource->attributes);

@@ -179,13 +179,13 @@ class Util
      * @param boolean $recursive        Include sub directories
      * @param boolean $listDirs         Include directories on listing
      * @param boolean $listFiles        Include files on listing
-     * @param sstring $exclude [optional]       Exclude paths that matches this regex
+     * @param string $exclude [optional]       Exclude paths that matches this regex
      * @param array $allowed_filetypes Allowed file extensions. Optional. Default allow all
      * @param boolean $relative_path    Return paths in relative form. Optional. Default FALSE
      */
     public static function directoryToArray(
         $directory,
-        $recursive = true,
+        $recursive = false,
         $listDirs = false,
         $listFiles = true,
         $exclude = '',
@@ -197,10 +197,17 @@ class Util
         $handle = opendir($directory);
         if ($handle) {
             while (false !== ($file = readdir($handle))) {
-                preg_match("/(^(([\.]) {1,2})$|(\.(svn|git|md|htaccess))|(Thumbs\.db|\.DS_STORE))$/iu", $file, $skip);
+
+                preg_match(
+                    '/(^(([\.]) {1,2})$|(\.(svn|git|md|htaccess))|(Thumbs\.db|\.DS_STORE|\.|\.\.))$/iu',
+                    $file,
+                    $skip
+                );
+
                 if ($exclude) {
                     preg_match($exclude, $file, $skipByExclude);
                 }
+
                 if ($allowed_filetypes && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
                     $ext = strtolower(preg_replace('/^.*\.([^.]+)$/D', '$1', $file));
                     if (!in_array($ext, $allowed_filetypes)) {
@@ -224,11 +231,19 @@ class Util
                             );
                         }
                         if ($listDirs) {
-                            $arrayItems[] = ($relative_path ? $file : $directory . DIRECTORY_SEPARATOR . $file);
+                            $arrayItems[] = (
+                                $relative_path
+                                ? $file
+                                : $directory . DIRECTORY_SEPARATOR . $file
+                            );
                         }
                     } else {
                         if ($listFiles) {
-                            $arrayItems[] = ($relative_path ? $file : $directory . DIRECTORY_SEPARATOR . $file);
+                            $arrayItems[] = (
+                                $relative_path
+                                ? $file
+                                : $directory . DIRECTORY_SEPARATOR . $file
+                            );
                         }
                     }
                 }
