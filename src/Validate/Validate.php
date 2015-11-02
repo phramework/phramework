@@ -411,6 +411,20 @@ class Validate
                         }
                         break;
                     case self::TYPE_PASSWORD:
+                        if (isset($value['max']) && $value['max'] !== null) {
+                            if (mb_strlen($parameters[$key]) > $value['max']) {
+                                $temporary_exception_description['failure'] = 'max';
+                                $temporary_exception_description['max'] = $value['max'];
+                                $incorrect[$key] = $temporary_exception_description;
+                            }
+                        }
+                        if (isset($value['min']) && $value['min'] !== null) {
+                            if (mb_strlen($parameters[$key]) < $value['min']) {
+                                $temporary_exception_description['failure'] = 'min';
+                                $temporary_exception_description['min'] = $value['min'];
+                                $incorrect[$key] = $temporary_exception_description;
+                            }
+                        }
                         break;
                     case self::TYPE_ENUM:
                         if (!isset($value['values'])) {
