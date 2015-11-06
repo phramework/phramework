@@ -84,8 +84,12 @@ class Controller
      * @uses \Phramework\Viewers\JSONAPI
      * @todo use \Phramework\Phramework::view
      */
-    public static function viewData($data, $links = null, $meta = null, $included = null)
-    {
+    public static function viewData(
+        $data,
+        $links = null,
+        $meta = null,
+        $included = null
+    ) {
         $temp = [];
 
         if ($links) {
@@ -94,12 +98,13 @@ class Controller
 
         $temp['data'] = $data;
 
-        if ($meta) {
-            $temp['meta'] = $meta;
-        }
 
         if ($included === null) {
             $temp['included'] = $included;
+        }
+
+        if ($meta) {
+            $temp['meta'] = $meta;
         }
 
         \Phramework\Phramework::view($temp);
@@ -159,10 +164,10 @@ class Controller
             $params = array($params);
         }
 
-        //require data
+        //Require data
         Request::requireParameters($params, ['data']);
 
-        //require data['attributes']
+        //Require data['attributes']
         Request::requireParameters($params['data'], ['attributes']);
 
         return (object)$params['data']['attributes'];
@@ -219,12 +224,28 @@ class Controller
                 //todo validate as int
 
                 if ($filterKey === $modelClass::getType()) {
+                    //Check filter value type
+                    if (!is_string($filterValue) && !is_numeric($filterValue)) {
+                        throw new RequestException(sprintf(
+                            'String or integer value required for filter "%s"',
+                            $filterKey
+                        ));
+                    }
+
                     $values = array_map(
                         'intval',
                         array_map('trim', explode(',', trim($filterValue)))
                     );
                     $filter->primary = $values;
                 } elseif ($modelClass::relationshipExists($filterKey)) {
+                    //Check filter value type
+                    if (!is_string($filterValue) && !is_numeric($filterValue)) {
+                        throw new RequestException(sprintf(
+                            'String or integer value required for filter "%s"',
+                            $filterKey
+                        ));
+                    }
+
                     $values = array_map(
                         'intval',
                         array_map('trim', explode(',', trim($filterValue)))
@@ -286,6 +307,13 @@ class Controller
                     }
 
                     foreach ($filterValue as $singleFilterValue) {
+                        if (is_array($singleFilterValue)) {
+                            throw new RequestException(sprintf(
+                                'Array given for filter "%s"',
+                                $filterKey
+                            ));
+                        }
+
                         $singleFilterValue = urldecode($singleFilterValue);
 
                         list($operator, $operant) = Operator::parse($singleFilterValue);
