@@ -429,6 +429,18 @@ class Model
     }
 
     /**
+     * Get sort attributes and default
+     * @return object Returns an object with attribute `attributes` containing
+     * an string[] with allowed sort attributes
+     * and attribute `default` a string|null having the value of default, boolean `ascending`
+     * sorting attribute
+     */
+    public static function getSort()
+    {
+        return (object)['attributes' => [], 'default' => null, 'ascending' => true];
+    }
+
+    /**
      * Get records from a relationship link
      * @param  static $relationshipKey
      * @param  string $idAttributeValue
@@ -622,7 +634,36 @@ class Model
     }
 
     /**
-     * This method will update `{{page}}` string inside query parameter with
+     * This method will update `{{sort}}` string inside query parameter with
+     * the provided sort
+     * @param  string       $query    Query
+     * @param  null|object  $sort     string `table`, string `attribute`, boolean `ascending`
+     * @return string       Query
+     */
+    protected static function handleSort($query, $sort)
+    {
+        $replace = '';
+
+        if ($sort) {
+            $replace = "\n" . sprintf(
+                'ORDER BY "%s"."%s" %s',
+                $sort->table,
+                $sort->attribute,
+                ($sort->ascending ? 'ASC' : 'DESC')
+            );
+        }
+
+        $query = str_replace(
+            '{{sort}}',
+            $replace,
+            $query
+        );
+
+        return $query;
+    }
+
+    /**
+     * This method will update `{{pagination}}` string inside query parameter with
      * the provided pagination directives
      * @param  string  $query    Query
      * @param  object  $page

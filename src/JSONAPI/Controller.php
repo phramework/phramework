@@ -201,6 +201,11 @@ class Controller
      * additional arguemnt primary data's relationships are requiring
      * @param  boolean $filterable                     [Optional] Deafult is
      * true, if true allowes `filter` URI parameters to be parsed for filtering
+     * @param  boolean $filterableJSON                 [Optional] Deafult is
+     * false, if true allowes `filter` URI parameters to be parsed for filtering
+     * for JSON encoded fields
+     * @param  boolean $sortable                       [Optional] Deafult is
+     * true, if true allowes sorting
      */
     protected static function handleGET(
         $params,
@@ -208,7 +213,8 @@ class Controller
         $additionalGetArguments = [],
         $additionalRelationshipsArguments = [],
         $filterable = true,
-        $filterableJSON = false
+        $filterableJSON = false,
+        $sortable = true
     ) {
         $page = null;
 
@@ -218,6 +224,8 @@ class Controller
             'attributes' => [],
             'attributesJSON' => []
         ];
+
+        $sort = null;
 
         if ($filterable && isset($params['filter'])) {
             foreach ($params['filter'] as $filterKey => $filterValue) {
@@ -389,6 +397,50 @@ class Controller
         if ($filterable) {
             //Push filters to end of arguments
             $additionalGetArguments[] = $filter;
+        }
+
+        if ($sortable) {
+            $modelSort = $modelClass::getSort();
+
+            $sort = null;
+
+            if ($modelSort->default !== null) {
+                $sort = new \stdClass();
+                $sort->table = $modelClass::getTable();
+                $sort->attribute = $modelSort->default;
+                $sort->ascending = $modelSort->ascending;
+
+                //Don't accept arrays
+                if (isset($params['sort'])) {
+                    if (!is_string($params['sort'])) {
+                        throw new RequestException(
+                            'String expected for sort'
+                        );
+                    }
+
+                    $validateExpression =
+                        '/^(?P<descending>\-)?(?P<attribute>'
+                        . implode('|', $modelSort->attributes)
+                        . ')$/';
+
+                    if (!!preg_match($validateExpression, $params['sort'], $matches)) {
+                        $sort->attribute = $matches['attribute'];
+                        $sort->ascending = (
+                            isset($matches['descending']) && $matches['descending']
+                            ? false
+                            : true
+                        );
+
+                    } else {
+                        throw new RequestException(
+                            'Invalid value for sort'
+                        );
+                    }
+                }
+            }
+
+            //Push sort to end of arguments
+            $additionalGetArguments[] = $sort;
         }
 
         $data = call_user_func_array(
