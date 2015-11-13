@@ -52,6 +52,7 @@ class UnsignedIntegerTest extends \PHPUnit_Framework_TestCase
             [4] //because of min
         ];
     }
+
     /**
      * Helper method
      */
@@ -80,6 +81,4 @@ class UnsignedIntegerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('unsignedinteger', $this->object->getType());
     }
-
-
 }

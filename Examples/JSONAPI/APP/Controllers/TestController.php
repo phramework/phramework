@@ -158,7 +158,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @param  string $method  Request method
      * @param  array $headers  Request headers
      */
-    public static function byIdRelationships($params, $method, $headers)
+    public static function byIdRelationships($params, $method, $headers, $id = null, $relationship = null)
     {
         $id = Validate::uint($params['id']);
 
