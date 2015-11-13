@@ -4,16 +4,16 @@ $settings = [
     'debug' => true,
     'language' => 'en',
     'base' => 'http://localhost/Phramework/Examples/JSONAPI/public/',
+    'require_db' => true,
     /**
      * Database configuration
      */
     'db' => [
         'driver' => 'mysql',
-        'host' => '',
-        'user' => '',
-        'pass' => '',
-        'name' => '',
-        'port' => 3306
+        'host' => 'db.nohponex.gr',
+        'user' => 'phramework',
+        'pass' => 'eRxUxyxJvVQrT3LM',
+        'name' => 'phramework'
     ],
 ];
 

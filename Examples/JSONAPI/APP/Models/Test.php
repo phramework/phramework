@@ -12,20 +12,22 @@ class Test extends \Phramework\JSONAPI\Model
     protected static $endpoint = 'test';
     protected static $table = 'test';
 
-    /*
-     * Define validation model
-     */
     public static function getValidationModel()
     {
+        return new \Phramework\Validate\Object(
+            [
+                'created_user_id' => (new \Phramework\Validate\UnsignedInteger())
+                    ->setDefault(1),
+                'title' => new \Phramework\Validate\String(2, 32)
+            ],
+            ['title']
+        );
+    }
+
+    public static function getMutable()
+    {
         return [
-            'id'      => ['type' => Validate::TYPE_UINT],
-            'created_user_id' => ['type' => Validate::TYPE_UINT],
-            'title' => [
-                'type' => Validate::TYPE_TEXT,
-                'min' => 2,
-                'max' => 6,
-                Validate::REQUIRED
-            ]
+            'title'
         ];
     }
 
@@ -62,11 +64,6 @@ class Test extends \Phramework\JSONAPI\Model
             self::getCast()
         );
 
-        /*foreach ($records as &$record) {
-            $record['test_comment_id'] = TestComment::getByTest($record['id']);
-
-        }*/
-
         return self::collection($records);
     }
 
@@ -87,10 +84,4 @@ class Test extends \Phramework\JSONAPI\Model
 
         return self::resource($record);
     }
-
-    /* //uncomment to overwrite
-    public static function post($attributes)
-    {
-
-    }*/
 }

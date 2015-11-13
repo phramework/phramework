@@ -584,6 +584,32 @@ class Controller
     }
 
     /**
+     * @param  array  $params                          Request parameters
+     * @param  string $method                          Request method
+     * @param  array  $headers                         Request headers
+     * @param  string $modelClass                      Resource's primary model
+     */
+    protected static function handlePOST(
+        $params,
+        $method,
+        $headers,
+        $modelClass
+    ) {
+        $validationModel = $modelClass::getValidationModel();
+
+        $requestAttributes = static::getRequestAttributes($params);
+
+        $attributes = $validationModel->parse($requestAttributes);
+
+        $id = $modelClass::post((array)$attributes);
+
+        return static::viewData(
+            $modelClass::resource(['id' => $id]),
+            ['self' => $modelClass::getSelfLink($id)]
+        );
+    }
+
+    /**
      * Handle handleByIdRelationships requests
      * @param  array  $params                          Request parameters
      * @param  string $method                          Request method

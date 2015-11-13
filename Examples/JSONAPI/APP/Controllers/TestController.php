@@ -97,7 +97,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      *   "data": {
      *     "type": "test",
      *     "attributes": {
-     *       "title": "testxxxxx"
+     *       "title": "my title"
      *     }
      *   }
      * }
@@ -106,66 +106,11 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      */
     public static function POST($params, $method, $headers)
     {
-        //Extract resource object from request parameters
-        $resource = (object)$params['data'];
-
-        Test::validate($resource->attributes);
-
-        //Throw Forbidden exception if id is set
-        self::checkIfUnsupportedRequestWithId($resource);
-
-        //Assert resource type
-        validate::enum($resource->type, [Test::getType()]);
-
-        //Append created_user_id @todo add real value
-        $resource->attributes['created_user_id'] = 1;
-
-        $input = ['weight' => 5, 'length' => 1.02];
-
-        $validatorRequest = new Object(
-            [
-                'url' => new String(1, 1024),
-                'method' => (new Enum(Phramework::$methodWhitelist, true))
-                    ->setDefault(Phramework::METHOD_GET),
-                //'headers' => new ArrayValidator()
-            ],
-            ['url']
-        );
-
-        $validatorResponse = new Object(
-            [
-                'statusCode' => new UnsignedInteger(100,999)
-            ],
-            ['statusCode']
-        );
-
-        //Setup validator for parsed test
-        $validator = new Object(
-            [
-                'order' => (new Integer(-99999999,-99999999))
-                    ->setDefault(0),
-                'request' => $validatorRequest,
-                'response' => $validatorResponse
-            ],
-            ['request', 'response']
-        );
-
-        //Create a new record using request resource's attributes and return id
-        $id = Test::post($resource->attributes);
-
-        if (!$id) {
-            self::testUnknownError($id);
-        }
-
-        //Server MUST return a 201 Created status code
-        \Phramework\Models\Response::created(Test::getSelfLink($id));
-
-        $data = Test::getById($id);
-
-        //The response MUST also include a document that contains the primary resource created.
-        self::viewData(
-            $data,
-            ['self' => Test::getSelfLink($id)]
+        return self::handlePOST(
+            $params,
+            $method,
+            $headers
+            Test::class,
         );
     }
 
@@ -177,9 +122,17 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
      */
-    public static function PATCH($params, $method, $headers)
+    public static function PATCH($params, $method, $headers, $id = null)
     {
+        $id = Request::requireId($params);
 
+        return self::handlePATCH(
+            $params,
+            $method,
+            $headers,
+            $id,
+            Test::class,
+        );
     }
 
     /**
@@ -189,10 +142,13 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @param  array $headers  Request headers
      * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
+     * @todo
      */
     public static function DELETE($params, $method, $headers)
     {
+        $id = Request::requireId($params);
 
+        throw new \Phramework\Exceptions\NotImplementedException();
     }
 
     /**
