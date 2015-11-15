@@ -603,6 +603,11 @@ class Controller
 
         $id = $modelClass::post((array)$attributes);
 
+        //Prepare response with 201 Created status code
+        \Phramework\Models\Response::created(
+            $modelClass::getSelfLink($id)
+        );
+
         return static::viewData(
             $modelClass::resource(['id' => $id]),
             ['self' => $modelClass::getSelfLink($id)]
