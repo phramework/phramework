@@ -31,10 +31,19 @@ class Test extends \Phramework\JSONAPI\Model
         ];
     }
 
+    public static function getSort()
+    {
+        return (object)[
+            'attributes' => ['id', 'created', 'created_user_id'],
+            'default' => 'id',
+            'ascending' => true
+        ];
+    }
+
     public static function getRelationships()
     {
         return [
-            'created' => new Relationship(
+            'created_user' => new Relationship(
                 'created_user_id',
                 'user',
                 Relationship::TYPE_TO_ONE,
@@ -43,7 +52,7 @@ class Test extends \Phramework\JSONAPI\Model
             ),
             'comment' => new Relationship(
                 'test_comment_id',
-                'test_comment',
+                'test-comment',
                 Relationship::TYPE_TO_MANY,
                 TestComment::class,
                 'id'
@@ -56,10 +65,26 @@ class Test extends \Phramework\JSONAPI\Model
      *
      * @return \stdClass[]
      */
-    public static function get()
+    public static function get($page = null, $filter = null, $sort = null)
     {
+        $query = self::handlePagination(
+            self::handleSort(
+                self::handleFilter(
+                    'SELECT "test".*
+                    FROM "test"
+                      {{filter}}
+                      {{sort}}
+                      {{pagination}}',
+                    $filter,
+                    false
+                ),
+                $sort
+            ),
+            $pagination
+        );
+
         $records = Database::executeAndFetchAll(
-            'SELECT * FROM `test`',
+            $query,
             [],
             self::getCast()
         );

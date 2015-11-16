@@ -30,25 +30,12 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      */
     public static function GET($params, $method, $headers)
     {
-        //NOTES:
-        //useful params (request parameter):
-        //- include http://jsonapi.org/format/#fetching-includes
-        //- sort http://jsonapi.org/format/#fetching-sorting
-        //- fields[TYPE] http://jsonapi.org/format/#fetching-sparse-fieldsets
-        //- filter reserved
-        //- page pagination
-
-        $data = Test::get();
-
-        $include = self::getRequestInclude($params);
-
-        $includedData = Test::getIncludedData($data, $include);
-
-        self::viewData(
-            $data,
-            ['self' => Test::getSelfLink()],
-            null,
-            $includedData
+        return self::handleGET(
+            $params,
+            Test::class,
+            [],
+            [],
+            true
         );
     }
 
@@ -60,24 +47,16 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
      */
-    public static function GETById($params, $method, $headers, $id, $coll)
+    public static function GETById($params, $method, $headers, $id)
     {
         $id = Validate::uint($id);
 
-        $data = Test::getById($id);
-
-        //Check if resource exists
-        self::exists($data);
-
-        $include = self::getRequestInclude($params);
-
-        $includedData = Test::getIncludedData($data, $include);
-
-        self::viewData(
-            $data,
-            ['self' => Test::getSelfLink($id)],
-            null,
-            $includedData
+        return self::handleGETById(
+            $params,
+            $id,
+            Test::class,
+            [],
+            []
         );
     }
 
@@ -109,8 +88,8 @@ class TestController extends \Examples\JSONAPI\APP\Controller
         return self::handlePOST(
             $params,
             $method,
-            $headers
-            Test::class,
+            $headers,
+            Test::class
         );
     }
 
@@ -131,7 +110,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
             $method,
             $headers,
             $id,
-            Test::class,
+            Test::class
         );
     }
 

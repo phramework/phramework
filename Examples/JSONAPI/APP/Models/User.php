@@ -20,7 +20,7 @@ class User extends \Phramework\JSONAPI\Model
     public static function getById($id)
     {
         $record = Database::executeAndFetch(
-            'SELECT id, email, username, `status`, `first_name`, `last_name`
+            'SELECT id, username
             FROM `user`
             WHERE `id` = ?
             LIMIT 1',
