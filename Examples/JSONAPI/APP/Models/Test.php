@@ -67,20 +67,16 @@ class Test extends \Phramework\JSONAPI\Model
      */
     public static function get($page = null, $filter = null, $sort = null)
     {
-        $query = self::handlePagination(
-            self::handleSort(
-                self::handleFilter(
-                    'SELECT "test".*
-                    FROM "test"
-                      {{filter}}
-                      {{sort}}
-                      {{pagination}}',
-                    $filter,
-                    false
-                ),
-                $sort
-            ),
-            $pagination
+        $query = self::handleGet(
+            'SELECT "test".*
+            FROM "test"
+              {{filter}}
+              {{sort}}
+              {{pagination}}',
+            $page,
+            $filter,
+            $sort,
+            false
         );
 
         $records = Database::executeAndFetchAll(

@@ -708,7 +708,7 @@ class Model
      * - integer[] $relationships
      * - array $attributes (each array item [$attribute, $operator, $operant])
      * - array $attributesJSON (each array item [$attribute, $key, $operator, $operant])
-     * @param  boolean $hasWhere If query already has an WHERE
+     * @param  boolean $hasWhere If query already has an WHERE, default is true
      * @return string            Query
      * @todo check if query work both in MySQL and postgre
      */
@@ -828,5 +828,39 @@ class Model
         );
 
         return $query;
+    }
+
+    /**
+     * Apply handle pagination, sort and filter to query,
+     * will replace `{{sort}}`, `{{pagination}}` and `{{filter}}` strings in
+     * query.
+     * @uses Model::handlePagination
+     * @uses Model::handleSort
+     * @uses Model::handleFilter
+     * @param  string  $query    Query
+     * @param  object  $page     See handlePagination $page parameter
+     * @param  object  $filter   See handleFilter $filter parameter
+     * @param  null|object $sort See handleSort $sort parameter
+     * @param  boolean $hasWhere If query already has an WHERE, default is true
+     * @return string       Query
+     */
+    protected static function handleGet(
+        $query,
+        $page,
+        $filter,
+        $sort,
+        $hasWhere = true
+    ) {
+        return self::handlePagination(
+            self::handleSort(
+                self::handleFilter(
+                    $query,
+                    $filter,
+                    $hasWhere
+                ),
+                $sort
+            ),
+            $page
+        );
     }
 }
