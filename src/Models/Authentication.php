@@ -35,12 +35,14 @@ class Authentication
 {
     /**
      * Check user's authentication, using data provided as BASIC AUTHENTICATION HEADERS
-     * @todo Implement additional methods
+     * @param  array  $params  Request parameters
+     * @param  string $method  Request method
+     * @param  array $headers  Request headers
      * @return array|FALSE Returns false on error or the user object on success
      */
-    public static function check()
+    public static function check($params, $method, $headers)
     {
-        if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
+        /*if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
             return false;
         }
 
@@ -49,7 +51,8 @@ class Authentication
 
         $auth = self::authenticate($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 
-        return $auth;
+        return $auth;*/
+        return false;
     }
 
     /**
