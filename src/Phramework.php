@@ -240,8 +240,6 @@ class Phramework
                 unset($_GET['callback']);
             }
 
-            //Initialize metaphrase\phpsdk\Metaphrase
-            //$metaphrase = new \metaphrase\phpsdk\Metaphrase($settings['translate']['api_key']);
             //Initialize Database connection if required or db set
             if (self::getSetting('require_db') || self::getSetting('db')) {
                 Models\Database::requireDatabase(self::getSetting('db'));
@@ -251,10 +249,11 @@ class Phramework
             unset(self::$settings['db']);
 
             //Get method from the request (HTTP) method
-            $method = self::$method =
+            $method = self::$method = (
                 isset($_SERVER['REQUEST_METHOD'])
                 ? $_SERVER['REQUEST_METHOD']
-                : self::METHOD_GET;
+                : self::METHOD_GET
+            );
 
             //Check if the requested HTTP method method is allowed
             // @todo check error code
@@ -300,9 +299,63 @@ class Phramework
                 exit();
             }
 
+            //Merge all REQUEST parameters into $params array
+            $params = array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
+
+            //Parse request body
+            //@Todo add allowed content-types
+            if (in_array(
+                $method,
+                [
+                    self::METHOD_POST,
+                    self::METHOD_PATCH,
+                    self::METHOD_PUT,
+                    self::METHOD_DELETE
+                ]
+            )) {
+                $CONTENT_TYPE = null;
+                if (isset($headers[Request::HEADER_CONTENT_TYPE])) {
+                    $CONTENT_TYPE = explode(';', $headers[Request::HEADER_CONTENT_TYPE]);
+                    $CONTENT_TYPE = $CONTENT_TYPE[0];
+                }
+
+                if ($CONTENT_TYPE === 'application/x-www-form-urlencoded') {
+                    //Decode and merge params
+                    parse_str(file_get_contents('php://input'), $input);
+
+                    if ($input && !empty($input)) {
+                        $params = array_merge($params, $input);
+                    }
+                } elseif (in_array(
+                    $CONTENT_TYPE,
+                    ['application/json', 'application/vnd.api+json'],
+                    true
+                )) {
+                    $input = trim(file_get_contents('php://input'));
+
+                    //note if input length is >0 and decode returns null then its bad data
+                    //json_last_error()
+
+                    $input = json_decode($input, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        throw new \Phramework\Exceptions\RequestException(
+                            'JSON parse error - ' . json_last_error_msg()
+                        );
+                    }
+
+                    if ($input && !empty($input)) {
+                        $params = array_merge($params, $input);
+                    }
+                }
+            }
+
             //Authenticate request (check authentication)
             self::$user = call_user_func(
-                [self::$authenticationClass, 'check']
+                [self::$authenticationClass, 'check'],
+                $params,
+                $method,
+                $headers
             );
 
             //In case of array returned force type to be object
@@ -355,60 +408,6 @@ class Phramework
             //    $method = self::METHOD_GET;
             //}
 
-            //Merge all REQUEST parameters into $params array
-            $params = array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
-
-            //unset($_GET, $_POST, $_FILES);
-
-            //Parse request body
-            //@Todo needs additional attencion
-            //@Todo add allowed content-types
-            if (in_array(
-                $method,
-                [
-                    self::METHOD_POST,
-                    self::METHOD_PATCH,
-                    self::METHOD_PUT,
-                    self::METHOD_DELETE
-                ]
-            )) {
-                $CONTENT_TYPE = null;
-                if (isset($headers[Request::HEADER_CONTENT_TYPE])) {
-                    $CONTENT_TYPE = explode(';', $headers[Request::HEADER_CONTENT_TYPE]);
-                    $CONTENT_TYPE = $CONTENT_TYPE[0];
-                }
-
-                if ($CONTENT_TYPE === 'application/x-www-form-urlencoded') {
-                    //Decode and merge params
-                    parse_str(file_get_contents('php://input'), $input);
-
-                    if ($input && !empty($input)) {
-                        $params = array_merge($params, $input);
-                    }
-                } elseif (in_array(
-                    $CONTENT_TYPE,
-                    ['application/json', 'application/vnd.api+json'],
-                    true
-                )) {
-                    $input = trim(file_get_contents('php://input'));
-
-                    //note if input length is >0 and decode returns null then its bad data
-                    //json_last_error()
-
-                    $input = json_decode($input, true);
-
-                    if (json_last_error() !== JSON_ERROR_NONE) {
-                        throw new \Phramework\Exceptions\RequestException(
-                            'JSON parse error - ' . json_last_error_msg()
-                        );
-                    }
-
-                    if ($input && !empty($input)) {
-                        $params = array_merge($params, $input);
-                    }
-                }
-            }
-
             //STEP_BEFORE_CALL_METHOD
             $this->StepCallback->call(
                 StepCallback::STEP_BEFORE_CALL_METHOD
@@ -421,8 +420,9 @@ class Phramework
             unset($params);
 
             //STEP_BEFORE_CLOSE
-            $this->StepCallback->call(StepCallback::STEP_BEFORE_CLOSE);
-
+            $this->StepCallback->call(
+                StepCallback::STEP_BEFORE_CLOSE
+            );
 
         } catch (\Phramework\Exceptions\NotFoundException $exception) {
             self::writeErrorLog(
@@ -529,6 +529,9 @@ class Phramework
                 'title' => 'Error'
             ]]);
         } finally {
+            $this->StepCallback->call(
+                StepCallback::STEP_FINALLY
+            );
             //Try to close the databse
             Models\Database::close();
         }

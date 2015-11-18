@@ -22,15 +22,11 @@
       "Examples\\": "Examples"
     }
   },
-  "repositories": [{
-    "type": "vcs",
-    "url": "git@github.com:metaphrase/php-sdk.git"
-  }],
+  "repositories": [],
   "require": {
     "php": ">=5.5",
     "ext-curl": "*",
-    "ext-json": "*",
-    "metaphrase/php-sdk": "~0.1"
+    "ext-json": "*"
   },
   "suggest": {
     "ext-pdo": ">=1.0.0",

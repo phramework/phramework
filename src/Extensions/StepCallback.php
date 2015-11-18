@@ -21,6 +21,7 @@ use Phramework\Phramework;
 /**
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @todo add variables to be passed on call (globaly set)
  */
 class StepCallback
 {
@@ -31,12 +32,19 @@ class StepCallback
     const STEP_BEFORE_REQUIRE_CONTROLLER = 'STEP_BEFORE_REQUIRE_CONTROLLER';
     const STEP_BEFORE_CALL_METHOD = 'STEP_BEFORE_CALL_METHOD';
     const STEP_BEFORE_CLOSE = 'STEP_BEFORE_CLOSE';
-
+    const STEP_FINALLY = 'STEP_FINALLY';
     /**
      * Hold all step callbacks
      * @var array Array of arrays
      */
     protected $stepCallback;
+
+    protected $variables = [];
+
+    public function addVariable($key, $variable)
+    {
+        self::$variables[$key] = $variable;
+    }
 
     /**
      * Add a step callback
@@ -86,10 +94,10 @@ class StepCallback
         foreach ($this->stepCallback[$step] as $s) {
             if (!is_callable($s)) {
                 throw new \Exception(
-                    Phramework::getTranslated('callback_is_not_function_exception')
+                    Phramework::getTranslated('Callback is not callable')
                 );
             }
-            return $s();
+            return $s(self::$variables);
         }
     }
 
