@@ -99,7 +99,7 @@ class Controller
         $temp['data'] = $data;
 
 
-        if ($included === null) {
+        if ($included !== null) {
             $temp['included'] = $included;
         }
 
@@ -448,9 +448,11 @@ class Controller
             $additionalGetArguments
         );
 
+        $requestInclude = static::getRequestInclude($params);
+
         $includedData = $modelClass::getIncludedData(
             $data,
-            static::getRequestInclude($params),
+            $requestInclude,
             $additionalRelationshipsArguments
         );
 
@@ -458,7 +460,7 @@ class Controller
             $data,
             ['self' => $modelClass::getSelfLink()],
             null,
-            $includedData
+            (empty($requestInclude) ? null : $includedData)
         );
     }
 
@@ -494,9 +496,11 @@ class Controller
         //Check if resource exists
         static::exists($data);
 
+        $requestInclude = static::getRequestInclude($params);
+
         $includedData = $modelClass::getIncludedData(
             $data,
-            static::getRequestInclude($params),
+            $requestInclude,
             $additionalRelationshipsArguments
         );
 
@@ -504,7 +508,7 @@ class Controller
             $data,
             ['self' => $modelClass::getSelfLink($id)],
             null,
-            $includedData
+            (empty($requestInclude) ? null : $includedData)
         );
     }
 
