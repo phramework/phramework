@@ -19,8 +19,6 @@ namespace Phramework\Validate;
 use \Phramework\Validate\ValidateResult;
 use \Phramework\Exceptions\IncorrectParametersException;
 
-//require __DIR__ . '/IPrimitive.php'; //used for generator
-//require __DIR__ . '/BaseValidator.php'; //used for generator
 /**
  * Number validator
  * @property float|null minimun
@@ -84,7 +82,7 @@ class Number extends \Phramework\Validate\BaseValidator
             //Replace comma with dot
             $value = str_replace(',', '.', $value);
         }
-        
+
         //Apply all rules
         if (filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
             //error

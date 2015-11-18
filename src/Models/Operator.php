@@ -38,8 +38,8 @@ class Operator
     const OPERATOR_NOT_ISNULL = '!ISNULL';
     const OPERATOR_EMPTY = 'empty';
     const OPERATOR_NOT_EMPTY = '!empty';
-    const OPERATOR_LIKE = 'LIKE';
-    const OPERATOR_NOT_LIKE = 'NOT LIKE';
+    const OPERATOR_LIKE = '~~';
+    const OPERATOR_NOT_LIKE = '!~~';
     const OPERATOR_IN = 'IN';
     const OPERATOR_NOT_IN = 'NOT IN';
 
@@ -75,6 +75,7 @@ class Operator
 
     const CLASS_COMPARABLE = 1;
     const CLASS_ORDERABLE = 2;
+    const CLASS_LIKE = 4;
     const CLASS_NULLABLE = 64;
     const CLASS_JSONOBJECT = 128;
 
@@ -103,6 +104,13 @@ class Operator
             );
         }
 
+        if (($classFlags & Operator::CLASS_LIKE) !== 0) {
+            $operators = array_merge(
+                $operators,
+                Operator::getLikeOperators()
+            );
+        }
+
         if (empty($operators)) {
             throw new \Exception('Invalid operator class flags');
         }
@@ -117,7 +125,10 @@ class Operator
 
         $operators = implode(
             '|',
-            Operator::getOrderableOperators()
+            array_merge(
+                Operator::getOrderableOperators(),
+                Operator::getLikeOperators()
+            )
         );
 
         if (!!preg_match(
@@ -142,6 +153,14 @@ class Operator
         return [
             Operator::OPERATOR_ISNULL,
             Operator::OPERATOR_NOT_ISNULL
+        ];
+    }
+
+    public static function getLikeOperators()
+    {
+        return [
+            Operator::OPERATOR_LIKE,
+            Operator::OPERATOR_NOT_LIKE
         ];
     }
 

@@ -742,6 +742,7 @@ class Model
             }
             $relationship = $relationships[$key];
             $relationshipClass = $relationship->getRelationshipClass();
+
             if ($relationship->getRelationshipType() === Relationship::TYPE_TO_ONE) {
                 $additionalFilter[] = sprintf(
                     '%s "%s"."%s" IN (%s)',
@@ -785,6 +786,26 @@ class Model
                         ? $transformation[$operator]
                         : $operator
                     )
+                );
+            } elseif (in_array($operator, Operator::getLikeOperators())) {
+                //Define a transformation matrix, operator to SQL operator
+                $transformation = [
+                    Operator::OPERATOR_LIKE => 'LIKE',
+                    Operator::OPERATOR_NOT_LIKE => 'NOT LIKE'
+                ];
+
+                //LIKE '%text%', force lower - case insensitive
+                $additionalFilter[] = sprintf(
+                    '%s LOWER("%s"."%s") %s \'%%%s%%\'',
+                    ($hasWhere ? 'AND' : 'WHERE'),
+                    static::$table,
+                    $key,
+                    (
+                        array_key_exists($operator, $transformation)
+                        ? $transformation[$operator]
+                        : $operator
+                    ),
+                    strtolower($operant)
                 );
             } else {
                 throw new \Phramework\Exceptions\NotImplementedException(sprintf(
