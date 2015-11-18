@@ -174,14 +174,15 @@ class Util
     }
 
     /**
-     * Get an array that represents  directory tree
+     * Get an array that represents directory tree
      * @param string $directory      Directory path
-     * @param boolean $recursive        Include sub directories
-     * @param boolean $listDirs         Include directories on listing
-     * @param boolean $listFiles        Include files on listing
-     * @param string $exclude [optional]       Exclude paths that matches this regex
+     * @param boolean $recursive     Include sub directories
+     * @param boolean $listDirs      Include directories on listing
+     * @param boolean $listFiles     Include files on listing
+     * @param string $exclude        [optional] Exclude paths that matches this
+     * regular expression
      * @param array $allowed_filetypes Allowed file extensions. Optional. Default allow all
-     * @param boolean $relative_path    Return paths in relative form. Optional. Default FALSE
+     * @param boolean $relative_path  Return paths in relative form. Optional. Default FALSE
      */
     public static function directoryToArray(
         $directory,
@@ -197,7 +198,6 @@ class Util
         $handle = opendir($directory);
         if ($handle) {
             while (false !== ($file = readdir($handle))) {
-
                 preg_match(
                     '/(^(([\.]) {1,2})$|(\.(svn|git|md|htaccess))|(Thumbs\.db|\.DS_STORE|\.|\.\.))$/iu',
                     $file,
@@ -262,11 +262,15 @@ class Util
     {
         $files = array_diff(scandir($directory), ['.', '..']);
         foreach ($files as $file) {
-            $path = Util::get_path([ $directory, $file]);
-            (is_dir($path) ? self::delete_directory_contents($path, true) : unlink($path));
+            $path = Util::get_path([$directory, $file]);
+            (
+                is_dir($path)
+                ? self::delete_directory_contents($path, true)
+                : unlink($path)
+            );
         }
 
-        return ($DELETE_DIRECTORY ? rmdir($directory) : true);
+        return $DELETE_DIRECTORY ? rmdir($directory) : true;
     }
 
     /**
@@ -317,7 +321,7 @@ class Util
      * @param str $url, $path
      * @return bool True if download succeed
      */
-    public static function curlDownload($url, $path, $timeout = 9000000000)
+    public static function curlDownload($url, $path, $timeout = 3600)
     {
         $return = false;
         try {
