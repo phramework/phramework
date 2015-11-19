@@ -123,11 +123,15 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * inaccessible
      * @todo
      */
-    public static function DELETE($params, $method, $headers)
+    public static function DELETE($params, $method, $headers, $id)
     {
-        $id = Request::requireId($params);
-
-        throw new \Phramework\Exceptions\NotImplementedException();
+        return self::handleDELETE(
+            $params,
+            $method,
+            $headers,
+            $id,
+            Test::class
+        );
     }
 
     /**

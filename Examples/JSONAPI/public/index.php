@@ -5,7 +5,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 //This autoload path is for loading current version of phramework
+//(must be removed when we move the examples to another repository)
 require __DIR__ . '/../../../vendor/autoload.php';
+
 require __DIR__ . '/../vendor/autoload.php';
 
 //define controller namespace, as shortcut
