@@ -3,7 +3,7 @@
     "order": -3
   },
   "request": {
-    "url": "test/?include=comment,creator",
+    "url": "test/?include=comment,creator&page[limit]=5&page[offset]=1&sort=-created",
     "method": "GET",
     "headers": [
       "$$headerRequestAccept$",
