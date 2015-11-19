@@ -101,7 +101,7 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @throws \Phramework\Exceptions\NotFoundException If resource doesn't exist or is
      * inaccessible
      */
-    public static function PATCH($params, $method, $headers, $id = null)
+    public static function PATCH($params, $method, $headers, $id)
     {
         $id = Request::requireId($params);
 
@@ -137,50 +137,18 @@ class TestController extends \Examples\JSONAPI\APP\Controller
      * @param  string $method  Request method
      * @param  array $headers  Request headers
      */
-    public static function byIdRelationships($params, $method, $headers, $id = null, $relationship = null)
+    public static function byIdRelationships($params, $method, $headers, $id, $relationship)
     {
-        $id = Validate::uint($params['id']);
-
-        $relationship = Filter::string($params['relationship']);
-
-        //Check if relationship exists
-        self::exists(Test::relationshipExists($relationship), 'Relationship not found');
-
-        //Check if method is allowed
-        $allowedMethods = [Phramework::METHOD_GET];
-        Validate::enum($method, $allowedMethods);
-
-        //see http://localhost:8080/v1/authors/2/relationships/books
-        $data = Test::getRelationshipData($relationship, $id);
-
-        $meta = [
-            'relationships' => true,
-            'id' => $id,
-            'relationship' => $relationship
-        ];
-
-        $links = [
-            'self'     =>
-                Test::getSelfLink($id) . '/relationships/' . $relationship,
-            'related'  =>
-                Test::getSelfLink($id) . '/' . $relationship
-        ];
-
-        self::viewData($data, $links, $meta);
+        parent::handleByIdRelationships(
+            $params,
+            $method,
+            $headers,
+            $id,
+            $relationship,
+            Test::class,
+            [\Phramework\Phramework::METHOD_GET],
+            [],
+            []
+        );
     }
-
-    /*public static function GETByIdRelationship($params, $method, $headers)
-    {
-        //$id
-        //relationship
-        //see http://localhost:8080/v1/authors/2/books
-        //this will return all book collection with author_id 2
-        $id = Validate::uint($params['id']);
-        $relationship = Filter::string($params['relationship']);
-        (new \Phramework\Viewers\JSONAPI())->view([
-            'relationships' => false,
-            'id' => $id,
-            'relationship' => $relationship
-        ]);
-    }*/
 }

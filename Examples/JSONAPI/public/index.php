@@ -6,6 +6,7 @@ ini_set('display_errors', '1');
 
 //This autoload path is for loading current version of phramework
 require __DIR__ . '/../../../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 //define controller namespace, as shortcut
 define('NS', 'Examples\\JSONAPI\\APP\\Controllers\\');
@@ -24,7 +25,9 @@ $APP = function () {
     $URIStrategy = new \Phramework\URIStrategy\URITemplate([
         ['test/', NS . 'TestController', 'GET', Phramework::METHOD_GET],
         ['test/', NS . 'TestController', 'POST', Phramework::METHOD_POST],
-        ['test/{id}', NS . 'TestController', 'GETById', [Phramework::METHOD_GET, Phramework::METHOD_PATCH]],
+        ['test/{id}', NS . 'TestController', 'GETById', Phramework::METHOD_GET],
+        ['test/{id}', NS . 'TestController', 'PATCH', Phramework::METHOD_PATCH],
+        ['test/{id}', NS . 'TestController', 'DELETE', Phramework::METHOD_DELETE],
         ['test/{id}/relationships/{relationship}', NS . 'TestController', 'byIdRelationships', Phramework::METHOD_ANY],
     ]);
 

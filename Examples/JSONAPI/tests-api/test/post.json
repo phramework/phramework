@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "order": -2
+  },
+  "request": {
+    "url": "test/",
+    "method": "POST",
+    "headers": [
+      "$$headerRequestAccept$",
+      "$$headerRequestContentType$"
+    ],
+    "body": {
+      "data": {
+        "type": "test",
+        "attributes": {
+          "title": "test (new) - randString"
+        }
+      }
+    }
+  },
+  "response": {
+    "statusCode": 201,
+    "headers": {
+      "Content-Type": "$$headerResponseContentType$"
+    },
+    "ruleObjects": [],
+    "export": {
+      "new_test_id": "data.id"
+    }
+  }
+}

@@ -43,7 +43,7 @@ class Test extends \Phramework\JSONAPI\Model
     public static function getRelationships()
     {
         return [
-            'created_user' => new Relationship(
+            'creator' => new Relationship(
                 'created_user_id',
                 'user',
                 Relationship::TYPE_TO_ONE,

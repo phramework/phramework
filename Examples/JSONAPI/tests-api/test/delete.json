@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "ignore": true
+  },
+  "request": {
+    "url": "test/$$new_test_id",
+    "method": "DELETE",
+    "headers": [
+      "$$headerRequestAccept$",
+      "$$headerRequestContentType$"
+    ]
+  },
+  "response": {
+    "statusCode": 200,
+    "headers": {
+      "Content-Type": "$$headerResponseContentType$"
+    },
+    "ruleObjects": []
+  }
+}

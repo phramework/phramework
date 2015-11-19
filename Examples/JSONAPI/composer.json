@@ -1,5 +1,5 @@
 {
-  "name": "Phramework/Examples/Blog2",
+  "name": "Phramework/Examples/JSONAPI",
   "description": "PHP Framework for RESTful services",
   "homepage": "https://nohponex.gr",
   "authors": [{
@@ -7,14 +7,45 @@
     "email": "nohponex@gmail.com",
     "homepage": "https://nohponex.gr"
   }],
+  "repositories": [{
+    "type": "vcs",
+    "url": "git@gitlab.mathlogic.eu:Phramework/Phramework.git"
+  }, {
+    "type": "vcs",
+    "url": "git@gitlab.mathlogic.eu:Phramework/jsonapi.git"
+  }, {
+    "type": "vcs",
+    "url": "git@gitlab.mathlogic.eu:Phramework/jwt.git"
+  }, {
+    "type": "vcs",
+    "url": "git@gitlab.mathlogic.eu:Phramework/testphase.git"
+  }],
   "autoload": {
     "psr-4": {
       "APP\\": "APP/"
     }
   },
+  "require": {
+    "php": ">=5.5",
+    "phramework/phramework": "dev-master",
+    "phramework/jsonapi": "dev-master"
+  },
+  "require-dev": {
+    "phramework/testphase": "dev-master"
+  },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "archive": {
     "exclude": ["demo/", "examples/", "test/", "/*.test", "tests", "demo.php"]
+  },
+  "scripts": {
+    "test": [
+      "find APP/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
+      "composer test-api"
+    ],
+    "test-api": [
+      "testphase -i -d ./tests-api/ -b ./tests-api/bootstrap.php"
+    ],
+    "lint": "./vendor/bin/phpcs -p -s --standard=PSR2 ./APP"
   }
 }
