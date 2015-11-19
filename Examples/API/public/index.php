@@ -32,7 +32,9 @@ $APP = function () {
 
     unset($settings);
 
-    $phramework->setViewerClass('Phramework\Viewers\JSONAPI');
+    $phramework->setViewerClass(
+        \Phramework\Viewers\JSON::class
+    );
 
     //Execute API
     $phramework->invoke();

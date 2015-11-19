@@ -1,57 +1,36 @@
 <?php
 namespace Examples\API\APP\Controllers;
 
-use Phramework\Phramework;
-use Phramework\Validate\Validate;
-use Phramework\Models\Request;
-use Phramework\Models\Util;
-use Examples\API\APP\Models\Book;
+use \Phramework\Phramework;
+use \Phramework\Validate\Validate;
+use \Phramework\Models\Request;
+use \Phramework\Models\Util;
+use \Examples\API\APP\Models\Book;
 
 class BookController extends \Examples\API\APP\Controller
 {
-    public static function GET($params)
+    public static function GET($params, $method, $headers)
     {
+        $data = Book::get();
 
-
-        self::view(['$params' => $params]);
+        self::view(['data' => $data]);
     }
 
-    public static function GETSingle($params, $method)
+    public static function GETSingle($params, $method, $headers, $id)
     {
         $id = Request::requireId($params);
 
-        $data = [
-            'type' => 'book',
-            'id' => (string) $id,
-            'attributes' => [
-                'title' => 'Ena vivlio'
-            ],
-            'links' => [
-                'self' => Util::url('book', $id),
-            ],
-            'relationships' => [
-                'authror' => [
-                    'links' => [
-                        'self' => Util::url('book/'.$id.'/relationships/authror/'),
-                        'related' => Util::url('book/'.$id.'/authror/'),
-                    ],
-                ],
-            ]
-        ];
+        $data = Book::getById($id);
 
+        self::exists($data);
+        
         self::view([
-            'data' => $data,
-            'meta' => [
-                '$params' => $params,
-                '$method' => $method
-            ]
+            'data' => $data
         ]);
     }
+
     public static function POST($params, $method, $headers)
     {
-        Phramework::view([
-            'params' => $params,
-            'method' => $method
-        ]);
+        throw new \Phramework\Exceptions\NotImplemented();
     }
 }

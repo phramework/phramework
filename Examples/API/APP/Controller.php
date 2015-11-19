@@ -2,8 +2,6 @@
 
 namespace Examples\API\APP;
 
-use Examples\API\APP\Models\Request;
-
 /**
  * Base controller
  * contains shortcut helper methods.
@@ -51,15 +49,5 @@ class Controller
         if (!$assert) {
             throw new \Exception($exceptionMessage);
         }
-    }
-
-    /**
-     * Checks if the user is a system user.
-     *
-     * @return array user
-     */
-    protected static function checkPermissionSystem()
-    {
-        return Request::checkPermission(Request::USERGROUP_SYSTEM);
     }
 }
