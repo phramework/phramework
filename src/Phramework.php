@@ -113,9 +113,13 @@ class Phramework
         //Instantiate StepCallback object
         $this->StepCallback = new \Phramework\Extensions\StepCallback();
 
-        if (!is_subclass_of($URIStrategyObject, '\Phramework\URIStrategy\IURIStrategy', true)) {
+        if (!is_subclass_of(
+            $URIStrategyObject,
+            \Phramework\URIStrategy\IURIStrategy::class,
+            true
+        )) {
             throw new \Phramework\Exceptions\ServerException(
-                'Class is not implementing Phramework\URIStrategy\IURIStrategy'
+                'Class is not implementing \Phramework\URIStrategy\IURIStrategy'
             );
         }
         self::$URIStrategy = $URIStrategyObject;
@@ -142,7 +146,7 @@ class Phramework
     /**
      * Authentication class (Full namespace)
      */
-    private static $authenticationClass = '\Phramework\Models\Authentication';
+    private static $authenticationClass = \Phramework\Models\Authentication::class;
 
     /**
      * Set authentication class
@@ -150,9 +154,13 @@ class Phramework
      */
     public static function setAuthenticationClass($class)
     {
-        if (!is_subclass_of($class, '\Phramework\Models\Authentication', true)) {
+        if (!is_subclass_of(
+            $class,
+            \Phramework\Models\Authentication::class,
+            true
+        )) {
             throw new \Exception(
-                'Class is not implementing Phramework\Models\Authentication'
+                'Class is not implementing \Phramework\Models\Authentication'
             );
         }
         self::$authenticationClass = $class;
@@ -173,9 +181,13 @@ class Phramework
 
     public function setTranslationObject($translationObject)
     {
-        if (!is_subclass_of($translationObject, '\Phramework\Extensions\translation', true)) {
+        if (!is_subclass_of(
+            $translationObject,
+            \Phramework\Extensions\Translation::class,
+            true
+        )) {
             throw new \Exception(
-                'Class is not implementing Phramework\Extensions\translation'
+                'Class is not implementing \Phramework\Extensions\Translation'
             );
         }
         $this->translation = $translationObject;
@@ -188,9 +200,16 @@ class Phramework
      * @param type $fallbackValue
      * @return type
      */
-    public static function getTranslated($key, $parameters = null, $fallbackValue = null)
-    {
-        return self::$instance->translation->getTranslated($key, $parameters, $fallbackValue);
+    public static function getTranslated(
+        $key,
+        $parameters = null,
+        $fallbackValue = null
+    ) {
+        return self::$instance->translation->getTranslated(
+            $key,
+            $parameters,
+            $fallbackValue
+        );
     }
 
     /**
@@ -231,7 +250,9 @@ class Phramework
 
             //Check if callback is set (JSONP)
             if (isset($_GET['callback'])) {
-                if (!\Phramework\Validate\Validate::isValidJsonpCallback($_GET['callback'])) {
+                if (!\Phramework\Validate\Validate::isValidJsonpCallback(
+                    $_GET['callback']
+                )) {
                     throw new \Phramework\Exceptions\IncorrectParametersException(
                         ['callback']
                     );
