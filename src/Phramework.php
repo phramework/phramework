@@ -637,20 +637,25 @@ class Phramework
     /**
      * Get a setting value
      * @param string $key The requested setting key
-     * @param string|NULL $second_level
-     * @param mixed $default_value [optional] Default value is the setting is missing.
+     * @param string|NULL $secondLevel
+     * @param mixed $defaultValue [optional] Default value is the setting is missing.
      * @return Mixed Returns the value of setting, NULL when not found
      */
-    public static function getSetting($key, $second_level = null, $default_value = null)
+    public static function getSetting($key, $secondLevel = null, $defaultValue = null)
     {
-        if (!isset(self::$settings[$key])
-            || ($second_level && isset(self::$settings[$key][$second_level]))
+        //Use default value if setting is not defined
+        if (
+            !isset(self::$settings[$key])
+            || (
+                $secondLevel !== null
+                && !isset(self::$settings[$key][$secondLevel])
+            )
         ) {
-            return $default_value;
+            return $defaultValue;
         }
 
-        if ($second_level) {
-            self::$settings[$key][$second_level];
+        if ($secondLevel !== null) {
+            return self::$settings[$key][$secondLevel];
         }
 
         return self::$settings[$key];
