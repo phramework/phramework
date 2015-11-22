@@ -24,7 +24,7 @@ class Manager
     public static function register($implementation)
     {
         $object = new $implementation();
-        if (!($object instanceof \Phramework\Authentication\IAuthentication::class)) {
+        if (!($object instanceof \Phramework\Authentication\IAuthentication)) {
             throw new \Exception(
                 'Class is not implementing \Phramework\Authentication\IAuthentication'
             );
