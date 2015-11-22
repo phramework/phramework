@@ -28,9 +28,9 @@ class StepCallback
     /**
      * Step callbacks
      */
+    const STEP_BEFORE_AUTHENTICATION_CHECK = 'STEP_BEFORE_AUTHENTICATION_CHECK';
     const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
-    const STEP_BEFORE_REQUIRE_CONTROLLER = 'STEP_BEFORE_REQUIRE_CONTROLLER';
-    const STEP_BEFORE_CALL_METHOD = 'STEP_BEFORE_CALL_METHOD';
+    const STEP_BEFORE_CALL_URISTRATEGY = 'STEP_BEFORE_CALL_URISTRATEGY';
     const STEP_BEFORE_CLOSE = 'STEP_BEFORE_CLOSE';
     const STEP_FINALLY = 'STEP_FINALLY';
     /**
@@ -61,8 +61,10 @@ class StepCallback
 
         //Check if step is allowed
         \Phramework\Validate\Validate::enum($step, [
-            self::STEP_BEFORE_REQUIRE_CONTROLLER,
-            self::STEP_BEFORE_CALL_METHOD,
+            self::STEP_FINALLY,
+            self::STEP_BEFORE_CALL_URISTRATEGY,
+            self::STEP_BEFORE_AUTHENTICATION_CHECK,
+            self::STEP_AFTER_AUTHENTICATION_CHECK,
             self::STEP_BEFORE_CLOSE,
         ]);
 
@@ -83,11 +85,18 @@ class StepCallback
     }
 
     /**
-     * Execute all callbacks set for this step
+     * Execute all callbacks set for this step]
      * @param string $step
+     * @param  array  $params  Request parameters
+     * @param  string $method  Request method
+     * @param  array  $headers Request headers
      */
-    public function call($step)
-    {
+    public function call(
+        $step,
+        $params = null,
+        $method = null,
+        $headers = null
+    ) {
         if (!isset($this->stepCallback[$step])) {
             return null;
         }
@@ -97,7 +106,13 @@ class StepCallback
                     Phramework::getTranslated('Callback is not callable')
                 );
             }
-            return $s(self::$variables);
+
+            return $s(
+                self::$variables,
+                $params,
+                $method,
+                $headers
+            );
         }
     }
 

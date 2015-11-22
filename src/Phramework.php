@@ -50,7 +50,8 @@ class Phramework
     /**
      * Viewer class
      */
-    private static $viewer = \Phramework\Viewers\JSON::class;//'\Phramework\Viewers\JSON';
+    private static $viewer = \Phramework\Viewers\JSON::class;
+
     /**
      * $URIStrategy object
      */
@@ -64,21 +65,16 @@ class Phramework
      * @var type
      */
     private static $callback = null;
-
-    /**
-     * Exposed extensions
-     */
-
     /**
      * StepCallback extension
      * @var Phramework\Extensions\StepCallback
      */
-    public $StepCallback;
+    public $stepCallback;
     /**
      * translation extension
      * @var Phramework\Extensions\translation
      */
-    public $translation;
+    public static $translation;
 
     /**
      * Default mode
@@ -90,10 +86,8 @@ class Phramework
      *
      * Only one instance of API may be present
      * @param array $settings
-     * @param array $controller_whitelist
-     * @param array $controller_unauthenticated_whitelist
-     * @param array $controller_public_whitelist
-     * @param object|NULL $translationObject [optional] Set custom translation class
+     * @param IURIStrategy $URIStrategyObject URIStrategy object
+     * @param object|NULL $translationObject  [optional] Set custom translation class
      */
     public function __construct(
         $settings,
@@ -106,7 +100,7 @@ class Phramework
         self::$language = 'en';
 
         //Instantiate StepCallback object
-        $this->StepCallback = new \Phramework\Extensions\StepCallback();
+        $this->stepCallback = new \Phramework\Extensions\StepCallback();
 
         if (!is_subclass_of(
             $URIStrategyObject,
@@ -121,13 +115,13 @@ class Phramework
 
         //If custom translation object is set add it
         if ($translationObject) {
-            $this->setTranslationObject($translationObject);
+            self::setTranslation($translationObject);
         } else {
             //Or instantiate default translation object
-            $this->translation = new \Phramework\Extensions\Translation(
-                self::getSetting('language'),
-                self::getSetting('translation', 'track_missing_keys', null, false)
-            );
+            //sef::$translation = new \Phramework\Extensions\Translation(
+            //    self::getSetting('language'),
+            //    self::getSetting('translation', 'track_missing_keys', null, false)
+            //);
         }
 
         self::$instance = $this;
@@ -139,42 +133,10 @@ class Phramework
     }
 
     /**
-     * Authentication class (Full namespace)
+     * Set translation object
+     * @param \Phramework\Extensions\Translation $translationObject Translation object
      */
-    private static $authenticationClass = \Phramework\Models\Authentication::class;
-
-    /**
-     * Set authentication class
-     * @param string $class A name of class that extends \Phramework\Models\authentication
-     */
-    public static function setAuthenticationClass($class)
-    {
-        if (!is_subclass_of(
-            $class,
-            \Phramework\Models\Authentication::class,
-            true
-        )) {
-            throw new \Exception(
-                'Class is not implementing \Phramework\Models\Authentication'
-            );
-        }
-        self::$authenticationClass = $class;
-    }
-
-    /**
-     * Authenticate a user
-     *
-     * The result will be stored at internal $user variable
-     * @param type $username
-     * @param type $password
-     * @param array|FALSE Returns the user object
-     */
-    public static function authenticate($username, $password)
-    {
-        return call_user_func([self::$authenticationClass, 'authenticate'], $username, $password);
-    }
-
-    public function setTranslationObject($translationObject)
+    public static function setTranslation($translationObject)
     {
         if (!is_subclass_of(
             $translationObject,
@@ -185,7 +147,8 @@ class Phramework
                 'Class is not implementing \Phramework\Extensions\Translation'
             );
         }
-        $this->translation = $translationObject;
+
+        return self::$translation = $translationObject;
     }
 
     /**
@@ -200,7 +163,7 @@ class Phramework
         $parameters = null,
         $fallbackValue = null
     ) {
-        return self::$instance->translation->getTranslated(
+        return self::$translation->getTranslated(
             $key,
             $parameters,
             $fallbackValue
@@ -366,9 +329,16 @@ class Phramework
                 }
             }
 
+            //STEP_AFTER_AUTHENTICATION_CHECK
+            $this->StepCallback->call(
+                StepCallback::STEP_BEFORE_AUTHENTICATION_CHECK,
+                $params,
+                $method,
+                $headers
+            );
+
             //Authenticate request (check authentication)
-            self::$user = call_user_func(
-                [self::$authenticationClass, 'check'],
+            self::$user = \Phramework\Authentication\Manager::check(
                 $params,
                 $method,
                 $headers
@@ -381,7 +351,10 @@ class Phramework
 
             //STEP_AFTER_AUTHENTICATION_CHECK
             $this->StepCallback->call(
-                StepCallback::STEP_AFTER_AUTHENTICATION_CHECK
+                StepCallback::STEP_AFTER_AUTHENTICATION_CHECK,
+                $params,
+                $method,
+                $headers
             );
 
             //Default language value
@@ -411,11 +384,6 @@ class Phramework
             self::$language = $language;
             $this->translation->setLanguageCode($language);
 
-            //STEP_BEFORE_REQUIRE_CONTROLLER
-            $this->StepCallback->call(
-                StepCallback::STEP_BEFORE_REQUIRE_CONTROLLER
-            );
-
             //Override method HEAD.
             // When HEAD method is called the GET method will be executed but no response boy will be send
             // we update the value of local variable $method sinse then original
@@ -424,9 +392,12 @@ class Phramework
             //    $method = self::METHOD_GET;
             //}
 
-            //STEP_BEFORE_CALL_METHOD
+            //STEP_BEFORE_CALL_URISTRATEGY
             $this->StepCallback->call(
-                StepCallback::STEP_BEFORE_CALL_METHOD
+                StepCallback::STEP_BEFORE_CALL_URISTRATEGY,
+                $params,
+                $method,
+                $headers
             );
 
             //Call controller's method
@@ -437,7 +408,10 @@ class Phramework
 
             //STEP_BEFORE_CLOSE
             $this->StepCallback->call(
-                StepCallback::STEP_BEFORE_CLOSE
+                StepCallback::STEP_BEFORE_CLOSE,
+                $params,
+                $method,
+                $headers
             );
 
         } catch (\Phramework\Exceptions\NotFoundException $exception) {
@@ -480,10 +454,6 @@ class Phramework
             self::writeErrorLog(
                 $exception->getMessage()
             );
-
-            if (self::getSetting('debug')) {
-                //todo
-            }
 
             self::errorView([[
                 'status' => $exception->getCode(),
@@ -546,8 +516,12 @@ class Phramework
             ]]);
         } finally {
             $this->StepCallback->call(
-                StepCallback::STEP_FINALLY
+                StepCallback::STEP_FINALLY,
+                $params,
+                $method,
+                $headers
             );
+
             //Try to close the databse
             Models\Database::close();
         }
@@ -647,16 +621,16 @@ class Phramework
 
     /**
      * Set viewer class
-     * @param string $class A name of class that implements \Phramework\Viewers\IViewer
+     * @param string $viewerClass A name of class that implements \Phramework\Viewers\IViewer
      */
-    public static function setViewerClass($class)
+    public static function setViewer($viewerClass)
     {
-        if (!is_subclass_of($class, '\Phramework\Viewers\IViewer', true)) {
+        if (!is_subclass_of($viewerClass, \Phramework\Viewers\IViewer::class, true)) {
             throw new \Exception(
                 'Class is not implementing \Phramework\Viewers\IViewer'
             );
         }
-        self::$viewer = $class;
+        self::$viewer = $viewerClass;
     }
 
     /**

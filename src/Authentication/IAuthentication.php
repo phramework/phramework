@@ -14,10 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Models;
+namespace Phramework\Authentication;
 
-use \Phramework\Phramework;
-use \Phramework\Models\Database;
 
 /**
  * Authentication related functions
@@ -26,46 +24,37 @@ use \Phramework\Models\Database;
  * This class should be extended, this implementation will allways return false
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
- * @since 0
- * @package Phramework
- * @category Models
- * @todo remove current implementation and provide only utilities fuctions, perhaps it should be an interface
+ * @since 1
  */
-class Authentication
+interface IAuthentication
 {
     /**
-     * Check user's authentication, using data provided as BASIC AUTHENTICATION HEADERS
+     * Check user's authentication
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
-     * @param  array $headers  Request headers
+     * @param  array  $headers Request headers
      * @return array|FALSE Returns false on error or the user object on success
      */
-    public static function check($params, $method, $headers)
-    {
-        /*if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
-            return false;
-        }
-
-        //Validate authentication credentials
-        \Phramework\Validate\Validate::email($_SERVER['PHP_AUTH_USER']);
-
-        $auth = self::authenticate($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-
-        return $auth;*/
-        return false;
-    }
+    public function check($params, $method, $headers);
 
     /**
      * Autheticate a user, using user's email and password
      * Always returns false
      * You must extend this class and implement this method
-     * @param string $email
-     * @param string $password
+     * @param  array  $params  Request parameters
+     * @param  string $method  Request method
+     * @param  array  $headers Request headers
      * @return array|false Returns false on error or the user object on success
      * @throws \Phramework\Exceptions\PermissionException
      */
-    public static function authenticate($email, $password)
-    {
-        return false;
-    }
+    public function authenticate($params, $method, $headers);
+
+    /**
+     * Test if current request holds authoratation data
+     * @param  array  $params  Request parameters
+     * @param  string $method  Request method
+     * @param  array  $headers  Request headers
+     * @return boolean
+     */
+    public function testProvidedMethod($params, $method, $headers);
 }
