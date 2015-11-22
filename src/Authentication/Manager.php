@@ -56,7 +56,7 @@ class Manager
         }
 
         foreach (self::$implementations as $implementation) {
-            if ($implementation->test($params, $method, $headers)) {
+            if ($implementation->testProvidedMethod($params, $method, $headers)) {
                 return $implementation->check($params, $method, $headers);
             }
         }
