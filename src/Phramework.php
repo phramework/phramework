@@ -46,7 +46,6 @@ class Phramework
     private static $user;
     private static $language;
     private static $settings;
-    private static $mode;
 
     /**
      * Viewer class
@@ -94,18 +93,14 @@ class Phramework
      * @param array $controller_whitelist
      * @param array $controller_unauthenticated_whitelist
      * @param array $controller_public_whitelist
-     * @param string $mode [optional]
      * @param object|NULL $translationObject [optional] Set custom translation class
      */
     public function __construct(
         $settings,
         $URIStrategyObject,
-        $mode = self::MODE_DEFAULT,
         $translationObject = null
     ) {
         self::$settings = $settings;
-
-        self::$mode = $mode;
 
         self::$user = false;
         self::$language = 'en';
@@ -608,15 +603,6 @@ class Phramework
     }
 
     /**
-     * Get requested mode
-     * @return string
-     */
-    public static function getMode()
-    {
-        return self::$mode;
-    }
-
-    /**
      * Get current viewer
      * @return string
      */
@@ -644,10 +630,8 @@ class Phramework
     public static function getSetting($key, $secondLevel = null, $defaultValue = null)
     {
         //Use default value if setting is not defined
-        if (
-            !isset(self::$settings[$key])
-            || (
-                $secondLevel !== null
+        if (!isset(self::$settings[$key])
+            || ($secondLevel !== null
                 && !isset(self::$settings[$key][$secondLevel])
             )
         ) {
@@ -730,7 +714,7 @@ class Phramework
      */
     public static function writeErrorLog($message)
     {
-        error_log(self::$mode . ',' . self::$method . ',' . self::$controller . ':' . $message);
+        error_log(self::$method . ',' . self::$controller . ':' . $message);
     }
 
     const METHOD_ANY     = null;
