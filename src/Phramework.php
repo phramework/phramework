@@ -194,6 +194,10 @@ class Phramework
      */
     public function invoke()
     {
+        $params = [];
+        $method = '';
+        $headers = [];
+        
         try {
             date_default_timezone_set('Europe/Athens');
 

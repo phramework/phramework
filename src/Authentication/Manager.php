@@ -86,7 +86,7 @@ class Manager
      * attribute specified in JWT::setAttributes method
      * @param callable $callable
      */
-    public function setUserGetByEmailMethod($callable)
+    public static function setUserGetByEmailMethod($callable)
     {
         if (!is_callable($callable)) {
             throw new \Exception('Provided method is not callable');
@@ -95,7 +95,7 @@ class Manager
         self::$userGetByEmailMethod = $callable;
     }
 
-    public function getUserGetByEmailMethod()
+    public static function getUserGetByEmailMethod()
     {
         return self::$userGetByEmailMethod;
     }
@@ -105,12 +105,12 @@ class Manager
      * Both `user_id` and `id` will use the user's id attribute
      * @param string[] $attributes
      */
-    public function setAttributes($attributes)
+    public static function setAttributes($attributes)
     {
         self::$attributes = $attributes;
     }
 
-    public function getAttributes()
+    public static function getAttributes()
     {
         return self::$attributes;
     }
@@ -121,7 +121,7 @@ class Manager
      * defined callback.
      * @param callable $callable
      */
-    public function setOnAuthenticateCallback($callable)
+    public static function setOnAuthenticateCallback($callable)
     {
         if (!is_callable($callable)) {
             throw new \Exception('Provided method is not callable');
@@ -130,7 +130,7 @@ class Manager
         self::$onAuthenticateCallback = $callable;
     }
 
-    public function getOnAuthenticateCallback()
+    public static function getOnAuthenticateCallback()
     {
         return self::$onAuthenticateCallback;
     }
