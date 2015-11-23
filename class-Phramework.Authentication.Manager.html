@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Phramework\Authentication\Manager | Phramework</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
+
+</head>
+
+<body>
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">Phramework</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search">
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="namespace-Phramework.Authentication.html" title="Summary of Phramework\Authentication"><span>Namespace</span></a>
+					</li>
+					<li class="active">
+<span>Class</span>					</li>
+
+					<li class="divider-vertical"></li>
+
+					<li>
+						<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+					</li>
+
+						<li>
+							<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+								<span>Deprecated</span>
+							</a>
+						</li>
+						<li>
+							<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+								<span>Todo</span>
+							</a>
+						</li>
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
+	<div id="menu">
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+					<li class="active">
+						<a href="namespace-Phramework.html">
+							Phramework<span></span>
+						</a>
+							<ul>
+					<li class="active">
+						<a href="namespace-Phramework.Authentication.html">
+							Authentication						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Exceptions.html">
+							Exceptions						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Extensions.html">
+							Extensions						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Models.html">
+							Models<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Models.SCRUD.html">
+							SCRUD						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Phramework.URIStrategy.html">
+							URIStrategy						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Validate.html">
+							Validate						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Viewers.html">
+							Viewers						</a>
+							</li>
+								</ul></li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-Phramework.Authentication.Manager.html">Manager</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Phramework.Authentication.IAuthentication.html">IAuthentication</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class Manager</h1>
+
+
+
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Authentication.html">Authentication</a><br>
+		
+
+			<b>Located at</b> Authentication/Manager.php		<br>
+	</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h2>Methods summary</h2></div>
+			<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="register" id="_register">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_register">#</a>
+			<code>register( <span> <var>$implementation</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getImplementation" id="_getImplementation">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getImplementation">#</a>
+			<code>getImplementation( )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="check" id="_check">
+
+			<td class="attributes"><code>
+				 public static
+				array|false
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_check">#</a>
+			<code>check( <span>array <var>$params</var></span>, <span>string <var>$method</var></span>, <span>array <var>$headers</var></span> )</code>
+
+			<div class="description short">
+				<p>Check user's authentication
+This method iterates through all available authentication implementations
+tests in priorioty order which of them might be provided and executes</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Check user's authentication
+This method iterates through all available authentication implementations
+tests in priorioty order which of them might be provided and executes</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$params</var></dt>
+						<dd>Request parameters</dd>
+						<dt><var>$method</var></dt>
+						<dd>Request method</dd>
+						<dt><var>$headers</var></dt>
+						<dd>Request headers</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array|false<br>Returns false on error or the user object on success
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="setUserGetByEmailMethod" id="_setUserGetByEmailMethod">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_setUserGetByEmailMethod">#</a>
+			<code>setUserGetByEmailMethod( <span>callable <var>$callable</var></span> )</code>
+
+			<div class="description short">
+				<p>Set the method that accepts email and returns a user object
+MUST containg a password, id, this method MUST also contain any other
+attribute specified in JWT::setAttributes method</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Set the method that accepts email and returns a user object
+MUST containg a password, id, this method MUST also contain any other
+attribute specified in JWT::setAttributes method</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$callable</var></dt>
+						<dd></dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getUserGetByEmailMethod" id="_getUserGetByEmailMethod">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getUserGetByEmailMethod">#</a>
+			<code>getUserGetByEmailMethod( )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="setAttributes" id="_setAttributes">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_setAttributes">#</a>
+			<code>setAttributes( <span>string[] <var>$attributes</var></span> )</code>
+
+			<div class="description short">
+				<p>Set attributes to be copied from user record.
+Both <code>user_id</code> and <code>id</code> will use the user's id attribute</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Set attributes to be copied from user record.
+Both <code>user_id</code> and <code>id</code> will use the user's id attribute</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$attributes</var></dt>
+						<dd></dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getAttributes" id="_getAttributes">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getAttributes">#</a>
+			<code>getAttributes( )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="setOnAuthenticateCallback" id="_setOnAuthenticateCallback">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_setOnAuthenticateCallback">#</a>
+			<code>setOnAuthenticateCallback( <span>callable <var>$callable</var></span> )</code>
+
+			<div class="description short">
+				<p>Set a callback that will be executed after a successful authenticate
+execution, <code>user</code> object will be provided to the
+defined callback.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Set a callback that will be executed after a successful authenticate
+execution, <code>user</code> object will be provided to the
+defined callback.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$callable</var></dt>
+						<dd></dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getOnAuthenticateCallback" id="_getOnAuthenticateCallback">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getOnAuthenticateCallback">#</a>
+			<code>getOnAuthenticateCallback( )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="setOnCheckCallback" id="_setOnCheckCallback">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_setOnCheckCallback">#</a>
+			<code>setOnCheckCallback( <span>callable <var>$callable</var></span> )</code>
+
+			<div class="description short">
+				<p>Set a callback that will be executed after a successful check
+execution</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Set a callback that will be executed after a successful check
+execution</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$callable</var></dt>
+						<dd></dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getOnCheckCallback" id="_getOnCheckCallback">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getOnCheckCallback">#</a>
+			<code>getOnCheckCallback( )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+		<div class="panel panel-default">
+            <div class="panel-heading"><h2>Properties summary</h2></div>
+			<table class="summary table table-bordered table-striped properties" id="properties">
+		<tr data-order="implementations" id="$implementations">
+			<td class="attributes"><code>
+				protected static 
+				array
+			</code></td>
+
+			<td class="name">
+<var>$implementations</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$implementations" class="anchor">#</a>
+					<code>[]</code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="userGetByEmailMethod" id="$userGetByEmailMethod">
+			<td class="attributes"><code>
+				protected static 
+				callable
+			</code></td>
+
+			<td class="name">
+<var>$userGetByEmailMethod</var>
+				<div class="description short">
+					<p>MUST be set</p>
+				</div>
+
+				<div class="description detailed hidden">
+					<p>MUST be set</p>
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$userGetByEmailMethod" class="anchor">#</a>
+					<code><span class="php-keyword1">null</span></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="attributes" id="$attributes">
+			<td class="attributes"><code>
+				protected static 
+				string[]
+			</code></td>
+
+			<td class="name">
+<var>$attributes</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$attributes" class="anchor">#</a>
+					<code>[]</code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="onAuthenticateCallback" id="$onAuthenticateCallback">
+			<td class="attributes"><code>
+				protected static 
+				callable|null
+			</code></td>
+
+			<td class="name">
+<var>$onAuthenticateCallback</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$onAuthenticateCallback" class="anchor">#</a>
+					<code><span class="php-keyword1">null</span></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="onCheckCallback" id="$onCheckCallback">
+			<td class="attributes"><code>
+				protected static 
+				callable|null
+			</code></td>
+
+			<td class="name">
+<var>$onCheckCallback</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$onCheckCallback" class="anchor">#</a>
+					<code><span class="php-keyword1">null</span></code>
+				</div>
+			</td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		Phramework API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

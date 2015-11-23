@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Phramework\URIStrategy\URITemplate | Phramework</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
+
+</head>
+
+<body>
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">Phramework</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search">
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="namespace-Phramework.URIStrategy.html" title="Summary of Phramework\URIStrategy"><span>Namespace</span></a>
+					</li>
+					<li class="active">
+<span>Class</span>					</li>
+
+					<li class="divider-vertical"></li>
+
+					<li>
+						<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+					</li>
+
+						<li>
+							<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+								<span>Deprecated</span>
+							</a>
+						</li>
+						<li>
+							<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+								<span>Todo</span>
+							</a>
+						</li>
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
+	<div id="menu">
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+					<li class="active">
+						<a href="namespace-Phramework.html">
+							Phramework<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Authentication.html">
+							Authentication						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Exceptions.html">
+							Exceptions						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Extensions.html">
+							Extensions						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Models.html">
+							Models<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Models.SCRUD.html">
+							SCRUD						</a>
+							</li>
+								</ul></li>
+					<li class="active">
+						<a href="namespace-Phramework.URIStrategy.html">
+							URIStrategy						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Validate.html">
+							Validate						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Viewers.html">
+							Viewers						</a>
+							</li>
+								</ul></li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Phramework.URIStrategy.ClassBased.html">ClassBased</a></li>
+				<li class="active"><a href="class-Phramework.URIStrategy.URITemplate.html">URITemplate</a></li>
+				<li><a href="class-Phramework.URIStrategy.URITemplateHelper.html">URITemplateHelper</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Phramework.URIStrategy.IURIStrategy.html">IURIStrategy</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class URITemplate</h1>
+
+
+	<div class="description">
+	<p>IURIStrategy implementation using URI templates</p>
+
+<p>This strategy uses URI templates to validate the requested URI,
+if the URI matches a template then the assigned method will be executed.</p>
+
+<p>This class is the preferable strategy if jsonapi is to be used.</p>
+
+<p>It requires apache configuration via .htaccess</p>
+
+<pre><code>RewriteEngine On
+
+#Required for URITemplate strategy
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+</code></pre>
+	</div>
+
+	<dl class="tree well">
+		<dd style="padding-left:0px">
+<b><span>Phramework\URIStrategy\URITemplate</span></b>			
+			 implements 
+				<a href="class-Phramework.URIStrategy.IURIStrategy.html"><span>Phramework\URIStrategy\IURIStrategy</span></a>
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.URIStrategy.html">URIStrategy</a><br>
+		
+
+				<b>License:</b>
+				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
+				<b>Author:</b>
+				Xenophon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
+				<b>Since:</b>
+				1.0.0<br>
+			<b>Located at</b> URIStrategy/URITemplate.php		<br>
+	</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h2>Methods summary</h2></div>
+			<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="__construct" id="___construct">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#___construct">#</a>
+			<code>__construct( <span>array[] <var>$templates</var></span> )</code>
+
+			<div class="description short">
+				<p>Create a URI Template strategy</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Create a URI Template strategy</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$templates</var></dt>
+						<dd>List of URI template and meta - information objects</dd>
+					</dl></div>
+
+
+
+					<h4>Todo</h4>
+					<div class="list">
+							specify templates format<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="addTemplates" id="_addTemplates">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_addTemplates">#</a>
+			<code>addTemplates( <span>array[] <var>$templates</var></span> )</code>
+
+			<div class="description short">
+				<p>Include additional templates</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Include additional templates</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$templates</var></dt>
+						<dd>List of URI template and meta - information objects</dd>
+					</dl></div>
+
+
+
+					<h4>Todo</h4>
+					<div class="list">
+							specify templates format<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="test" id="_test">
+
+			<td class="attributes"><code>
+				 public 
+				false|array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_test">#</a>
+			<code>test( <span>string <var>$URITemplate</var></span>, <span>string <var>$URI</var></span> )</code>
+
+			<div class="description short">
+				<p>Test an URI template validates the provided URI</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Test an URI template validates the provided URI</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$URITemplate</var></dt>
+						<dd>URI Template</dd>
+						<dt><var>$URI</var></dt>
+						<dd>Provided URI</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						false|array<br><p>If the validation of the template is not successful
+then false will be returned,
+else a array with a key-value array in position 0 will be returned
+containing the extracter parameters from the URI template.</p>
+					</div>
+
+
+					<h4>Todo</h4>
+					<div class="list">
+							provide options to specify parameters data type (alphanumeric or int)<br>
+							provide options to define optional parameters<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="URI" id="_URI">
+
+			<td class="attributes"><code>
+				 public 
+				string[2]
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_URI">#</a>
+			<code>URI( )</code>
+
+			<div class="description short">
+				<p>Get current URI and GET parameters from the requested URI</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get current URI and GET parameters from the requested URI</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						string[2]<br>Returns an array with current URI and GET parameters
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="invoke" id="_invoke">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_invoke">#</a>
+			<code>invoke( <span>string <var>$requestMethod</var></span>, <span>array <var>$requestParameters</var></span>, <span>array <var>$requestHeaders</var></span>, <span>stdObject|false <var>$requestUser</var></span> )</code>
+
+			<div class="description short">
+				<p>[invoke description]</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>[invoke description]</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$requestMethod</var></dt>
+						<dd>[description]</dd>
+						<dt><var>$requestParameters</var></dt>
+						<dd>[description]</dd>
+						<dt><var>$requestHeaders</var></dt>
+						<dd>[description]</dd>
+						<dt><var>$requestUser</var></dt>
+						<dd>[description]</dd>
+					</dl></div>
+
+
+					<h4>Throws</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Exceptions.NotFoundException.html">Phramework\Exceptions\NotFoundException</a></code><br>
+						<code><a href="class-Phramework.Exceptions.NotFoundException.html">Phramework\Exceptions\NotFoundException</a></code><br>
+						<code><a href="class-Phramework.Exceptions.PermissionException.html">Phramework\Exceptions\PermissionException</a></code>
+					</div>
+
+					<h4>Todo</h4>
+					<div class="list">
+							Use named parameters in future if available by PHP<br>
+					</div>
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.URIStrategy.IURIStrategy.html#_invoke">Phramework\URIStrategy\IURIStrategy::invoke()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		Phramework API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

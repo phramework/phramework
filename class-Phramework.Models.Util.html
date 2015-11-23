@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Phramework\Models\Util | Phramework</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
+
+</head>
+
+<body>
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">Phramework</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search">
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="namespace-Phramework.Models.html" title="Summary of Phramework\Models"><span>Namespace</span></a>
+					</li>
+					<li class="active">
+<span>Class</span>					</li>
+
+					<li class="divider-vertical"></li>
+
+					<li>
+						<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+					</li>
+
+						<li>
+							<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+								<span>Deprecated</span>
+							</a>
+						</li>
+						<li>
+							<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+								<span>Todo</span>
+							</a>
+						</li>
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
+	<div id="menu">
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+					<li class="active">
+						<a href="namespace-Phramework.html">
+							Phramework<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Authentication.html">
+							Authentication						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Exceptions.html">
+							Exceptions						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Extensions.html">
+							Extensions						</a>
+							</li>
+					<li class="active">
+						<a href="namespace-Phramework.Models.html">
+							Models<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Models.SCRUD.html">
+							SCRUD						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Phramework.URIStrategy.html">
+							URIStrategy						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Validate.html">
+							Validate						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Viewers.html">
+							Viewers						</a>
+							</li>
+								</ul></li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Phramework.Models.Cache.html">Cache</a></li>
+				<li><a href="class-Phramework.Models.Compress.html">Compress</a></li>
+				<li><a href="class-Phramework.Models.Database.html">Database</a></li>
+				<li><a href="class-Phramework.Models.Email.html">Email</a></li>
+				<li><a href="class-Phramework.Models.Execute.html">Execute</a></li>
+				<li><a href="class-Phramework.Models.Filter.html">Filter</a></li>
+				<li><a href="class-Phramework.Models.Language.html">Language</a></li>
+				<li><a href="class-Phramework.Models.Operator.html">Operator</a></li>
+				<li><a href="class-Phramework.Models.Request.html">Request</a></li>
+				<li><a href="class-Phramework.Models.Response.html">Response</a></li>
+				<li><a href="class-Phramework.Models.Upload.html">Upload</a></li>
+				<li class="active"><a href="class-Phramework.Models.Util.html">Util</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class Util</h1>
+
+
+	<div class="description">
+	<p>Utility class</p>
+
+<p>Provides a set of methods that perform common, often re-used functions.</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Models.html">Models</a><br>
+		<b>Package:</b> Phramework<br>
+
+				<b>Category:</b>
+				Models<br>
+				<b>License:</b>
+				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
+				<b>Author:</b>
+				Spafaridis Xenophon <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
+				<b>Since</b>
+				0<br>
+			<b>Located at</b> Models/Util.php		<br>
+	</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h2>Methods summary</h2></div>
+			<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="url" id="_url">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_url">#</a>
+			<code>url( <span>string <var>$endpoint</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$suffix</var> = <span class="php-quote">''</span></span> )</code>
+
+			<div class="description short">
+				<p>Get url of the API resource.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get url of the API resource.</p>
+
+<p>This method uses <code>api_base</code> setting to create the url.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$endpoint</var></dt>
+						<dd>[Optional]</dd>
+						<dt><var>$suffix</var></dt>
+						<dd>[Optional] Will append to the end of url</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Returns the created url
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="toAscii" id="_toAscii">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_toAscii">#</a>
+			<code>toAscii( <span>string <var>$str</var></span> )</code>
+
+			<div class="description short">
+				<p>Clears all non ASCII characters from a string and replaces /,_,|,+, ,- charaters to '-'</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Clears all non ASCII characters from a string and replaces /,_,|,+, ,- charaters to '-'</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$str</var></dt>
+						<dd>The input string</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Returns the clean string
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="beginsWith" id="_beginsWith">
+
+			<td class="attributes"><code>
+				 public static
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_beginsWith">#</a>
+			<code>beginsWith( <span>string <var>$string</var></span>, <span>string <var>$search</var></span> )</code>
+
+			<div class="description short">
+				<p>Check if the string begins with the search</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Check if the string begins with the search</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$string</var></dt>
+						<dd>The string that used check</dd>
+						<dt><var>$search</var></dt>
+						<dd>The string to search</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean<br>Returns true if the string begins with the search
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="_dateFormatted" id="__dateFormatted">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#__dateFormatted">#</a>
+			<code>_dateFormatted( <span> <var>$datetime</var></span>, <span> <var>$format</var> = <span class="php-quote">'j M Y G:i'</span></span> )</code>
+
+			<div class="description short">
+				<p>Print formatted date</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Print formatted date</p>
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="dateFormatted" id="_dateFormatted">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_dateFormatted">#</a>
+			<code>dateFormatted( <span> <var>$datetime</var></span>, <span> <var>$format</var> = <span class="php-quote">'j M Y G:i'</span></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="userContent" id="_userContent">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_userContent">#</a>
+			<code>userContent( <span>string <var>$content</var></span> )</code>
+
+			<div class="description short">
+				<p>Applies htmlentities</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Applies htmlentities</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$content</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="token" id="_token">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_token">#</a>
+			<code>token( <span> <var>$prefix</var> = <span class="php-quote">''</span></span> )</code>
+
+			<div class="description short">
+				<p>Generate a random 40 character hex token</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Generate a random 40 character hex token</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Returns a random token
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="isAjaxRequest" id="_isAjaxRequest">
+
+			<td class="attributes"><code>
+				 public static
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_isAjaxRequest">#</a>
+			<code>isAjaxRequest( )</code>
+
+			<div class="description short">
+				<p>Check if incoming request is send using ajax</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Check if incoming request is send using ajax</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="isHTTPS" id="_isHTTPS">
+
+			<td class="attributes"><code>
+				 public static
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_isHTTPS">#</a>
+			<code>isHTTPS( )</code>
+
+			<div class="description short">
+				<p>Check if incoming request is send using HTTPS protocol</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Check if incoming request is send using HTTPS protocol</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getIPAddress" id="_getIPAddress">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getIPAddress">#</a>
+			<code>getIPAddress( )</code>
+
+			<div class="description short">
+				<p>Get the ip address of the client</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get the ip address of the client</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						string
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="checkIncludeRoot" id="_checkIncludeRoot">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_checkIncludeRoot">#</a>
+			<code class="deprecated">checkIncludeRoot( )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+					<h4>Deprecated</h4>
+					<div class="list">
+							since version 0<br>
+					</div>
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="directoryToArray" id="_directoryToArray">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_directoryToArray">#</a>
+			<code>directoryToArray( <span>string <var>$directory</var></span>, <span>boolean <var>$recursive</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$listDirs</var> = <span class="php-keyword1">false</span></span>, <span>boolean <var>$listFiles</var> = <span class="php-keyword1">true</span></span>, <span>string <var>$exclude</var> = <span class="php-quote">''</span></span>, <span>array <var>$allowed_filetypes</var> = []</span>, <span>boolean <var>$relative_path</var> = <span class="php-keyword1">false</span> </span> )</code>
+
+			<div class="description short">
+				<p>Get an array that represents directory tree</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get an array that represents directory tree</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$directory</var></dt>
+						<dd>Directory path</dd>
+						<dt><var>$recursive</var></dt>
+						<dd>Include sub directories</dd>
+						<dt><var>$listDirs</var></dt>
+						<dd>Include directories on listing</dd>
+						<dt><var>$listFiles</var></dt>
+						<dd>Include files on listing</dd>
+						<dt><var>$exclude</var></dt>
+						<dd><p>[optional] Exclude paths that matches this
+regular expression</p></dd>
+						<dt><var>$allowed_filetypes</var></dt>
+						<dd>Allowed file extensions. Optional. Default allow all</dd>
+						<dt><var>$relative_path</var></dt>
+						<dd>Return paths in relative form. Optional. Default FALSE</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="deleteDirectoryContents" id="_deleteDirectoryContents">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_deleteDirectoryContents">#</a>
+			<code>deleteDirectoryContents( <span>string <var>$directory</var></span>, <span>boolean <var>$DELETE_DIRECTORY</var> = <span class="php-keyword1">false</span></span> )</code>
+
+			<div class="description short">
+				<p>Delete all contents from a directory</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Delete all contents from a directory</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$directory</var></dt>
+						<dd>Directory path</dd>
+						<dt><var>$DELETE_DIRECTORY</var></dt>
+						<dd>Optinal, if is set directory will be deleted too.</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="readableRandomString" id="_readableRandomString">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_readableRandomString">#</a>
+			<code>readableRandomString( <span>integer <var>$length</var> = <span class="php-num">8</span></span> )</code>
+
+			<div class="description short">
+				<p>Create a random readable word</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Create a random readable word</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$length</var></dt>
+						<dd>String's length</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="curlHeaders" id="_curlHeaders">
+
+			<td class="attributes"><code>
+				 public static
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_curlHeaders">#</a>
+			<code>curlHeaders( <span>str <var>$url</var></span>, <span> <var>&amp; $data</var></span> )</code>
+
+			<div class="description short">
+				<p>Get Headers from a remote link</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get Headers from a remote link</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$url</var></dt>
+						<dd><h1>url</h1></dd>
+						<dt><var>$data</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="curlDownload" id="_curlDownload">
+
+			<td class="attributes"><code>
+				 public static
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_curlDownload">#</a>
+			<code>curlDownload( <span>str <var>$url</var></span>, <span> <var>$path</var></span>, <span> <var>$timeout</var> = <span class="php-num">3600</span></span> )</code>
+
+			<div class="description short">
+				<p>Download a file from a remote link</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Download a file from a remote link</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$url</var></dt>
+						<dd>$url, $path</dd>
+						<dt><var>$path</var></dt>
+						<dd></dd>
+						<dt><var>$timeout</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean<br>True if download succeed
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="tempfile" id="_tempfile">
+
+			<td class="attributes"><code>
+				 public static
+				String
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_tempfile">#</a>
+			<code>tempfile( <span>String <var>$prefix</var></span> )</code>
+
+			<div class="description short">
+				<p>Create a temporary file path</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Create a temporary file path</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$prefix</var></dt>
+						<dd>Prefix of the filename</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						String<br>The path of the temporary filename
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="extension" id="_extension">
+
+			<td class="attributes"><code>
+				 public static
+				String
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_extension">#</a>
+			<code>extension( <span>String <var>$filename</var></span> )</code>
+
+			<div class="description short">
+				<p>Extract extension from a filename</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Extract extension from a filename</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$filename</var></dt>
+						<dd>The filename</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						String<br>The extension without dot prefix
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getPath" id="_getPath">
+
+			<td class="attributes"><code>
+				 public static
+				String
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getPath">#</a>
+			<code>getPath( <span>array <var>$array</var></span>, <span> <var>$glue</var> = DIRECTORY_SEPARATOR</span> )</code>
+
+			<div class="description short">
+				<p>Join directories and filename to create path</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Join directories and filename to create path</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$array</var></dt>
+						<dd>Array with directories and filename for example array( '/tmp', 'me', 'file.tmp' )</dd>
+						<dt><var>$glue</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						String<br>Path
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="toSingleSlashes" id="_toSingleSlashes">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_toSingleSlashes">#</a>
+			<code>toSingleSlashes( <span> <var>$input</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="parseRegexp" id="_parseRegexp">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_parseRegexp">#</a>
+			<code>parseRegexp( <span> <var>$input</var></span>, <span> <var>$pattern</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getFileSize" id="_getFileSize">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getFileSize">#</a>
+			<code>getFileSize( <span> <var>$path</var></span> )</code>
+
+			<div class="description short">
+				<p>Get the size of a file
+Works for large files too (>2GB )</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get the size of a file
+Works for large files too (>2GB )</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$path</var></dt>
+						<dd>path</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		Phramework API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

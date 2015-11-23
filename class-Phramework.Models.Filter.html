@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Phramework\Models\Filter | Phramework</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
+
+</head>
+
+<body>
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">Phramework</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search">
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="namespace-Phramework.Models.html" title="Summary of Phramework\Models"><span>Namespace</span></a>
+					</li>
+					<li class="active">
+<span>Class</span>					</li>
+
+					<li class="divider-vertical"></li>
+
+					<li>
+						<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+					</li>
+
+						<li>
+							<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+								<span>Deprecated</span>
+							</a>
+						</li>
+						<li>
+							<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+								<span>Todo</span>
+							</a>
+						</li>
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
+	<div id="menu">
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+					<li class="active">
+						<a href="namespace-Phramework.html">
+							Phramework<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Authentication.html">
+							Authentication						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Exceptions.html">
+							Exceptions						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Extensions.html">
+							Extensions						</a>
+							</li>
+					<li class="active">
+						<a href="namespace-Phramework.Models.html">
+							Models<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Models.SCRUD.html">
+							SCRUD						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Phramework.URIStrategy.html">
+							URIStrategy						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Validate.html">
+							Validate						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Viewers.html">
+							Viewers						</a>
+							</li>
+								</ul></li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Phramework.Models.Cache.html">Cache</a></li>
+				<li><a href="class-Phramework.Models.Compress.html">Compress</a></li>
+				<li><a href="class-Phramework.Models.Database.html">Database</a></li>
+				<li><a href="class-Phramework.Models.Email.html">Email</a></li>
+				<li><a href="class-Phramework.Models.Execute.html">Execute</a></li>
+				<li class="active"><a href="class-Phramework.Models.Filter.html">Filter</a></li>
+				<li><a href="class-Phramework.Models.Language.html">Language</a></li>
+				<li><a href="class-Phramework.Models.Operator.html">Operator</a></li>
+				<li><a href="class-Phramework.Models.Request.html">Request</a></li>
+				<li><a href="class-Phramework.Models.Response.html">Response</a></li>
+				<li><a href="class-Phramework.Models.Upload.html">Upload</a></li>
+				<li><a href="class-Phramework.Models.Util.html">Util</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class Filter</h1>
+
+
+	<div class="description">
+	<p>Provides various methods for filtering data</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Models.html">Models</a><br>
+		<b>Package:</b> Phramework<br>
+
+				<b>Category:</b>
+				Models<br>
+				<b>License:</b>
+				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
+				<b>Author:</b>
+				Spafaridis Xenophon <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
+				<b>Since</b>
+				0<br>
+			<b>Located at</b> Models/Filter.php		<br>
+	</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h2>Methods summary</h2></div>
+			<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="in" id="_in">
+
+			<td class="attributes"><code>
+				 public static
+				type
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_in">#</a>
+			<code>in( <span>array <var>$data</var></span>, <span>array <var>$whitelist</var></span> )</code>
+
+			<div class="description short">
+				<p>Allow only keys of $whitelist in every row of $data array</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Allow only keys of $whitelist in every row of $data array</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$data</var></dt>
+						<dd></dd>
+						<dt><var>$whitelist</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						type
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="inEntry" id="_inEntry">
+
+			<td class="attributes"><code>
+				 public static
+				type
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_inEntry">#</a>
+			<code>inEntry( <span>array <var>$data</var></span>, <span>array <var>$whitelist</var></span> )</code>
+
+			<div class="description short">
+				<p>Allow only keys of $whitelist in object</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Allow only keys of $whitelist in object</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$data</var></dt>
+						<dd></dd>
+						<dt><var>$whitelist</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						type
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="out" id="_out">
+
+			<td class="attributes"><code>
+				 public static
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_out">#</a>
+			<code>out( <span>array <var>$data</var></span>, <span>array <var>$blacklist</var></span> )</code>
+
+			<div class="description short">
+				<p>Exclude blackisted keys of $blacklist in every row of $data array</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Exclude blackisted keys of $blacklist in every row of $data array</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$data</var></dt>
+						<dd></dd>
+						<dt><var>$blacklist</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="outEntry" id="_outEntry">
+
+			<td class="attributes"><code>
+				 public static
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_outEntry">#</a>
+			<code>outEntry( <span>array <var>$data</var></span>, <span>array <var>$blacklist</var></span> )</code>
+
+			<div class="description short">
+				<p>Exclude blackisted keys of $blacklist in $data object</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Exclude blackisted keys of $blacklist in $data object</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$data</var></dt>
+						<dd></dd>
+						<dt><var>$blacklist</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="string" id="_string">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_string">#</a>
+			<code>string( <span>string <var>$value</var></span>, <span>integer|null <var>$max_length</var> = <span class="php-keyword1">null</span></span> )</code>
+
+			<div class="description short">
+				<p>Filter string, applies FILTER_SANITIZE_STRING</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Filter string, applies FILTER_SANITIZE_STRING</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd>Input string</dd>
+						<dt><var>$max_length</var></dt>
+						<dd>Max length of the string, optional. Default value is NULL (no limit)</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Returns the filtered string
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="email" id="_email">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_email">#</a>
+			<code>email( <span>string <var>$value</var></span> )</code>
+
+			<div class="description short">
+				<p>Filter email</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Filter email</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Returns the filtered email
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="boolean" id="_boolean">
+
+			<td class="attributes"><code>
+				 public static
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_boolean">#</a>
+			<code>boolean( <span>string|boolean <var>$value</var></span> )</code>
+
+			<div class="description short">
+				<p>Parse input value as boolean</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Parse input value as boolean</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd>Input value</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean<br>Return the input value as boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="typecast" id="_typecast">
+
+			<td class="attributes"><code>
+				 public static
+				mixed
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_typecast">#</a>
+			<code>typecast( <span>mixed <var>&amp; $value</var></span>, <span>string <var>$type</var></span> )</code>
+
+			<div class="description short">
+				<p>Typecast a value</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Typecast a value</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd></dd>
+						<dt><var>$type</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						mixed<br>The typecasted value
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="castEntry" id="_castEntry">
+
+			<td class="attributes"><code>
+				 public static
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_castEntry">#</a>
+			<code>castEntry( <span>array <var>$entry</var></span>, <span>array <var>$model</var></span> )</code>
+
+			<div class="description short">
+				<p>Type cast entry's attributs based on the provided model</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Type cast entry's attributs based on the provided model</p>
+
+<p>If any TYPE_UNIX_TIMESTAMP are present an additional attribute will
+be included with the suffix _formatted, the format of the string can be
+changed from timestamp_format setting.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$entry</var></dt>
+						<dd></dd>
+						<dt><var>$model</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>Returns the typecasted entry
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="cast" id="_cast">
+
+			<td class="attributes"><code>
+				 public static
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_cast">#</a>
+			<code>cast( <span>array <var>$list</var></span>, <span>array <var>$model</var></span> )</code>
+
+			<div class="description short">
+				<p>Type cast each entry of list based on the provided model</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Type cast each entry of list based on the provided model</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$list</var></dt>
+						<dd></dd>
+						<dt><var>$model</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>Returns the typecasted list
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		Phramework API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
