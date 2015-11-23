@@ -142,5 +142,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
             $requestMethod,
             $requestHeaders
         );
+
+        return [$controller, $requestMethod];
     }
 }

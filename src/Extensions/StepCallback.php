@@ -28,11 +28,34 @@ class StepCallback
     /**
      * Step callbacks
      */
+
+    /**
+     * Callback has $params, $method, $headers, $callbackVariables
+     */
     const STEP_BEFORE_AUTHENTICATION_CHECK = 'STEP_BEFORE_AUTHENTICATION_CHECK';
+    /**
+     * Callback has $params, $method, $headers, $callbackVariables
+     */
     const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
+    /**
+     * Called before URIStrategy invocation
+     * Callback has $params, $method, $headers, $callbackVariables
+     */
     const STEP_BEFORE_CALL_URISTRATEGY = 'STEP_BEFORE_CALL_URISTRATEGY';
+    /**
+     * Called after URIStrategy invocation
+     * Callback has $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod
+     */
+    const STEP_AFTER_CALL_URISTRATEGY = 'STEP_AFTER_CALL_URISTRATEGY';
+    /**
+     * Callback has $params, $method, $headers, $callbackVariables
+     */
     const STEP_BEFORE_CLOSE = 'STEP_BEFORE_CLOSE';
+    /**
+     * Callback has $params, $method, $headers, $callbackVariables
+     */
     const STEP_FINALLY = 'STEP_FINALLY';
+
     /**
      * Hold all step callbacks
      * @var array Array of arrays
@@ -41,6 +64,11 @@ class StepCallback
 
     protected $variables = [];
 
+    /**
+     * Add a valiable to callback variables, passed to callback as parameter
+     * @param string $key
+     * @param mixed  $variable
+     */
     public function addVariable($key, $variable)
     {
         self::$variables[$key] = $variable;
@@ -58,19 +86,19 @@ class StepCallback
      */
     public function add($step, $callback)
     {
-
         //Check if step is allowed
         \Phramework\Validate\Validate::enum($step, [
-            self::STEP_FINALLY,
-            self::STEP_BEFORE_CALL_URISTRATEGY,
             self::STEP_BEFORE_AUTHENTICATION_CHECK,
             self::STEP_AFTER_AUTHENTICATION_CHECK,
+            self::STEP_AFTER_CALL_URISTRATEGY,
+            self::STEP_BEFORE_CALL_URISTRATEGY,
             self::STEP_BEFORE_CLOSE,
+            self::STEP_FINALLY
         ]);
 
         if (!is_callable($callback)) {
             throw new \Exception(
-                Phramework::getTranslated('callback_is_not_function_exception')
+                Phramework::getTranslated('Callback is not callable')
             );
         }
 
@@ -85,33 +113,34 @@ class StepCallback
     }
 
     /**
-     * Execute all callbacks set for this step]
+     * Execute all callbacks set for this step
      * @param string $step
-     * @param  array  $params  Request parameters
-     * @param  string $method  Request method
-     * @param  array  $headers Request headers
+     * @param array  $params  Request parameters
+     * @param string $method  Request method
+     * @param array  $headers Request headers
      */
     public function call(
         $step,
         $params = null,
         $method = null,
-        $headers = null
+        $headers = null,
+        $extra = []
     ) {
         if (!isset($this->stepCallback[$step])) {
             return null;
         }
-        foreach ($this->stepCallback[$step] as $s) {
-            if (!is_callable($s)) {
-                throw new \Exception(
-                    Phramework::getTranslated('Callback is not callable')
-                );
-            }
-
-            return $s(
-                self::$variables,
-                $params,
-                $method,
-                $headers
+        foreach ($this->stepCallback[$step] as $callback) {
+            return call_user_func_array(
+                $callback,
+                array_merge(
+                    [
+                        $params,
+                        $method,
+                        $headers,
+                        self::$variables
+                    ],
+                    $extra
+                )
             );
         }
     }
