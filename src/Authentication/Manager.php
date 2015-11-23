@@ -81,6 +81,11 @@ class Manager
     protected static $onAuthenticateCallback = null;
 
     /**
+     * @var callable|null
+     */
+    protected static $onCheckCallback = null;
+
+    /**
      * Set the method that accepts email and returns a user object
      * MUST containg a password, id, this method MUST also contain any other
      * attribute specified in JWT::setAttributes method
@@ -117,7 +122,7 @@ class Manager
 
     /**
      * Set a callback that will be executed after a successful authenticate
-     * execution, `jwt` token string and `data` array will be provided to the
+     * execution, `user` object will be provided to the
      * defined callback.
      * @param callable $callable
      */
@@ -133,5 +138,24 @@ class Manager
     public static function getOnAuthenticateCallback()
     {
         return self::$onAuthenticateCallback;
+    }
+
+    /**
+     * Set a callback that will be executed after a successful check
+     * execution
+     * @param callable $callable
+     */
+    public static function setOnCheckCallback($callable)
+    {
+        if (!is_callable($callable)) {
+            throw new \Exception('Provided method is not callable');
+        }
+
+        self::$onCheckCallback = $callable;
+    }
+
+    public static function getOnCheckCallback()
+    {
+        return self::$onCheckCallback;
     }
 }

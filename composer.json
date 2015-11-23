@@ -54,17 +54,14 @@
   },
   "scripts": {
     "test": [
-      "echo \"$(tput setaf 1) \\nPhramework test routine\\n$(tput sgr 0)\"",
       "find src/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
-      "echo \"$(tput setaf 1) \\nPhramework Examples/ test routine\\n$(tput sgr 0)\"",
       "find Examples/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
-      "echo \"$(tput setaf 1) \\nPhramework tests/ test routine\\n$(tput sgr 0)\"",
       "find tests/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
       "phpunit"
     ],
     "phpunit": "phpunit",
     "lint": "phpcs -p -s --standard=code-standard.xml ./src",
     "lint-examples": "phpcs -p -s --standard=code-standard.xml ./Examples",
-    "doc": "apigen generate -s ./src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"Phramework\""
+    "doc": "apigen generate -s ./src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"phramework doc\""
   }
 }
