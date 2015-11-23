@@ -8,7 +8,7 @@ ini_set('display_errors', '1');
 require __DIR__ . '/../../../vendor/autoload.php';
 
 //define controller namespace, as shortcut
-define('NS', '\\Examples\\API\\APP\\Controllers\\');
+define('NS', '\\Phramework\\Examples\\API\\APP\\Controllers\\');
 
 use \Phramework\Phramework;
 
@@ -32,7 +32,7 @@ $APP = function () {
 
     unset($settings);
 
-    $phramework->setViewerClass(
+    Phramework::setViewer(
         \Phramework\Viewers\JSON::class
     );
 

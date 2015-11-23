@@ -1,5 +1,5 @@
 {
-  "name": "Phramework/Examples/JSONAPI",
+  "name": "phramework/examples/jsonapi",
   "description": "PHP Framework for RESTful services",
   "homepage": "https://nohponex.gr",
   "authors": [{
@@ -15,18 +15,15 @@
     "url": "git@gitlab.mathlogic.eu:Phramework/jsonapi.git"
   }, {
     "type": "vcs",
-    "url": "git@gitlab.mathlogic.eu:Phramework/jwt.git"
-  }, {
-    "type": "vcs",
     "url": "git@gitlab.mathlogic.eu:Phramework/testphase.git"
   }],
   "autoload": {
     "psr-4": {
-      "APP\\": "APP/"
+      "Phramework\\Examples\\JSONAPI\\APP\\": "APP/"
     }
   },
   "require": {
-    "php": ">=5.5",
+    "php": ">=5.6",
     "phramework/phramework": "dev-master",
     "phramework/jsonapi": "dev-master"
   },

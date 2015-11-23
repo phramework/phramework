@@ -1,13 +1,13 @@
 <?php
-namespace Examples\API\APP\Controllers;
+namespace Phramework\Examples\API\APP\Controllers;
 
 use \Phramework\Phramework;
 use \Phramework\Validate\Validate;
 use \Phramework\Models\Request;
 use \Phramework\Models\Util;
-use \Examples\API\APP\Models\Book;
+use \Phramework\Examples\API\APP\Models\Book;
 
-class BookController extends \Examples\API\APP\Controller
+class BookController extends \Phramework\Examples\API\APP\Controller
 {
     public static function GET($params, $method, $headers)
     {
@@ -23,7 +23,7 @@ class BookController extends \Examples\API\APP\Controller
         $data = Book::getById($id);
 
         self::exists($data);
-        
+
         self::view([
             'data' => $data
         ]);

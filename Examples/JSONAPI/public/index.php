@@ -11,7 +11,7 @@ require __DIR__ . '/../../../vendor/autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 //define controller namespace, as shortcut
-define('NS', 'Examples\\JSONAPI\\APP\\Controllers\\');
+define('NS', 'Phramework\\Examples\\JSONAPI\\APP\\Controllers\\');
 
 use \Phramework\Phramework;
 

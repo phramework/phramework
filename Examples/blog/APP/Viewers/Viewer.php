@@ -1,6 +1,6 @@
 <?php
 
-namespace Examples\blog\APP\Viewers;
+namespace Phramework\Examples\blog\APP\Viewers;
 
 /**
  * @author Xenophon Spafaridis <nohponex@gmail.com>
@@ -38,11 +38,11 @@ class Viewer implements \Phramework\Viewers\IViewer
             $VIEWER_title = '';
         }
 
-        include __DIR__.'/header.php';
+        include __DIR__. '/header.php';
 
         //Include the page file
-        include __DIR__.'/pages/'.$VIEWER_page.'.php';
+        include __DIR__. '/pages/' . $VIEWER_page.'.php';
 
-        include __DIR__.'/footer.php';
+        include __DIR__. '/footer.php';
     }
 }

@@ -25,7 +25,7 @@ $APP = function () {
         $controller_whitelist,
         ['post', 'editor'],
         ['post', 'editor'],
-        "\\Examples\blog2\APP\\Controllers\\",
+        '\\Phramework\\Examples\blog2\APP\\Controllers\\',
         'Controller'
     );
 
@@ -34,7 +34,9 @@ $APP = function () {
 
     unset($settings);
 
-    $phramework->setViewerClass('\Examples\blog2\APP\Viewers\Viewer');
+    Phramework::setViewer(
+        \Phramework\Examples\blog2\APP\Viewers\Viewer::Class
+    );
 
     //Execute API
     $phramework->invoke();

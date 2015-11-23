@@ -49,7 +49,7 @@ class Manager
      */
     public static function check($params, $method, $headers)
     {
-        if (!self::$userGetByEmailMethod) {
+        if (count(self::$implementations) !== 0 && !self::$userGetByEmailMethod) {
             throw new \Phramework\Exceptions\ServerException(
                 'getUserByEmail method is not set'
             );

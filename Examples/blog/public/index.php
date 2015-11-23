@@ -6,7 +6,7 @@ ini_set('display_errors', '1');
 //This autoload path is for loading current version of phramework
 require __DIR__ . '/../../../vendor/autoload.php';
 
-define('NS', '\\Examples\\blog\\APP\\Controllers\\');
+define('NS', '\\Phramework\\Examples\\blog\\APP\\Controllers\\');
 
 use \Phramework\Phramework;
 
@@ -33,7 +33,9 @@ $APP = function() {
 
     unset($settings);
 
-    $phramework->setViewerClass('Examples\blog\APP\Viewers\Viewer');
+    Phramework::setViewer(
+        \Phramework\Examples\blog\APP\Viewers\Viewer::class
+    );
 
     //Execute API
     $phramework->invoke();

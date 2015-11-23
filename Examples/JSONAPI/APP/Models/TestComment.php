@@ -1,6 +1,6 @@
 <?php
 
-namespace Examples\JSONAPI\APP\Models;
+namespace Phramework\Examples\JSONAPI\APP\Models;
 
 use \Phramework\Models\Database;
 use \Phramework\Validate\Validate;

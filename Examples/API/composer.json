@@ -1,6 +1,6 @@
 {
-  "name": "Phramework/Examples/Blog2",
-  "description": "PHP Framework for RESTful services",
+  "name": "phramework/examples/api",
+  "description": "PHP framework for RESTful services",
   "homepage": "https://nohponex.gr",
   "authors": [{
     "name": "Xenophon Spafaridis",
@@ -9,8 +9,12 @@
   }],
   "autoload": {
     "psr-4": {
-      "APP\\": "APP/"
+      "Phramework\\Examples\\API\\APP\\": "APP/"
     }
+  },
+  "require": {
+    "php": ">=5.6",
+    "phramework/phramework": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

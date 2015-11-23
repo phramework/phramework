@@ -1,5 +1,5 @@
 <?php
-namespace Examples\API\APP\Models;
+namespace Phramework\Examples\API\APP\Models;
 
 use \Phramework\Models\Database;
 

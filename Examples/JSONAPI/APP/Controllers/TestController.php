@@ -1,12 +1,12 @@
 <?php
 
-namespace Examples\JSONAPI\APP\Controllers;
+namespace Phramework\Examples\JSONAPI\APP\Controllers;
 
 use \Phramework\Phramework;
 use \Phramework\Validate\Validate;
 use \Phramework\Models\Filter;
 use \Phramework\Models\Request;
-use \Examples\JSONAPI\APP\Models\Test;
+use \Phramework\Examples\JSONAPI\APP\Models\Test;
 
 use \Phramework\Validate\UnsignedInteger;
 use \Phramework\Validate\Enum;

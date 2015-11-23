@@ -1,5 +1,5 @@
 {
-  "name": "Phramework/Examples/Blog",
+  "name": "phramework/examples/blog",
   "description": "PHP Framework for RESTful services",
   "homepage": "https://nohponex.gr",
   "authors": [{
@@ -9,8 +9,12 @@
   }],
   "autoload": {
     "psr-4": {
-      "APP\\": "APP/"
+      "Phramework\\Examples\\blog\\APP\\": "APP/"
     }
+  },
+  "require": {
+    "php": ">=5.6",
+    "phramework/phramework": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

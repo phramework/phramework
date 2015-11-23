@@ -330,7 +330,7 @@ class Phramework
             }
 
             //STEP_AFTER_AUTHENTICATION_CHECK
-            $this->StepCallback->call(
+            $this->stepCallback->call(
                 StepCallback::STEP_BEFORE_AUTHENTICATION_CHECK,
                 $params,
                 $method,
@@ -350,7 +350,7 @@ class Phramework
             }
 
             //STEP_AFTER_AUTHENTICATION_CHECK
-            $this->StepCallback->call(
+            $this->stepCallback->call(
                 StepCallback::STEP_AFTER_AUTHENTICATION_CHECK,
                 $params,
                 $method,
@@ -382,7 +382,7 @@ class Phramework
 
             //Set language variable
             self::$language = $language;
-            $this->translation->setLanguageCode($language);
+            //self::$translation->setLanguageCode($language);
 
             //Override method HEAD.
             // When HEAD method is called the GET method will be executed but no response boy will be send
@@ -393,7 +393,7 @@ class Phramework
             //}
 
             //STEP_BEFORE_CALL_URISTRATEGY
-            $this->StepCallback->call(
+            $this->stepCallback->call(
                 StepCallback::STEP_BEFORE_CALL_URISTRATEGY,
                 $params,
                 $method,
@@ -403,11 +403,8 @@ class Phramework
             //Call controller's method
             self::$URIStrategy->invoke($method, $params, $headers, self::$user);
 
-            //Unset all
-            unset($params);
-
             //STEP_BEFORE_CLOSE
-            $this->StepCallback->call(
+            $this->stepCallback->call(
                 StepCallback::STEP_BEFORE_CLOSE,
                 $params,
                 $method,
@@ -515,12 +512,15 @@ class Phramework
                 'title' => 'Error'
             ]]);
         } finally {
-            $this->StepCallback->call(
+            $this->stepCallback->call(
                 StepCallback::STEP_FINALLY,
                 $params,
                 $method,
                 $headers
             );
+
+            //Unset all
+            unset($params);
 
             //Try to close the databse
             Models\Database::close();

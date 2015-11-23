@@ -1,6 +1,6 @@
 <?php
 
-namespace Examples\JSONAPI\APP;
+namespace Phramework\Examples\JSONAPI\APP;
 
 use \Examples\JSONAPI\APP\Models\Request;
 

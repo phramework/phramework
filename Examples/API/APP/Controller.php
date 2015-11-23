@@ -1,6 +1,6 @@
 <?php
 
-namespace Examples\API\APP;
+namespace Phramework\Examples\API\APP;
 
 /**
  * Base controller

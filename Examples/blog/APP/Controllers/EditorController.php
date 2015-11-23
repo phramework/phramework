@@ -1,11 +1,11 @@
 <?php
 
-namespace Examples\blog\APP\Controllers;
+namespace Phramework\Examples\blog\APP\Controllers;
 
 use Phramework\Phramework;
 use Phramework\Validate\Validate;
 use Phramework\Models\Request;
-use Examples\blog\APP\Models\Post;
+use Phramework\Examples\blog\APP\Models\Post;
 
 class EditorController
 {

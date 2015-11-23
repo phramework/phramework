@@ -1,6 +1,6 @@
 {
   "name": "phramework/phramework",
-  "description": "PHP Framework for RESTful services",
+  "description": "PHP framework for RESTful services",
   "license": "Apache-2.0",
   "type": "library",
   "keywords": [
@@ -19,7 +19,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Examples\\": "Examples"
+      "Phramework\\Examples\\": "Examples/"
     }
   },
   "repositories": [],
