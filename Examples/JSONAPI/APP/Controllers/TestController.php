@@ -20,7 +20,7 @@ use \Phramework\Validate\ArrayValidator;
 /**
  * Controller for /test endpoint
  */
-class TestController extends \Examples\JSONAPI\APP\Controller
+class TestController extends \Phramework\Examples\JSONAPI\APP\Controller
 {
     /**
      * Get collection
