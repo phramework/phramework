@@ -26,31 +26,32 @@ use Phramework\Phramework;
 class StepCallback
 {
     /**
-     * Step callbacks
-     */
-
-    /**
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_AUTHENTICATION_CHECK = 'STEP_BEFORE_AUTHENTICATION_CHECK';
+    
     /**
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
+    
     /**
      * Called before URIStrategy invocation
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_CALL_URISTRATEGY = 'STEP_BEFORE_CALL_URISTRATEGY';
+    
     /**
      * Called after URIStrategy invocation
      * Callback has $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod
      */
     const STEP_AFTER_CALL_URISTRATEGY = 'STEP_AFTER_CALL_URISTRATEGY';
+    
     /**
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_CLOSE = 'STEP_BEFORE_CLOSE';
+
     /**
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */

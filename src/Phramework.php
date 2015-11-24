@@ -223,7 +223,7 @@ class Phramework
 
             //Initialize Database connection if required or db set
             if (self::getSetting('require_db') || self::getSetting('db')) {
-                Models\Database::requireDatabase(self::getSetting('db'));
+                \Phramework\Models\Database::requireDatabase(self::getSetting('db'));
             }
 
             //Unset from memory Database connection information
@@ -594,7 +594,7 @@ class Phramework
             unset($params);
 
             //Try to close the databse
-            \Phamework\Models\Database::close();
+            \Phramework\Models\Database::close();
         }
     }
 
