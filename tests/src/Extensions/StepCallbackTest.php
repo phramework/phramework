@@ -56,7 +56,7 @@ class StepCallbackTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Phramework\Extensions\StepCallback::add
+     * @covers Phramework\Extensions\StepCallback::call
      */
     public function testCall()
     {

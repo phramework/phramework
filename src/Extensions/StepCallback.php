@@ -62,7 +62,7 @@ class StepCallback
      */
     protected $stepCallback;
 
-    protected $variables = [];
+    protected $variables;
 
     /**
      * Add a valiable to callback variables, passed to callback as parameter
@@ -129,7 +129,7 @@ class StepCallback
         $extra = []
     ) {
         if (!isset($this->stepCallback[$step])) {
-            return null;
+            return false;
         }
 
         foreach ($this->stepCallback[$step] as $callback) {
@@ -152,5 +152,6 @@ class StepCallback
     public function __contstruct()
     {
         $this->stepCallback = [];
+        $this->variables = [];
     }
 }
