@@ -157,17 +157,19 @@ class Phramework
      * @param type $parameters
      * @param type $fallbackValue
      * @return type
+     * @todo implemtation
      */
     public static function getTranslated(
         $key,
         $parameters = null,
         $fallbackValue = null
     ) {
-        return self::$translation->getTranslated(
+        return ($fallbackValue !== null ? $fallbackValue : $key);
+        /**return self::$translation->getTranslated(
             $key,
             $parameters,
             $fallbackValue
-        );
+        );*/
     }
 
     /**

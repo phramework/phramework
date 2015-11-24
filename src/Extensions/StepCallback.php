@@ -30,29 +30,29 @@ class StepCallback
      */
 
     /**
-     * Callback has $params, $method, $headers, $callbackVariables
+     * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_AUTHENTICATION_CHECK = 'STEP_BEFORE_AUTHENTICATION_CHECK';
     /**
-     * Callback has $params, $method, $headers, $callbackVariables
+     * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
     /**
      * Called before URIStrategy invocation
-     * Callback has $params, $method, $headers, $callbackVariables
+     * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_CALL_URISTRATEGY = 'STEP_BEFORE_CALL_URISTRATEGY';
     /**
      * Called after URIStrategy invocation
-     * Callback has $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod
+     * Callback has $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod
      */
     const STEP_AFTER_CALL_URISTRATEGY = 'STEP_AFTER_CALL_URISTRATEGY';
     /**
-     * Callback has $params, $method, $headers, $callbackVariables
+     * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_CLOSE = 'STEP_BEFORE_CLOSE';
     /**
-     * Callback has $params, $method, $headers, $callbackVariables
+     * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_FINALLY = 'STEP_FINALLY';
 
@@ -71,7 +71,7 @@ class StepCallback
      */
     public function addVariable($key, $variable)
     {
-        self::$variables[$key] = $variable;
+        $this->variables[$key] = $variable;
     }
 
     /**
@@ -114,6 +114,8 @@ class StepCallback
 
     /**
      * Execute all callbacks set for this step
+     * The value of `$params` and `$headers` can be passed by reference
+     * so the callback functions can modify these variables
      * @param string $step
      * @param array  $params  Request parameters
      * @param string $method  Request method
@@ -121,23 +123,25 @@ class StepCallback
      */
     public function call(
         $step,
-        $params = null,
+        &$params = null,
         $method = null,
-        $headers = null,
+        &$headers = null,
         $extra = []
     ) {
         if (!isset($this->stepCallback[$step])) {
             return null;
         }
+
         foreach ($this->stepCallback[$step] as $callback) {
-            return call_user_func_array(
+            call_user_func_array(
                 $callback,
                 array_merge(
                     [
-                        $params,
+                        $step,
+                        &$params,
                         $method,
-                        $headers,
-                        self::$variables
+                        &$headers,
+                        $this->variables
                     ],
                     $extra
                 )
