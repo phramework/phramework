@@ -3,6 +3,8 @@ Version 1.x, _code name "Thales"_
 
 A PHP framework for RESTful services and APIs
 
+[![Build Status](https://travis-ci.org/phramework/phramework.svg?branch=master)](https://travis-ci.org/phramework/phramework)
+
 ## Install
 
 ```bash

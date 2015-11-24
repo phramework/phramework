@@ -217,7 +217,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                         $URI_parameters
                     )
                 );
-                return true;
+                return [$class, $method];
             }
         }
 

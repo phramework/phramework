@@ -157,17 +157,19 @@ class Phramework
      * @param type $parameters
      * @param type $fallbackValue
      * @return type
+     * @todo implemtation
      */
     public static function getTranslated(
         $key,
         $parameters = null,
         $fallbackValue = null
     ) {
-        return self::$translation->getTranslated(
+        return ($fallbackValue !== null ? $fallbackValue : $key);
+        /**return self::$translation->getTranslated(
             $key,
             $parameters,
             $fallbackValue
-        );
+        );*/
     }
 
     /**
@@ -197,7 +199,7 @@ class Phramework
         $params = [];
         $method = '';
         $headers = [];
-        
+
         try {
             date_default_timezone_set('Europe/Athens');
 
@@ -358,7 +360,8 @@ class Phramework
                 StepCallback::STEP_AFTER_AUTHENTICATION_CHECK,
                 $params,
                 $method,
-                $headers
+                $headers,
+                [self::$user]
             );
 
             //Default language value
@@ -405,7 +408,20 @@ class Phramework
             );
 
             //Call controller's method
-            self::$URIStrategy->invoke($method, $params, $headers, self::$user);
+            list($invokedController, $invokedMethod) = self::$URIStrategy->invoke(
+                $method,
+                $params,
+                $headers,
+                self::$user
+            );
+
+            $this->stepCallback->call(
+                StepCallback::STEP_AFTER_CALL_URISTRATEGY,
+                $params,
+                $method,
+                $headers,
+                [$invokedController, $invokedMethod]
+            );
 
             //STEP_BEFORE_CLOSE
             $this->stepCallback->call(
