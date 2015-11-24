@@ -69,17 +69,13 @@ class Phramework
      * StepCallback extension
      * @var Phramework\Extensions\StepCallback
      */
-    public $stepCallback;
+    public static $stepCallback;
+
     /**
      * translation extension
      * @var Phramework\Extensions\translation
      */
     public static $translation;
-
-    /**
-     * Default mode
-     */
-    const MODE_DEFAULT = 'default';
 
     /**
      * Initialize API
@@ -100,7 +96,7 @@ class Phramework
         self::$language = 'en';
 
         //Instantiate StepCallback object
-        $this->stepCallback = new \Phramework\Extensions\StepCallback();
+        self::$stepCallback = new \Phramework\Extensions\StepCallback();
 
         if (!is_subclass_of(
             $URIStrategyObject,
@@ -336,7 +332,7 @@ class Phramework
             }
 
             //STEP_AFTER_AUTHENTICATION_CHECK
-            $this->stepCallback->call(
+            self::$stepCallback->call(
                 StepCallback::STEP_BEFORE_AUTHENTICATION_CHECK,
                 $params,
                 $method,
@@ -356,7 +352,7 @@ class Phramework
             }
 
             //STEP_AFTER_AUTHENTICATION_CHECK
-            $this->stepCallback->call(
+            self::$stepCallback->call(
                 StepCallback::STEP_AFTER_AUTHENTICATION_CHECK,
                 $params,
                 $method,
@@ -391,16 +387,8 @@ class Phramework
             self::$language = $language;
             //self::$translation->setLanguageCode($language);
 
-            //Override method HEAD.
-            // When HEAD method is called the GET method will be executed but no response boy will be send
-            // we update the value of local variable $method sinse then original
-            // requested method is stored at Phramework::$method
-            //if ($method == self::METHOD_HEAD) {
-            //    $method = self::METHOD_GET;
-            //}
-
             //STEP_BEFORE_CALL_URISTRATEGY
-            $this->stepCallback->call(
+            self::$stepCallback->call(
                 StepCallback::STEP_BEFORE_CALL_URISTRATEGY,
                 $params,
                 $method,
@@ -415,7 +403,7 @@ class Phramework
                 self::$user
             );
 
-            $this->stepCallback->call(
+            self::$stepCallback->call(
                 StepCallback::STEP_AFTER_CALL_URISTRATEGY,
                 $params,
                 $method,
@@ -424,7 +412,7 @@ class Phramework
             );
 
             //STEP_BEFORE_CLOSE
-            $this->stepCallback->call(
+            self::$stepCallback->call(
                 StepCallback::STEP_BEFORE_CLOSE,
                 $params,
                 $method,
@@ -436,63 +424,105 @@ class Phramework
                 $exception->getMessage()
             );
 
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'title' => $exception->getMessage()
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\RequestExceptionException $exception) {
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'title' => $exception->getMessage()
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\PermissionException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
 
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'title' => $exception->getMessage()
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\UnauthorizedException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
 
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'title' => $exception->getMessage()
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\MissingParametersException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
 
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'meta' => [
-                    'missing' => $exception->getParameters()
-                ],
-                'title' => $exception->getMessage()
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'meta' => [
+                        'missing' => $exception->getParameters()
+                    ],
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
 
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'meta' => [
-                    'incorrect' => $exception->getParameters()
-                ],
-                'title' => $exception->getMessage()
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'meta' => [
+                        'incorrect' => $exception->getParameters()
+                    ],
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\MethodNotAllowedException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
@@ -503,36 +533,57 @@ class Phramework
                 header('Allow: ' . implode(', ', $exception->getAllowedMethods()));
             }
 
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'meta' => [
-                    'allow' => $exception->getAllowedMethods()
-                ],
-                'title' => $exception->getMessage()
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'meta' => [
+                        'allow' => $exception->getAllowedMethods()
+                    ],
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\RequestException $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
 
-            self::errorView([[
-                'status' => $exception->getCode(),
-                'detail' => $exception->getMessage(),
-                'title' => 'Request Error'
-            ]], $exception->getCode());
+            self::errorView(
+                [[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'title' => 'Request Error'
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Exception $exception) {
             self::writeErrorLog(
                 $exception->getMessage()
             );
 
-            self::errorView([[
-                'status' => 400,
-                'detail' => $exception->getMessage(),
-                'title' => 'Error'
-            ]]);
+            self::errorView(
+                [[
+                    'status' => 400,
+                    'detail' => $exception->getMessage(),
+                    'title' => 'Error'
+                ]],
+                400,
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } finally {
-            $this->stepCallback->call(
+            self::$stepCallback->call(
                 StepCallback::STEP_FINALLY,
                 $params,
                 $method,
@@ -543,7 +594,7 @@ class Phramework
             unset($params);
 
             //Try to close the databse
-            Models\Database::close();
+            \Phamework\Models\Database::close();
         }
     }
 
@@ -659,8 +710,22 @@ class Phramework
      * and the 'code' message the error code,
      * note that if headers are not send the response code will set with the 'code' value.
      */
-    private static function errorView($errors, $code = 400)
-    {
+    private static function errorView(
+        $errors,
+        $code = 400,
+        $params = null,
+        $method = null,
+        $headers = null,
+        $exception = null
+    ) {
+        self::$stepCallback->call(
+            StepCallback::STEP_ERROR,
+            $params,
+            $method,
+            $headers,
+            [$errors, $code, $exception]
+        );
+
         if (!headers_sent()) {
             http_response_code($code);
         }

@@ -57,6 +57,12 @@ class StepCallback
     const STEP_FINALLY = 'STEP_FINALLY';
 
     /**
+     * Called after exception is thrown
+     * Callback has $step, $params, $method, $headers, $callbackVariables, $errors, $code, $exception
+     */
+    const STEP_ERROR = 'STEP_ERROR';
+
+    /**
      * Hold all step callbacks
      * @var array Array of arrays
      */
@@ -93,7 +99,8 @@ class StepCallback
             self::STEP_AFTER_CALL_URISTRATEGY,
             self::STEP_BEFORE_CALL_URISTRATEGY,
             self::STEP_BEFORE_CLOSE,
-            self::STEP_FINALLY
+            self::STEP_FINALLY,
+            self::STEP_ERROR
         ]);
 
         if (!is_callable($callback)) {
