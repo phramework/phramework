@@ -3,5 +3,10 @@ php:
   - 5.6
 install:
  - composer install
-script: 
+before_script:
+ - mkdir -p build/
+ - mkdir -p build/logs
+script:
  - composer test
+after_script:
+ - php vendor/bin/coveralls -v

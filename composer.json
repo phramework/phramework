@@ -38,7 +38,8 @@
     "phpunit/phpunit-skeleton-generator": "*",
     "squizlabs/php_codesniffer": "*",
     "apigen/apigen": "^4.1",
-    "ext-pdo_sqlite": "*"
+    "ext-pdo_sqlite": "*",
+    "satooshi/php-coveralls": "dev-master"
   },
   "support": {
     "email": "phramework@nohponex.gr"
