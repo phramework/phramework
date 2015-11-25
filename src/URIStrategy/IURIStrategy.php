@@ -24,5 +24,26 @@ namespace Phramework\URIStrategy;
  */
 interface IURIStrategy
 {
-    public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser);
+    /**
+     * Invoke URIStrategy, the implementation of this method MUST associate the
+     * request and invoke the apropriate method to handle this request.
+     * Invokes to handler method MUST at least define
+     * `$requestParameters, $requestMethod, $requestHeaders` as arguments.
+     * NotFoundException SHOULD be when associatation between the request and
+     * handler is not defined
+     * UnauthorizedException SHOULD be thrown when a request requires authorization
+     * @param  array        $requestParameters Request parameters
+     * @param  string       $requestMethod     HTTP request method
+     * @param  array        $requestHeaders    Request headers
+     * @param  object|false $requestUser       Use object if successful
+     * authenticated otherwise false
+     * @return string[] This method SHOULD return a tuple specifing at least
+     * `[$class, $method]` on success.
+     */
+    public function invoke(
+        $requestParameters,
+        $requestMethod,
+        $requestHeaders,
+        $requestUser
+    );
 }

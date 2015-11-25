@@ -76,16 +76,27 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
         $suffix = ''
     ) {
 
-        $this->controller_whitelist                   = $controllerWhitelist;
+        $this->controller_whitelist                 = $controllerWhitelist;
         $this->controller_unauthenticated_whitelist = $controllerUnauthenticatedWhitelist;
-        $this->controller_public_whitelist           = $controllerPublicWhitelist;
-        $this->namespace                               = $namespace;
-        $this->suffix                                  = $suffix;
+        $this->controller_public_whitelist          = $controllerPublicWhitelist;
+        $this->namespace                            = $namespace;
+        $this->suffix                               = $suffix;
     }
 
+    /**
+     * Invoke URIStrategy
+     * @param  array        $requestParameters Request parameters
+     * @param  string       $requestMethod     HTTP request method
+     * @param  array        $requestHeaders    Request headers
+     * @param  object|false $requestUser       Use object if successful
+     * authenticated otherwise false
+     * @throws NotFoundException
+     * @throws UnauthorizedException
+     * @return string[] This method should return `[$class, $method]` on success
+     */
     public function invoke(
-        $requestMethod,
         $requestParameters,
+        $requestMethod,
         $requestHeaders,
         $requestUser
     ) {
@@ -135,7 +146,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
             }
         }
 
-        //Call controller's method
+        //Call handler method
         call_user_func(
             [$this->namespace . $controller, $requestMethod],
             $requestParameters,

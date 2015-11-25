@@ -33,6 +33,18 @@ abstract class BaseValidator
     protected static $type = 'string';
 
     /**
+     * This static method will instanciate a new object as validation model
+     * to parse the input value
+     * @param mixed $value Input value to validate
+     */
+    public static function parseStatic($value)
+    {
+        $validationObject = new static();
+
+        return $validationObject->parse($value);
+    }
+
+    /**
     * Validate value
     * @see \Phramework\Validate\ValidateResult for ValidateResult object
     * @param  mixed $value Input value to validate
@@ -67,7 +79,7 @@ abstract class BaseValidator
         'default',
         'format'
     ];
-    
+
     public $default;
 
     /**
@@ -164,12 +176,10 @@ abstract class BaseValidator
     /**
      * This method use this validator to parse data from $value argument
      * and return a clean object
-     * @param  array|stdClass $value Input value to validate
+     * @param  mixed $value Input value to validate
      * @throws \Phramework\Exceptions\MissingParametersException
      * @throws \Phramework\Exceptions\IncorrectParametersException
-     * @return \stdClass        [description]
-     * @todo find out if MissingParameters
-     * @todo add errors
+     * @return mixed
      */
     public function parse($value)
     {
@@ -194,7 +204,6 @@ abstract class BaseValidator
      * Create validator from validation object
      * @param  \stdClass $object Validation object
      * @return BaseValidator
-     * @todo use $isFromBase to initialize Validator by name
      */
     public static function createFromObject($object)
     {

@@ -24,8 +24,8 @@ class TestController extends \Phramework\Examples\JSONAPI\APP\Controller
 {
     /**
      * Get collection
-     * @param  array  $params  Request parameters
-     * @param  string $method  Request method
+     * @param  array  $params   Request parameters
+     * @param  string $method   Request method
      * @param  array  $headers  Request headers
      */
     public static function GET($params, $method, $headers)

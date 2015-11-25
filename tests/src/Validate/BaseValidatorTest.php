@@ -38,6 +38,29 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Phramework\Validate\BaseValidator::parseStatic
+     */
+    public function testParseStatic()
+    {
+        $this->assertSame(
+            5,
+            Integer::parseStatic('5'),
+            'Expect to convert 5 to integer'
+        );
+
+        $this->assertSame(
+            5.5,
+            Number::parseStatic('5.5')
+        );
+
+        $o = Object::parseStatic(['ok' => true]);
+
+        $this->assertInternalType('object', $o);
+        $this->assertObjectHasAttribute('ok', $o);
+        $this->assertSame(true, $o->ok);
+    }
+
+    /**
      * @covers Phramework\Validate\BaseValidator::createFromJSON
      */
     public function testCreateFromJSON()
@@ -165,12 +188,12 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
         $validationObject = new Object(
             [ //properties
-                'weight' => new Integer(-10,10, true),
+                'weight' => new Integer(-10, 10, true),
                 'obj' => new Object(
                     [ //properties
                         'valid' => new Boolean(),
-                        'number' => new Number(0,100),
-                        'not_required' => (new Number(0,100))->setDefault(5.5),
+                        'number' => new Number(0, 100),
+                        'not_required' => (new Number(0, 100))->setDefault(5.5),
                     ],
                     ['valid'] //required
                 )
@@ -183,7 +206,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('object', $record->obj);
         $this->assertInternalType('float', $record->obj->not_required);
         $this->assertEquals(5, $record->weight);
-        $this->assertTrue( $record->obj->valid);
+        $this->assertTrue($record->obj->valid);
         $this->assertEquals(5.5, $record->obj->not_required);
     }
 
@@ -194,7 +217,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $input = '5';
 
-        $validationModel = new Integer(0,6);
+        $validationModel = new Integer(0, 6);
 
         $cleanInput = $validationModel->parse($input);
 
@@ -219,12 +242,12 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
         $validationObject = new Object(
             [ //properties
-                'weight' => new Integer(-10,10, true),
+                'weight' => new Integer(-10, 10, true),
                 'obj' => new Object(
                     [ //properties
                         'valid' => new Boolean(),
-                        'number' => new Number(0,100),
-                        'not_required' => (new Number(0,100))->setDefault(5.5),
+                        'number' => new Number(0, 100),
+                        'not_required' => (new Number(0, 100))->setDefault(5.5),
                     ],
                     ['valid'] //required
                 )
@@ -252,12 +275,12 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
 
         $validationObject = new Object(
             [ //properties
-                'weight' => new Integer(-10,10, true),
+                'weight' => new Integer(-10, 10, true),
                 'obj' => new Object(
                     [ //properties
                         'valid' => new Boolean(),
-                        'number' => new Number(0,100),
-                        'not_required' => (new Number(0,100))->setDefault(5),
+                        'number' => new Number(0, 100),
+                        'not_required' => (new Number(0, 100))->setDefault(5),
                     ],
                     ['valid'] //required
                 )
@@ -277,7 +300,7 @@ class BaseValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $input = '87';
 
-        $validationModel = new Integer(0,6);
+        $validationModel = new Integer(0, 6);
 
         $cleanInput = $validationModel->parse($input);
     }

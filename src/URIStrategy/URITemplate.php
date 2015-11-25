@@ -148,18 +148,23 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
     }
 
     /**
-     * [invoke description]
-     * @param  string $requestMethod     [description]
-     * @param  array $requestParameters [description]
-     * @param  array $requestHeaders    [description]
-     * @param  stdObject|false $requestUser       [description]
+     * Invoke URIStrategy
+     * @param  array        $requestParameters Request parameters
+     * @param  string       $requestMethod     HTTP request method
+     * @param  array        $requestHeaders    Request headers
+     * @param  object|false $requestUser       Use object if successful
+     * authenticated otherwise false
      * @throws NotFoundException
-     * @throws NotFoundException
-     * @throws PermissionException
+     * @throws UnauthorizedException
      * @todo Use named parameters in future if available by PHP
+     * @return string[] This method should return `[$class, $method]` on success
      */
-    public function invoke($requestMethod, $requestParameters, $requestHeaders, $requestUser)
-    {
+    public function invoke(
+        $requestParameters,
+        $requestMethod,
+        $requestHeaders,
+        $requestUser
+    ) {
         // Get request uri and uri parameters
         list($URI, $URI_parameters) = $this->URI();
 
@@ -177,7 +182,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                 continue;
             }
 
-            $URITemplate = $template[0];
+            list($URITemplate, $class, $method) = $template;
 
             //Test if uri matches the current uri template
             $test = $this->test($URITemplate, $URI);
@@ -189,23 +194,24 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
                 list($URI_parameters) = $test;
 
-                $class   = $template[1];
-                $method  = $template[2];
-
                 //Merge all available parameters
-                $parameters = array_merge($requestParameters, $URI_parameters, $test[0]);
+                $parameters = array_merge(
+                    $requestParameters,
+                    $URI_parameters,
+                    $test[0]
+                );
 
                 /**
-                 * Check if the requested controller and model is callable
+                 * Check if the requested controller and it's method is callable
                  * In order to be callable :
                  * @todo complete documentation
                  * @todo log to server
                  */
-                if (!is_callable("$class::$method")) {
+                if (!is_callable($class . '::' . $method)) {
                     throw new NotFoundException('Method not found');
                 }
 
-                //Call method
+                //Call handler method
                 call_user_func_array(
                     [$class, $method],
                     array_merge(
