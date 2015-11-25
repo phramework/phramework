@@ -29,7 +29,7 @@ mb_http_output('UTF-8');
 // @codingStandardsIgnoreEnd
 
 /**
- * API 'framework' by NohponeX
+ * API 'framework'
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenofon <nohponex@gmail.com>
  * @version 1.0.0

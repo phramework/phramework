@@ -28,9 +28,9 @@
     "ext-json": "*"
   },
   "suggest": {
-    "ext-pdo": "*",
     "ext-curl": "*",
-    "ext-pfo_pgsql": "*",
+    "ext-pdo": "*",
+    "ext-pdo_pgsql": "*",
     "ext-pdo_mysql": "*"
   },
   "require-dev": {
