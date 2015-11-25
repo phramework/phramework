@@ -26,35 +26,42 @@ use Phramework\Phramework;
 class StepCallback
 {
     /**
-     * Step callbacks
+     * Callback has $step, $params, $method, $headers, $callbackVariables
      */
+    const STEP_BEFORE_AUTHENTICATION_CHECK = 'STEP_BEFORE_AUTHENTICATION_CHECK';
 
     /**
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
-    const STEP_BEFORE_AUTHENTICATION_CHECK = 'STEP_BEFORE_AUTHENTICATION_CHECK';
-    /**
-     * Callback has $step, $params, $method, $headers, $callbackVariables
-     */
     const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
+
     /**
      * Called before URIStrategy invocation
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_CALL_URISTRATEGY = 'STEP_BEFORE_CALL_URISTRATEGY';
+
     /**
      * Called after URIStrategy invocation
      * Callback has $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod
      */
     const STEP_AFTER_CALL_URISTRATEGY = 'STEP_AFTER_CALL_URISTRATEGY';
+
     /**
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_CLOSE = 'STEP_BEFORE_CLOSE';
+
     /**
      * Callback has $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_FINALLY = 'STEP_FINALLY';
+
+    /**
+     * Called after exception is thrown
+     * Callback has $step, $params, $method, $headers, $callbackVariables, $errors, $code, $exception
+     */
+    const STEP_ERROR = 'STEP_ERROR';
 
     /**
      * Hold all step callbacks
@@ -62,7 +69,7 @@ class StepCallback
      */
     protected $stepCallback;
 
-    protected $variables = [];
+    protected $variables;
 
     /**
      * Add a valiable to callback variables, passed to callback as parameter
@@ -93,7 +100,8 @@ class StepCallback
             self::STEP_AFTER_CALL_URISTRATEGY,
             self::STEP_BEFORE_CALL_URISTRATEGY,
             self::STEP_BEFORE_CLOSE,
-            self::STEP_FINALLY
+            self::STEP_FINALLY,
+            self::STEP_ERROR
         ]);
 
         if (!is_callable($callback)) {
@@ -129,7 +137,7 @@ class StepCallback
         $extra = []
     ) {
         if (!isset($this->stepCallback[$step])) {
-            return null;
+            return false;
         }
 
         foreach ($this->stepCallback[$step] as $callback) {
@@ -149,8 +157,9 @@ class StepCallback
         }
     }
 
-    public function __contstruct()
+    public function __construct()
     {
         $this->stepCallback = [];
+        $this->variables = [];
     }
 }
