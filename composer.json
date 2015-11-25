@@ -29,9 +29,9 @@
   },
   "suggest": {
     "ext-curl": "*",
-    "ext-pdo": "*",
-    "ext-pdo_pgsql": "*",
-    "ext-pdo_mysql": "*"
+    "ext-pdo": "Required when database is used",
+    "ext-pdo_pgsql": "Required when postgreSQL database sql is used",
+    "ext-pdo_mysql": "Required when MySQL or MariaDB database is used"
   },
   "require-dev": {
     "phpunit/phpunit": "5.*",
