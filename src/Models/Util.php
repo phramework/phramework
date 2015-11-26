@@ -350,8 +350,8 @@ class Util
 
     /**
      * Create a temporary file path
-     * @param String $prefix Prefix of the filename
-     * @return String The path of the temporary filename
+     * @param string $prefix Prefix of the filename
+     * @return string The path of the temporary filename
      */
     public static function tempfile($prefix)
     {
@@ -365,8 +365,8 @@ class Util
 
     /**
      * Extract extension from a filename
-     * @param String $filename The filename
-     * @return String The extension without dot prefix
+     * @param string $filename The filename
+     * @return string The extension without dot prefix
      */
     public static function extension($filename)
     {
@@ -376,7 +376,7 @@ class Util
     /**
      * Join directories and filename to create path
      * @param array $array Array with directories and filename for example array( '/tmp', 'me', 'file.tmp' )
-     * @return String Path
+     * @return string Path
      */
     public static function getPath($array, $glue = DIRECTORY_SEPARATOR)
     {

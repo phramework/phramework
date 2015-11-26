@@ -23,6 +23,7 @@ namespace Phramework\Extensions;
  * used to translate keyword into multiple languages
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenophon Spafaridis <nohponex@gmail.com>
+ * @deprecated
  */
 class Translation
 {

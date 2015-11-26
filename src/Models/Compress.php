@@ -30,10 +30,10 @@ class Compress
 {
     /**
      * Uncompress file archive
-     * @param String $compressed_file Archive path
-     * @param String $destination_folder Destination folder to uncompress files
-     * @param String $original_filename Original file name
-     * @param String $format Select format mode, Default is gz, gz, zip and tar are available.
+     * @param string $compressed_file Archive path
+     * @param string $destination_folder Destination folder to uncompress files
+     * @param string $original_filename Original file name
+     * @param string $format Select format mode, Default is gz, gz, zip and tar are available.
      * @return Array Returns a list with the uncompresed files
      */
     public static function uncompress(

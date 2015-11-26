@@ -31,7 +31,7 @@ class PostgreSQL implements IAdapter
      */
     protected $link;
 
-    protected $adapterName = 'mysql';
+    protected $adapterName = 'postgresql';
 
     /**
      * Get adapter's name

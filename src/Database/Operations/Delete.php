@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Models\SCRUD;
+namespace Phramework\Database\Operations;
 
-use Phramework\Models\Database;
+use \Phramework\Database\Database;
 
 /**
  * Delete model

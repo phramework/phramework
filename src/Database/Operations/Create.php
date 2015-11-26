@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Models\SCRUD;
+namespace Phramework\Database\Operations;
 
-use Phramework\Validate\Validate;
-use Phramework\Models\Database;
-use Phramework\Phramework\Exceptions\RequestExceptionException;
-use Phramework\Phramework\Exceptions\NotFoundException;
+use \Phramework\Validate\Validate;
+use \Phramework\Database\Database;
+use \Phramework\Exceptions\RequestExceptionException;
+use \Phramework\Exceptions\NotFoundException;
 
 /**
  * create model

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Models;
+namespace Phramework\Database;
 
 use \Phramework\Exceptions\DatabaseException;
 use \PDO;
@@ -205,7 +205,7 @@ class Database
      *
      * @param string $query Query string
      * @param array  $parameters Query parameters
-     * @param array $castModel [Optional] Default is null, if set
+     * @param array  $castModel [Optional] Default is null, if set
      * then \Phramework\Models\Filter::castEntry will be applied to data
      * @return type
      * @throws \Phramework\Exceptions\DatabaseException
@@ -224,7 +224,7 @@ class Database
      *
      * @param string $query Query string
      * @param array  $parameters Query parameters
-     * @param array $castModel [Optional] Default is null, if set then
+     * @param array  $castModel [Optional] Default is null, if set then
      * \Phramework\Models\Filter::castEntry will be applied to data
      * @return type
      * @throws \Phramework\Exceptions\DatabaseException

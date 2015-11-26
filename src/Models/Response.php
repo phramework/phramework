@@ -58,7 +58,7 @@ class Response
      * The newly created resource can be referenced by the URI(s) returned in
      * the entity of the response, with the most specific URI for the
      * resource given by a Location header field.
-     * @param  String $location URI to newly created resouce
+     * @param  string $location URI to newly created resouce
      */
     public static function created($location)
     {
@@ -79,7 +79,7 @@ class Response
      *  as it might be disallowed when processing actually takes place.
      *  There is no facility for re-sending a status code
      *  from an asynchronous operation such as this.
-     * @param  String $location URI to newly created resouce
+     * @param  string $location URI to newly created resouce
      */
     public static function accepted()
     {

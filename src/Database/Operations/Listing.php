@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Models\SCRUD;
+namespace Phramework\Database\Operations;
 
-use Phramework\Models\Database;
-use Phramework\Validate\Validate;
+use \Phramework\Database\Database;
+use \Phramework\Validate\Validate;
 
 // @codingStandardsIgnoreStart
 /**
@@ -25,8 +25,7 @@ use Phramework\Validate\Validate;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
-
-
+ * @deprecated
  * @codingStandardsIgnoreStart
  */
 class Listing
