@@ -243,6 +243,11 @@ class Database
      */
     public static function close()
     {
-        self::$adapter->close();
+        try {
+            if (self::$adapter) {
+                self::$adapter->close();
+            }
+        } catch (\Exception $e) {
+        }
     }
 }

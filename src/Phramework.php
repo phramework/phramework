@@ -568,7 +568,7 @@ class Phramework
             unset($params);
 
             //Try to close the databse
-            \Phramework\Models\Database::close();
+            \Phramework\Database\Database::close();
         }
     }
 
