@@ -47,7 +47,7 @@ class PostgreSQL implements \Phramework\Database\IAdapter
      */
     public function getAdapterName()
     {
-        return $this->adapter;
+        return $this->adapterName;
     }
 
     public function __construct($settingsDb)

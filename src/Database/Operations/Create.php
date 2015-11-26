@@ -69,7 +69,7 @@ class Create
             $query_parameter_string
         );
 
-        $driver = \Phramework\Models\Database::getDbDriver();
+        $driver = Database::getAdapterName();
 
         if ($return == self::RETURN_ID) {
             //Return inserted id

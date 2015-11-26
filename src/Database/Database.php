@@ -56,7 +56,7 @@ class Database
      * Get adapter's name
      * @return string Adapter's name (lowercase)
      */
-    public function getAdapterName()
+    public static function getAdapterName()
     {
         return self::$adapter->getAdapterName();
     }
