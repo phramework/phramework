@@ -25,7 +25,9 @@
   "repositories": [],
   "require": {
     "php": ">=5.6",
-    "ext-json": "*"
+    "ext-json": "*",
+    "phramework/exceptions": "dev-master",
+    "phramework/validate": "dev-master"
   },
   "suggest": {
     "ext-curl": "*",
