@@ -188,12 +188,12 @@ class Phramework
      * @throws \Phramework\Exceptions\NotFoundException
      * @todo change default timezone
      * @todo change default language
-     * TODO @security deny access to any else referalls
+     * TODO @security deny access to any else referals
      */
     public function invoke()
     {
         $params = [];
-        $method = '';
+        $method = self::METHOD_GET;
         $headers = [];
 
         try {
@@ -397,8 +397,8 @@ class Phramework
 
             //Call controller's method
             list($invokedController, $invokedMethod) = self::$URIStrategy->invoke(
-                $method,
                 $params,
+                $method,
                 $headers,
                 self::$user
             );
@@ -718,14 +718,6 @@ class Phramework
         $headers = null,
         $exception = null
     ) {
-        self::$stepCallback->call(
-            StepCallback::STEP_ERROR,
-            $params,
-            $method,
-            $headers,
-            [$errors, $code, $exception]
-        );
-
         if (!headers_sent()) {
             http_response_code($code);
         }
@@ -733,6 +725,14 @@ class Phramework
         self::view([
             'errors' => $errors
         ]);
+
+        self::$stepCallback->call(
+            StepCallback::STEP_ERROR,
+            $params,
+            $method,
+            $headers,
+            [$errors, $code, $exception]
+        );
     }
 
     /**
@@ -741,7 +741,7 @@ class Phramework
      * If requested method is HEAD then the response body will be empty
      * Multiple arguments can be set, first argument will always be used as the parameters array.
      * Custom IViewer implementation can use these additional parameters at they definition.
-     * @param array $params The output parameters. Notice $params['user'] will be overwritten if set.
+     * @param array $parameters The output parameters.
      * @param integer $status The response status
      * @return null Returns nothing
      */
