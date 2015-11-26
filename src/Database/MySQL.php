@@ -24,7 +24,7 @@ use \Phramework\Exceptions\DatabaseException;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @uses \PDO
  */
-class MySQL extends PostgreSQL
+class MySQL extends \Phramework\Database\PostgreSQL
 {
     protected $adapterName = 'mysql';
 

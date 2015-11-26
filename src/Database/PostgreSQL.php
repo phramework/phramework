@@ -24,7 +24,7 @@ use \Phramework\Exceptions\DatabaseException;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @uses \PDO
  */
-class PostgreSQL implements IAdapter
+class PostgreSQL implements \Phramework\Database\IAdapter
 {
     /**
      * @var PDO
