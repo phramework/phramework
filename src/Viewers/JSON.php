@@ -18,7 +18,7 @@ class JSON implements \Phramework\Viewers\IViewer
     public function view($parameters)
     {
         if (!headers_sent()) {
-            header('Content-type: application/json;charset=utf-8');
+            header('Content-Type: application/json;charset=utf-8');
         }
 
         //If JSONP requested (if callback is requested though GET)

@@ -133,9 +133,9 @@ class Email
         $headers[] = "MIME-Version: 1.0" . "\r\n";
 
         if (!$HTML) {
-            $headers[] = 'Content-type: text/plain;charset=utf-8' . "\r\n";
+            $headers[] = 'Content-Type: text/plain;charset=utf-8' . "\r\n";
         } else {
-            $headers[] = 'Content-type: text/html;charset=utf-8' . "\r\n";
+            $headers[] = 'Content-Type: text/html;charset=utf-8' . "\r\n";
         }
 
         $headers[] = 'From: ' . $accounts[$account]['name'] . ' <' . $accounts[$account]['mail'] . '>' . "\r\n";
