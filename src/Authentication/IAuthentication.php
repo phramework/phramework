@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Authentication;
 
+namespace Phramework\Authentication;
 
 /**
  * Authentication related functions
@@ -33,7 +33,7 @@ interface IAuthentication
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
      * @param  array  $headers Request headers
-     * @return array|FALSE Returns false on error or the user object on success
+     * @return array|false Returns false on error or the user object on success
      */
     public function check($params, $method, $headers);
 

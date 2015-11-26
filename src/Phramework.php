@@ -61,8 +61,8 @@ class Phramework
     private static $method;
 
     /**
-     * JSONP callback, When NULL no JSONP callback is set
-     * @var type
+     * JSONP callback, When null no JSONP callback is set
+     * @var string
      */
     private static $callback = null;
     /**
@@ -83,7 +83,7 @@ class Phramework
      * Only one instance of API may be present
      * @param array $settings
      * @param IURIStrategy $URIStrategyObject URIStrategy object
-     * @param object|NULL $translationObject  [optional] Set custom translation class
+     * @param object|null $translationObject  [optional] Set custom translation class
      */
     public function __construct(
         $settings,
@@ -149,9 +149,9 @@ class Phramework
 
     /**
      * Shortcut function alias of $this->translation->getTranslated
-     * @param type $key
-     * @param type $parameters
-     * @param type $fallbackValue
+     * @param string            $key
+     * @param object|array|null $parameters
+     * @param string            $fallbackValue
      * @return type
      * @todo implemtation
      */
@@ -420,10 +420,6 @@ class Phramework
             );
 
         } catch (\Phramework\Exceptions\NotFoundException $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
             self::errorView(
                 [[
                     'status' => $exception->getCode(),
@@ -450,10 +446,6 @@ class Phramework
                 $exception
             );
         } catch (\Phramework\Exceptions\PermissionException $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
             self::errorView(
                 [[
                     'status' => $exception->getCode(),
@@ -467,10 +459,6 @@ class Phramework
                 $exception
             );
         } catch (\Phramework\Exceptions\UnauthorizedException $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
             self::errorView(
                 [[
                     'status' => $exception->getCode(),
@@ -484,10 +472,6 @@ class Phramework
                 $exception
             );
         } catch (\Phramework\Exceptions\MissingParametersException $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
             self::errorView(
                 [[
                     'status' => $exception->getCode(),
@@ -504,10 +488,6 @@ class Phramework
                 $exception
             );
         } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
             self::errorView(
                 [[
                     'status' => $exception->getCode(),
@@ -524,11 +504,7 @@ class Phramework
                 $exception
             );
         } catch (\Phramework\Exceptions\MethodNotAllowedException $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
-            //write allow header if AllowedMethods is set
+            //Write allow header if AllowedMethods is set
             if (!headers_sent() && $exception->getAllowedMethods()) {
                 header('Allow: ' . implode(', ', $exception->getAllowedMethods()));
             }
@@ -549,10 +525,6 @@ class Phramework
                 $exception
             );
         } catch (\Phramework\Exceptions\RequestException $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
             self::errorView(
                 [[
                     'status' => $exception->getCode(),
@@ -566,10 +538,6 @@ class Phramework
                 $exception
             );
         } catch (\Exception $exception) {
-            self::writeErrorLog(
-                $exception->getMessage()
-            );
-
             self::errorView(
                 [[
                     'status' => 400,

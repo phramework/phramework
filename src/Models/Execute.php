@@ -25,7 +25,6 @@ namespace Phramework\Models;
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
  * @package Phramework
- * @category Models
  */
 class Execute
 {

@@ -24,8 +24,6 @@ namespace Phramework\Models;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @since 0
- * @package Phramework
- * @category Models
  * @todo Use prefix from the settings file
  */
 class Cache
