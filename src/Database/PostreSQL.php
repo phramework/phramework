@@ -14,43 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\Models;
+namespace Phramework\Database;
 
-use \Phramework\Exceptions\DatabaseException;
 use \PDO;
+use \Phramework\Exceptions\DatabaseException;
 
 /**
- * Database model
- * Defined settings:
- * - db[]
- *   - adapter, Adapter's name (lowercase)
- *   - name, Database name
- *   - user
- *   - pass
- *   - host
- *   - port
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
- * @since 0
- * @todo Add option to convert fetched data into objects insted of array
+ * @uses \PDO
  */
-class Database
+class PostgreSQL implements IAdapter
 {
     /**
-     * @var IAdapter
+     * @var PDO
      */
-    protected static $adapter;
+    protected $link;
 
-    public static function setAdapter($adapter)
-    {
-        if (!($adapter instanceof \Phramework\Database\IAdapter)) {
-            throw new \Exception(
-                'Class is not implementing \Phramework\Database\IAdapter'
-            );
-        }
-
-        self::$adapter = $adapter;
-    }
+    protected $adapterName = 'mysql';
 
     /**
      * Get adapter's name
@@ -58,7 +39,23 @@ class Database
      */
     public function getAdapterName()
     {
-        return self::$adapter->getAdapterName();
+        return $this->adapter;
+    }
+
+    public function __construct($settingsDb)
+    {
+        if (!($this->link = new PDO(sprintf(
+            "pgsql:dbname=%shost=%s;user=%s;password=%s;port=%s",
+            $settingsDb['name'],
+            $settingsDb['username'],
+            $settingsDb['password'],
+            $settingsDb['host'],
+            $settingsDb['port']
+        )))) {
+            throw new DatabaseException('Cannot connect to database');
+        }
+
+        $this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     /**
@@ -69,13 +66,11 @@ class Database
      * @return integer Returns the number of rows affected or selected
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function execute($query, $parameters = [])
+    public function execute($query, $parameters = [])
     {
-        try {
-            return self::$adapter->execute($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
+        $statement = $this->link->prepare($query);
+        $statement->execute($parameters);
+        return $statement->rowCount();
     }
 
     /**
@@ -83,17 +78,16 @@ class Database
      *
      * @param string $query
      * @param array  $parameters Query parameters
-     * @return mixed Returns returns the id of last inserted item
+     * @return mixed Returns the id of last inserted item
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function executeLastInsertId($query, $parameters = [])
+    public function executeLastInsertId($query, $parameters = [])
     {
-        try {
-            return self::$adapter->executeLastInsertId($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
+        $statement = $this->link->prepare($query);
+        $statement->execute($parameters);
+        return $this->link->lastInsertId();
     }
+
 
     /**
      * Execute a query and fetch first row as associative array
@@ -102,16 +96,21 @@ class Database
      * @param array  $parameters Query parameters
      * @param array $castModel [Optional] Default is null, if set then
      * \Phramework\Models\Filter::castEntry will be applied to data
-     * @return array
+     * @return array Returns a single row from database
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function executeAndFetch($query, $parameters = [], $castModel = null)
+    public function executeAndFetch($query, $parameters = [], $castModel = null)
     {
-        try {
-            return self::$adapter->executeAndFetch($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
+        $statement = $this->link->prepare($query);
+        $statement->execute($parameters);
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+
+        return (
+            $castModel && $data
+            ? \Phramework\Models\Filter::castEntry($data, $castModel)
+            : $data
+        );
     }
 
     /**
@@ -121,17 +120,22 @@ class Database
      * @param array  $parameters Query parameters
      * @param array $castModel [Optional] Default is null, if set then
      * \Phramework\Models\Filter::cast will be applied to data
-     * @return array[]
+     * @return array[] Returns multiple rows from database
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function executeAndFetchAll($query, $parameters = [], $castModel = null)
+    public function executeAndFetchAll($query, $parameters = [], $castModel = null)
     {
-        try {
-            return self::$adapter->executeAndFetchAll($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
+        $statement = $this->link->prepare($query);
+        $statement->execute($parameters);
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+        return (
+            $castModel && $data
+            ? \Phramework\Models\Filter::cast($data, $castModel)
+            : $data
+        );
     }
+
 
     /**
      * Execute a query and fetch first row as array
@@ -140,13 +144,13 @@ class Database
      * @return array
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function executeAndFetchArray($query, $parameters = [])
+    public function executeAndFetchArray($query, $parameters = [])
     {
-        try {
-            return self::$adapter->executeAndArray($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
+        $statement = $this->link->prepare($query);
+        $statement->execute($parameters);
+        $data = $statement->fetch(PDO::FETCH_COLUMN);
+        $statement->closeCursor();
+        return $data;
     }
 
     /**
@@ -156,13 +160,13 @@ class Database
      * @return array[]
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function executeAndFetchAllArray($query, $parameters = [])
+    public function executeAndFetchAllArray($query, $parameters = [])
     {
-        try {
-            return self::$adapter->executeAndFetchAllArray($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
+        $statement = $this->link->prepare($query);
+        $statement->execute($parameters);
+        $data = $statement->fetchAll(PDO::FETCH_COLUMN);
+        $statement->closeCursor();
+        return $data;
     }
 
     /**
@@ -173,13 +177,8 @@ class Database
      * @return mixed
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function bindExecuteLastInsertId($query, $parameters = [])
+    public function bindExecuteLastInsertId($query, $parameters = [])
     {
-        try {
-            return self::$adapter->bindExecuteLastInsertId($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
     }
 
     /**
@@ -187,17 +186,12 @@ class Database
      *
      * @param string $query Query string
      * @param array  $parameters Query parameters
-     * @return integer Returns the number of rows affected or selected
+     * @return integer
      * @throws \Phramework\Exceptions\DatabaseException
      * @todo provide documentation
      */
-    public static function bindExecute($query, $parameters = [])
+    public function bindExecute($query, $parameters = [])
     {
-        try {
-            return self::$adapter->bindExecute($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
     }
 
     /**
@@ -210,13 +204,8 @@ class Database
      * @return type
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function bindExecuteAndFetch($query, $parameters = [], $castModel = null)
+    public function bindExecuteAndFetch($query, $parameters = [], $castModel = null)
     {
-        try {
-            return self::$adapter->bindExecuteAndFetch($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
     }
 
     /**
@@ -229,20 +218,15 @@ class Database
      * @return type
      * @throws \Phramework\Exceptions\DatabaseException
      */
-    public static function bindExecuteAndFetchAll($query, $parameters = [], $castModel = null)
+    public function bindExecuteAndFetchAll($query, $parameters = [], $castModel = null)
     {
-        try {
-            return self::$adapter->bindExecuteAndFetchAll($query, $parameters);
-        } catch (\Exception $e) {
-            throw new DatabaseException('Database Error', $e->getMessage());
-        }
     }
 
     /**
-     * Close the Database connection
+     * Close the connection to database
      */
-    public static function close()
+    public function close()
     {
-        self::$adapter->close();
+        $this->link = null;
     }
 }

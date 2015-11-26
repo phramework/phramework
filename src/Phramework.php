@@ -30,14 +30,18 @@ mb_http_output('UTF-8');
 
 /**
  * API 'framework'
+ * Defined settings:
+ * - debug, boolean, default false
+ * - errorlog_path
+ * - language
+ * - languages (string[])
+ * - allowed_referer (string[])
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenofon <nohponex@gmail.com>
  * @version 1.0.0
  * @link https://nohponex.gr Developer's website
- * @todo Use parameters
- * @todo Create a class for settings
  * @todo Clean GET callback
- * @todo Add localization class
+ * @todo Add translation class
  */
 class Phramework
 {
@@ -221,6 +225,7 @@ class Phramework
                 unset($_GET['callback']);
             }
 
+            /*
             //Initialize Database connection if required or db set
             if (self::getSetting('require_db') || self::getSetting('db')) {
                 \Phramework\Models\Database::requireDatabase(self::getSetting('db'));
@@ -228,6 +233,7 @@ class Phramework
 
             //Unset from memory Database connection information
             unset(self::$settings['db']);
+            */
 
             //Get method from the request (HTTP) method
             $method = self::$method = (
