@@ -20,6 +20,14 @@ use \PDO;
 use \Phramework\Exceptions\DatabaseException;
 
 /**
+ * Defined settings:
+ * - db[]
+ *   - adapter, Adapter's name (lowercase)
+ *   - name, Database name
+ *   - username
+ *   - password
+ *   - host
+ *   - port
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @uses \PDO
@@ -35,7 +43,7 @@ class MySQL extends \Phramework\Database\PostgreSQL
         $options[PDO::MYSQL_ATTR_USE_BUFFERED_QUERY] = true;
         if (!($this->link = new PDO(
             sprintf(
-                "mysql:dbname={$name};host={$host};port={$port};charset=utf8",
+                'mysql:dbname=%s;host=%s;port=%s;charset=utf8',
                 $settingsDb['name'],
                 $settingsDb['host'],
                 $settingsDb['port']

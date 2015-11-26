@@ -25,8 +25,8 @@ use \PDO;
  * - db[]
  *   - adapter, Adapter's name (lowercase)
  *   - name, Database name
- *   - user
- *   - pass
+ *   - username
+ *   - password
  *   - host
  *   - port
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0

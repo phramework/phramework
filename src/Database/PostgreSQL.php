@@ -20,6 +20,14 @@ use \PDO;
 use \Phramework\Exceptions\DatabaseException;
 
 /**
+ * Defined settings:
+ * - db[]
+ *   - adapter, Adapter's name (lowercase)
+ *   - name, Database name
+ *   - username
+ *   - password
+ *   - host
+ *   - port
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Spafaridis Xenophon <nohponex@gmail.com>
  * @uses \PDO
