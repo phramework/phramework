@@ -12,4 +12,12 @@ class MySQLTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
     }
+
+    /**
+     * @covers Phramework\Database\MySQL::getAdapterName
+     */
+    public function testGetAdapterName()
+    {
+
+    }
 }

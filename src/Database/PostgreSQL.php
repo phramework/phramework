@@ -53,7 +53,7 @@ class PostgreSQL implements \Phramework\Database\IAdapter
     public function __construct($settingsDb)
     {
         if (!($this->link = new PDO(sprintf(
-            "pgsql:dbname=%shost=%s;user=%s;password=%s;port=%s",
+            "pgsql:dbname=%s;host=%s;user=%s;password=%s;port=%s",
             $settingsDb['name'],
             $settingsDb['host'],
             $settingsDb['username'],

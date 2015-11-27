@@ -17,4 +17,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
             new MySQL($settings);
         );*/
     }
+
+    /**
+     * @covers Phramework\Database\Database::getAdapterName
+     */
+    public function testGetAdapterName()
+    {
+
+    }
 }
