@@ -182,11 +182,26 @@ class PostgreSQL implements \Phramework\Database\IAdapter
      *
      * @param string $query Query string
      * @param array  $parameters Query parameters
+     * Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]
      * @return mixed
      * @throws \Phramework\Exceptions\DatabaseException
      */
     public function bindExecuteLastInsertId($query, $parameters = [])
     {
+        $statement = $this->link->prepare($query);
+        foreach ($parameters as $index => $paramProperties) {
+            if (is_array($paramProperties)) {
+                $statement->bindValue(
+                    (int) $index + 1,
+                    $paramProperties['value'],
+                    $paramProperties['param']
+                );
+            } else {
+                $statement->bindValue((int) $index + 1, $paramProperties);
+            }
+        }
+        $statement->execute();
+        return $this->link->lastInsertId();
     }
 
     /**
@@ -194,12 +209,29 @@ class PostgreSQL implements \Phramework\Database\IAdapter
      *
      * @param string $query Query string
      * @param array  $parameters Query parameters
+     * Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]
      * @return integer
      * @throws \Phramework\Exceptions\DatabaseException
      * @todo provide documentation
      */
     public function bindExecute($query, $parameters = [])
     {
+        $statement = $this->link->prepare($query);
+
+        foreach ($parameters as $index => $paramProperties) {
+            if (is_array($paramProperties)) {
+                $statement->bindValue(
+                    (int) $index + 1,
+                    $paramProperties['value'],
+                    $paramProperties['param']
+                );
+            } else {
+                $statement->bindValue((int) $index + 1, $paramProperties);
+            }
+        }
+
+        $statement->execute();
+        return $statement->rowCount();
     }
 
     /**
@@ -207,13 +239,34 @@ class PostgreSQL implements \Phramework\Database\IAdapter
      *
      * @param string $query Query string
      * @param array  $parameters Query parameters
+     * Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]
      * @param array $castModel [Optional] Default is null, if set
      * then \Phramework\Models\Filter::castEntry will be applied to data
-     * @return type
+     * @return array
      * @throws \Phramework\Exceptions\DatabaseException
      */
     public function bindExecuteAndFetch($query, $parameters = [], $castModel = null)
     {
+        $statement = $this->link->prepare($query);
+        foreach ($parameters as $index => $paramProperties) {
+            if (is_array($paramProperties)) {
+                $statement->bindValue(
+                    (int) $index + 1,
+                    $paramProperties['value'],
+                    $paramProperties['param']
+                );
+            } else {
+                $statement->bindValue((int) $index + 1, $paramProperties);
+            }
+        }
+        $statement->execute();
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+        return (
+            $castModel && $data
+            ? \Phramework\Models\Filter::castEntry($data, $castModel)
+            : $data
+        );
     }
 
     /**
@@ -221,13 +274,34 @@ class PostgreSQL implements \Phramework\Database\IAdapter
      *
      * @param string $query Query string
      * @param array  $parameters Query parameters
+     * Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]
      * @param array $castModel [Optional] Default is null, if set then
      * \Phramework\Models\Filter::castEntry will be applied to data
-     * @return type
+     * @return array[]
      * @throws \Phramework\Exceptions\DatabaseException
      */
     public function bindExecuteAndFetchAll($query, $parameters = [], $castModel = null)
     {
+        $statement = $this->link->prepare($query);
+        foreach ($parameters as $index => $paramProperties) {
+            if (is_array($paramProperties)) {
+                $statement->bindValue(
+                    (int) $index + 1,
+                    $paramProperties['value'],
+                    $paramProperties['param']
+                );
+            } else {
+                $statement->bindValue((int) $index + 1, $paramProperties);
+            }
+        }
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return (
+            $castModel && $data
+            ? \Phramework\Models\Filter::cast($data, $castModel)
+            : $data
+        );
     }
 
     /**
