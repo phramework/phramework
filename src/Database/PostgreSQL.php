@@ -55,9 +55,9 @@ class PostgreSQL implements \Phramework\Database\IAdapter
         if (!($this->link = new PDO(sprintf(
             "pgsql:dbname=%shost=%s;user=%s;password=%s;port=%s",
             $settingsDb['name'],
+            $settingsDb['host'],
             $settingsDb['username'],
             $settingsDb['password'],
-            $settingsDb['host'],
             $settingsDb['port']
         )))) {
             throw new DatabaseException('Cannot connect to database');

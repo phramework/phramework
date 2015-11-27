@@ -2,11 +2,11 @@
   "name": "phramework/phramework",
   "description": "PHP framework for RESTful services",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/phramework",
   "type": "library",
   "keywords": [
     "RESTful"
   ],
-  "homepage": "https://github.com/phramework/phramework",
   "authors": [{
     "name": "Spafaridis Xenofon",
     "email": "nohponex@gmail.com",
