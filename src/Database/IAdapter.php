@@ -18,7 +18,7 @@ namespace Phramework\Database;
 
 /**
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
 interface IAdapter
 {

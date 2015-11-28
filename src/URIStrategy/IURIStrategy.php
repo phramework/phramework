@@ -19,7 +19,7 @@ namespace Phramework\URIStrategy;
 /**
  * IURIStrategy Interface
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Xenophon Spafaridis <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
 interface IURIStrategy

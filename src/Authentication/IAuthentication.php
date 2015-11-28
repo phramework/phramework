@@ -23,7 +23,7 @@ namespace Phramework\Authentication;
  * Implements authentication using HTTP\s BASIC AUTHENTICATION
  * This class should be extended, this implementation will allways return false
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1
  */
 interface IAuthentication

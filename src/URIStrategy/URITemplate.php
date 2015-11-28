@@ -41,7 +41,7 @@ use \Phramework\Models\Util;
  * RewriteRule ^(.*)$ index.php [QSA,L]
  * ```
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Xenophon Spafaridis <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
 class URITemplate implements \Phramework\URIStrategy\IURIStrategy

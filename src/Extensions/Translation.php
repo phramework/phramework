@@ -22,7 +22,7 @@ namespace Phramework\Extensions;
  * Dummy implementation should be extended
  * used to translate keyword into multiple languages
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Xenophon Spafaridis <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @deprecated
  */
 class Translation

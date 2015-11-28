@@ -3,7 +3,7 @@
 namespace Examples\blog2\APP\Viewers;
 
 /**
- * @author Xenophon Spafaridis <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
 class Viewer implements \Phramework\Viewers\IViewer
 {

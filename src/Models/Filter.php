@@ -22,7 +22,7 @@ use \Phramework\Validate\Validate;
  * Provides various methods for filtering data
  *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
  */
 class Filter

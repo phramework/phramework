@@ -20,7 +20,7 @@ use Phramework\Phramework;
 
 /**
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @todo add variables to be passed on call (globaly set)
  */
 class StepCallback
