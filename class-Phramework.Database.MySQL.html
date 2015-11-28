@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Deprecated Class Phramework\Extensions\Translation | phramework doc</title>
+	<title>Class Phramework\Database\MySQL | phramework doc</title>
 
 	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
 	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
@@ -28,7 +28,7 @@
 
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="namespace-Phramework.Extensions.html" title="Summary of Phramework\Extensions"><span>Namespace</span></a>
+						<a href="namespace-Phramework.Database.html" title="Summary of Phramework\Database"><span>Namespace</span></a>
 					</li>
 					<li class="active">
 <span>Class</span>					</li>
@@ -71,7 +71,7 @@
 						<a href="namespace-Phramework.Authentication.html">
 							Authentication						</a>
 							</li>
-					<li>
+					<li class="active">
 						<a href="namespace-Phramework.Database.html">
 							Database<span></span>
 						</a>
@@ -81,7 +81,7 @@
 							Operations						</a>
 							</li>
 								</ul></li>
-					<li class="active">
+					<li>
 						<a href="namespace-Phramework.Extensions.html">
 							Extensions						</a>
 							</li>
@@ -105,10 +105,15 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Phramework.Extensions.StepCallback.html">StepCallback</a></li>
-				<li class="active"><a href="class-Phramework.Extensions.Translation.html" class="deprecated">Translation</a></li>
+				<li><a href="class-Phramework.Database.Database.html">Database</a></li>
+				<li class="active"><a href="class-Phramework.Database.MySQL.html">MySQL</a></li>
+				<li><a href="class-Phramework.Database.PostgreSQL.html">PostgreSQL</a></li>
 			</ul>
 
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Phramework.Database.IAdapter.html">IAdapter</a></li>
+			</ul>
 
 
 
@@ -122,16 +127,30 @@
 <div id="right">
 	<div id="rightInner">
 <div id="content" class="class">
-	<h1 class="deprecated">Class Translation</h1>
+	<h1>Class MySQL</h1>
 
 
 	<div class="description">
-	<p>translation extension</p>
-
-<p>Dummy implementation should be extended
-used to translate keyword into multiple languages</p>
+	<p>Defined settings:
+- db[] - adapter, Adapter's name (lowercase) - name, Database name - username - password - host - port</p>
 	</div>
 
+	<dl class="tree well">
+		<dd style="padding-left:0px">
+			<a href="class-Phramework.Database.PostgreSQL.html"><span>Phramework\Database\PostgreSQL</span></a>
+			
+			 implements 
+				<a href="class-Phramework.Database.IAdapter.html"><span>Phramework\Database\IAdapter</span></a>
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Phramework\Database\MySQL</span></b>			
+			
+			
+		</dd>
+	</dl>
 
 
 
@@ -143,16 +162,16 @@ used to translate keyword into multiple languages</p>
 	<div class="alert alert-info">
 		
 		
-		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Extensions.html">Extensions</a><br>
+		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Database.html">Database</a><br>
 		
 
-				<b>Deprecated</b>
-				<br>
 				<b>License:</b>
 				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
-			<b>Located at</b> Extensions/Translation.php		<br>
+				<b>Uses:</b>
+				\PDO<br>
+			<b>Located at</b> Database/MySQL.php		<br>
 	</div>
 
 
@@ -171,7 +190,7 @@ used to translate keyword into multiple languages</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code class="deprecated">__construct( <span> <var>$language_code</var></span>, <span> <var>$track_missing_keys</var> = <span class="php-keyword1">false</span></span> )</code>
+			<code>__construct( <span> <var>$settingsDb</var></span> )</code>
 
 			<div class="description short">
 				
@@ -185,111 +204,8 @@ used to translate keyword into multiple languages</p>
 
 
 
-
-			</div>
-			</div></td>
-		</tr>
-		<tr data-order="setLanguageCode" id="_setLanguageCode">
-
-			<td class="attributes"><code>
-				 public 
-				
-				
-				</code>
-			</td>
-
-			<td class="name"><div>
-			<a class="anchor" href="#_setLanguageCode">#</a>
-			<code class="deprecated">setLanguageCode( <span> <var>$language_code</var></span> )</code>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-
-
-
-
-
-
-			</div>
-			</div></td>
-		</tr>
-		<tr data-order="getTranslated" id="_getTranslated">
-
-			<td class="attributes"><code>
-				 public 
-				string
-				
-				</code>
-			</td>
-
-			<td class="name"><div>
-			<a class="anchor" href="#_getTranslated">#</a>
-			<code class="deprecated">getTranslated( <span>string <var>$key</var></span>, <span>array|null <var>$parameters</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$fallback_value</var> = <span class="php-keyword1">null</span></span> )</code>
-
-			<div class="description short">
-				<p>Translate a string</p>
-			</div>
-
-			<div class="description detailed hidden">
-				<p>Translate a string</p>
-
-
-					<h4>Parameters</h4>
-					<div class="list"><dl>
-						<dt><var>$key</var></dt>
-						<dd></dd>
-						<dt><var>$parameters</var></dt>
-						<dd></dd>
-						<dt><var>$fallback_value</var></dt>
-						<dd></dd>
-					</dl></div>
-
-					<h4>Returns</h4>
-					<div class="list">
-						string<br>Returns the translated string
-					</div>
-
-
-
-
-			</div>
-			</div></td>
-		</tr>
-		<tr data-order="addKey" id="_addKey">
-
-			<td class="attributes"><code>
-				 public 
-				
-				
-				</code>
-			</td>
-
-			<td class="name"><div>
-			<a class="anchor" href="#_addKey">#</a>
-			<code class="deprecated">addKey( <span>type <var>$key</var></span> )</code>
-
-			<div class="description short">
-				<p>Report untranslated key</p>
-			</div>
-
-			<div class="description detailed hidden">
-				<p>Report untranslated key</p>
-
-
-					<h4>Parameters</h4>
-					<div class="list"><dl>
-						<dt><var>$key</var></dt>
-						<dd></dd>
-					</dl></div>
-
-
-
-
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Phramework.Database.PostgreSQL.html#___construct">Phramework\Database\PostgreSQL::__construct</a></code></div>
 
 			</div>
 			</div></td>
@@ -297,6 +213,23 @@ used to translate keyword into multiple languages</p>
 			</table>
 		</div>
 
+		<div class="panel panel-default">
+	        <div class="panel-heading"><h3>Methods inherited from <a href="class-Phramework.Database.PostgreSQL.html#methods">Phramework\Database\PostgreSQL</a></h3></div>
+			<p class="elementList">
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_bindExecute">bindExecute()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_bindExecuteAndFetch">bindExecuteAndFetch()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_bindExecuteAndFetchAll">bindExecuteAndFetchAll()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_bindExecuteLastInsertId">bindExecuteLastInsertId()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_close">close()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_execute">execute()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_executeAndFetch">executeAndFetch()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_executeAndFetchAll">executeAndFetchAll()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_executeAndFetchAllArray">executeAndFetchAllArray()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_executeAndFetchArray">executeAndFetchArray()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_executeLastInsertId">executeLastInsertId()</a></code>, 
+				<code><a href="class-Phramework.Database.PostgreSQL.html#_getAdapterName">getAdapterName()</a></code>
+			</p>
+		</div>
 
 
 
@@ -310,14 +243,14 @@ used to translate keyword into multiple languages</p>
 		<div class="panel panel-default">
             <div class="panel-heading"><h2>Properties summary</h2></div>
 			<table class="summary table table-bordered table-striped properties" id="properties">
-		<tr data-order="strings" id="$strings">
+		<tr data-order="adapterName" id="$adapterName">
 			<td class="attributes"><code>
 				protected  
-				array
+				string
 			</code></td>
 
 			<td class="name">
-<var>$strings</var>
+<var>$adapterName</var>
 				<div class="description short">
 					
 				</div>
@@ -329,62 +262,20 @@ used to translate keyword into multiple languages</p>
 			</td>
 			<td class="value">
 				<div>
-					<a href="#$strings" class="anchor">#</a>
-					<code>[]</code>
-				</div>
-			</td>
-		</tr>
-		<tr data-order="track_missing_keys" id="$track_missing_keys">
-			<td class="attributes"><code>
-				protected  
-				
-			</code></td>
-
-			<td class="name">
-<var>$track_missing_keys</var>
-				<div class="description short">
-					
-				</div>
-
-				<div class="description detailed hidden">
-					
-
-				</div>
-			</td>
-			<td class="value">
-				<div>
-					<a href="#$track_missing_keys" class="anchor">#</a>
-					<code></code>
-				</div>
-			</td>
-		</tr>
-		<tr data-order="language_code" id="$language_code">
-			<td class="attributes"><code>
-				protected  
-				
-			</code></td>
-
-			<td class="name">
-<var>$language_code</var>
-				<div class="description short">
-					
-				</div>
-
-				<div class="description detailed hidden">
-					
-
-				</div>
-			</td>
-			<td class="value">
-				<div>
-					<a href="#$language_code" class="anchor">#</a>
-					<code></code>
+					<a href="#$adapterName" class="anchor">#</a>
+					<code><span class="php-quote">'mysql'</span></code>
 				</div>
 			</td>
 		</tr>
 			</table>
 		</div>
 
+		<div class="panel panel-default">
+            <div class="panel-heading"><h3>Properties inherited from <a href="class-Phramework.Database.PostgreSQL.html#properties">Phramework\Database\PostgreSQL</a></h3></div>
+			<p class="elementList">
+				<code><a href="class-Phramework.Database.PostgreSQL.html#$link"><var>$link</var></a></code>
+			</p>
+		</div>
 
 
 

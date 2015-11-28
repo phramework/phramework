@@ -72,30 +72,26 @@
 							Authentication						</a>
 							</li>
 					<li>
-						<a href="namespace-Phramework.Exceptions.html">
-							Exceptions						</a>
+						<a href="namespace-Phramework.Database.html">
+							Database<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Database.Operations.html">
+							Operations						</a>
 							</li>
+								</ul></li>
 					<li class="active">
 						<a href="namespace-Phramework.Extensions.html">
 							Extensions						</a>
 							</li>
 					<li>
 						<a href="namespace-Phramework.Models.html">
-							Models<span></span>
-						</a>
-							<ul>
-					<li>
-						<a href="namespace-Phramework.Models.SCRUD.html">
-							SCRUD						</a>
+							Models						</a>
 							</li>
-								</ul></li>
 					<li>
 						<a href="namespace-Phramework.URIStrategy.html">
 							URIStrategy						</a>
-							</li>
-					<li>
-						<a href="namespace-Phramework.Validate.html">
-							Validate						</a>
 							</li>
 					<li>
 						<a href="namespace-Phramework.Viewers.html">
@@ -110,7 +106,7 @@
 			<h3>Classes</h3>
 			<ul>
 				<li class="active"><a href="class-Phramework.Extensions.StepCallback.html">StepCallback</a></li>
-				<li><a href="class-Phramework.Extensions.Translation.html">Translation</a></li>
+				<li><a href="class-Phramework.Extensions.Translation.html" class="deprecated">Translation</a></li>
 			</ul>
 
 
@@ -147,7 +143,7 @@
 				<b>License:</b>
 				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
 				<b>Author:</b>
-				Spafaridis Xenophon <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
+				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Todo:</b>
 				add variables to be passed on call (globaly set)<br>
 			<b>Located at</b> Extensions/StepCallback.php		<br>
@@ -287,7 +283,7 @@ so the callback functions can modify these variables</p>
 			</div>
 			</div></td>
 		</tr>
-		<tr data-order="__contstruct" id="___contstruct">
+		<tr data-order="__construct" id="___construct">
 
 			<td class="attributes"><code>
 				 public 
@@ -297,8 +293,8 @@ so the callback functions can modify these variables</p>
 			</td>
 
 			<td class="name"><div>
-			<a class="anchor" href="#___contstruct">#</a>
-			<code>__contstruct( )</code>
+			<a class="anchor" href="#___construct">#</a>
+			<code>__construct( )</code>
 
 			<div class="description short">
 				
@@ -337,11 +333,11 @@ so the callback functions can modify these variables</p>
 <b>STEP_BEFORE_AUTHENTICATION_CHECK</b>					</code>
 
 					<div class="description short">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 					</div>
 
 					<div class="description detailed hidden">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 
 					</div>
 				</td>
@@ -360,11 +356,11 @@ so the callback functions can modify these variables</p>
 <b>STEP_AFTER_AUTHENTICATION_CHECK</b>					</code>
 
 					<div class="description short">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 					</div>
 
 					<div class="description detailed hidden">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 
 					</div>
 				</td>
@@ -384,12 +380,12 @@ so the callback functions can modify these variables</p>
 
 					<div class="description short">
 						<p>Called before URIStrategy invocation
-Callback has $step, $params, $method, $headers, $callbackVariables</p>
+Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 					</div>
 
 					<div class="description detailed hidden">
 						<p>Called before URIStrategy invocation
-Callback has $step, $params, $method, $headers, $callbackVariables</p>
+Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 
 					</div>
 				</td>
@@ -409,12 +405,12 @@ Callback has $step, $params, $method, $headers, $callbackVariables</p>
 
 					<div class="description short">
 						<p>Called after URIStrategy invocation
-Callback has $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod</p>
+Callback passes $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod</p>
 					</div>
 
 					<div class="description detailed hidden">
 						<p>Called after URIStrategy invocation
-Callback has $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod</p>
+Callback passes $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod</p>
 
 					</div>
 				</td>
@@ -433,11 +429,11 @@ Callback has $step, $params, $method, $headers, $callbackVariables, $invokedCont
 <b>STEP_BEFORE_CLOSE</b>					</code>
 
 					<div class="description short">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 					</div>
 
 					<div class="description detailed hidden">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 
 					</div>
 				</td>
@@ -456,11 +452,11 @@ Callback has $step, $params, $method, $headers, $callbackVariables, $invokedCont
 <b>STEP_FINALLY</b>					</code>
 
 					<div class="description short">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 					</div>
 
 					<div class="description detailed hidden">
-						<p>Callback has $step, $params, $method, $headers, $callbackVariables</p>
+						<p>Callback passes $step, $params, $method, $headers, $callbackVariables</p>
 
 					</div>
 				</td>
@@ -468,6 +464,31 @@ Callback has $step, $params, $method, $headers, $callbackVariables, $invokedCont
 					<div>
 						<a href="#STEP_FINALLY" class="anchor">#</a>
 						<code><span class="php-quote">'STEP_FINALLY'</span></code>
+					</div>
+				</td>
+			</tr>
+			<tr data-order="STEP_ERROR" id="STEP_ERROR">
+
+				<td class="attributes"><code>string</code></td>
+				<td class="name">
+					<code>
+<b>STEP_ERROR</b>					</code>
+
+					<div class="description short">
+						<p>Called after exception is thrown
+Callback passes $step, $params, $method, $headers, $callbackVariables, $errors, $code, $exception</p>
+					</div>
+
+					<div class="description detailed hidden">
+						<p>Called after exception is thrown
+Callback passes $step, $params, $method, $headers, $callbackVariables, $errors, $code, $exception</p>
+
+					</div>
+				</td>
+				<td class="value">
+					<div>
+						<a href="#STEP_ERROR" class="anchor">#</a>
+						<code><span class="php-quote">'STEP_ERROR'</span></code>
 					</div>
 				</td>
 			</tr>

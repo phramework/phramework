@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Phramework\Database\PostgreSQL | phramework doc</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
+
+</head>
+
+<body>
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">phramework doc</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search">
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="namespace-Phramework.Database.html" title="Summary of Phramework\Database"><span>Namespace</span></a>
+					</li>
+					<li class="active">
+<span>Class</span>					</li>
+
+					<li class="divider-vertical"></li>
+
+					<li>
+						<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+					</li>
+
+						<li>
+							<a href="annotation-group-deprecated.html" title="List of elements with deprecated annotation">
+								<span>Deprecated</span>
+							</a>
+						</li>
+						<li>
+							<a href="annotation-group-todo.html" title="List of elements with todo annotation">
+								<span>Todo</span>
+							</a>
+						</li>
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
+	<div id="menu">
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+					<li class="active">
+						<a href="namespace-Phramework.html">
+							Phramework<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Authentication.html">
+							Authentication						</a>
+							</li>
+					<li class="active">
+						<a href="namespace-Phramework.Database.html">
+							Database<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Database.Operations.html">
+							Operations						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="namespace-Phramework.Extensions.html">
+							Extensions						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Models.html">
+							Models						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.URIStrategy.html">
+							URIStrategy						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Viewers.html">
+							Viewers						</a>
+							</li>
+								</ul></li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Phramework.Database.Database.html">Database</a></li>
+				<li><a href="class-Phramework.Database.MySQL.html">MySQL</a></li>
+				<li class="active"><a href="class-Phramework.Database.PostgreSQL.html">PostgreSQL</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Phramework.Database.IAdapter.html">IAdapter</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class PostgreSQL</h1>
+
+
+	<div class="description">
+	<p>Defined settings:
+- db[] - adapter, Adapter's name (lowercase) - name, Database name - username - password - host - port</p>
+	</div>
+
+	<dl class="tree well">
+		<dd style="padding-left:0px">
+<b><span>Phramework\Database\PostgreSQL</span></b>			
+			 implements 
+				<a href="class-Phramework.Database.IAdapter.html"><span>Phramework\Database\IAdapter</span></a>
+			
+			
+		</dd>
+	</dl>
+
+
+	<div>
+		<h3>Direct known subclasses</h3>
+		<p class="elementList">
+			<code><a href="class-Phramework.Database.MySQL.html">Phramework\Database\MySQL</a></code>
+		</p>
+	</div>
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Database.html">Database</a><br>
+		
+
+				<b>License:</b>
+				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
+				<b>Author:</b>
+				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
+				<b>Uses:</b>
+				\PDO<br>
+			<b>Located at</b> Database/PostgreSQL.php		<br>
+	</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h2>Methods summary</h2></div>
+			<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="getAdapterName" id="_getAdapterName">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getAdapterName">#</a>
+			<code>getAdapterName( )</code>
+
+			<div class="description short">
+				<p>Get adapter's name</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get adapter's name</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Adapter's name (lowercase)
+					</div>
+
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_getAdapterName">Phramework\Database\IAdapter::getAdapterName()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="__construct" id="___construct">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#___construct">#</a>
+			<code>__construct( <span> <var>$settingsDb</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="execute" id="_execute">
+
+			<td class="attributes"><code>
+				 public 
+				integer
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_execute">#</a>
+			<code>execute( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span> )</code>
+
+			<div class="description short">
+				<p>Execute a query and return the row count</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Execute a query and return the row count</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd></dd>
+						<dt><var>$parameters</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						integer<br>Returns the number of rows affected or selected
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_execute">Phramework\Database\IAdapter::execute()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="executeLastInsertId" id="_executeLastInsertId">
+
+			<td class="attributes"><code>
+				 public 
+				mixed
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_executeLastInsertId">#</a>
+			<code>executeLastInsertId( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span> )</code>
+
+			<div class="description short">
+				<p>Execute a query and return last instert id</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Execute a query and return last instert id</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd></dd>
+						<dt><var>$parameters</var></dt>
+						<dd>Query parameters</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						mixed<br>Returns the id of last inserted item
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_executeLastInsertId">Phramework\Database\IAdapter::executeLastInsertId()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="executeAndFetch" id="_executeAndFetch">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_executeAndFetch">#</a>
+			<code>executeAndFetch( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span>, <span>array <var>$castModel</var> = <span class="php-keyword1">null</span></span> )</code>
+
+			<div class="description short">
+				<p>Execute a query and fetch first row as associative array</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Execute a query and fetch first row as associative array</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd></dd>
+						<dt><var>$parameters</var></dt>
+						<dd>Query parameters</dd>
+						<dt><var>$castModel</var></dt>
+						<dd><p>[Optional] Default is null, if set then
+\Phramework\Models\Filter::castEntry will be applied to data</p></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br>Returns a single row from database
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_executeAndFetch">Phramework\Database\IAdapter::executeAndFetch()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="executeAndFetchAll" id="_executeAndFetchAll">
+
+			<td class="attributes"><code>
+				 public 
+				array[]
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_executeAndFetchAll">#</a>
+			<code>executeAndFetchAll( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span>, <span>array <var>$castModel</var> = <span class="php-keyword1">null</span></span> )</code>
+
+			<div class="description short">
+				<p>Execute a query and fetch all rows as associative array</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Execute a query and fetch all rows as associative array</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd></dd>
+						<dt><var>$parameters</var></dt>
+						<dd>Query parameters</dd>
+						<dt><var>$castModel</var></dt>
+						<dd><p>[Optional] Default is null, if set then
+\Phramework\Models\Filter::cast will be applied to data</p></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array[]<br>Returns multiple rows from database
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_executeAndFetchAll">Phramework\Database\IAdapter::executeAndFetchAll()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="executeAndFetchArray" id="_executeAndFetchArray">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_executeAndFetchArray">#</a>
+			<code>executeAndFetchArray( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span> )</code>
+
+			<div class="description short">
+				<p>Execute a query and fetch first row as array</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Execute a query and fetch first row as array</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd></dd>
+						<dt><var>$parameters</var></dt>
+						<dd>Query parameters</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_executeAndFetchArray">Phramework\Database\IAdapter::executeAndFetchArray()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="executeAndFetchAllArray" id="_executeAndFetchAllArray">
+
+			<td class="attributes"><code>
+				 public 
+				array[]
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_executeAndFetchAllArray">#</a>
+			<code>executeAndFetchAllArray( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd>Query string</dd>
+						<dt><var>$parameters</var></dt>
+						<dd>Query parameters</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array[]
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_executeAndFetchAllArray">Phramework\Database\IAdapter::executeAndFetchAllArray()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="bindExecuteLastInsertId" id="_bindExecuteLastInsertId">
+
+			<td class="attributes"><code>
+				 public 
+				mixed
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_bindExecuteLastInsertId">#</a>
+			<code>bindExecuteLastInsertId( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span> )</code>
+
+			<div class="description short">
+				<p>Bind Execute a query and return last instert id</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Bind Execute a query and return last instert id</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd>Query string</dd>
+						<dt><var>$parameters</var></dt>
+						<dd><p>Query parameters
+Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]</p></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						mixed
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_bindExecuteLastInsertId">Phramework\Database\IAdapter::bindExecuteLastInsertId()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="bindExecute" id="_bindExecute">
+
+			<td class="attributes"><code>
+				 public 
+				integer
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_bindExecute">#</a>
+			<code>bindExecute( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span> )</code>
+
+			<div class="description short">
+				<p>Bind Execute a query and return the row count</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Bind Execute a query and return the row count</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd>Query string</dd>
+						<dt><var>$parameters</var></dt>
+						<dd><p>Query parameters
+Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]</p></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						integer
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+					<h4>Todo</h4>
+					<div class="list">
+							provide documentation<br>
+					</div>
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_bindExecute">Phramework\Database\IAdapter::bindExecute()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="bindExecuteAndFetch" id="_bindExecuteAndFetch">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_bindExecuteAndFetch">#</a>
+			<code>bindExecuteAndFetch( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span>, <span>array <var>$castModel</var> = <span class="php-keyword1">null</span></span> )</code>
+
+			<div class="description short">
+				<p>Bind Execute a query and fetch first row as associative array</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Bind Execute a query and fetch first row as associative array</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd>Query string</dd>
+						<dt><var>$parameters</var></dt>
+						<dd><p>Query parameters
+Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]</p></dd>
+						<dt><var>$castModel</var></dt>
+						<dd><p>[Optional] Default is null, if set
+then \Phramework\Models\Filter::castEntry will be applied to data</p></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_bindExecuteAndFetch">Phramework\Database\IAdapter::bindExecuteAndFetch()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="bindExecuteAndFetchAll" id="_bindExecuteAndFetchAll">
+
+			<td class="attributes"><code>
+				 public 
+				array[]
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_bindExecuteAndFetchAll">#</a>
+			<code>bindExecuteAndFetchAll( <span>string <var>$query</var></span>, <span>array <var>$parameters</var> = []</span>, <span>array <var>$castModel</var> = <span class="php-keyword1">null</span></span> )</code>
+
+			<div class="description short">
+				<p>Bind Execute a query and fetch all rows as associative array</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Bind Execute a query and fetch all rows as associative array</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$query</var></dt>
+						<dd>Query string</dd>
+						<dt><var>$parameters</var></dt>
+						<dd><p>Query parameters
+Example [123, ['value' => 123, 'params' => \PDO::PARAM_INT]]</p></dd>
+						<dt><var>$castModel</var></dt>
+						<dd><p>[Optional] Default is null, if set then
+\Phramework\Models\Filter::castEntry will be applied to data</p></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array[]
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						Phramework\Exceptions\DatabaseException
+					</div>
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_bindExecuteAndFetchAll">Phramework\Database\IAdapter::bindExecuteAndFetchAll()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="close" id="_close">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_close">#</a>
+			<code>close( )</code>
+
+			<div class="description short">
+				<p>Close the connection to database</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Close the connection to database</p>
+
+
+
+
+
+
+
+					<h4>Implementation of</h4>
+					<div class="list"><code><a href="class-Phramework.Database.IAdapter.html#_close">Phramework\Database\IAdapter::close()</a></code></div>
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+		<div class="panel panel-default">
+            <div class="panel-heading"><h2>Properties summary</h2></div>
+			<table class="summary table table-bordered table-striped properties" id="properties">
+		<tr data-order="link" id="$link">
+			<td class="attributes"><code>
+				protected  
+				PDO
+			</code></td>
+
+			<td class="name">
+<var>$link</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$link" class="anchor">#</a>
+					<code></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="adapterName" id="$adapterName">
+			<td class="attributes"><code>
+				protected  
+				string
+			</code></td>
+
+			<td class="name">
+<var>$adapterName</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$adapterName" class="anchor">#</a>
+					<code><span class="php-quote">'postgresql'</span></code>
+				</div>
+			</td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		phramework doc API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

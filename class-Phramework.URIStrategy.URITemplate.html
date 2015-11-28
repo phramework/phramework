@@ -72,30 +72,26 @@
 							Authentication						</a>
 							</li>
 					<li>
-						<a href="namespace-Phramework.Exceptions.html">
-							Exceptions						</a>
+						<a href="namespace-Phramework.Database.html">
+							Database<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="namespace-Phramework.Database.Operations.html">
+							Operations						</a>
 							</li>
+								</ul></li>
 					<li>
 						<a href="namespace-Phramework.Extensions.html">
 							Extensions						</a>
 							</li>
 					<li>
 						<a href="namespace-Phramework.Models.html">
-							Models<span></span>
-						</a>
-							<ul>
-					<li>
-						<a href="namespace-Phramework.Models.SCRUD.html">
-							SCRUD						</a>
+							Models						</a>
 							</li>
-								</ul></li>
 					<li class="active">
 						<a href="namespace-Phramework.URIStrategy.html">
 							URIStrategy						</a>
-							</li>
-					<li>
-						<a href="namespace-Phramework.Validate.html">
-							Validate						</a>
 							</li>
 					<li>
 						<a href="namespace-Phramework.Viewers.html">
@@ -179,7 +175,7 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 				<b>License:</b>
 				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
 				<b>Author:</b>
-				Xenophon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
+				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since:</b>
 				1.0.0<br>
 			<b>Located at</b> URIStrategy/URITemplate.php		<br>
@@ -351,41 +347,45 @@ containing the extracter parameters from the URI template.</p>
 
 			<td class="attributes"><code>
 				 public 
-				
+				string[]
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_invoke">#</a>
-			<code>invoke( <span>string <var>$requestMethod</var></span>, <span>array <var>$requestParameters</var></span>, <span>array <var>$requestHeaders</var></span>, <span>stdObject|false <var>$requestUser</var></span> )</code>
+			<code>invoke( <span>array <var>$requestParameters</var></span>, <span>string <var>$requestMethod</var></span>, <span>array <var>$requestHeaders</var></span>, <span>object|false <var>$requestUser</var></span> )</code>
 
 			<div class="description short">
-				<p>[invoke description]</p>
+				<p>Invoke URIStrategy</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>[invoke description]</p>
+				<p>Invoke URIStrategy</p>
 
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
-						<dt><var>$requestMethod</var></dt>
-						<dd>[description]</dd>
 						<dt><var>$requestParameters</var></dt>
-						<dd>[description]</dd>
+						<dd>Request parameters</dd>
+						<dt><var>$requestMethod</var></dt>
+						<dd>HTTP request method</dd>
 						<dt><var>$requestHeaders</var></dt>
-						<dd>[description]</dd>
+						<dd>Request headers</dd>
 						<dt><var>$requestUser</var></dt>
-						<dd>[description]</dd>
+						<dd><p>Use object if successful
+authenticated otherwise false</p></dd>
 					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						string[]<br>This method should return <code>[$class, $method]</code> on success
+					</div>
 
 					<h4>Throws</h4>
 					<div class="list">
-						<code><a href="class-Phramework.Exceptions.NotFoundException.html">Phramework\Exceptions\NotFoundException</a></code><br>
-						<code><a href="class-Phramework.Exceptions.NotFoundException.html">Phramework\Exceptions\NotFoundException</a></code><br>
-						<code><a href="class-Phramework.Exceptions.PermissionException.html">Phramework\Exceptions\PermissionException</a></code>
+						Phramework\Exceptions\NotFoundException<br>
+						UnauthorizedException
 					</div>
 
 					<h4>Todo</h4>
