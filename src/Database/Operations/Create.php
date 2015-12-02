@@ -88,16 +88,17 @@ class Create
 
             return Database::executeLastInsertId($query, $query_values);
         } elseif ($return == self::RETURN_RECORDS) {
-            //Return number of records affected
+            //Return records
             if ($driver != 'postgresql') {
                 throw new \Phramework\Excetpions\ServerExcetion(
                     'RETURN_RECORDS works only with postgresql adapter'
                 );
             }
-            $query .= 'RETURNING *';
 
+            $query .= 'RETURNING *';
             return Database::executeAndFetch($query, $query_values);
         } else {
+            //Return number of records affected
             return Database::execute($query, $query_values);
         }
     }
