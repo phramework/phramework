@@ -23,7 +23,7 @@ use \Phramework\Exceptions\NotFoundException;
 
 // @codingStandardsIgnoreStart
 /**
- * update model
+ * Update operation for databases
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0

@@ -427,7 +427,7 @@ class Phramework
 
         } catch (\Phramework\Exceptions\NotFoundException $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -440,7 +440,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\RequestExceptionException $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -453,7 +453,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\PermissionException $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -466,7 +466,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\UnauthorizedException $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -479,7 +479,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\MissingParametersException $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'meta' => [
@@ -495,7 +495,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'meta' => [
@@ -516,7 +516,7 @@ class Phramework
             }
 
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'meta' => [
@@ -532,7 +532,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\RequestException $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => 'Request Error'
@@ -545,7 +545,7 @@ class Phramework
             );
         } catch (\Exception $exception) {
             self::errorView(
-                [[
+                [(object)[
                     'status' => 400,
                     'detail' => $exception->getMessage(),
                     'title' => 'Error'
@@ -683,6 +683,12 @@ class Phramework
      * @param array $params The error parameters. The 'error' index holds the message,
      * and the 'code' message the error code,
      * note that if headers are not send the response code will set with the 'code' value.
+     * @param  object[]    $errors    Array of error objects
+     * @param  integer     $code      HTTP response status code
+     * @param  array       $params    The request parameters
+     * @param  string      $method    The request HTTP method
+     * @param  array       $headers   The request headers
+     * @param  \Exception  $exception Thrown exception
      */
     private static function errorView(
         $errors,
@@ -696,7 +702,7 @@ class Phramework
             http_response_code($code);
         }
 
-        self::view([
+        self::view((object)[
             'errors' => $errors
         ]);
 
@@ -715,9 +721,8 @@ class Phramework
      * If requested method is HEAD then the response body will be empty
      * Multiple arguments can be set, first argument will always be used as the parameters array.
      * Custom IViewer implementation can use these additional parameters at they definition.
-     * @param array $parameters The output parameters.
-     * @param integer $status The response status
-     * @return null Returns nothing
+     * @param object|array $parameters The output parameters.
+     * @return mixed Returns the value returned by the invoked viewer
      */
     public static function view($parameters = [])
     {
