@@ -17,11 +17,6 @@
       "Phramework\\": "src"
     }
   },
-  "autoload-dev": {
-    "psr-4": {
-      "Phramework\\Examples\\": "Examples/"
-    }
-  },
   "repositories": [],
   "require": {
     "php": ">=5.6",
