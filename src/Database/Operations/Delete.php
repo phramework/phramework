@@ -19,7 +19,7 @@ namespace Phramework\Database\Operations;
 use \Phramework\Database\Database;
 
 /**
- * Delete model
+ * Delete operation for databases
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1

@@ -22,26 +22,28 @@ use \Phramework\Exceptions\RequestExceptionException;
 use \Phramework\Exceptions\NotFoundException;
 
 /**
- * create model
+ * Create operation for databases
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
-
-
  */
 class Create
 {
-    //const RETURN_RECORDS = 1;
-    const RETURN_ID = 0;
-    const RETURN_NUMBER_OF_RECORDS = 2;
+
+    const RETURN_ID = 1;
+    const RETURN_RECORDS = 2;
+    const RETURN_NUMBER_OF_RECORDS = 4;
 
     /**
      * Create a new record in database
-     * @param  array $attributes  Key-value array with records's attributes
+     * @param  array|object $attributes  Key-value array or object with records's attributes
      * @param  string $table       Table's name
-     * @param  string|null $schema     [Optional] Table's schema, default is null for no schema
-     * @param  [type] $return      Return method type
-     * @return int|array
+     * @param  string|null $schema [Optional] Table's schema, default is null for no schema
+     * @param  integer $return     Return method type
+     * - if RETURN_ID will return the id of last inserted record
+     * - if RETURN_RECORDS will return the inserted record
+     * - if RETURN_NUMBER_OF_RECORDS will return the number of records affected
+     * @return integer|array
      * @todo Check RETURNING id for another primary key attribute
      */
     public static function create(
@@ -50,6 +52,10 @@ class Create
         $schema = null,
         $return = self::RETURN_ID
     ) {
+        if (is_object($attributes)) {
+            $attributes = (array)$attributes;
+        }
+
         //prepare query
         $query_keys   = implode('" , "', array_keys($attributes));
         $query_parameter_string = trim(str_repeat('?,', count($attributes)), ',');
@@ -81,13 +87,18 @@ class Create
             }
 
             return Database::executeLastInsertId($query, $query_values);
-        } else {
+        } elseif ($return == self::RETURN_RECORDS) {
             //Return number of records affected
-            if ($driver == 'postgresql') {
-                $query .= 'RETURNING ' . '*';
+            if ($driver != 'postgresql') {
+                throw new \Phramework\Excetpions\ServerExcetion(
+                    'RETURN_RECORDS works only with postgresql adapter'
+                );
             }
+            $query .= 'RETURNING *';
 
             return Database::executeAndFetch($query, $query_values);
+        } else {
+            return Database::execute($query, $query_values);
         }
     }
 }
