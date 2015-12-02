@@ -675,14 +675,14 @@ false in case of non authenticated request</p>
 
 			<td class="attributes"><code>
 				 public static
-				null
+				mixed
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_view">#</a>
-			<code>view( <span>array <var>$parameters</var> = []</span>, <span>integer <var>$status</var>,…</span> )</code>
+			<code>view( <span>object|array <var>$parameters</var> = []</span> )</code>
 
 			<div class="description short">
 				<p>Output the response using the selected viewer</p>
@@ -700,13 +700,11 @@ Custom IViewer implementation can use these additional parameters at they defini
 					<div class="list"><dl>
 						<dt><var>$parameters</var></dt>
 						<dd>The output parameters.</dd>
-						<dt><var>$status</var>,…</dt>
-						<dd>The response status</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
 					<div class="list">
-						null<br>Returns nothing
+						mixed<br>Returns the value returned by the invoked viewer
 					</div>
 
 
