@@ -39,7 +39,7 @@ class Database
     /**
      * @var IAdapter
      */
-    protected static $adapter;
+    protected static $adapter = null;
 
     public static function setAdapter($adapter)
     {
@@ -50,6 +50,15 @@ class Database
         }
 
         self::$adapter = $adapter;
+    }
+
+    /**
+     * Get current adapter
+     * @return IAdapter|null
+     */
+    public static function getAdapter()
+    {
+        return self::$adapter;
     }
 
     /**
