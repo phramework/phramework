@@ -21,13 +21,13 @@
   "require": {
     "php": ">=5.6",
     "ext-json": "*",
-    "phramework/exceptions": "^0.0.0",
-    "phramework/validate": "^0.0.0"
+    "phramework/exceptions": "0.*",
+    "phramework/validate": "0.*"
   },
   "suggest": {
     "ext-curl": "*",
     "ext-pdo": "Required when database is used",
-    "ext-pdo_pgsql": "Required when postgreSQL database sql is used",
+    "ext-pdo_pgsql": "Required when postgreSQL database is used",
     "ext-pdo_mysql": "Required when MySQL or MariaDB database is used"
   },
   "require-dev": {
