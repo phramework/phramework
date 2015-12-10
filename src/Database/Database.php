@@ -49,7 +49,7 @@ class Database
             );
         }
 
-        self::$adapter = $adapter;
+        static::$adapter = $adapter;
     }
 
     /**
@@ -58,7 +58,7 @@ class Database
      */
     public static function getAdapter()
     {
-        return self::$adapter;
+        return static::$adapter;
     }
 
     /**
@@ -67,7 +67,7 @@ class Database
      */
     public static function getAdapterName()
     {
-        return self::$adapter->getAdapterName();
+        return static::$adapter->getAdapterName();
     }
 
     /**
@@ -81,7 +81,7 @@ class Database
     public static function execute($query, $parameters = [])
     {
         try {
-            return self::$adapter->execute($query, $parameters);
+            return static::$adapter->execute($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -98,7 +98,7 @@ class Database
     public static function executeLastInsertId($query, $parameters = [])
     {
         try {
-            return self::$adapter->executeLastInsertId($query, $parameters);
+            return static::$adapter->executeLastInsertId($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -117,7 +117,7 @@ class Database
     public static function executeAndFetch($query, $parameters = [], $castModel = null)
     {
         try {
-            return self::$adapter->executeAndFetch($query, $parameters);
+            return static::$adapter->executeAndFetch($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -136,7 +136,7 @@ class Database
     public static function executeAndFetchAll($query, $parameters = [], $castModel = null)
     {
         try {
-            return self::$adapter->executeAndFetchAll($query, $parameters);
+            return static::$adapter->executeAndFetchAll($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -152,7 +152,7 @@ class Database
     public static function executeAndFetchArray($query, $parameters = [])
     {
         try {
-            return self::$adapter->executeAndArray($query, $parameters);
+            return static::$adapter->executeAndArray($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -168,7 +168,7 @@ class Database
     public static function executeAndFetchAllArray($query, $parameters = [])
     {
         try {
-            return self::$adapter->executeAndFetchAllArray($query, $parameters);
+            return static::$adapter->executeAndFetchAllArray($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -185,7 +185,7 @@ class Database
     public static function bindExecuteLastInsertId($query, $parameters = [])
     {
         try {
-            return self::$adapter->bindExecuteLastInsertId($query, $parameters);
+            return static::$adapter->bindExecuteLastInsertId($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -203,7 +203,7 @@ class Database
     public static function bindExecute($query, $parameters = [])
     {
         try {
-            return self::$adapter->bindExecute($query, $parameters);
+            return static::$adapter->bindExecute($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -222,7 +222,7 @@ class Database
     public static function bindExecuteAndFetch($query, $parameters = [], $castModel = null)
     {
         try {
-            return self::$adapter->bindExecuteAndFetch($query, $parameters);
+            return static::$adapter->bindExecuteAndFetch($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -241,7 +241,7 @@ class Database
     public static function bindExecuteAndFetchAll($query, $parameters = [], $castModel = null)
     {
         try {
-            return self::$adapter->bindExecuteAndFetchAll($query, $parameters);
+            return static::$adapter->bindExecuteAndFetchAll($query, $parameters);
         } catch (\Exception $e) {
             throw new DatabaseException('Database Error', $e->getMessage());
         }
@@ -253,8 +253,8 @@ class Database
     public static function close()
     {
         try {
-            if (self::$adapter) {
-                self::$adapter->close();
+            if (static::$adapter) {
+                static::$adapter->close();
             }
         } catch (\Exception $e) {
         }
