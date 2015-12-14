@@ -61,7 +61,9 @@ class Phramework
      */
     private static $URIStrategy;
 
-    private static $controller;
+    /**
+     * @var string
+     */
     private static $method;
 
     /**
@@ -192,7 +194,8 @@ class Phramework
      * @throws \Phramework\Exceptions\NotFoundException
      * @todo change default timezone
      * @todo change default language
-     * TODO @security deny access to any else referals
+     * @todo initialize database if set
+     * @todo @security deny access to any else referals
      */
     public function invoke()
     {
@@ -752,7 +755,7 @@ class Phramework
      */
     public static function writeErrorLog($message)
     {
-        error_log(self::$method . ',' . self::$controller . ':' . $message);
+        error_log(self::getMethod() . ':' . $message);
     }
 
     const METHOD_ANY     = null;
