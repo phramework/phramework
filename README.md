@@ -3,7 +3,7 @@ Version 1.x, _code name "Thales"_
 
 A PHP framework for RESTful services and APIs
 
-[![Build Status](https://travis-ci.org/phramework/phramework.svg?branch=master)](https://travis-ci.org/phramework/phramework)
+[![Build Status](https://travis-ci.org/phramework/phramework.svg?branch=master)](https://travis-ci.org/phramework/phramework) [![Codacy Badge](https://api.codacy.com/project/badge/grade/3070b4d345594aadb447ea9a2c6a16e5)](https://www.codacy.com/app/NohponeX/phramework)
 
 ## Install
 
