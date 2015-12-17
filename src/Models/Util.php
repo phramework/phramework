@@ -174,14 +174,16 @@ class Util
 
     /**
      * Get an array that represents directory tree
-     * @param string $directory      Directory path
+     * @param string  $directory     Directory path
      * @param boolean $recursive     Include sub directories
      * @param boolean $listDirs      Include directories on listing
      * @param boolean $listFiles     Include files on listing
-     * @param string $exclude        [optional] Exclude paths that matches this
+     * @param string  $exclude       *[Optional]* Exclude paths that matches this
      * regular expression
-     * @param array $allowed_filetypes Allowed file extensions. Optional. Default allow all
-     * @param boolean $relative_path  Return paths in relative form. Optional. Default FALSE
+     * @param array   $allowed_filetypes *[Optional]* Allowed file extensions,
+     * default `[]`` (allow all)
+     * @param boolean $relative_path *[Optional]* Return paths in relative form,
+     * default `false`
      */
     public static function directoryToArray(
         $directory,
