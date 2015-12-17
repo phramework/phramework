@@ -23,6 +23,7 @@ namespace Phramework\Models;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
  * @todo add more methods
+ * @todo add defined settings documentation
  */
 class Email
 {

@@ -28,6 +28,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
+ * @todo add defined settings
  */
 class Util
 {
@@ -41,14 +42,14 @@ class Util
      */
     public static function url($endpoint = null, $suffix = '')
     {
-        $api_base = Phramework::getSetting('api_base');
+        $base = Phramework::getSetting('base');
 
         if ($endpoint) {
             $suffix = $endpoint . '/' . $suffix;
 
             $suffix = str_replace('//', '/', $suffix);
         }
-        return $api_base . $suffix;
+        return $base . $suffix;
     }
 
     /**

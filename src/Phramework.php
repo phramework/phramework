@@ -29,19 +29,22 @@ mb_http_output('UTF-8');
 // @codingStandardsIgnoreEnd
 
 /**
- * API 'framework'
- * Defined settings:
- * - debug, boolean, default false
- * - errorlog_path
- * - language
- * - languages (string[])
- * - allowed_referer (string[])
+ * API 'framework'<br/>
+ * Defined settings:<br/>
+ * <ul>
+ * <li>boolean  debug, <i>[Optional]</i>, default false</li>
+ * <li>string   errorlog_path <i>[Optional]</i>, default is null</li>
+ * <li>string   language  <i>[Optional]</i>, default is "en"</li>
+ * <li>string[] languages <i>[Optional]</i>, default is []</li>
+ * <li>string[] allowed_referer <i>[Optional]</i>, default is null</li>
+ * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @version 1.0.0
  * @link https://nohponex.gr Developer's website
  * @todo Clean GET callback
  * @todo Add translation class
+ * @todo Add allowed origin settings and implementation
  */
 class Phramework
 {
@@ -261,10 +264,10 @@ class Phramework
 
             //Check origin header
             if (isset($headers['Origin'])) {
-                $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
+                $originHost = parse_url($headers['Origin'], PHP_URL_HOST);
                 //Check if origin host is allowed
-                if ($origin_host && self::getSetting('allowed_referer')
-                    && in_array($origin_host, self::getSetting('allowed_referer'))) {
+                if ($originHost && self::getSetting('allowed_referer')
+                    && in_array($originHost, self::getSetting('allowed_referer'))) {
                     $origin = $headers['Origin'];
                 }
                 //@TODO @security else deny access
