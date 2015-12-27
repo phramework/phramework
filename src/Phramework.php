@@ -329,7 +329,7 @@ class Phramework
                     //note if input length is >0 and decode returns null then its bad data
                     //json_last_error()
 
-                    $input = json_decode($input, true);
+                    $input = json_decode($input);
 
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         throw new \Phramework\Exceptions\RequestException(
