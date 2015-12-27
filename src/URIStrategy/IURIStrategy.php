@@ -32,7 +32,7 @@ interface IURIStrategy
      * NotFoundException SHOULD be when associatation between the request and
      * handler is not defined
      * UnauthorizedException SHOULD be thrown when a request requires authorization
-     * @param  array        $requestParameters Request parameters
+     * @param  object       $requestParameters Request parameters
      * @param  string       $requestMethod     HTTP request method
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful

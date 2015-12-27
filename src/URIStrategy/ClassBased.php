@@ -86,7 +86,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 
     /**
      * Invoke URIStrategy
-     * @param  array        $requestParameters Request parameters
+     * @param  object       $requestParameters Request parameters
      * @param  string       $requestMethod     HTTP request method
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful

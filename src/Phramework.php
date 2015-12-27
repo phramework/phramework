@@ -202,7 +202,7 @@ class Phramework
      */
     public function invoke()
     {
-        $params = [];
+        $params = new \stdClass();
         $method = self::METHOD_GET;
         $headers = [];
 
@@ -293,7 +293,7 @@ class Phramework
             }
 
             //Merge all REQUEST parameters into $params array
-            $params = array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
+            $params = (object)array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
 
             //Parse request body
             //@Todo add allowed content-types
@@ -317,7 +317,7 @@ class Phramework
                     parse_str(file_get_contents('php://input'), $input);
 
                     if ($input && !empty($input)) {
-                        $params = array_merge($params, $input);
+                        $params = (object)array_merge((array)$params, (array)$input);
                     }
                 } elseif (in_array(
                     $CONTENT_TYPE,
@@ -338,7 +338,7 @@ class Phramework
                     }
 
                     if ($input && !empty($input)) {
-                        $params = array_merge($params, $input);
+                        $params = (object)array_merge((array)$params, (array)$input);
                     }
                 }
             }

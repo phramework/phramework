@@ -149,7 +149,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
     /**
      * Invoke URIStrategy
-     * @param  array        $requestParameters Request parameters
+     * @param  object       $requestParameters Request parameters
      * @param  string       $requestMethod     HTTP request method
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
@@ -195,8 +195,8 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                 list($URI_parameters) = $test;
 
                 //Merge all available parameters
-                $parameters = array_merge(
-                    $requestParameters,
+                $parameters = (object)array_merge(
+                    (array)$requestParameters,
                     $URI_parameters,
                     $test[0]
                 );
