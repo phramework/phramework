@@ -16,7 +16,6 @@ composer require phramework/phramework
 
 ```bash
 composer update
-npm update
 ```
 
 ### Test and lint code
