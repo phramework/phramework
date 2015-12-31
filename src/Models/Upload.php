@@ -218,6 +218,7 @@ class Upload
      * @param $destination String Zip archive path
      * @param $files array array( array( 'filename' => .. 'path' => .. ) )
      * @param $blobs array array( array( 'filename' => .. 'contents' => .. ) )
+     * @todo update zip class namespace
      */
     public static function createZip($destination, $files = [], $blobs = [], $overwrite = true)
     {

@@ -36,7 +36,8 @@
     "squizlabs/php_codesniffer": "*",
     "apigen/apigen": "^4.1",
     "ext-pdo_sqlite": "*",
-    "satooshi/php-coveralls": "dev-master"
+    "satooshi/php-coveralls": "dev-master",
+    "codacy/coverage": "^1.0"
   },
   "support": {
     "email": "phramework@nohponex.gr"

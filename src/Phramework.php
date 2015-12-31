@@ -16,7 +16,6 @@
  */
 namespace Phramework;
 
-use \Phramework\Models\Util;
 use \Phramework\Models\Request;
 use \Phramework\Extensions\StepCallback;
 
@@ -29,19 +28,23 @@ mb_http_output('UTF-8');
 // @codingStandardsIgnoreEnd
 
 /**
- * API 'framework'
- * Defined settings:
- * - debug, boolean, default false
- * - errorlog_path
- * - language
- * - languages (string[])
- * - allowed_referer (string[])
+ * API 'framework'<br/>
+ * Defined settings:<br/>
+ * <ul>
+ * <li>boolean  debug, <i>[Optional]</i>, default false</li>
+ * <li>string   errorlog_path <i>[Optional]</i>, default is null</li>
+ * <li>string   language  <i>[Optional]</i>, default is "en"</li>
+ * <li>string[] languages <i>[Optional]</i>, default is []</li>
+ * <li>string[] allowed_referer <i>[Optional]</i>, default is null</li>
+ * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @version 1.0.0
+ * @version 1.1.0
  * @link https://nohponex.gr Developer's website
  * @todo Clean GET callback
  * @todo Add translation class
+ * @todo Add allowed origin settings and implementation
+ * @todo Add setting for timezone
  */
 class Phramework
 {
@@ -61,7 +64,9 @@ class Phramework
      */
     private static $URIStrategy;
 
-    private static $controller;
+    /**
+     * @var string
+     */
     private static $method;
 
     /**
@@ -108,7 +113,7 @@ class Phramework
             true
         )) {
             throw new \Phramework\Exceptions\ServerException(
-                'Class is not implementing \Phramework\URIStrategy\IURIStrategy'
+                'Class is not implementing Phramework\URIStrategy\IURIStrategy'
             );
         }
         self::$URIStrategy = $URIStrategyObject;
@@ -144,7 +149,7 @@ class Phramework
             true
         )) {
             throw new \Exception(
-                'Class is not implementing \Phramework\Extensions\Translation'
+                'Class is not implementing Phramework\Extensions\Translation'
             );
         }
 
@@ -192,11 +197,12 @@ class Phramework
      * @throws \Phramework\Exceptions\NotFoundException
      * @todo change default timezone
      * @todo change default language
-     * TODO @security deny access to any else referals
+     * @todo initialize database if set
+     * @todo @security deny access to any else referals
      */
     public function invoke()
     {
-        $params = [];
+        $params = new \stdClass();
         $method = self::METHOD_GET;
         $headers = [];
 
@@ -258,10 +264,10 @@ class Phramework
 
             //Check origin header
             if (isset($headers['Origin'])) {
-                $origin_host = parse_url($headers['Origin'], PHP_URL_HOST);
+                $originHost = parse_url($headers['Origin'], PHP_URL_HOST);
                 //Check if origin host is allowed
-                if ($origin_host && self::getSetting('allowed_referer')
-                    && in_array($origin_host, self::getSetting('allowed_referer'))) {
+                if ($originHost && self::getSetting('allowed_referer')
+                    && in_array($originHost, self::getSetting('allowed_referer'))) {
                     $origin = $headers['Origin'];
                 }
                 //@TODO @security else deny access
@@ -287,7 +293,7 @@ class Phramework
             }
 
             //Merge all REQUEST parameters into $params array
-            $params = array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
+            $params = (object)array_merge($_GET, $_POST, $_FILES); //TODO $_FILES only if POST OR PUT
 
             //Parse request body
             //@Todo add allowed content-types
@@ -311,7 +317,7 @@ class Phramework
                     parse_str(file_get_contents('php://input'), $input);
 
                     if ($input && !empty($input)) {
-                        $params = array_merge($params, $input);
+                        $params = (object)array_merge((array)$params, (array)$input);
                     }
                 } elseif (in_array(
                     $CONTENT_TYPE,
@@ -323,7 +329,7 @@ class Phramework
                     //note if input length is >0 and decode returns null then its bad data
                     //json_last_error()
 
-                    $input = json_decode($input, true);
+                    $input = json_decode($input);
 
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         throw new \Phramework\Exceptions\RequestException(
@@ -332,7 +338,7 @@ class Phramework
                     }
 
                     if ($input && !empty($input)) {
-                        $params = array_merge($params, $input);
+                        $params = (object)array_merge((array)$params, (array)$input);
                     }
                 }
             }
@@ -642,26 +648,39 @@ class Phramework
     /**
      * Get a setting value
      * @param string $key The requested setting key
-     * @param string|NULL $secondLevel
+     * @param string|null $secondLevel
      * @param mixed $defaultValue [optional] Default value is the setting is missing.
-     * @return Mixed Returns the value of setting, NULL when not found
+     * @return Mixed Returns the value of setting, null when not found
      */
     public static function getSetting($key, $secondLevel = null, $defaultValue = null)
     {
+        $settings = self::$settings;
+
+        //Work with arrays
+        if (is_object($settings)) {
+            $settings = (array)$settings;
+        }
+
         //Use default value if setting is not defined
-        if (!isset(self::$settings[$key])
-            || ($secondLevel !== null
-                && !isset(self::$settings[$key][$secondLevel])
-            )
-        ) {
+        if (!array_key_exists($key, $settings)) {
             return $defaultValue;
         }
 
+        //If second level setting access is set
         if ($secondLevel !== null) {
-            return self::$settings[$key][$secondLevel];
+            //Work with arrays
+            if (is_object($settings[$key])) {
+                $settings[$key] = (array)$settings[$key];
+            }
+
+            if (!array_key_exists($secondLevel, $settings[$key])) {
+                return $defaultValue;
+            }
+
+            return $settings[$key][$secondLevel];
         }
 
-        return self::$settings[$key];
+        return $settings[$key];
     }
 
     /**
@@ -672,7 +691,7 @@ class Phramework
     {
         if (!is_subclass_of($viewerClass, \Phramework\Viewers\IViewer::class, true)) {
             throw new \Exception(
-                'Class is not implementing \Phramework\Viewers\IViewer'
+                'Class is not implementing Phramework\Viewers\IViewer'
             );
         }
         self::$viewer = $viewerClass;
@@ -752,7 +771,7 @@ class Phramework
      */
     public static function writeErrorLog($message)
     {
-        error_log(self::$method . ',' . self::$controller . ':' . $message);
+        error_log(self::getMethod() . ':' . $message);
     }
 
     const METHOD_ANY     = null;

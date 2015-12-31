@@ -20,3 +20,4 @@ script:
  - composer test
 after_script:
  - php vendor/bin/coveralls -v
+ - php vendor/bin/codacycoverage clover build/logs/clover.xml

@@ -48,6 +48,7 @@ use \Phramework\Exceptions\NotFoundException;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
+ * @todo Add documentation for setting default_controller
  */
 class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 {
@@ -85,13 +86,14 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 
     /**
      * Invoke URIStrategy
-     * @param  array        $requestParameters Request parameters
+     * @param  object       $requestParameters Request parameters
      * @param  string       $requestMethod     HTTP request method
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
      * @throws NotFoundException
      * @throws UnauthorizedException
+     * @throws \Phramework\Exceptions\ServerException
      * @return string[] This method should return `[$class, $method]` on success
      */
     public function invoke(
@@ -105,7 +107,9 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
             if (($default_controller = Phramework::getSetting('default_controller'))) {
                 $requestParameters['controller'] = $default_controller;
             } else {
-                die(); //Or throw \Exception OR redirect to API documentation
+                throw new \Phramework\Exceptions\ServerException(
+                    'Default controller has not been configured'
+                );
             }
         }
 
