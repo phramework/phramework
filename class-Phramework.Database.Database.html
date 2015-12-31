@@ -82,6 +82,10 @@
 							</li>
 								</ul></li>
 					<li>
+						<a href="namespace-Phramework.Exceptions.html">
+							Exceptions						</a>
+							</li>
+					<li>
 						<a href="namespace-Phramework.Extensions.html">
 							Extensions						</a>
 							</li>
@@ -92,6 +96,10 @@
 					<li>
 						<a href="namespace-Phramework.URIStrategy.html">
 							URIStrategy						</a>
+							</li>
+					<li>
+						<a href="namespace-Phramework.Validate.html">
+							Validate						</a>
 							</li>
 					<li>
 						<a href="namespace-Phramework.Viewers.html">
@@ -162,7 +170,7 @@
 				0<br>
 				<b>Todo:</b>
 				Add option to convert fetched data into objects insted of array<br>
-			<b>Located at</b> Database/Database.php		<br>
+			<b>Located at</b> Database.php		<br>
 	</div>
 
 
@@ -310,7 +318,7 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 					<h4>Example</h4>
@@ -364,7 +372,7 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 					<h4>Example</h4>
@@ -372,9 +380,9 @@
 							<pre><span class="php-var">$id</span> = Database::executeLastInsertId(
     <span class="php-quote">'INSERT INTO &quot;user&quot;
     (&quot;first_name&quot;)
-    VALUES (?),
-    [$firstName]
-);</span></pre><br>
+    VALUES (?)'</span>,
+    [<span class="php-var">$firstName</span>]
+);</pre><br>
 					</div>
 
 
@@ -420,7 +428,7 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 					<h4>Example</h4>
@@ -429,9 +437,9 @@
     <span class="php-quote">'SELECT &quot;id&quot;, &quot;first_name&quot;
     FROM &quot;user&quot;
     WHERE &quot;id&quot; = ?
-    LIMIT 1,
-    [$id]
-);</span></pre><br>
+    LIMIT 1'</span>,
+    [<span class="php-var">$id</span>]
+);</pre><br>
 					</div>
 
 
@@ -477,15 +485,15 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 					<h4>Example</h4>
 					<div class="list">
 							<pre><span class="php-var">$records</span> = Database::executeAndFetchAll(
     <span class="php-quote">'SELECT &quot;id&quot;, &quot;first_name&quot;
-    FROM &quot;user&quot;
-);</span></pre><br>
+    FROM &quot;user&quot;'</span>
+);</pre><br>
 					</div>
 
 
@@ -528,7 +536,7 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 
@@ -572,7 +580,7 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 
@@ -616,7 +624,7 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 
@@ -660,7 +668,7 @@
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 					<h4>Uses</h4>
@@ -689,7 +697,7 @@
 
 			<td class="attributes"><code>
 				 public static
-				type
+				array
 				
 				</code>
 			</td>
@@ -719,12 +727,12 @@ then \Phramework\Models\Filter::castEntry will be applied to data</p></dd>
 
 					<h4>Returns</h4>
 					<div class="list">
-						type
+						array
 					</div>
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 
@@ -736,7 +744,7 @@ then \Phramework\Models\Filter::castEntry will be applied to data</p></dd>
 
 			<td class="attributes"><code>
 				 public static
-				type
+				array[]
 				
 				</code>
 			</td>
@@ -766,12 +774,12 @@ then \Phramework\Models\Filter::castEntry will be applied to data</p></dd>
 
 					<h4>Returns</h4>
 					<div class="list">
-						type
+						array[]
 					</div>
 
 					<h4>Throws</h4>
 					<div class="list">
-						Phramework\Exceptions\DatabaseException
+						<code><a href="class-Phramework.Exceptions.DatabaseException.html">Phramework\Exceptions\DatabaseException</a></code>
 					</div>
 
 

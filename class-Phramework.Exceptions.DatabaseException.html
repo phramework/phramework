@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Deprecated Class Phramework\Database\Operations\Search | phramework doc</title>
+	<title>Class Phramework\Exceptions\DatabaseException | phramework doc</title>
 
 	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
 	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
@@ -28,7 +28,7 @@
 
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="namespace-Phramework.Database.Operations.html" title="Summary of Phramework\Database\Operations"><span>Namespace</span></a>
+						<a href="namespace-Phramework.Exceptions.html" title="Summary of Phramework\Exceptions"><span>Namespace</span></a>
 					</li>
 					<li class="active">
 <span>Class</span>					</li>
@@ -71,16 +71,20 @@
 						<a href="namespace-Phramework.Authentication.html">
 							Authentication						</a>
 							</li>
-					<li class="active">
+					<li>
 						<a href="namespace-Phramework.Database.html">
 							Database<span></span>
 						</a>
 							<ul>
-					<li class="active">
+					<li>
 						<a href="namespace-Phramework.Database.Operations.html">
 							Operations						</a>
 							</li>
 								</ul></li>
+					<li class="active">
+						<a href="namespace-Phramework.Exceptions.html">
+							Exceptions						</a>
+							</li>
 					<li>
 						<a href="namespace-Phramework.Extensions.html">
 							Extensions						</a>
@@ -94,6 +98,10 @@
 							URIStrategy						</a>
 							</li>
 					<li>
+						<a href="namespace-Phramework.Validate.html">
+							Validate						</a>
+							</li>
+					<li>
 						<a href="namespace-Phramework.Viewers.html">
 							Viewers						</a>
 							</li>
@@ -103,17 +111,23 @@
 
 
 		<div id="elements">
-			<h3>Classes</h3>
+
+
+
+			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-Phramework.Database.Operations.Create.html">Create</a></li>
-				<li><a href="class-Phramework.Database.Operations.Delete.html">Delete</a></li>
-				<li><a href="class-Phramework.Database.Operations.Listing.html" class="deprecated">Listing</a></li>
-				<li class="active"><a href="class-Phramework.Database.Operations.Search.html" class="deprecated">Search</a></li>
-				<li><a href="class-Phramework.Database.Operations.Update.html">Update</a></li>
+				<li class="active"><a href="class-Phramework.Exceptions.DatabaseException.html">DatabaseException</a></li>
+				<li><a href="class-Phramework.Exceptions.ForbiddenException.html">ForbiddenException</a></li>
+				<li><a href="class-Phramework.Exceptions.IncorrectParametersException.html">IncorrectParametersException</a></li>
+				<li><a href="class-Phramework.Exceptions.MethodNotAllowedException.html">MethodNotAllowedException</a></li>
+				<li><a href="class-Phramework.Exceptions.MissingParametersException.html">MissingParametersException</a></li>
+				<li><a href="class-Phramework.Exceptions.NotFoundException.html">NotFoundException</a></li>
+				<li><a href="class-Phramework.Exceptions.NotImplementedException.html">NotImplementedException</a></li>
+				<li><a href="class-Phramework.Exceptions.PermissionException.html">PermissionException</a></li>
+				<li><a href="class-Phramework.Exceptions.RequestException.html">RequestException</a></li>
+				<li><a href="class-Phramework.Exceptions.ServerException.html">ServerException</a></li>
+				<li><a href="class-Phramework.Exceptions.UnauthorizedException.html">UnauthorizedException</a></li>
 			</ul>
-
-
-
 
 
 		</div>
@@ -125,13 +139,27 @@
 <div id="right">
 	<div id="rightInner">
 <div id="content" class="class">
-	<h1 class="deprecated">Class Search</h1>
+	<h1>Class DatabaseException</h1>
 
 
 	<div class="description">
-	<p>Provides varius helper functions for searching</p>
+	<p>DatabaseException
+Used to throw an \Exception, when there is something wrong with a Database request.</p>
 	</div>
 
+	<dl class="tree well">
+		<dd style="padding-left:0px">
+Exception
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by">
+<b><span>Phramework\Exceptions\DatabaseException</span></b>			
+			
+			
+		</dd>
+	</dl>
 
 
 
@@ -143,20 +171,14 @@
 	<div class="alert alert-info">
 		
 		
-		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Database.html">Database</a>\<a href="namespace-Phramework.Database.Operations.html">Operations</a><br>
+		<b>Namespace:</b> <a href="namespace-Phramework.html">Phramework</a>\<a href="namespace-Phramework.Exceptions.html">Exceptions</a><br>
 		
 
-				<b>Deprecated</b>
-				<br>
 				<b>License:</b>
 				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
-				<b>Since</b>
-				0<br>
-				<b>Todo:</b>
-				Change OPERATOR types from validate<br>
-			<b>Located at</b> Database/Operations/Search.php		<br>
+			<b>Located at</b> DatabaseException.php		<br>
 	</div>
 
 
@@ -164,54 +186,44 @@
 		<div class="panel panel-default">
 			<div class="panel-heading"><h2>Methods summary</h2></div>
 			<table class="summary table table-bordered table-striped methods" id="methods">
-		<tr data-order="search" id="_search">
+		<tr data-order="__construct" id="___construct">
 
 			<td class="attributes"><code>
-				 public static
-				type
+				 public 
+				
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
-			<a class="anchor" href="#_search">#</a>
-			<code class="deprecated">search( <span>type <var>$parameters</var></span>, <span>type <var>$model</var></span>, <span>type <var>&amp; $fields</var></span>, <span>type <var>$order</var> = <span class="php-keyword1">false</span></span>, <span>type <var>$page</var> = <span class="php-num">1</span></span>, <span>type <var>&amp; $pages</var> = <span class="php-num">0</span></span> )</code>
+			<a class="anchor" href="#___construct">#</a>
+			<code>__construct( <span>string <var>$message</var></span>, <span>string <var>$error</var> = <span class="php-keyword1">null</span></span> )</code>
 
 			<div class="description short">
-				<p>Perform a full search</p>
+				<p>Database \Exception</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>Perform a full search</p>
+				<p>Database \Exception</p>
 
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
-						<dt><var>$parameters</var></dt>
-						<dd></dd>
-						<dt><var>$model</var></dt>
-						<dd></dd>
-						<dt><var>$fields</var></dt>
-						<dd></dd>
-						<dt><var>$order</var></dt>
-						<dd></dd>
-						<dt><var>$page</var></dt>
-						<dd></dd>
-						<dt><var>$pages</var></dt>
-						<dd></dd>
+						<dt><var>$message</var></dt>
+						<dd>\Exception message</dd>
+						<dt><var>$error</var></dt>
+						<dd>Internal error message</dd>
 					</dl></div>
 
-					<h4>Returns</h4>
+
+
+					<h4>Todo</h4>
 					<div class="list">
-						type
+							Notify administrators<br>
 					</div>
 
-					<h4>Throws</h4>
-					<div class="list">
-						RequestException
-					</div>
-
-
+					<h4>Overrides</h4>
+					<div class="list"><code>Exception::__construct</code></div>
 
 			</div>
 			</div></td>
@@ -219,11 +231,42 @@
 			</table>
 		</div>
 
+		<div class="panel panel-default">
+	        <div class="panel-heading"><h3>Methods inherited from Exception</h3></div>
+			<p class="elementList">
+				<code>__toString()</code>, 
+				<code>getCode()</code>, 
+				<code>getFile()</code>, 
+				<code>getLine()</code>, 
+				<code>getMessage()</code>, 
+				<code>getPrevious()</code>, 
+				<code>getTrace()</code>, 
+				<code>getTraceAsString()</code>
+			</p>
+		</div>
 
 
 
 
 
+
+
+
+
+
+		<div class="panel panel-default">
+            <div class="panel-heading"><h2>Properties summary</h2></div>
+		</div>
+
+		<div class="panel panel-default">
+            <div class="panel-heading"><h3>Properties inherited from Exception</h3></div>
+			<p class="elementList">
+				<code><var>$code</var></code>, 
+				<code><var>$file</var></code>, 
+				<code><var>$line</var></code>, 
+				<code><var>$message</var></code>
+			</p>
+		</div>
 
 
 
