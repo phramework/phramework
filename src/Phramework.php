@@ -16,7 +16,6 @@
  */
 namespace Phramework;
 
-use \Phramework\Models\Util;
 use \Phramework\Models\Request;
 use \Phramework\Extensions\StepCallback;
 
@@ -40,11 +39,12 @@ mb_http_output('UTF-8');
  * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @version 1.0.0
+ * @version 1.1.0
  * @link https://nohponex.gr Developer's website
  * @todo Clean GET callback
  * @todo Add translation class
  * @todo Add allowed origin settings and implementation
+ * @todo Add setting for timezone
  */
 class Phramework
 {
@@ -113,7 +113,7 @@ class Phramework
             true
         )) {
             throw new \Phramework\Exceptions\ServerException(
-                'Class is not implementing \Phramework\URIStrategy\IURIStrategy'
+                'Class is not implementing Phramework\URIStrategy\IURIStrategy'
             );
         }
         self::$URIStrategy = $URIStrategyObject;
@@ -149,7 +149,7 @@ class Phramework
             true
         )) {
             throw new \Exception(
-                'Class is not implementing \Phramework\Extensions\Translation'
+                'Class is not implementing Phramework\Extensions\Translation'
             );
         }
 
@@ -648,26 +648,39 @@ class Phramework
     /**
      * Get a setting value
      * @param string $key The requested setting key
-     * @param string|NULL $secondLevel
+     * @param string|null $secondLevel
      * @param mixed $defaultValue [optional] Default value is the setting is missing.
-     * @return Mixed Returns the value of setting, NULL when not found
+     * @return Mixed Returns the value of setting, null when not found
      */
     public static function getSetting($key, $secondLevel = null, $defaultValue = null)
     {
+        $settings = self::$settings;
+
+        //Work with arrays
+        if (is_object($settings)) {
+            $settings = (array)$settings;
+        }
+
         //Use default value if setting is not defined
-        if (!isset(self::$settings[$key])
-            || ($secondLevel !== null
-                && !isset(self::$settings[$key][$secondLevel])
-            )
-        ) {
+        if (!array_key_exists($key, $settings)) {
             return $defaultValue;
         }
 
+        //If second level setting access is set
         if ($secondLevel !== null) {
-            return self::$settings[$key][$secondLevel];
+            //Work with arrays
+            if (is_object($settings[$key])) {
+                $settings[$key] = (array)$settings[$key];
+            }
+
+            if (!array_key_exists($secondLevel, $settings[$key])) {
+                return $defaultValue;
+            }
+
+            return $settings[$key][$secondLevel];
         }
 
-        return self::$settings[$key];
+        return $settings[$key];
     }
 
     /**
@@ -678,7 +691,7 @@ class Phramework
     {
         if (!is_subclass_of($viewerClass, \Phramework\Viewers\IViewer::class, true)) {
             throw new \Exception(
-                'Class is not implementing \Phramework\Viewers\IViewer'
+                'Class is not implementing Phramework\Viewers\IViewer'
             );
         }
         self::$viewer = $viewerClass;
