@@ -24,16 +24,17 @@ use \PDO;
  * <br/>Defined settings:<br/>
  * <ul>
  * <li>
- *   array database <ul>
+ *   array database
+ *   <ul>
  *   <li>string  adapter</li>
  *   <li>string  name, Database name</li>
  *   <li>string  username</li>
  *   <li>string  password</li>
  *   <li>string  host</li>
  *   <li>integer port</li>
- *  </ul>
+ *   </ul>
  * </li>
- * <ul>
+ * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
@@ -48,6 +49,7 @@ class Database
 
     /**
      * @param PhrameworkDatabaseIAdapter $adapter
+     * @throws Exception
      */
     public static function setAdapter(\Phramework\Database\IAdapter $adapter)
     {
@@ -85,6 +87,16 @@ class Database
      * @param array $parameters
      * @return integer Returns the number of rows affected or selected
      * @throws \Phramework\Exceptions\DatabaseException
+     * @example
+     * ```php
+     * $status = Database::execute(
+     *     'UPDATE "user"
+     *     SET "first_name" = ?
+     *     WHERE "id" = ?
+     *     LIMIT 1',
+     *     [$firstName, $id]
+     * );
+     * ```
      */
     public static function execute($query, $parameters = [])
     {
@@ -102,6 +114,15 @@ class Database
      * @param array  $parameters Query parameters
      * @return mixed Returns returns the id of last inserted item
      * @throws \Phramework\Exceptions\DatabaseException
+     * @example
+     * ```php
+     * $id = Database::executeLastInsertId(
+     *     'INSERT INTO "user"
+     *     ("first_name")
+     *     VALUES (?),
+     *     [$firstName]
+     * );
+     * ```
      */
     public static function executeLastInsertId($query, $parameters = [])
     {
@@ -121,6 +142,16 @@ class Database
      * \Phramework\Models\Filter::castEntry will be applied to data
      * @return array
      * @throws \Phramework\Exceptions\DatabaseException
+     * @example
+     * ```php
+     * $record = Database::executeAndFetch(
+     *     'SELECT "id", "first_name"
+     *     FROM "user"
+     *     WHERE "id" = ?
+     *     LIMIT 1,
+     *     [$id]
+     * );
+     * ```
      */
     public static function executeAndFetch($query, $parameters = [], $castModel = null)
     {
@@ -140,6 +171,13 @@ class Database
      * \Phramework\Models\Filter::cast will be applied to data
      * @return array[]
      * @throws \Phramework\Exceptions\DatabaseException
+     * @example
+     * ```php
+     * $records = Database::executeAndFetchAll(
+     *     'SELECT "id", "first_name"
+     *     FROM "user"
+     * );
+     * ```
      */
     public static function executeAndFetchAll($query, $parameters = [], $castModel = null)
     {
@@ -206,7 +244,20 @@ class Database
      * @param array  $parameters Query parameters
      * @return integer Returns the number of rows affected or selected
      * @throws \Phramework\Exceptions\DatabaseException
-     * @todo provide documentation
+     * @uses PDOStatement::bindValue https://secure.php.net/manual/en/pdostatement.bindvalue.php
+     * @example
+     * ```php
+     * $status = Database::bindExecute(
+     *     'UPDATE "user"
+     *     SET "first_name" = ?
+     *     WHERE "id" = ?
+     *     LIMIT 1',
+     *     [
+     *         $first_name, //PDO::PARAM_STR by default
+     *         ['value' => $id, 'params' => \PDO::PARAM_INT]
+     *     ]
+     * );
+     * ```
      */
     public static function bindExecute($query, $parameters = [])
     {

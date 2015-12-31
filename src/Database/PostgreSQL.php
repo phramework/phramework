@@ -23,16 +23,17 @@ use \Phramework\Exceptions\DatabaseException;
  * <br/>Defined settings:<br/>
  * <ul>
  * <li>
- *   array database <ul>
+ *   array database
+ *   <ul>
  *   <li>string  adapter</li>
  *   <li>string  name, Database name</li>
  *   <li>string  username</li>
  *   <li>string  password</li>
  *   <li>string  host</li>
  *   <li>integer port</li>
- *  </ul>
+ *   </ul>
  * </li>
- * <ul>
+ * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @uses \PDO
@@ -57,6 +58,11 @@ class PostgreSQL implements \Phramework\Database\IAdapter
 
     public function __construct($settingsDb)
     {
+        //Work with arrays
+        if (is_object($settingsDb)) {
+            $settingsDb = (array)$settingsDb;
+        }
+
         if (!($this->link = new PDO(sprintf(
             "pgsql:dbname=%s;host=%s;user=%s;password=%s;port=%s",
             $settingsDb['name'],
@@ -101,7 +107,6 @@ class PostgreSQL implements \Phramework\Database\IAdapter
         return $this->link->lastInsertId();
     }
 
-
     /**
      * Execute a query and fetch first row as associative array
      *
@@ -115,6 +120,7 @@ class PostgreSQL implements \Phramework\Database\IAdapter
     public function executeAndFetch($query, $parameters = [], $castModel = null)
     {
         $statement = $this->link->prepare($query);
+
         $statement->execute($parameters);
         $data = $statement->fetch(PDO::FETCH_ASSOC);
         $statement->closeCursor();
@@ -139,16 +145,17 @@ class PostgreSQL implements \Phramework\Database\IAdapter
     public function executeAndFetchAll($query, $parameters = [], $castModel = null)
     {
         $statement = $this->link->prepare($query);
+
         $statement->execute($parameters);
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         $statement->closeCursor();
+
         return (
             $castModel && $data
             ? \Phramework\Models\Filter::cast($data, $castModel)
             : $data
         );
     }
-
 
     /**
      * Execute a query and fetch first row as array
@@ -160,9 +167,11 @@ class PostgreSQL implements \Phramework\Database\IAdapter
     public function executeAndFetchArray($query, $parameters = [])
     {
         $statement = $this->link->prepare($query);
+
         $statement->execute($parameters);
         $data = $statement->fetch(PDO::FETCH_COLUMN);
         $statement->closeCursor();
+
         return $data;
     }
 
@@ -172,13 +181,16 @@ class PostgreSQL implements \Phramework\Database\IAdapter
      * @param array  $parameters Query parameters
      * @return array[]
      * @throws \Phramework\Exceptions\DatabaseException
+     * @uses PDO::FETCH_COLUMN
      */
     public function executeAndFetchAllArray($query, $parameters = [])
     {
         $statement = $this->link->prepare($query);
+
         $statement->execute($parameters);
         $data = $statement->fetchAll(PDO::FETCH_COLUMN);
         $statement->closeCursor();
+
         return $data;
     }
 
@@ -194,7 +206,12 @@ class PostgreSQL implements \Phramework\Database\IAdapter
     public function bindExecuteLastInsertId($query, $parameters = [])
     {
         $statement = $this->link->prepare($query);
+
         foreach ($parameters as $index => $paramProperties) {
+            if (is_object($paramProperties)) {
+                $paramProperties = (array)$paramProperties;
+            }
+
             if (is_array($paramProperties)) {
                 $statement->bindValue(
                     (int) $index + 1,
@@ -205,7 +222,9 @@ class PostgreSQL implements \Phramework\Database\IAdapter
                 $statement->bindValue((int) $index + 1, $paramProperties);
             }
         }
+
         $statement->execute();
+
         return $this->link->lastInsertId();
     }
 
@@ -224,6 +243,9 @@ class PostgreSQL implements \Phramework\Database\IAdapter
         $statement = $this->link->prepare($query);
 
         foreach ($parameters as $index => $paramProperties) {
+            if (is_object($paramProperties)) {
+                $paramProperties = (array)$paramProperties;
+            }
             if (is_array($paramProperties)) {
                 $statement->bindValue(
                     (int) $index + 1,
@@ -236,6 +258,7 @@ class PostgreSQL implements \Phramework\Database\IAdapter
         }
 
         $statement->execute();
+
         return $statement->rowCount();
     }
 
@@ -253,7 +276,11 @@ class PostgreSQL implements \Phramework\Database\IAdapter
     public function bindExecuteAndFetch($query, $parameters = [], $castModel = null)
     {
         $statement = $this->link->prepare($query);
+
         foreach ($parameters as $index => $paramProperties) {
+            if (is_object($paramProperties)) {
+                $paramProperties = (array)$paramProperties;
+            }
             if (is_array($paramProperties)) {
                 $statement->bindValue(
                     (int) $index + 1,
@@ -264,9 +291,11 @@ class PostgreSQL implements \Phramework\Database\IAdapter
                 $statement->bindValue((int) $index + 1, $paramProperties);
             }
         }
+
         $statement->execute();
         $data = $statement->fetch(PDO::FETCH_ASSOC);
         $statement->closeCursor();
+
         return (
             $castModel && $data
             ? \Phramework\Models\Filter::castEntry($data, $castModel)
@@ -288,7 +317,11 @@ class PostgreSQL implements \Phramework\Database\IAdapter
     public function bindExecuteAndFetchAll($query, $parameters = [], $castModel = null)
     {
         $statement = $this->link->prepare($query);
+
         foreach ($parameters as $index => $paramProperties) {
+            if (is_object($paramProperties)) {
+                $paramProperties = (array)$paramProperties;
+            }
             if (is_array($paramProperties)) {
                 $statement->bindValue(
                     (int) $index + 1,
@@ -299,6 +332,7 @@ class PostgreSQL implements \Phramework\Database\IAdapter
                 $statement->bindValue((int) $index + 1, $paramProperties);
             }
         }
+
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
