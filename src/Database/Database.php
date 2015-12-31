@@ -119,7 +119,7 @@ class Database
      * $id = Database::executeLastInsertId(
      *     'INSERT INTO "user"
      *     ("first_name")
-     *     VALUES (?),
+     *     VALUES (?)',
      *     [$firstName]
      * );
      * ```
@@ -148,7 +148,7 @@ class Database
      *     'SELECT "id", "first_name"
      *     FROM "user"
      *     WHERE "id" = ?
-     *     LIMIT 1,
+     *     LIMIT 1',
      *     [$id]
      * );
      * ```
@@ -175,7 +175,7 @@ class Database
      * ```php
      * $records = Database::executeAndFetchAll(
      *     'SELECT "id", "first_name"
-     *     FROM "user"
+     *     FROM "user"'
      * );
      * ```
      */
@@ -275,7 +275,7 @@ class Database
      * @param array  $parameters Query parameters
      * @param array  $castModel [Optional] Default is null, if set
      * then \Phramework\Models\Filter::castEntry will be applied to data
-     * @return type
+     * @return array
      * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function bindExecuteAndFetch($query, $parameters = [], $castModel = null)
@@ -294,7 +294,7 @@ class Database
      * @param array  $parameters Query parameters
      * @param array  $castModel [Optional] Default is null, if set then
      * \Phramework\Models\Filter::castEntry will be applied to data
-     * @return type
+     * @return array[]
      * @throws \Phramework\Exceptions\DatabaseException
      */
     public static function bindExecuteAndFetchAll($query, $parameters = [], $castModel = null)
