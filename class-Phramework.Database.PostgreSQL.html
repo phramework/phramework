@@ -131,8 +131,12 @@
 
 
 	<div class="description">
-	<p>Defined settings:
-- db[] - adapter, Adapter's name (lowercase) - name, Database name - username - password - host - port</p>
+	<p><br/>Defined settings:<br/></p>
+
+<ul>
+<li> array database <ul> <li>string  adapter</li> <li>string  name, Database name</li> <li>string  username</li> <li>string  password</li> <li>string  host</li> <li>integer port</li> </ul>
+</li>
+</ul>
 	</div>
 
 	<dl class="tree well">
@@ -517,6 +521,10 @@
 						Phramework\Exceptions\DatabaseException
 					</div>
 
+					<h4>Uses</h4>
+					<div class="list">
+							PDO::FETCH_COLUMN<br>
+					</div>
 
 
 					<h4>Implementation of</h4>

@@ -132,8 +132,12 @@
 
 	<div class="description">
 	<p>Database model
-Defined settings:
-- db[] - adapter, Adapter's name (lowercase) - name, Database name - username - password - host - port</p>
+<br/>Defined settings:<br/></p>
+
+<ul>
+<li> array database <ul> <li>string  adapter</li> <li>string  name, Database name</li> <li>string  username</li> <li>string  password</li> <li>string  host</li> <li>integer port</li> </ul>
+</li>
+</ul>
 	</div>
 
 
@@ -177,7 +181,7 @@ Defined settings:
 
 			<td class="name"><div>
 			<a class="anchor" href="#_setAdapter">#</a>
-			<code>setAdapter( <span> <var>$adapter</var></span> )</code>
+			<code>setAdapter( <span><code><a href="class-Phramework.Database.IAdapter.html">Phramework\Database\IAdapter</a></code> <var>$adapter</var></span> )</code>
 
 			<div class="description short">
 				
@@ -187,7 +191,49 @@ Defined settings:
 				
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$adapter</var></dt>
+						<dd></dd>
+					</dl></div>
 
+
+					<h4>Throws</h4>
+					<div class="list">
+						Exception
+					</div>
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getAdapter" id="_getAdapter">
+
+			<td class="attributes"><code>
+				 public static
+				<code><a href="class-Phramework.Database.IAdapter.html">Phramework\Database\IAdapter</a></code>|null
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getAdapter">#</a>
+			<code>getAdapter( )</code>
+
+			<div class="description short">
+				<p>Get current adapter</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get current adapter</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Database.IAdapter.html">Phramework\Database\IAdapter</a></code>|null
+					</div>
 
 
 
@@ -267,6 +313,16 @@ Defined settings:
 						Phramework\Exceptions\DatabaseException
 					</div>
 
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-var">$status</span> = Database::execute(
+    <span class="php-quote">'UPDATE &quot;user&quot;
+    SET &quot;first_name&quot; = ?
+    WHERE &quot;id&quot; = ?
+    LIMIT 1'</span>,
+    [<span class="php-var">$firstName</span>, <span class="php-var">$id</span>]
+);</pre><br>
+					</div>
 
 
 			</div>
@@ -311,6 +367,15 @@ Defined settings:
 						Phramework\Exceptions\DatabaseException
 					</div>
 
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-var">$id</span> = Database::executeLastInsertId(
+    <span class="php-quote">'INSERT INTO &quot;user&quot;
+    (&quot;first_name&quot;)
+    VALUES (?),
+    [$firstName]
+);</span></pre><br>
+					</div>
 
 
 			</div>
@@ -358,6 +423,16 @@ Defined settings:
 						Phramework\Exceptions\DatabaseException
 					</div>
 
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-var">$record</span> = Database::executeAndFetch(
+    <span class="php-quote">'SELECT &quot;id&quot;, &quot;first_name&quot;
+    FROM &quot;user&quot;
+    WHERE &quot;id&quot; = ?
+    LIMIT 1,
+    [$id]
+);</span></pre><br>
+					</div>
 
 
 			</div>
@@ -405,6 +480,13 @@ Defined settings:
 						Phramework\Exceptions\DatabaseException
 					</div>
 
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-var">$records</span> = Database::executeAndFetchAll(
+    <span class="php-quote">'SELECT &quot;id&quot;, &quot;first_name&quot;
+    FROM &quot;user&quot;
+);</span></pre><br>
+					</div>
 
 
 			</div>
@@ -581,9 +663,22 @@ Defined settings:
 						Phramework\Exceptions\DatabaseException
 					</div>
 
-					<h4>Todo</h4>
+					<h4>Uses</h4>
 					<div class="list">
-							provide documentation<br>
+							PDOStatement::bindValue https://secure.php.net/manual/en/pdostatement.bindvalue.php<br>
+					</div>
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-var">$status</span> = Database::bindExecute(
+    <span class="php-quote">'UPDATE &quot;user&quot;
+    SET &quot;first_name&quot; = ?
+    WHERE &quot;id&quot; = ?
+    LIMIT 1'</span>,
+    [
+        <span class="php-var">$first_name</span>, <span class="php-comment">//PDO::PARAM_STR by default</span>
+        [<span class="php-quote">'value'</span> =&gt; <span class="php-var">$id</span>, <span class="php-quote">'params'</span> =&gt; \PDO::PARAM_INT]
+    ]
+);</pre><br>
 					</div>
 
 
@@ -749,7 +844,7 @@ then \Phramework\Models\Filter::castEntry will be applied to data</p></dd>
 			<td class="value">
 				<div>
 					<a href="#$adapter" class="anchor">#</a>
-					<code></code>
+					<code><span class="php-keyword1">null</span></code>
 				</div>
 			</td>
 		</tr>

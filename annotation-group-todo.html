@@ -127,7 +127,6 @@
 				<li><a href="class-Phramework.Phramework.html">Phramework\Phramework</a></li>
 				<li><a href="class-Phramework.URIStrategy.ClassBased.html">Phramework\URIStrategy\ClassBased</a></li>
 				<li><a href="class-Phramework.URIStrategy.URITemplate.html">Phramework\URIStrategy\URITemplate</a></li>
-				<li><a href="class-Phramework.URIStrategy.URITemplateHelper.html">Phramework\URIStrategy\URITemplateHelper</a></li>
 				<li><a href="class-Phramework.Viewers.JSON.html">Phramework\Viewers\JSON</a></li>
 				<li><a href="class-Phramework.Viewers.PrintR.html">Phramework\Viewers\PrintR</a></li>
 			</ul>
@@ -185,6 +184,13 @@
 		<td class="name"><a href="class-Phramework.Models.Email.html">Phramework\Models\Email</a></td>
 		<td>
 					add more methods<br>
+					add defined settings documentation<br>
+		</td>
+	</tr>
+	<tr>
+		<td class="name"><a href="class-Phramework.Models.Util.html">Phramework\Models\Util</a></td>
+		<td>
+					add defined settings<br>
 		</td>
 	</tr>
 	<tr>
@@ -192,17 +198,15 @@
 		<td>
 					Clean GET callback<br>
 					Add translation class<br>
+					Add allowed origin settings and implementation<br>
+					Add setting for timezone<br>
 		</td>
 	</tr>
 	<tr>
 		<td class="name"><a href="class-Phramework.URIStrategy.ClassBased.html">Phramework\URIStrategy\ClassBased</a></td>
 		<td>
 					document default_controller setting<br>
-		</td>
-	</tr>
-	<tr>
-		<td class="name"><a href="class-Phramework.URIStrategy.URITemplateHelper.html">Phramework\URIStrategy\URITemplateHelper</a></td>
-		<td>
+					Add documentation for setting default_controller<br>
 		</td>
 	</tr>
 				</table>
@@ -214,13 +218,6 @@
 			<div class="panel panel-default">
                 <div class="panel-heading"><h2>Methods summary</h2></div>
 				<table class="summary table table-bordered table-striped" id="methods">
-					<tr>
-						<td class="name"><a href="class-Phramework.Database.Database.html">Phramework\Database\Database</a></td>
-						<td class="name"><code><a href="class-Phramework.Database.Database.html#_bindExecute">bindExecute()</a></code></td>
-						<td>
-										provide documentation<br>
-						</td>
-					</tr>
 					<tr>
 						<td class="name"><a href="class-Phramework.Database.Operations.Create.html">Phramework\Database\Operations\Create</a></td>
 						<td class="name"><code><a href="class-Phramework.Database.Operations.Create.html#_create">create()</a></code></td>
@@ -293,6 +290,13 @@
 						</td>
 					</tr>
 					<tr>
+						<td class="name"><a href="class-Phramework.Models.Upload.html">Phramework\Models\Upload</a></td>
+						<td class="name"><code><a href="class-Phramework.Models.Upload.html#_createZip">createZip()</a></code></td>
+						<td>
+										update zip class namespace<br>
+						</td>
+					</tr>
+					<tr>
 						<td class="name"><a href="class-Phramework.Phramework.html">Phramework\Phramework</a></td>
 						<td class="name"><code><a href="class-Phramework.Phramework.html#_getTranslated">getTranslated()</a></code></td>
 						<td>
@@ -304,8 +308,9 @@
 						<td class="name"><code><a href="class-Phramework.Phramework.html#_invoke">invoke()</a></code></td>
 						<td>
 										change default timezone<br>
-										<p>change default language
-TODO @security deny access to any else referals</p><br>
+										change default language<br>
+										initialize database if set<br>
+										@security deny access to any else referals<br>
 						</td>
 					</tr>
 					<tr>

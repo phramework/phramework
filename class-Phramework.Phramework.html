@@ -125,13 +125,16 @@
 
 
 	<div class="description">
-	<p>API 'framework'
-Defined settings:
-- debug, boolean, default false
-- errorlog_path
-- language
-- languages (string[])
-- allowed_referer (string[])</p>
+	<p>API 'framework'<br/>
+Defined settings:<br/></p>
+
+<ul>
+<li>boolean  debug, <i>[Optional]</i>, default false</li>
+<li>string   errorlog_path <i>[Optional]</i>, default is null</li>
+<li>string   language  <i>[Optional]</i>, default is "en"</li>
+<li>string[] languages <i>[Optional]</i>, default is []</li>
+<li>string[] allowed_referer <i>[Optional]</i>, default is null</li>
+</ul>
 	</div>
 
 
@@ -153,13 +156,17 @@ Defined settings:
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Version:</b>
-				1.0.0<br>
+				1.1.0<br>
 				<b>Link:</b>
 				<a href="https://nohponex.gr">Developer&#039;s website</a><br>
 				<b>Todo:</b>
 				Clean GET callback<br>
 				<b>Todo:</b>
 				Add translation class<br>
+				<b>Todo:</b>
+				Add allowed origin settings and implementation<br>
+				<b>Todo:</b>
+				Add setting for timezone<br>
 			<b>Located at</b> Phramework.php		<br>
 	</div>
 
@@ -349,8 +356,9 @@ Defined settings:
 					<h4>Todo</h4>
 					<div class="list">
 							change default timezone<br>
-							<p>change default language
-TODO @security deny access to any else referals</p><br>
+							change default language<br>
+							initialize database if set<br>
+							@security deny access to any else referals<br>
 					</div>
 
 
@@ -628,7 +636,7 @@ false in case of non authenticated request</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						Mixed<br>Returns the value of setting, NULL when not found
+						Mixed<br>Returns the value of setting, null when not found
 					</div>
 
 

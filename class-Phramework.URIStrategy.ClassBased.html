@@ -107,7 +107,6 @@
 			<ul>
 				<li class="active"><a href="class-Phramework.URIStrategy.ClassBased.html">ClassBased</a></li>
 				<li><a href="class-Phramework.URIStrategy.URITemplate.html">URITemplate</a></li>
-				<li><a href="class-Phramework.URIStrategy.URITemplateHelper.html">URITemplateHelper</a></li>
 			</ul>
 
 			<h3>Interfaces</h3>
@@ -187,6 +186,8 @@ RewriteRule ^([a-z]{3,}).*$ index.php?controller=$1 [L,QSA]
 				1.0.0<br>
 				<b>Todo:</b>
 				document default_controller setting<br>
+				<b>Todo:</b>
+				Add documentation for setting default_controller<br>
 			<b>Located at</b> URIStrategy/ClassBased.php		<br>
 	</div>
 
@@ -251,7 +252,7 @@ which can be accessed without authentication</p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_invoke">#</a>
-			<code>invoke( <span>array <var>$requestParameters</var></span>, <span>string <var>$requestMethod</var></span>, <span>array <var>$requestHeaders</var></span>, <span>object|false <var>$requestUser</var></span> )</code>
+			<code>invoke( <span>object <var>$requestParameters</var></span>, <span>string <var>$requestMethod</var></span>, <span>array <var>$requestHeaders</var></span>, <span>object|false <var>$requestUser</var></span> )</code>
 
 			<div class="description short">
 				<p>Invoke URIStrategy</p>
@@ -282,7 +283,8 @@ authenticated otherwise false</p></dd>
 					<h4>Throws</h4>
 					<div class="list">
 						Phramework\Exceptions\NotFoundException<br>
-						UnauthorizedException
+						UnauthorizedException<br>
+						Phramework\Exceptions\ServerException
 					</div>
 
 
