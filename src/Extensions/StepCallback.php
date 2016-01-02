@@ -89,12 +89,14 @@ class StepCallback
      * @param string $step
      * @param function $callback
      * @since 0.1.1
-     * @throws \Exception callback_is_not_function_exception
+     * @throws \Exception When callback is not not callable
+     * @throws Phramework\Exceptions\IncorrectParametersException
      */
     public function add($step, $callback)
     {
         //Check if step is allowed
-        \Phramework\Validate\Validate::enum($step, [
+
+        (new \Phramework\Validate\EnumValidator([
             self::STEP_BEFORE_AUTHENTICATION_CHECK,
             self::STEP_AFTER_AUTHENTICATION_CHECK,
             self::STEP_AFTER_CALL_URISTRATEGY,
@@ -102,7 +104,7 @@ class StepCallback
             self::STEP_BEFORE_CLOSE,
             self::STEP_FINALLY,
             self::STEP_ERROR
-        ]);
+        ]))->parse($step);
 
         if (!is_callable($callback)) {
             throw new \Exception(
