@@ -32,7 +32,7 @@ class Filter
      *
      * @param array $data
      * @param array $whitelist
-     * @return type
+     * @return array
      */
     public static function in($data, $whitelist)
     {
@@ -58,7 +58,7 @@ class Filter
      *
      * @param array $data
      * @param array $whitelist
-     * @return type
+     * @return array
      */
     public static function inEntry($data, $whitelist)
     {
@@ -160,6 +160,7 @@ class Filter
      * @param mixed $value
      * @param string $type
      * @return mixed The typecasted value
+     * @deprecated since 1.1.0
      */
     public static function typecast(&$value, $type)
     {
@@ -194,6 +195,7 @@ class Filter
      * @param array $entry
      * @param array $model
      * @return array Returns the typecasted entry
+     * @deprecated since 1.1.0
      */
     public static function castEntry($entry, $model)
     {
@@ -236,6 +238,7 @@ class Filter
      * @param array $list
      * @param array $model
      * @return array Returns the typecasted list
+     * @deprecated since 1.1.0
      */
     public static function cast($list, $model)
     {

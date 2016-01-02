@@ -76,10 +76,9 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
         $namespace = '',
         $suffix = ''
     ) {
-
-        $this->controller_whitelist                 = $controllerWhitelist;
-        $this->controller_unauthenticated_whitelist = $controllerUnauthenticatedWhitelist;
-        $this->controller_public_whitelist          = $controllerPublicWhitelist;
+        $this->controllerWhitelist                  = $controllerWhitelist;
+        $this->controllerUnauthenticatedWhitelist   = $controllerUnauthenticatedWhitelist;
+        $this->controllerPublicWhitelist            = $controllerPublicWhitelist;
         $this->namespace                            = $namespace;
         $this->suffix                               = $suffix;
     }
@@ -91,9 +90,9 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @throws NotFoundException
-     * @throws UnauthorizedException
-     * @throws \Phramework\Exceptions\ServerException
+     * @throws Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\UnauthorizedException
+     * @throws Phramework\Exceptions\ServerException
      * @return string[] This method should return `[$class, $method]` on success
      */
     public function invoke(
@@ -104,8 +103,8 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
     ) {
         //Get controller from the request (URL parameter)
         if (!isset($requestParameters['controller']) || empty($requestParameters['controller'])) {
-            if (($default_controller = Phramework::getSetting('default_controller'))) {
-                $requestParameters['controller'] = $default_controller;
+            if (($defaultController = Phramework::getSetting('default_controller'))) {
+                $requestParameters['controller'] = $defaultController;
             } else {
                 throw new \Phramework\Exceptions\ServerException(
                     'Default controller has not been configured'
@@ -117,7 +116,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
         unset($requestParameters['controller']);
 
         //Check if requested controller and method are allowed
-        if (!in_array($controller, $this->controller_whitelist)) {
+        if (!in_array($controller, $this->controllerWhitelist)) {
             throw new NotFoundException('Method not found');
         } elseif (!in_array($requestMethod, Phramework::$methodWhitelist)) {
             throw new \Phramework\Exceptions\MethodNotAllowedException(
@@ -127,8 +126,8 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
 
         //If not authenticated allow only certain controllers to access
         if (!$requestUser &&
-            !in_array($controller, $this->controller_unauthenticated_whitelist) &&
-            !in_array($controller, $this->controller_public_whitelist)) {
+            !in_array($controller, $this->controllerUnauthenticatedWhitelist) &&
+            !in_array($controller, $this->controllerPublicWhitelist)) {
             throw new \Phramework\Exceptions\UnauthorizedException();
         }
 

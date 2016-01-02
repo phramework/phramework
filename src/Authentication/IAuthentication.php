@@ -45,7 +45,7 @@ interface IAuthentication
      * @param  string $method  Request method
      * @param  array  $headers Request headers
      * @return array|false Returns false on error or the user object on success
-     * @throws \Phramework\Exceptions\PermissionException
+     * @throws Phramework\Exceptions\PermissionException
      */
     public function authenticate($params, $method, $headers);
 

@@ -25,6 +25,7 @@ namespace Phramework\Models;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
  * @todo Use prefix from the settings file
+ * @deprecated since 1.0.0
  */
 class Cache
 {

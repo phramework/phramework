@@ -17,13 +17,13 @@
 namespace Phramework\Models;
 
 /**
+ * Operator's related model
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
 class Operator
 {
-
     const OPERATOR_ISSET = 'isset';
     const OPERATOR_NOT_ISSET = '!isset';
     const OPERATOR_GREATER = '>';
@@ -41,7 +41,10 @@ class Operator
     const OPERATOR_IN = 'IN';
     const OPERATOR_NOT_IN = 'NOT IN';
 
-    public static $operators = [
+    /**
+     * @var string[]
+     */
+    protected static $operators = [
         Operator::OPERATOR_EMPTY,
         Operator::OPERATOR_EQUAL,
         Operator::OPERATOR_GREATER,
@@ -60,11 +63,28 @@ class Operator
         Operator::OPERATOR_NOT_LIKE
     ];
 
-    public static function validate($operator)
+    /**
+     * @return string[]
+     * @since 1.2.0
+     */
+    public static function getOperators()
+    {
+        return self::$operators;
+    }
+
+    /**
+     * Check if a string is a valid operator
+     * @param  string $operator
+     * @param  string $attributeName
+     *     *[Optional]* Attribute's name, used for thrown exception
+     * @throws Phramework\Exceptions\IncorrectParametersException
+     * @return string Returns the operator
+     */
+    public static function validate($operator, $attributeName = 'operator')
     {
         if (!in_array($operator, self::$operators)) {
             throw new \Phramework\Exceptions\IncorrectParametersException(
-                ['operator']
+                [$attributeName]
             );
         }
 
@@ -77,6 +97,11 @@ class Operator
     const CLASS_NULLABLE = 64;
     const CLASS_JSONOBJECT = 128;
 
+    /**
+     * Get operator class
+     * @param  integer $classFlags
+     * @return integer Operator class
+     */
     public static function getByClassFlags($classFlags)
     {
         $operators = [];
@@ -116,6 +141,14 @@ class Operator
         return array_unique($operators);
     }
 
+    /**
+     * @param  string $operatorValueString
+     * @return string[2] [operator, operant]
+     * @example
+     * ```php
+     * list($operator, $operant) = Operator::parse('>=5');
+     * ```
+     */
     public static function parse($operatorValueString)
     {
         $operator = Operator::OPERATOR_EQUAL;
@@ -146,6 +179,9 @@ class Operator
         return [$operator, $value];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getNullableOperators()
     {
         return [
@@ -154,6 +190,9 @@ class Operator
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getLikeOperators()
     {
         return [
@@ -162,6 +201,9 @@ class Operator
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getEqualityOperators()
     {
         return [
@@ -170,6 +212,9 @@ class Operator
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getOrderableOperators()
     {
         return [

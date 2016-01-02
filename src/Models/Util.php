@@ -159,25 +159,11 @@ class Util
     }
 
     /**
-     * @deprecated since version 0
-     */
-    public static function checkIncludeRoot()
-    {
-        //$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 1);DELETE ONLY EXECUTE ??
-        //var_dump( array_shift( $trace ) );
-        $files = get_included_files();
-        if (!in_array(array_shift($files), [ Util::get_path([ dirname(__DIR__), 'index.php'])])) {
-            die('Unauthorized access');
-        }
-        unset($files);
-    }
-
-    /**
      * Get an array that represents directory tree
      * @param string  $directory     Directory path
-     * @param boolean $recursive     Include sub directories
-     * @param boolean $listDirs      Include directories on listing
-     * @param boolean $listFiles     Include files on listing
+     * @param boolean $recursive     *[Optional]* Include sub directories
+     * @param boolean $listDirs      *[Optional]* Include directories on listing
+     * @param boolean $listFiles     *[Optional]* Include files on listing
      * @param string  $exclude       *[Optional]* Exclude paths that matches this
      * regular expression
      * @param array   $allowed_filetypes *[Optional]* Allowed file extensions,
@@ -257,7 +243,7 @@ class Util
     /**
      * Delete all contents from a directory
      * @param string $directory Directory path
-     * @param boolean $DELETE_DIRECTORY Optinal, if is set directory will be deleted too.
+     * @param boolean $DELETE_DIRECTORY *[Optional]*, if is set directory will be deleted too.
      */
     public static function deleteDirectoryContents($directory, $DELETE_DIRECTORY = false)
     {
@@ -299,8 +285,8 @@ class Util
 
     /**
      * Get Headers from a remote link
-     * @param str #url
-     * @return array
+     * @param string $url
+     * @return array Return headers
      */
     public static function curlHeaders($url, &$data)
     {
@@ -319,7 +305,8 @@ class Util
 
     /**
      * Download a file from a remote link
-     * @param str $url, $path
+     * @param string $url
+     * @param string $path
      * @return bool True if download succeed
      */
     public static function curlDownload($url, $path, $timeout = 3600)
@@ -379,6 +366,7 @@ class Util
     /**
      * Join directories and filename to create path
      * @param array $array Array with directories and filename for example array( '/tmp', 'me', 'file.tmp' )
+     * @param string $glue *[Optional]*
      * @return string Path
      */
     public static function getPath($array, $glue = DIRECTORY_SEPARATOR)
@@ -399,8 +387,9 @@ class Util
 
     /**
      * Get the size of a file
-     * Works for large files too (>2GB )
-     * @param $path File's path
+     * Works for large files too (>2GB)
+     * @param string $path File's path
+     * @param double File's size
      */
     public static function getFileSize($path)
     {
@@ -419,20 +408,7 @@ class Util
         } else {
             $size = filesize($path);
         }
-        return floatval($size);
+
+        return doubleval($size);
     }
-
-    /*
-      function getFilename($url) {
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $url);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      curl_setopt($ch, CURLOPT_HEADER, 1);
-      curl_setopt($ch, CURLOPT_NOBODY, 1);
-      $data = curl_exec($ch);
-
-      preg_match("#filename=([^\n]+)#is", $data, $matches);
-
-      return $matches[1];
-      } */
 }

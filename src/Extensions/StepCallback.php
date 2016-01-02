@@ -21,7 +21,6 @@ use Phramework\Phramework;
 /**
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @todo add variables to be passed on call (globaly set)
  */
 class StepCallback
 {
@@ -89,7 +88,7 @@ class StepCallback
      * @param string $step
      * @param function $callback
      * @since 0.1.1
-     * @throws \Exception When callback is not not callable
+     * @throws Exception When callback is not not callable
      * @throws Phramework\Exceptions\IncorrectParametersException
      */
     public function add($step, $callback)
@@ -159,6 +158,9 @@ class StepCallback
         }
     }
 
+    /**
+     * 
+     */
     public function __construct()
     {
         $this->stepCallback = [];

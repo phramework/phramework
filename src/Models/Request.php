@@ -38,12 +38,14 @@ class Request
      *
      * Optionaly it checks the authenticated user has a specific user_id
      * @param integer $userId *[Optional]* Check if current user has the same id with $userId
-     * @return array Returns the user object
+     * @return object Returns the user object
+     * @throws Phramework\Exceptions\PermissionException
+     * @throws Phramework\Exceptions\UnauthorizedException
      */
     public static function checkPermission($userId = false)
     {
         $user = \Phramework\Phramework::getUser();
-        
+
         //If user is not authenticated throw an \Exception
         if (!$user) {
             throw new \Phramework\Exceptions\UnauthorizedException();
@@ -55,15 +57,16 @@ class Request
                 'Insufficient permissions'
             );
         }
+
         return $user;
     }
 
     /**
      * Check if required parameters are set
-     * @param Array @parameters Request's parameters
-     * @param String|Array @ The required parameters
+     * @param array|object $parameters Request's parameters
+     * @param string|array $required The required parameters
      * @return array Returns the values of required parameters
-     * @todo accept objects
+     * @throws Phramework\Exceptions\MissingParametersException
      */
     public static function requireParameters($parameters, $required)
     {
@@ -95,8 +98,8 @@ class Request
     /**
      * Require id parameter if it's set else return NULL, it uses `resource_id` or `id` parameter if available
      * @param array $parameters  The request parameters
-     * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer, default is true
-     * @throws IncorrectParameters if value is not correct
+     * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer
+     * @throws Phramework\Exceptions\IncorrectParameters Wehen value is not correct
      * @return string|int Returns the id or NULL if not set,
      * if $UINTEGER the returned value will be converted to unsigned integer
      */
@@ -132,7 +135,8 @@ class Request
      * Require id parameter, it uses `resource_id` or `id` parameter if available
      * @param array $parameters The request paramters
      * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer, default is true
-     * @throws IncorrectParameters if value is not correct
+     * @throws Phramework\Exceptions\IncorrectParameters When value is not correct
+     * @throws Phramework\Exceptions\MissingParametersException When id is missing
      * if $UINTEGER the returned value will be converted to unsigned integer
      * @todo accept objects
      */
@@ -238,21 +242,5 @@ class Request
             }
         }
         return $headers;
-    }
-
-    /**
-     * Merge put paramters into $parameters array
-     * @param array $parameters Parameter's array
-     * @todo make sure it's compatible with objects
-     * @deprecated
-     */
-    public static function mergePutParamters(&$parameters)
-    {
-        $put_parameters = json_decode(file_get_contents('php://input'));
-
-        //Get params
-        if (isset($put_params['params'])) {
-            $parameters = array_merge($parameters, $put_parameters['params']);
-        }
     }
 }

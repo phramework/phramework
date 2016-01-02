@@ -193,8 +193,8 @@ class Phramework
 
     /**
      * Execute the API
-     * @throws \Phramework\Exceptions\PermissionException
-     * @throws \Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\PermissionException
+     * @throws Phramework\Exceptions\NotFoundException
      * @todo change default timezone
      * @todo change default language
      * @todo initialize database if set
