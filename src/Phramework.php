@@ -28,7 +28,7 @@ mb_http_output('UTF-8');
 // @codingStandardsIgnoreEnd
 
 /**
- * API 'framework'<br/>
+ * API 'framework' for RESTful services<br/>
  * Defined settings:<br/>
  * <ul>
  * <li>boolean  debug, <i>[Optional]</i>, default false</li>
@@ -39,7 +39,7 @@ mb_http_output('UTF-8');
  * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @version 1.1.0
+ * @version 1.2.0
  * @link https://nohponex.gr Developer's website
  * @todo Clean GET callback
  * @todo Add translation class
@@ -48,11 +48,29 @@ mb_http_output('UTF-8');
  */
 class Phramework
 {
+    /**
+     * @var Phramework
+     */
     protected static $instance;
 
+    /**
+     * @var object
+     */
     private static $user;
+    /**
+     * @var string
+     */
     private static $language;
+    /**
+     * @var array
+     */
     private static $settings;
+
+    /**
+     * UUID generated for this request
+     * @var string
+     */
+    protected $requestUUID;
 
     /**
      * Viewer class
@@ -60,7 +78,8 @@ class Phramework
     private static $viewer = \Phramework\Viewers\JSON::class;
 
     /**
-     * $URIStrategy object
+     * URIStrategy object
+     * @var Phramework\URIStrategy\IURIStrategy
      */
     private static $URIStrategy;
 
@@ -72,8 +91,10 @@ class Phramework
     /**
      * JSONP callback, When null no JSONP callback is set
      * @var string
+     * @deprecated since 1.0.0
      */
     private static $callback = null;
+
     /**
      * StepCallback extension
      * @var Phramework\Extensions\StepCallback
@@ -91,8 +112,10 @@ class Phramework
      *
      * Only one instance of API may be present
      * @param array $settings
-     * @param IURIStrategy $URIStrategyObject URIStrategy object
-     * @param object|null $translationObject  [optional] Set custom translation class
+     * @param Phramework\URIStrategy\IURIStrategy $URIStrategy
+     * URIStrategy object
+     * @param object|null $translationObject  *[Optional]* Set custom translation class
+     * @throws Phramework\Exceptions\ServerException
      */
     public function __construct(
         $settings,
@@ -103,6 +126,8 @@ class Phramework
 
         self::$user = false;
         self::$language = 'en';
+
+        self::$requestUUID = \Phramework\Models\Util::generateUUID();
 
         //Instantiate StepCallback object
         self::$stepCallback = new \Phramework\Extensions\StepCallback();
@@ -116,6 +141,7 @@ class Phramework
                 'Class is not implementing Phramework\URIStrategy\IURIStrategy'
             );
         }
+
         self::$URIStrategy = $URIStrategyObject;
 
         //If custom translation object is set add it
@@ -132,9 +158,21 @@ class Phramework
         self::$instance = $this;
     }
 
+    /**
+     * @return Phramework
+     */
     public static function getInstance()
     {
         return self::$instance;
+    }
+
+    /**
+     * Get UUID generated for this request
+     * @return string
+     */
+    public static function getRequestUUID()
+    {
+        return self::$requestUUID;
     }
 
     /**
@@ -193,8 +231,10 @@ class Phramework
 
     /**
      * Execute the API
-     * @throws \Phramework\Exceptions\PermissionException
-     * @throws \Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\PermissionException
+     * @throws Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\IncorrectParametersException
+     * @throws Phramework\Exceptions\RequestException
      * @todo change default timezone
      * @todo change default language
      * @todo initialize database if set
@@ -251,7 +291,7 @@ class Phramework
             //Check if the requested HTTP method method is allowed
             // @todo check error code
             if (!in_array($method, self::$methodWhitelist)) {
-                throw new \Phramework\Exceptions\RequestExceptionException(
+                throw new \Phramework\Exceptions\RequestException(
                     'Method not allowed'
                 );
             }
@@ -444,7 +484,7 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\RequestExceptionException $exception) {
+        } catch (\Phramework\Exceptions\RequestException $exception) {
             self::errorView(
                 [(object)[
                     'status' => $exception->getCode(),

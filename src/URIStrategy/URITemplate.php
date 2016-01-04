@@ -21,7 +21,6 @@ use \Phramework\Exceptions\PermissionException;
 use \Phramework\Exceptions\NotFoundException;
 use \Phramework\Exceptions\MethodNotAllowedException;
 use \Phramework\Exceptions\ServerException;
-use \Phramework\Models\Util;
 
 /**
  * IURIStrategy implementation using URI templates
@@ -118,7 +117,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * Get current URI and GET parameters from the requested URI
      * @return string[2] Returns an array with current URI and GET parameters
      */
-    public function URI()
+    public static function URI()
     {
         $REDIRECT_QUERY_STRING =
             isset($_SERVER['QUERY_STRING'])
@@ -154,10 +153,10 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @throws NotFoundException
-     * @throws UnauthorizedException
+     * @throws Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\UnauthorizedException
      * @todo Use named parameters in future if available by PHP
-     * @return string[] This method should return `[$class, $method]` on success
+     * @return string[2] This method should return `[$class, $method]` on success
      */
     public function invoke(
         $requestParameters,
@@ -166,7 +165,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
         $requestUser
     ) {
         // Get request uri and uri parameters
-        list($URI, $URI_parameters) = $this->URI();
+        list($URI, $URI_parameters) = self::URI();
 
         foreach ($this->templates as $template) {
             $templateMethod = (isset($template[3]) ? $template[3] : Phramework::METHOD_ANY);

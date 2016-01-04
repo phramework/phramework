@@ -17,7 +17,7 @@
 namespace Phramework\Models;
 
 use \Phramework\Models\Util;
-use \Phramework\Exceptions\MissingParametersException\NotFoundException;
+use \Phramework\Exceptions\NotFoundException;
 
 /**
  * Upload class
@@ -26,6 +26,7 @@ use \Phramework\Exceptions\MissingParametersException\NotFoundException;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
+ * @todo clean up
  */
 class Upload
 {
@@ -33,36 +34,36 @@ class Upload
      * Upload file
      * @param array $parameters The request parameters.
      * @param string $index The paramatern index for example 'file'.
-     * @param array $move If $move is set (Is not (null or ==array() or FALSE ))
+     * @param array $move If $move is set (Is not (null or == array() or false ))
      * then the uploaded file will be moved to the specified directory.
      * The $move takes indexes 'path' and 'name', the path is the directory
      * the uploaded file will be moved. The name is optional and
-     * @param array $allowed_filetypes Optional. Array with allowed extensions.
-     * @param integer $max_size Optional. The maximum size of the
+     * @param array $allowedFiletypes *[Optional] Array with allowed extensions.
+     * @param integer $max_size *[Optional] The maximum size of the
      * uploaded file in bytes. Default value is 10485760 bytes
-     * @param boolean $parse_extension Optional. If TRUE the destination
-     * filename will be joined with files extension  Default value is FALSE
+     * @param boolean $parseExtension *[Optional] If true the destination
+     * filename will be joined with files extension  Default value is false
      */
     public static function file(
         $file,
         $move = [],
-        $allowed_filetypes = ['csv'],
+        $allowedFiletypes = ['csv'],
         $max_size = 10485760,
-        $parse_extension = false
+        $parseExtension = false
     ) {
         if (!$file) {
             return 'Select a file';
         }
-        $temporary_path = $file['tmp_name'];
-        if (!file_exists($temporary_path)) {
-            throw new not_found('File not found');
+        $temporaryPath = $file['tmp_name'];
+        if (!file_exists($temporaryPath)) {
+            throw new NotFoundException('File not found');
         }
         $filename = $file['name'];
         $ext = Util::extension($filename);
-        if (!in_array($ext, $allowed_filetypes)) {
+        if (!in_array($ext, $allowedFiletypes)) {
             return 'Incorrect file type';
         }
-        $size = filesize($temporary_path);
+        $size = filesize($temporaryPath);
         if ($size > $max_size) {
             return 'File size exceeds maximum';
         }
@@ -70,13 +71,18 @@ class Upload
             if (!is_array($move)) {
                 $move['path'] = $move;
             }
-            if (isset($move['name']) && $parse_extension) {
+            if (isset($move['name']) && $parseExtension) {
                 $move['name'] .= '.' . $ext;
-            } elseif ($parse_extension) {
+            } elseif ($parseExtension) {
                 $move['path'] .= '.' . $ext;
             }
-            $destination = Util::get_path(isset($move['name']) ? [ $move['path'], $move['name']] : [ $move['path']]);
-            if (!rename($temporary_path, $destination)) {
+            $destination = Util::get_path(
+                isset($move['name'])
+                ? [$move['path'], $move['name']]
+                : [$move['path']]
+            );
+
+            if (!rename($temporaryPath, $destination)) {
                 return 'Error uploading file';
             }
             return [
@@ -87,9 +93,9 @@ class Upload
             ];
         } else {
             return [
-                'path' => $temporary_path,
-                'name' => basename($temporary_path),
-                'size' => filesize($temporary_path),
+                'path' => $temporaryPath,
+                'name' => basename($temporaryPath),
+                'size' => filesize($temporaryPath),
                 'name_original' => basename($file['name'])
             ];
         }
@@ -99,13 +105,13 @@ class Upload
      * Upload image
      *
      * @param Object $file Reference to uploaded file
-     * @param Array $move Move is an array with two indexes,
+     * @param array $move Move is an array with two indexes,
      * `path` is required and it points the path be stored,
      * `name` is optional and it tells the file name to be stored if not set if
      * will be copied from original upload file name
-     * @param Array $sizes Is an indexed array
-     * @param UInt $max_file_size Maximum file size, Optional by default it's 2MB
-     * @param Array $allowed_filetypes Array with allowed image extensions,
+     * @param array $sizes Is an indexed array
+     * @param integer $maxFileSize Maximum file size, Optional by default it's 2MB
+     * @param array $allowedFiletypes Array with allowed image extensions,
      * Optional by default it's 'jpg', 'gif', 'png', 'jpeg'
      * @return Array|String If return is not array then it's an error Message,
      * If it's array then every index of the requested Sizes parameter containts the file path of the specific size
@@ -114,8 +120,8 @@ class Upload
         $file,
         $move = [],
         $sizes = [],
-        $max_file_size = 2097152,
-        $allowed_filetypes = [
+        $maxFileSize = 2097152,
+        $allowedFiletypes = [
             'jpg',
             'gif',
             'png',
@@ -125,20 +131,20 @@ class Upload
         if (!$file) {
             return 'Select a file';
         }
-        $temporary_path = $file['tmp_name'];
-        if (!file_exists($temporary_path)) {
-            throw new not_found('File not found');
+        $temporaryPath = $file['tmp_name'];
+        if (!file_exists($temporaryPath)) {
+            throw new NotFoundException('File not found');
         }
         $filename = $file['name'];
         $ext = strtolower(preg_replace('/^.*\.([^.]+)$/D', '$1', $filename));
-        if (!in_array($ext, $allowed_filetypes)) {
+        if (!in_array($ext, $allowedFiletypes)) {
             return 'Incorrect file type';
         }
-        $size = filesize($temporary_path);
-        if ($size > $max_file_size) {
+        $size = filesize($temporaryPath);
+        if ($size > $maxFileSize) {
             return 'File size exceeds maximum';
         }
-        $image_info = getimagesize($temporary_path);
+        $image_info = getimagesize($temporaryPath);
         if (!$image_info) {
             return 'Select an image file';
         }
@@ -147,33 +153,39 @@ class Upload
         }
         //Read image
         if ($ext == 'jpg' || $ext == 'jpeg') {
-            $src = imagecreatefromjpeg($temporary_path);
+            $src = imagecreatefromjpeg($temporaryPath);
         } elseif ($ext == 'png') {
             $PNG = true;
-            $src = imagecreatefrompng($temporary_path);
+            $src = imagecreatefrompng($temporaryPath);
         } elseif ($ext == 'gif') {
-            $src = imagecreatefromgif($temporary_path);
+            $src = imagecreatefromgif($temporaryPath);
         } elseif ($ext == 'bmp') {
-            $src = imagecreatefromwbmp($temporary_path);
+            $src = imagecreatefromwbmp($temporaryPath);
         } else {
             return 'Unsupported filetype';
         }
+
         //Get image dimensions
         $width = imagesx($src);
         $height = imagesy($src);
         $returnArray = [ $name => false];
+        
         //Resize for other sizes
         foreach ($sizes as $key => $value) {
             if (!isset($value[0]) || !isset($value[1]) || !is_numeric($value[0]) || !is_numeric($value[1])) {
                 continue;
             }
+
             //Filename
             $destination = \Util::get_path(
-                isset($move['name']) ? [ $move['path'], $move['name']] : [ $move['path'], \Util::toAscii($filename)]
+                isset($move['name'])
+                ? [$move['path'], $move['name']]
+                : [$move['path'], \Util::toAscii($filename)]
             );
+
             //If requires resize
             if ($height > $value[0] || $width > $value[1]) {
-                $destination_name = \Util::get_path([ $destination_name, '_' . $key . ($PNG ? '.png' : 'jpg')]);
+                $destinationName = \Util::get_path([ $destinationName, '_' . $key . ($PNG ? '.png' : 'jpg')]);
                 $newheight = $value[0];
                 $newwidth = $value[1];
                 if ($width > $height) {
@@ -191,24 +203,24 @@ class Upload
                 }
                 imagecopyresampled($tmp, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
                 if ($PNG) {
-                    imagepng($destination_name);
+                    imagepng($destinationName);
                 } else {
-                    imagejpeg($destination_name, 100);
+                    imagejpeg($destinationName, 100);
                 }
-                $returnArray[$name . '_' . $key] = $destination_name;
+                $returnArray[$name . '_' . $key] = $destinationName;
                 imagedestroy($tmp);
             } else {
                 //Move file without resizing
                 //Use the original extension
-                $destination_name = \Util::get_path([ $destination_name, '_' . $key . '.' . $ext]);
-                copy($temporary_path, $destination_name);
-                $returnArray[$name . '_' . $key] = $destination_name;
+                $destinationName = \Util::get_path([ $destinationName, '_' . $key . '.' . $ext]);
+                copy($temporaryPath, $destinationName);
+                $returnArray[$name . '_' . $key] = $destinationName;
             }
         }
         //Destroy image source
         imagedestroy($src);
         //Delete temporary file
-        unlink($temporary_path);
+        unlink($temporaryPath);
         //Return returnArray
         return $returnArray;
     }
@@ -255,7 +267,7 @@ class Upload
             $path = $blob['path'];
 
             if (!file_exists($path)) {
-                throw new \Exception('file_not_found');
+                throw new \Exception('file_NotFoundException');
             }
             $zip->addFile($filename, $path);
         }

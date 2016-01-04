@@ -21,7 +21,6 @@ use Phramework\Phramework;
 /**
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @todo add variables to be passed on call (globaly set)
  */
 class StepCallback
 {
@@ -89,12 +88,14 @@ class StepCallback
      * @param string $step
      * @param function $callback
      * @since 0.1.1
-     * @throws \Exception callback_is_not_function_exception
+     * @throws Exception When callback is not not callable
+     * @throws Phramework\Exceptions\IncorrectParametersException
      */
     public function add($step, $callback)
     {
         //Check if step is allowed
-        \Phramework\Validate\Validate::enum($step, [
+
+        (new \Phramework\Validate\EnumValidator([
             self::STEP_BEFORE_AUTHENTICATION_CHECK,
             self::STEP_AFTER_AUTHENTICATION_CHECK,
             self::STEP_AFTER_CALL_URISTRATEGY,
@@ -102,7 +103,7 @@ class StepCallback
             self::STEP_BEFORE_CLOSE,
             self::STEP_FINALLY,
             self::STEP_ERROR
-        ]);
+        ]))->parse($step);
 
         if (!is_callable($callback)) {
             throw new \Exception(
@@ -128,6 +129,7 @@ class StepCallback
      * @param array  $params  Request parameters
      * @param string $method  Request method
      * @param array  $headers Request headers
+     * @return boolean Returns false if no callbacks set for this step
      */
     public function call(
         $step,
@@ -155,8 +157,13 @@ class StepCallback
                 )
             );
         }
+
+        return true;
     }
 
+    /**
+     * Initialize step callback extension
+     */
     public function __construct()
     {
         $this->stepCallback = [];

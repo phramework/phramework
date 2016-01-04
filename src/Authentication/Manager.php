@@ -21,6 +21,13 @@ class Manager
 {
     protected static $implementations = [];
 
+    /**
+     * Register an authentication implementation.
+     * Implementation must implement
+     * `\Phramework\Authentication\IAuthentication` interface
+     * @param  string $implementation implementation class
+     * @throws Exception
+     */
     public static function register($implementation)
     {
         $object = new $implementation();
@@ -33,6 +40,9 @@ class Manager
         self::$implementations[] = $object;
     }
 
+    /**
+     * @return Phramework\Authentication\IAuthentication[]
+     */
     public static function getImplementation()
     {
         return self::$implementations;
@@ -44,8 +54,9 @@ class Manager
      * tests in priorioty order which of them might be provided and executes
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
-     * @param  array $headers  Request headers
-     * @return array|FALSE Returns false on error or the user object on success
+     * @param  array  $headers  Request headers
+     * @return array|false Returns false on error or the user object on success
+     * @throws Phramework\Exceptions\ServerException
      */
     public static function check($params, $method, $headers)
     {
@@ -100,6 +111,9 @@ class Manager
         self::$userGetByEmailMethod = $callable;
     }
 
+    /**
+     * @return callable
+     */
     public static function getUserGetByEmailMethod()
     {
         return self::$userGetByEmailMethod;
@@ -115,6 +129,9 @@ class Manager
         self::$attributes = $attributes;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getAttributes()
     {
         return self::$attributes;
@@ -125,6 +142,7 @@ class Manager
      * execution, `user` object will be provided to the
      * defined callback.
      * @param callable $callable
+     * @throws Exception
      */
     public static function setOnAuthenticateCallback($callable)
     {
@@ -135,6 +153,9 @@ class Manager
         self::$onAuthenticateCallback = $callable;
     }
 
+    /**
+     * @return callable
+     */
     public static function getOnAuthenticateCallback()
     {
         return self::$onAuthenticateCallback;
@@ -144,6 +165,7 @@ class Manager
      * Set a callback that will be executed after a successful check
      * execution
      * @param callable $callable
+     * @throws Exception
      */
     public static function setOnCheckCallback($callable)
     {
@@ -154,6 +176,9 @@ class Manager
         self::$onCheckCallback = $callable;
     }
 
+    /**
+     * @return callable
+     */
     public static function getOnCheckCallback()
     {
         return self::$onCheckCallback;

@@ -24,7 +24,6 @@ namespace Phramework\Models;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
- * @package Phramework
  */
 class Execute
 {
@@ -68,10 +67,4 @@ class Execute
 
         return $return_var;
     }
-
-    /*
-      if (substr(php_uname(), 0, 7) == "Windows") {
-      pclose(popen("start /B ". $cmd, "r"));
-      }
-     */
 }

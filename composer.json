@@ -22,7 +22,8 @@
     "php": ">=5.6",
     "ext-json": "*",
     "phramework/exceptions": "0.*",
-    "phramework/validate": "0.*"
+    "phramework/validate": "^0.3",
+    "phramework/database": "dev-master"
   },
   "suggest": {
     "ext-curl": "*",
@@ -59,6 +60,6 @@
     ],
     "phpunit": "phpunit",
     "lint": "phpcs -p -s --standard=code-standard.xml ./src",
-    "doc": "apigen generate -s ./src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"phramework doc\""
+    "doc": "apigen generate -s ./src,./vendor/phramework/database/src,./vendor/phramework/exceptions/src,./vendor/phramework/validate/src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"phramework doc\""
   }
 }

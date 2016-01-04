@@ -113,7 +113,7 @@ class Email
      * @param string $address
      * @param string $subject
      * @param string $body
-     * @param string $account Account name. Optional, default is default
+     * @param string $account *[Optional]*, Account name
      */
     public static function send($address, $subject, $body, $account = 'default')
     {

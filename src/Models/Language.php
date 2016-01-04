@@ -24,15 +24,20 @@ class Language
 {
     /**
      * Replace %key% from template string with their value from parameters array
+     * @param  string $template
+     * @param  string $parameters
+     * @param  string $startChar  *[Optional]*
+     * @param  string $endChar    *[Optional]*
+     * @return string
      */
     public static function template(
         $template,
         $parameters,
-        $start_char = '%',
-        $end_char = '%'
+        $startChar = '%',
+        $endChar = '%'
     ) {
         foreach ($parameters as $key => $value) {
-            $template = str_replace($start_char . $key . $end_char, $value, $template);
+            $template = str_replace($startChar . $key . $endChar, $value, $template);
         }
         return $template;
     }

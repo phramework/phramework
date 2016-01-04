@@ -25,23 +25,25 @@ use \Phramework\Models\Util;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
+ * @todo clean up
  */
 class Compress
 {
     /**
      * Uncompress file archive
-     * @param string $compressed_file Archive path
-     * @param string $destination_folder Destination folder to uncompress files
-     * @param string $original_filename Original file name
+     * @param string $compressedFile Archive path
+     * @param string $destinationFolder Destination folder to uncompress files
+     * @param string $originalFilename Original file name
      * @param string $format Select format mode, Default is gz, gz, zip and tar are available.
      * @return Array Returns a list with the uncompresed files
+     * @throws Exception
      */
     public static function uncompress(
-        $compressed_file,
-        $destination_folder,
-        $original_filename = null,
+        $compressedFile,
+        $destinationFolder,
+        $originalFilename = null,
         $format = 'gz',
-        $allowed_extensions = [
+        $allowedExtensions = [
             'csv',
             'tsv'
         ]
@@ -54,40 +56,43 @@ class Compress
         switch ($format) {
             case 'gz':
                 return self::uncompress_gz(
-                    $compressed_file,
-                    $destination_folder,
-                    $original_filename,
-                    $allowed_extensions
+                    $compressedFile,
+                    $destinationFolder,
+                    $originalFilename,
+                    $allowedExtensions
                 );
             case 'zip':
                 return self::uncompress_zip(
-                    $compressed_file,
-                    $destination_folder,
-                    $original_filename,
-                    $allowed_extensions
+                    $compressedFile,
+                    $destinationFolder,
+                    $originalFilename,
+                    $allowedExtensions
                 );
             case 'tar':
                 return self::uncompress_tar(
-                    $compressed_file,
-                    $destination_folder,
-                    $original_filename,
-                    $allowed_extensions
+                    $compressedFile,
+                    $destinationFolder,
+                    $originalFilename,
+                    $allowedExtensions
                 );
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private static function uncompressZip(
-        $compressed_file,
-        $destination_folder,
-        $original_filename = null,
-        $allowed_extensions = []
+        $compressedFile,
+        $destinationFolder,
+        $originalFilename = null,
+        $allowedExtensions = []
     ) {
         $zip = new \ZipArchive();
 
-        $res = $zip->open($compressed_file);
+        $res = $zip->open($compressedFile);
 
         if ($res !== true) {
-            throw new \Phramework\Exceptions\RequestExceptionException('Cannot open zip archive', $res);
+            throw new \Exception('Cannot open zip archive', $res);
         }
 
         $files = [];
@@ -95,7 +100,7 @@ class Compress
             $info = $zip->statIndex($i);
             $name = $info['name'];
             //Todo check filesize !
-            if (in_array(Util::extension($name), $allowed_extensions)) {
+            if (in_array(Util::extension($name), $allowedExtensions)) {
                 $files[] = $name;
             }
         }
@@ -103,36 +108,39 @@ class Compress
             throw new \Exception('No valid files files found inside archive');
         }
         //TODO CHECK
-        $zip->extractTo($destination_folder, $files);
+        $zip->extractTo($destinationFolder, $files);
 
         $zip->close();
 
         return $files;
     }
 
+    /**
+     * @throws Exception
+     */
     private static function uncompressGz(
-        $compressed_file,
-        $destination_folder,
-        $original_filename = null,
-        $allowed_extensions = []
+        $compressedFile,
+        $destinationFolder,
+        $originalFilename = null,
+        $allowedExtensions = []
     ) {
         //IN ORDER TO WORK CORRECTLY GZ FILES MUST HAVE DOUBLE EXTENSION E.G. name.csv.gz ( STANDARIZE IT ! )
         //$file_path = Util::getPath(
-        //    array($destination_folder, basename(($original_filename ? $original_filename : $compressed_file), '.gz'))
+        //    array($destinationFolder, basename(($originalFilename ? $originalFilename : $compressedFile), '.gz'))
         //);
         //File extension
         $file_path = Util::get_path([
-            $destination_folder,
-            basename(($original_filename ? $original_filename : $compressed_file), '.gz')
+            $destinationFolder,
+            basename(($originalFilename ? $originalFilename : $compressedFile), '.gz')
         ]);
 
-        $sfp = gzopen($compressed_file, "rb");
+        $sfp = gzopen($compressedFile, 'rb');
 
         if ($sfp === false) {
             throw new \Exception('Cannot open gz archive');
         }
 
-        $fp = fopen($file_path, "w");
+        $fp = fopen($file_path, 'w');
 
         if ($fp === false) {
             throw new \Exception('Cannot open uncompress');
@@ -147,23 +155,26 @@ class Compress
         return basename($file_path);
     }
 
+    /**
+     * @throws Exception
+     */
     private static function uncompressTar(
-        $compressed_file,
-        $destination_folder,
-        $original_filename = null,
-        $allowed_extensions = []
+        $compressedFile,
+        $destinationFolder,
+        $originalFilename = null,
+        $allowedExtensions = []
     ) {
         try {
-            $zip = new \PharData($compressed_file);
-        } catch (\UnexpectedValueException $e) {
-            throw new \Phramework\Exceptions\RequestExceptionException('Cannot open tar archive');
+            $zip = new \PharData($compressedFile);
+        } catch (\Exception $e) {
+            throw new \Exception('Cannot open tar archive');
         }
 
         $files = [];
 
         foreach ($zip as $file) {
             $name = $file->getFileName();
-            if (in_array(Util::extension($name), $allowed_extensions)) {
+            if (in_array(Util::extension($name), $allowedExtensions)) {
                 $files[] = $name;
             }
         }
@@ -171,7 +182,7 @@ class Compress
             throw new \Exception('No valid files found inside archive');
         }
 
-        $zip->extractTo($destination_folder, $files);
+        $zip->extractTo($destinationFolder, $files);
 
         return $files;
     }
