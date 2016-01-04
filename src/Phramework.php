@@ -61,6 +61,7 @@ class Phramework
 
     /**
      * $URIStrategy object
+     * @var Phramework\URIStrategy\IURIStrategy
      */
     private static $URIStrategy;
 
@@ -91,8 +92,10 @@ class Phramework
      *
      * Only one instance of API may be present
      * @param array $settings
-     * @param IURIStrategy $URIStrategyObject URIStrategy object
-     * @param object|null $translationObject  [optional] Set custom translation class
+     * @param Phramework\URIStrategy\IURIStrategy $URIStrategy
+     * URIStrategy object
+     * @param object|null $translationObject  *[Optional]* Set custom translation class
+     * @throws Phramework\Exceptions\ServerException
      */
     public function __construct(
         $settings,
@@ -132,6 +135,9 @@ class Phramework
         self::$instance = $this;
     }
 
+    /**
+     * @return Phramework
+     */
     public static function getInstance()
     {
         return self::$instance;
@@ -195,6 +201,8 @@ class Phramework
      * Execute the API
      * @throws Phramework\Exceptions\PermissionException
      * @throws Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\IncorrectParametersException
+     * @throws Phramework\Exceptions\RequestException
      * @todo change default timezone
      * @todo change default language
      * @todo initialize database if set
@@ -251,7 +259,7 @@ class Phramework
             //Check if the requested HTTP method method is allowed
             // @todo check error code
             if (!in_array($method, self::$methodWhitelist)) {
-                throw new \Phramework\Exceptions\RequestExceptionException(
+                throw new \Phramework\Exceptions\RequestException(
                     'Method not allowed'
                 );
             }
@@ -444,7 +452,7 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\RequestExceptionException $exception) {
+        } catch (\Phramework\Exceptions\RequestException $exception) {
             self::errorView(
                 [(object)[
                     'status' => $exception->getCode(),

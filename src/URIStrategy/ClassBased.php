@@ -93,7 +93,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
      * @throws Phramework\Exceptions\NotFoundException
      * @throws Phramework\Exceptions\UnauthorizedException
      * @throws Phramework\Exceptions\ServerException
-     * @return string[] This method should return `[$class, $method]` on success
+     * @return string[2] This method should return `[$class, $method]` on success
      */
     public function invoke(
         $requestParameters,

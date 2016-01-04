@@ -37,8 +37,10 @@ interface IURIStrategy
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @return string[] This method SHOULD return a tuple specifing at least
+     * @return string[2] This method SHOULD return a tuple specifing at least
      * `[$class, $method]` on success.
+     * @throws Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\UnauthorizedException
      */
     public function invoke(
         $requestParameters,

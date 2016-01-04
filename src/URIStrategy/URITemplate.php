@@ -154,10 +154,10 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @throws NotFoundException
-     * @throws UnauthorizedException
+     * @throws Phramework\Exceptions\NotFoundException
+     * @throws Phramework\Exceptions\UnauthorizedException
      * @todo Use named parameters in future if available by PHP
-     * @return string[] This method should return `[$class, $method]` on success
+     * @return string[2] This method should return `[$class, $method]` on success
      */
     public function invoke(
         $requestParameters,
