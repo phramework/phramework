@@ -70,7 +70,7 @@ class Phramework
      * UUID generated for this request
      * @var string
      */
-    protected $requestUUID;
+    protected static $requestUUID;
 
     /**
      * Viewer class
