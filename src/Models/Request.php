@@ -63,9 +63,8 @@ class Request
 
     /**
      * Check if required parameters are set
-     * @param array|object $parameters Request's parameters
-     * @param string|array $required The required parameters
-     * @return array Returns the values of required parameters
+     * @param  array|object $parameters Request's parameters
+     * @param  string|array $required The required parameters
      * @throws Phramework\Exceptions\MissingParametersException
      */
     public static function requireParameters($parameters, $required)
@@ -76,15 +75,14 @@ class Request
         }
 
         $missing = [];
-        $return = [];
+
         if (!is_array($required)) {
             $required = [$required];
         }
+
         foreach ($required as $key) {
             if (!isset($parameters[$key])) {
                 array_push($missing, $key);
-            } else {
-                $return[] = $parameters[$key];
             }
         }
 
@@ -92,15 +90,14 @@ class Request
             throw new MissingParametersException($missing);
         }
 
-        return $return;
     }
 
     /**
      * Require id parameter if it's set else return NULL, it uses `resource_id` or `id` parameter if available
-     * @param array $parameters  The request parameters
-     * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer
-     * @throws Phramework\Exceptions\IncorrectParameters Wehen value is not correct
-     * @return string|int Returns the id or NULL if not set,
+     * @param  array|object $parameters  The request parameters
+     * @param  boolean      $UINTEGER  *[Optional]*, Check id's type to be unsigned integer
+     * @throws Phramework\Exceptions\IncorrectParameters When value is not correct
+     * @return string|integer Returns the id or NULL if not set,
      * if $UINTEGER the returned value will be converted to unsigned integer
      */
     public static function resourceId($parameters, $UINTEGER = true)
@@ -133,12 +130,11 @@ class Request
 
     /**
      * Require id parameter, it uses `resource_id` or `id` parameter if available
-     * @param array $parameters The request paramters
-     * @param boolean $UINTEGER  [Optional], Check id's type to be unsigned integer, default is true
+     * @param  array|object $parameters The request paramters
+     * @param  boolean      $UINTEGER  *[Optional]*, Check id's type to be unsigned integer, default is true
      * @throws Phramework\Exceptions\IncorrectParameters When value is not correct
      * @throws Phramework\Exceptions\MissingParametersException When id is missing
      * if $UINTEGER the returned value will be converted to unsigned integer
-     * @todo accept objects
      */
     public static function requireId($parameters, $UINTEGER = true)
     {
@@ -174,10 +170,9 @@ class Request
      * Required required values and parse provided parameters into an array
      * Validate the provided request model and return the
      * @uses \Phramework\Models\Request::requireParameters
-     * @param array $parameters
+     * @param array|object $parameters
      * @param array $model
      * @return array Return the keys => values collection
-     * @todo accept objects
      * @deprecated since 1.0.0
      */
     public static function parseModel($parameters, $model)

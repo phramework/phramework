@@ -143,7 +143,7 @@ class Util
 
     /**
      * Get the ip address of the client
-     * @return string
+     * @return string|false Returns fails on failure
      */
     public static function getIPAddress()
     {
@@ -155,6 +155,7 @@ class Util
         } else {
             return $_SERVER['REMOTE_ADDR'];
         }
+
         return false;
     }
 
@@ -262,7 +263,7 @@ class Util
 
     /**
      * Create a random readable word
-     * @param integer $length String's length
+     * @param  integer $length *[Optional]* String's length
      * @return string
      */
     public static function readableRandomString($length = 8)
@@ -354,13 +355,13 @@ class Util
     }
 
     /**
-     * Extract extension from a filename
-     * @param string $filename The filename
+     * Extract extension from file's path
+     * @param string $filePath The file path
      * @return string The extension without dot prefix
      */
-    public static function extension($filename)
+    public static function extension($filePath)
     {
-        return strtolower(preg_replace('/^.*\.([^.]+)$/D', '$1', $filename));
+        return strtolower(preg_replace('/^.*\.([^.]+)$/D', '$1', $filePath));
     }
 
     /**
@@ -410,5 +411,25 @@ class Util
         }
 
         return doubleval($size);
+    }
+
+    /**
+     * Generate UUID
+     * @return string Returns a 36 characters string
+     * @since 1.2.0
+     */
+    public static function generateUUID()
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
+        );
     }
 }

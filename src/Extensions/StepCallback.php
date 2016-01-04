@@ -129,6 +129,7 @@ class StepCallback
      * @param array  $params  Request parameters
      * @param string $method  Request method
      * @param array  $headers Request headers
+     * @return boolean Returns false if no callbacks set for this step
      */
     public function call(
         $step,
@@ -156,10 +157,12 @@ class StepCallback
                 )
             );
         }
+
+        return true;
     }
 
     /**
-     * 
+     * Initialize step callback extension
      */
     public function __construct()
     {

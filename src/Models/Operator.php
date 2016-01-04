@@ -98,7 +98,7 @@ class Operator
     const CLASS_JSONOBJECT = 128;
 
     /**
-     * Get operator class
+     * Get operators
      * @param  integer $classFlags
      * @return integer Operator class
      */
