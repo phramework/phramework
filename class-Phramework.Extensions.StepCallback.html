@@ -152,8 +152,6 @@
 				<a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a><br>
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
-				<b>Todo:</b>
-				add variables to be passed on call (globaly set)<br>
 			<b>Located at</b> Extensions/StepCallback.php		<br>
 	</div>
 
@@ -233,7 +231,8 @@ a certain step, multiple callbacks can be set for the same step.</p>
 
 					<h4>Throws</h4>
 					<div class="list">
-						Exception<br>callback_is_not_function_exception
+						Exception<br>When callback is not not callable<br>
+						<code><a href="class-Phramework.Exceptions.IncorrectParametersException.html">Phramework\Exceptions\IncorrectParametersException</a></code>
 					</div>
 
 					<h4>Since</h4>
@@ -249,7 +248,7 @@ a certain step, multiple callbacks can be set for the same step.</p>
 
 			<td class="attributes"><code>
 				 public 
-				
+				boolean
 				
 				</code>
 			</td>
@@ -284,6 +283,10 @@ so the callback functions can modify these variables</p>
 						<dd></dd>
 					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						boolean<br>Returns false if no callbacks set for this step
+					</div>
 
 
 
@@ -305,11 +308,11 @@ so the callback functions can modify these variables</p>
 			<code>__construct( )</code>
 
 			<div class="description short">
-				
+				<p>Initialize step callback extension</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>Initialize step callback extension</p>
 
 
 

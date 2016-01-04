@@ -180,7 +180,7 @@
 
 			<td class="attributes"><code>
 				 public 
-				string[]
+				string[2]
 				
 				</code>
 			</td>
@@ -224,10 +224,15 @@ authenticated otherwise false</p></dd>
 
 					<h4>Returns</h4>
 					<div class="list">
-						string[]<br><p>This method SHOULD return a tuple specifing at least
+						string[2]<br><p>This method SHOULD return a tuple specifing at least
 <code>[$class, $method]</code> on success.</p>
 					</div>
 
+					<h4>Throws</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Exceptions.NotFoundException.html">Phramework\Exceptions\NotFoundException</a></code><br>
+						<code><a href="class-Phramework.Exceptions.UnauthorizedException.html">Phramework\Exceptions\UnauthorizedException</a></code>
+					</div>
 
 
 

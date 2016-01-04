@@ -194,7 +194,7 @@
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since:</b>
-				1.0.0<br>
+				0.0.0<br>
 				<b>See:</b>
 				ECMA 262 regular expression dialect for regular expression pattern<br>
 			<b>Located at</b> StringValidator.php		<br>
@@ -216,16 +216,31 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code>__construct( <span> <var>$minLength</var> = <span class="php-num">0</span></span>, <span> <var>$maxLength</var> = <span class="php-keyword1">null</span></span>, <span> <var>$pattern</var> = <span class="php-keyword1">null</span></span>, <span> <var>$raw</var> = <span class="php-keyword1">false</span> </span> )</code>
+			<code>__construct( <span>integer <var>$minLength</var> = <span class="php-num">0</span></span>, <span>integer|null <var>$maxLength</var> = <span class="php-keyword1">null</span></span>, <span>string|null <var>$pattern</var> = <span class="php-keyword1">null</span></span>, <span>boolean <var>$raw</var> = <span class="php-keyword1">false</span> </span> )</code>
 
 			<div class="description short">
-				
+				<p>[__construct description]</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>[__construct description]</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$minLength</var></dt>
+						<dd><p><em>[Optional]</em>
+    Minimum number of its characters, default is 0</p></dd>
+						<dt><var>$maxLength</var></dt>
+						<dd><p><em>[Optional]</em>
+    Maximum number of its characters, default is null</p></dd>
+						<dt><var>$pattern</var></dt>
+						<dd><p><em>[Optional]</em>
+    Regular expresion pattern for validating, default is null</p></dd>
+						<dt><var>$raw</var></dt>
+						<dd><p><em>[Optional]</em>
+    Keep raw value, dont sanitize value after validation, default is false</p></dd>
+					</dl></div>
 
 
 
@@ -298,12 +313,16 @@
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_getTypeAttributes">getTypeAttributes()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_parse">parse()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_parseStatic">parseStatic()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_registerValidator">registerValidator()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDefault">setDefault()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDescription">setDescription()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_setEnum">setEnum()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setTitle">setTitle()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toArray">toArray()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toJSON">toJSON()</a></code>, 
-				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateCommon">validateCommon()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateEnum">validateEnum()</a></code>
 			</p>
 		</div>
 
@@ -369,7 +388,7 @@ Can be overwriten</p>
     <span class="php-quote">'minLength'</span>,
     <span class="php-quote">'maxLength'</span>,
     <span class="php-quote">'pattern'</span>,
-    <span class="php-quote">'raw'</span>
+    <span class="php-quote">'raw'</span> <span class="php-comment">//non standard</span>
 ]</code>
 				</div>
 			</td>
@@ -399,7 +418,7 @@ Can be overwriten</p>
 			<td class="name">
 <var>$minLength</var>
 				<div class="description short">
-					<p>Minimum number of its characters, default is 0</p>
+					<p>Minimum number of its characters</p>
 				</div>
 
 				<div class="description detailed hidden">
@@ -436,6 +455,24 @@ Can be overwriten</p>
 <var>$pattern</var>
 				<div class="description short">
 					<p>Regular expresion pattern for validating</p>
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+		</tr>
+		<tr data-order="raw" id="m$raw">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
+
+			<td class="name">
+<var>$raw</var>
+				<div class="description short">
+					<p>Keep raw value, dont sanitize value after validation</p>
 				</div>
 
 				<div class="description detailed hidden">

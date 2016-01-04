@@ -193,7 +193,7 @@
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since:</b>
-				1.0.0<br>
+				0.0.0<br>
 			<b>Located at</b> BaseValidator.php		<br>
 	</div>
 
@@ -274,6 +274,100 @@ to parse the input value</p>
 					<h4>See</h4>
 					<div class="list">
 							\Phramework\Validate\ValidateResult for ValidateResult object<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="validateCommon" id="_validateCommon">
+
+			<td class="attributes"><code>
+				 protected 
+				<code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code>
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_validateCommon">#</a>
+			<code>validateCommon( <span>mixed <var>$value</var></span>, <span><code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code> <var>$validateResult</var></span> )</code>
+
+			<div class="description short">
+				<p>Common helper method to validate against all common keywords</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Common helper method to validate against all common keywords</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd>Value to validate</dd>
+						<dt><var>$validateResult</var></dt>
+						<dd>$return Current ValidateResult status</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code>
+					</div>
+
+
+					<h4>Uses</h4>
+					<div class="list">
+							<code><a href="class-Phramework.Validate.BaseValidator.html#_validateEnum">Phramework\Validate\BaseValidator::validateEnum()</a></code><br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="validateEnum" id="_validateEnum">
+
+			<td class="attributes"><code>
+				 protected 
+				<code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code>
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_validateEnum">#</a>
+			<code>validateEnum( <span>mixed <var>$value</var></span> )</code>
+
+			<div class="description short">
+				<p>Common helper method to validate against "enum" keyword</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Common helper method to validate against "enum" keyword</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd>Value to validate</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Validate.ValidateResult.html">Phramework\Validate\ValidateResult</a></code>
+					</div>
+
+
+					<h4>See</h4>
+					<div class="list">
+							5.5.1. enum http://json-schema.org/latest/json-schema-validation.html#anchor75<br>
+					</div>
+					<h4>Used by</h4>
+					<div class="list">
+							Phramework\Validate\BaseValidator::validateCommon()<br>
+					</div>
+					<h4>Todo</h4>
+					<div class="list">
+							provide support for objects and arrays<br>
 					</div>
 
 
@@ -472,7 +566,7 @@ to parse the input value</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_setTitle">#</a>
-			<code>setTitle( <span> <var>$title</var></span> )</code>
+			<code>setTitle( <span>string <var>$title</var></span> )</code>
 
 			<div class="description short">
 				
@@ -482,6 +576,45 @@ to parse the input value</p>
 				
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$title</var></dt>
+						<dd></dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="setEnum" id="_setEnum">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_setEnum">#</a>
+			<code>setEnum( <span>array|null <var>$enum</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$enum</var></dt>
+						<dd></dd>
+					</dl></div>
 
 
 
@@ -501,7 +634,7 @@ to parse the input value</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_setDescription">#</a>
-			<code>setDescription( <span> <var>$description</var></span> )</code>
+			<code>setDescription( <span>string <var>$description</var></span> )</code>
 
 			<div class="description short">
 				
@@ -511,6 +644,11 @@ to parse the input value</p>
 				
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$description</var></dt>
+						<dd></dd>
+					</dl></div>
 
 
 
@@ -530,7 +668,7 @@ to parse the input value</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_setDefault">#</a>
-			<code>setDefault( <span> <var>$default</var></span> )</code>
+			<code>setDefault( <span>mixed <var>$default</var></span> )</code>
 
 			<div class="description short">
 				
@@ -540,6 +678,11 @@ to parse the input value</p>
 				
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$default</var></dt>
+						<dd></dd>
+					</dl></div>
 
 
 
@@ -593,6 +736,51 @@ and return a clean object</p>
 			</div>
 			</div></td>
 		</tr>
+		<tr data-order="registerValidator" id="_registerValidator">
+
+			<td class="attributes"><code>
+				 public static
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_registerValidator">#</a>
+			<code>registerValidator( <span>string <var>$type</var></span>, <span>string <var>$className</var></span> )</code>
+
+			<div class="description short">
+				<p>Register a custom validator for a type</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Register a custom validator for a type</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$type</var></dt>
+						<dd>Type's name, <code>x-</code> SHOULD be used for custom types</dd>
+						<dt><var>$className</var></dt>
+						<dd><p>Validator's full classname.
+All validators MUST extend <code>BaseValidator</code> class</p></dd>
+					</dl></div>
+
+
+					<h4>Throws</h4>
+					<div class="list">
+						Exception
+					</div>
+
+					<h4>Example</h4>
+					<div class="list">
+							BaseValidator::registerValidator(<span class="php-quote">'x-address'</span>, <span class="php-quote">'My\APP\AddressValidator'</span>);<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
 		<tr data-order="createFromObject" id="_createFromObject">
 
 			<td class="attributes"><code>
@@ -625,6 +813,10 @@ and return a clean object</p>
 						<code><a href="class-Phramework.Validate.BaseValidator.html">Phramework\Validate\BaseValidator</a></code>
 					</div>
 
+					<h4>Throws</h4>
+					<div class="list">
+						Exception<br>When validator class cannot be found for object's type
+					</div>
 
 					<h4>Todo</h4>
 					<div class="list">
@@ -705,6 +897,10 @@ and return a clean object</p>
 						<code><a href="class-Phramework.Validate.BaseValidator.html">Phramework\Validate\BaseValidator</a></code>
 					</div>
 
+					<h4>Throws</h4>
+					<div class="list">
+						Exception<br>when JSON sting is not well formed
+					</div>
 
 
 
@@ -758,11 +954,11 @@ and return a clean object</p>
 			<code>toObject( )</code>
 
 			<div class="description short">
-				<p>Export validator to json encoded string</p>
+				<p>Export validator to object</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>Export validator to json encoded string</p>
+				<p>Export validator to object</p>
 
 
 
@@ -791,11 +987,11 @@ and return a clean object</p>
 			<code>toArray( )</code>
 
 			<div class="description short">
-				<p>Export validator to json encoded string</p>
+				<p>Export validator to array</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>Export validator to json encoded string</p>
+				<p>Export validator to array</p>
 
 
 
@@ -903,7 +1099,9 @@ Can be overwriten</p>
     <span class="php-quote">'title'</span>,
     <span class="php-quote">'description'</span>,
     <span class="php-quote">'default'</span>,
-    <span class="php-quote">'format'</span>
+    <span class="php-quote">'format'</span>,
+    <span class="php-quote">'enum'</span>,
+    <span class="php-quote">'validateType'</span> <span class="php-comment">//non standard attribute, can be used in combination with enum</span>
 ]</code>
 				</div>
 			</td>

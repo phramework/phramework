@@ -113,7 +113,7 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Phramework.Models.Cache.html">Cache</a></li>
+				<li><a href="class-Phramework.Models.Cache.html" class="deprecated">Cache</a></li>
 				<li><a href="class-Phramework.Models.Compress.html">Compress</a></li>
 				<li><a href="class-Phramework.Models.Email.html">Email</a></li>
 				<li><a href="class-Phramework.Models.Execute.html">Execute</a></li>
@@ -168,6 +168,8 @@
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since</b>
 				0<br>
+				<b>Todo:</b>
+				clean up<br>
 			<b>Located at</b> Models/Upload.php		<br>
 	</div>
 
@@ -187,7 +189,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_file">#</a>
-			<code>file( <span>array <var>$file</var></span>, <span>string <var>$move</var> = []</span>, <span>array <var>$allowed_filetypes</var> = [<span class="php-quote">'csv'</span>]</span>, <span>array <var>$max_size</var> = <span class="php-num">10485760</span></span>, <span>integer <var>$parse_extension</var> = <span class="php-keyword1">false</span> </span>, <span>boolean <var>$parse_extension</var>,…</span> )</code>
+			<code>file( <span>array <var>$file</var></span>, <span>string <var>$move</var> = []</span>, <span>array <var>$allowedFiletypes</var> = [<span class="php-quote">'csv'</span>]</span>, <span>array <var>$max_size</var> = <span class="php-num">10485760</span></span>, <span>integer <var>$parseExtension</var> = <span class="php-keyword1">false</span> </span>, <span>boolean <var>$parseExtension</var>,…</span> )</code>
 
 			<div class="description short">
 				<p>Upload file</p>
@@ -203,19 +205,19 @@
 						<dd>$parameters The request parameters.</dd>
 						<dt><var>$move</var></dt>
 						<dd>$index The paramatern index for example 'file'.</dd>
-						<dt><var>$allowed_filetypes</var></dt>
-						<dd><p>$move If $move is set (Is not (null or ==array() or FALSE ))
+						<dt><var>$allowedFiletypes</var></dt>
+						<dd><p>$move If $move is set (Is not (null or == array() or false ))
 then the uploaded file will be moved to the specified directory.
 The $move takes indexes 'path' and 'name', the path is the directory
 the uploaded file will be moved. The name is optional and</p></dd>
 						<dt><var>$max_size</var></dt>
-						<dd>$allowed_filetypes Optional. Array with allowed extensions.</dd>
-						<dt><var>$parse_extension</var></dt>
-						<dd><p>$max_size Optional. The maximum size of the
+						<dd>$allowedFiletypes *[Optional] Array with allowed extensions.</dd>
+						<dt><var>$parseExtension</var></dt>
+						<dd><p>$max_size *[Optional] The maximum size of the
 uploaded file in bytes. Default value is 10485760 bytes</p></dd>
-						<dt><var>$parse_extension</var>,…</dt>
-						<dd><p>Optional. If TRUE the destination
-filename will be joined with files extension  Default value is FALSE</p></dd>
+						<dt><var>$parseExtension</var>,…</dt>
+						<dd><p>*[Optional] If true the destination
+filename will be joined with files extension  Default value is false</p></dd>
 					</dl></div>
 
 
@@ -236,7 +238,7 @@ filename will be joined with files extension  Default value is FALSE</p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_image">#</a>
-			<code>image( <span>Object <var>$file</var></span>, <span>Array <var>$move</var> = []</span>, <span>Array <var>$sizes</var> = []</span>, <span>UInt <var>$max_file_size</var> = <span class="php-num">2097152</span></span>, <span>Array <var>$allowed_filetypes</var> = [ <span class="php-quote">'jpg'</span>, <span class="php-quote">'gif'</span>, <span class="php-quote">'png'</span>, <span class="php-quote">'jpeg'</span> ] </span> )</code>
+			<code>image( <span>Object <var>$file</var></span>, <span>array <var>$move</var> = []</span>, <span>array <var>$sizes</var> = []</span>, <span>integer <var>$maxFileSize</var> = <span class="php-num">2097152</span></span>, <span>array <var>$allowedFiletypes</var> = [ <span class="php-quote">'jpg'</span>, <span class="php-quote">'gif'</span>, <span class="php-quote">'png'</span>, <span class="php-quote">'jpeg'</span> ] </span> )</code>
 
 			<div class="description short">
 				<p>Upload image</p>
@@ -257,9 +259,9 @@ filename will be joined with files extension  Default value is FALSE</p></dd>
 will be copied from original upload file name</p></dd>
 						<dt><var>$sizes</var></dt>
 						<dd>Is an indexed array</dd>
-						<dt><var>$max_file_size</var></dt>
+						<dt><var>$maxFileSize</var></dt>
 						<dd>Maximum file size, Optional by default it's 2MB</dd>
-						<dt><var>$allowed_filetypes</var></dt>
+						<dt><var>$allowedFiletypes</var></dt>
 						<dd><p>Array with allowed image extensions,
 Optional by default it's 'jpg', 'gif', 'png', 'jpeg'</p></dd>
 					</dl></div>

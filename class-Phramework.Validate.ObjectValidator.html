@@ -184,7 +184,7 @@
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since:</b>
-				1.0.0<br>
+				0.0.0<br>
 				<b>See:</b>
 				<p>http://json-schema.org/latest/json-schema-validation.html#anchor53
 5.4.  Validation keywords for objects</p><br>
@@ -215,7 +215,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code>__construct( <span> <var>$properties</var> = []</span>, <span> <var>$required</var> = []</span>, <span> <var>$additionalProperties</var> = <span class="php-keyword1">null</span></span>, <span> <var>$minProperties</var> = <span class="php-num">0</span></span>, <span> <var>$maxProperties</var> = <span class="php-keyword1">null</span></span>, <span> <var>$patternProperties</var> = <span class="php-keyword1">null</span> </span> )</code>
+			<code>__construct( <span>object <var>$properties</var> = []</span>, <span>string[] <var>$required</var> = []</span>, <span>object|boolean|null <var>$additionalProperties</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$minProperties</var> = <span class="php-num">0</span></span>, <span>integer <var>$maxProperties</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 			<div class="description short">
 				
@@ -225,6 +225,19 @@
 				
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$properties</var></dt>
+						<dd><em>[Optional]</em> Properties</dd>
+						<dt><var>$required</var></dt>
+						<dd><em>[Optional]</em> Required properties keys</dd>
+						<dt><var>$additionalProperties</var></dt>
+						<dd><em>[Optional]</em> Default is null</dd>
+						<dt><var>$minProperties</var></dt>
+						<dd><em>[Optional]</em> Default is 0</dd>
+						<dt><var>$maxProperties</var></dt>
+						<dd><em>[Optional]</em> Default is null</dd>
+					</dl></div>
 
 
 
@@ -285,14 +298,14 @@
 
 			<td class="attributes"><code>
 				 public 
-				stdClass
+				object
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_parse">#</a>
-			<code>parse( <span>array|stdClass <var>$value</var></span> )</code>
+			<code>parse( <span>array|object <var>$value</var></span> )</code>
 
 			<div class="description short">
 				<p>This method use this validator to parse data from $value argument
@@ -312,7 +325,7 @@ and return a clean object</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						stdClass<br>[description]
+						object
 					</div>
 
 					<h4>Throws</h4>
@@ -426,12 +439,16 @@ and return a clean object</p>
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_getType">getType()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_getTypeAttributes">getTypeAttributes()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_parseStatic">parseStatic()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_registerValidator">registerValidator()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDefault">setDefault()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDescription">setDescription()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_setEnum">setEnum()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setTitle">setTitle()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toArray">toArray()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toJSON">toJSON()</a></code>, 
-				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateCommon">validateCommon()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateEnum">validateEnum()</a></code>
 			</p>
 		</div>
 
@@ -498,9 +515,7 @@ Can be overwriten</p>
     <span class="php-quote">'maxProperties'</span>,
     <span class="php-quote">'required'</span>,
     <span class="php-quote">'properties'</span>,
-    <span class="php-quote">'additionalProperties'</span>,
-    <span class="php-quote">'patternProperties'</span>,
-    <span class="php-quote">'dependencies'</span>
+    <span class="php-quote">'additionalProperties'</span>
 ]</code>
 				</div>
 			</td>
@@ -518,6 +533,83 @@ Can be overwriten</p>
 		</div>
 
 
+		<div class="panel panel-default">
+            <div class="panel-heading"><h3>Magic properties</h3></div>
+			<table class="summary table table-bordered table-striped properties" id="magicProperties">
+		<tr data-order="minProperties" id="m$minProperties">
+			<td class="attributes"><code>
+				public  
+				integer
+			</code></td>
+
+			<td class="name">
+<var>$minProperties</var>
+				<div class="description short">
+					<p>Minimum number of properties</p>
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+		</tr>
+		<tr data-order="maxProperties" id="m$maxProperties">
+			<td class="attributes"><code>
+				public  
+				integer|null
+			</code></td>
+
+			<td class="name">
+<var>$maxProperties</var>
+				<div class="description short">
+					<p>Minimum number of properties</p>
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+		</tr>
+		<tr data-order="properties" id="m$properties">
+			<td class="attributes"><code>
+				public  
+				object
+			</code></td>
+
+			<td class="name">
+<var>$properties</var>
+				<div class="description short">
+					<p>Properties</p>
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+		</tr>
+		<tr data-order="additionalProperties" id="m$additionalProperties">
+			<td class="attributes"><code>
+				public  
+				object|boolean|null
+			</code></td>
+
+			<td class="name">
+<var>$additionalProperties</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+		</tr>
+			</table>
+		</div>
 
 
 

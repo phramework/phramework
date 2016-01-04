@@ -113,7 +113,7 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Phramework.Models.Cache.html">Cache</a></li>
+				<li><a href="class-Phramework.Models.Cache.html" class="deprecated">Cache</a></li>
 				<li><a href="class-Phramework.Models.Compress.html">Compress</a></li>
 				<li><a href="class-Phramework.Models.Email.html">Email</a></li>
 				<li><a href="class-Phramework.Models.Execute.html">Execute</a></li>
@@ -173,14 +173,14 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				string
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_template">#</a>
-			<code>template( <span> <var>$template</var></span>, <span> <var>$parameters</var></span>, <span> <var>$start_char</var> = <span class="php-quote">'%'</span></span>, <span> <var>$end_char</var> = <span class="php-quote">'%'</span> </span> )</code>
+			<code>template( <span>string <var>$template</var></span>, <span>string <var>$parameters</var></span>, <span>string <var>$startChar</var> = <span class="php-quote">'%'</span></span>, <span>string <var>$endChar</var> = <span class="php-quote">'%'</span> </span> )</code>
 
 			<div class="description short">
 				<p>Replace %key% from template string with their value from parameters array</p>
@@ -190,7 +190,22 @@
 				<p>Replace %key% from template string with their value from parameters array</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$template</var></dt>
+						<dd></dd>
+						<dt><var>$parameters</var></dt>
+						<dd></dd>
+						<dt><var>$startChar</var></dt>
+						<dd><em>[Optional]</em></dd>
+						<dt><var>$endChar</var></dt>
+						<dd><em>[Optional]</em></dd>
+					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						string
+					</div>
 
 
 

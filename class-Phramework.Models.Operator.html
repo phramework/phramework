@@ -113,7 +113,7 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Phramework.Models.Cache.html">Cache</a></li>
+				<li><a href="class-Phramework.Models.Cache.html" class="deprecated">Cache</a></li>
 				<li><a href="class-Phramework.Models.Compress.html">Compress</a></li>
 				<li><a href="class-Phramework.Models.Email.html">Email</a></li>
 				<li><a href="class-Phramework.Models.Execute.html">Execute</a></li>
@@ -142,6 +142,9 @@
 	<h1>Class Operator</h1>
 
 
+	<div class="description">
+	<p>Operator's related model</p>
+	</div>
 
 
 
@@ -171,18 +174,18 @@
 		<div class="panel panel-default">
 			<div class="panel-heading"><h2>Methods summary</h2></div>
 			<table class="summary table table-bordered table-striped methods" id="methods">
-		<tr data-order="validate" id="_validate">
+		<tr data-order="getOperators" id="_getOperators">
 
 			<td class="attributes"><code>
 				 public static
-				
+				string[]
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
-			<a class="anchor" href="#_validate">#</a>
-			<code>validate( <span> <var>$operator</var></span> )</code>
+			<a class="anchor" href="#_getOperators">#</a>
+			<code>getOperators( )</code>
 
 			<div class="description short">
 				
@@ -193,7 +196,59 @@
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						string[]
+					</div>
 
+
+					<h4>Since</h4>
+					<div class="list">
+							1.2.0<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="validate" id="_validate">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_validate">#</a>
+			<code>validate( <span>string <var>$operator</var></span>, <span>string <var>$attributeName</var> = <span class="php-quote">'operator'</span></span> )</code>
+
+			<div class="description short">
+				<p>Check if a string is a valid operator</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Check if a string is a valid operator</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$operator</var></dt>
+						<dd></dd>
+						<dt><var>$attributeName</var></dt>
+						<dd><em>[Optional]</em> Attribute's name, used for thrown exception</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Returns the operator
+					</div>
+
+					<h4>Throws</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Exceptions.IncorrectParametersException.html">Phramework\Exceptions\IncorrectParametersException</a></code>
+					</div>
 
 
 
@@ -204,24 +259,33 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				integer
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_getByClassFlags">#</a>
-			<code>getByClassFlags( <span> <var>$classFlags</var></span> )</code>
+			<code>getByClassFlags( <span>integer <var>$classFlags</var></span> )</code>
 
 			<div class="description short">
-				
+				<p>Get operators</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>Get operators</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$classFlags</var></dt>
+						<dd></dd>
+					</dl></div>
 
+					<h4>Returns</h4>
+					<div class="list">
+						integer<br>Operator class
+					</div>
 
 
 
@@ -233,14 +297,14 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				string[2]
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_parse">#</a>
-			<code>parse( <span> <var>$operatorValueString</var></span> )</code>
+			<code>parse( <span>string <var>$operatorValueString</var></span> )</code>
 
 			<div class="description short">
 				
@@ -250,9 +314,22 @@
 				
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$operatorValueString</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						string[2]<br>[operator, operant]
+					</div>
 
 
-
+					<h4>Example</h4>
+					<div class="list">
+							<span class="php-keyword1">list</span>(<span class="php-var">$operator</span>, <span class="php-var">$operant</span>) = Operator::parse(<span class="php-quote">'&gt;=5'</span>);<br>
+					</div>
 
 
 			</div>
@@ -262,7 +339,7 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				string[]
 				
 				</code>
 			</td>
@@ -280,6 +357,10 @@
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						string[]
+					</div>
 
 
 
@@ -291,7 +372,7 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				string[]
 				
 				</code>
 			</td>
@@ -309,6 +390,10 @@
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						string[]
+					</div>
 
 
 
@@ -320,7 +405,7 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				string[]
 				
 				</code>
 			</td>
@@ -338,6 +423,10 @@
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						string[]
+					</div>
 
 
 
@@ -349,7 +438,7 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				string[]
 				
 				</code>
 			</td>
@@ -367,6 +456,10 @@
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						string[]
+					</div>
 
 
 
@@ -881,8 +974,8 @@
 			<table class="summary table table-bordered table-striped properties" id="properties">
 		<tr data-order="operators" id="$operators">
 			<td class="attributes"><code>
-				public static 
-				array
+				protected static 
+				string[]
 			</code></td>
 
 			<td class="name">

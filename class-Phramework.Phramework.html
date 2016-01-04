@@ -133,7 +133,7 @@
 
 
 	<div class="description">
-	<p>API 'framework'<br/>
+	<p>API 'framework' for RESTful services<br/>
 Defined settings:<br/></p>
 
 <ul>
@@ -164,7 +164,7 @@ Defined settings:<br/></p>
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Version:</b>
-				1.1.0<br>
+				1.2.0<br>
 				<b>Link:</b>
 				<a href="https://nohponex.gr">Developer&#039;s website</a><br>
 				<b>Todo:</b>
@@ -194,7 +194,7 @@ Defined settings:<br/></p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code>__construct( <span>array <var>$settings</var></span>, <span>IURIStrategy <var>$URIStrategyObject</var></span>, <span>object|null <var>$translationObject</var> = <span class="php-keyword1">null</span> </span> )</code>
+			<code>__construct( <span>array <var>$settings</var></span>, <span><code><a href="class-Phramework.URIStrategy.IURIStrategy.html">Phramework\URIStrategy\IURIStrategy</a></code> <var>$URIStrategyObject</var></span>, <span>object|null <var>$translationObject</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 			<div class="description short">
 				<p>Initialize API</p>
@@ -211,12 +211,17 @@ Defined settings:<br/></p>
 						<dt><var>$settings</var></dt>
 						<dd></dd>
 						<dt><var>$URIStrategyObject</var></dt>
-						<dd>URIStrategy object</dd>
+						<dd><p>$URIStrategy
+URIStrategy object</p></dd>
 						<dt><var>$translationObject</var></dt>
-						<dd>[optional] Set custom translation class</dd>
+						<dd><em>[Optional]</em> Set custom translation class</dd>
 					</dl></div>
 
 
+					<h4>Throws</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Exceptions.ServerException.html">Phramework\Exceptions\ServerException</a></code>
+					</div>
 
 
 
@@ -227,7 +232,7 @@ Defined settings:<br/></p>
 
 			<td class="attributes"><code>
 				 public static
-				
+				<code><a href="class-Phramework.Phramework.html">Phramework\Phramework</a></code>
 				
 				</code>
 			</td>
@@ -245,6 +250,43 @@ Defined settings:<br/></p>
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Phramework.html">Phramework\Phramework</a></code>
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getRequestUUID" id="_getRequestUUID">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getRequestUUID">#</a>
+			<code>getRequestUUID( )</code>
+
+			<div class="description short">
+				<p>Get UUID generated for this request</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Get UUID generated for this request</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						string
+					</div>
 
 
 
@@ -358,7 +400,9 @@ Defined settings:<br/></p>
 					<h4>Throws</h4>
 					<div class="list">
 						<code><a href="class-Phramework.Exceptions.PermissionException.html">Phramework\Exceptions\PermissionException</a></code><br>
-						<code><a href="class-Phramework.Exceptions.NotFoundException.html">Phramework\Exceptions\NotFoundException</a></code>
+						<code><a href="class-Phramework.Exceptions.NotFoundException.html">Phramework\Exceptions\NotFoundException</a></code><br>
+						<code><a href="class-Phramework.Exceptions.IncorrectParametersException.html">Phramework\Exceptions\IncorrectParametersException</a></code><br>
+						<code><a href="class-Phramework.Exceptions.RequestException.html">Phramework\Exceptions\RequestException</a></code>
 					</div>
 
 					<h4>Todo</h4>
@@ -999,7 +1043,7 @@ Custom IViewer implementation can use these additional parameters at they defini
 		<tr data-order="instance" id="$instance">
 			<td class="attributes"><code>
 				protected static 
-				
+				<code><a href="class-Phramework.Phramework.html">Phramework\Phramework</a></code>
 			</code></td>
 
 			<td class="name">
@@ -1016,6 +1060,30 @@ Custom IViewer implementation can use these additional parameters at they defini
 			<td class="value">
 				<div>
 					<a href="#$instance" class="anchor">#</a>
+					<code></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="requestUUID" id="$requestUUID">
+			<td class="attributes"><code>
+				protected  
+				string
+			</code></td>
+
+			<td class="name">
+<var>$requestUUID</var>
+				<div class="description short">
+					<p>UUID generated for this request</p>
+				</div>
+
+				<div class="description detailed hidden">
+					<p>UUID generated for this request</p>
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$requestUUID" class="anchor">#</a>
 					<code></code>
 				</div>
 			</td>

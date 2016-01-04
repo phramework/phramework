@@ -191,7 +191,7 @@
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since:</b>
-				1.0.0<br>
+				0.0.0<br>
 				<b>See:</b>
 				<p>http://json-schema.org/latest/json-schema-validation.html#anchor13
 <em>5.1.  Validation keywords for numeric instances (number and integer)</em></p><br>
@@ -217,16 +217,31 @@ validate that the value is a number and then applies additional rules</p><br>
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code>__construct( <span> <var>$minLength</var> = <span class="php-num">0</span></span>, <span> <var>$maxLength</var> = <span class="php-keyword1">null</span> </span> )</code>
+			<code>__construct( <span>integer <var>$minLength</var> = <span class="php-num">0</span></span>, <span>integer|null <var>$maxLength</var> = <span class="php-keyword1">null</span> </span>, <span>string|null <var>$pattern</var>,…</span>, <span>boolean <var>$raw</var>,…</span> )</code>
 
 			<div class="description short">
-				
+				<p>[__construct description]</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>[__construct description]</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$minLength</var></dt>
+						<dd><p><em>[Optional]</em>
+    Minimum number of its characters, default is 0</p></dd>
+						<dt><var>$maxLength</var></dt>
+						<dd><p><em>[Optional]</em>
+    Maximum number of its characters, default is null</p></dd>
+						<dt><var>$pattern</var>,…</dt>
+						<dd><p><em>[Optional]</em>
+    Regular expresion pattern for validating, default is null</p></dd>
+						<dt><var>$raw</var>,…</dt>
+						<dd><p><em>[Optional]</em>
+    Keep raw value, dont sanitize value after validation, default is false</p></dd>
+					</dl></div>
 
 
 
@@ -297,12 +312,16 @@ validate that the value is a number and then applies additional rules</p><br>
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_getTypeAttributes">getTypeAttributes()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_parse">parse()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_parseStatic">parseStatic()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_registerValidator">registerValidator()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDefault">setDefault()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setDescription">setDescription()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_setEnum">setEnum()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_setTitle">setTitle()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toArray">toArray()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_toJSON">toJSON()</a></code>, 
-				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_toObject">toObject()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateCommon">validateCommon()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_validateEnum">validateEnum()</a></code>
 			</p>
 		</div>
 
@@ -406,7 +425,8 @@ validate that the value is a number and then applies additional rules</p><br>
 		<div class="panel panel-default">
             <div class="panel-heading"><h3>Magic properties inherited from <a href="class-Phramework.Validate.StringValidator.html#properties">Phramework\Validate\StringValidator</a></h3></div>
 			<p class="elementList">
-				<code><a href="class-Phramework.Validate.StringValidator.html#m$pattern"><var>$pattern</var></a></code>
+				<code><a href="class-Phramework.Validate.StringValidator.html#m$pattern"><var>$pattern</var></a></code>, 
+				<code><a href="class-Phramework.Validate.StringValidator.html#m$raw"><var>$raw</var></a></code>
 			</p>
 		</div>
 

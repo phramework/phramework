@@ -170,18 +170,31 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_register">#</a>
-			<code>register( <span> <var>$implementation</var></span> )</code>
+			<code>register( <span>string <var>$implementation</var></span> )</code>
 
 			<div class="description short">
-				
+				<p>Register an authentication implementation.
+Implementation must implement
+<code>\Phramework\Authentication\IAuthentication</code> interface</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>Register an authentication implementation.
+Implementation must implement
+<code>\Phramework\Authentication\IAuthentication</code> interface</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$implementation</var></dt>
+						<dd>implementation class</dd>
+					</dl></div>
 
 
+					<h4>Throws</h4>
+					<div class="list">
+						Exception
+					</div>
 
 
 
@@ -192,7 +205,7 @@
 
 			<td class="attributes"><code>
 				 public static
-				
+				<code><a href="class-Phramework.Authentication.IAuthentication.html">Phramework\Authentication\IAuthentication</a>[]</code>
 				
 				</code>
 			</td>
@@ -210,6 +223,10 @@
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Authentication.IAuthentication.html">Phramework\Authentication\IAuthentication</a>[]</code>
+					</div>
 
 
 
@@ -257,6 +274,10 @@ tests in priorioty order which of them might be provided and executes</p>
 						array|false<br>Returns false on error or the user object on success
 					</div>
 
+					<h4>Throws</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Exceptions.ServerException.html">Phramework\Exceptions\ServerException</a></code>
+					</div>
 
 
 
@@ -305,7 +326,7 @@ attribute specified in JWT::setAttributes method</p>
 
 			<td class="attributes"><code>
 				 public static
-				
+				callable
 				
 				</code>
 			</td>
@@ -323,6 +344,10 @@ attribute specified in JWT::setAttributes method</p>
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						callable
+					</div>
 
 
 
@@ -370,7 +395,7 @@ Both <code>user_id</code> and <code>id</code> will use the user's id attribute</
 
 			<td class="attributes"><code>
 				 public static
-				
+				string[]
 				
 				</code>
 			</td>
@@ -388,6 +413,10 @@ Both <code>user_id</code> and <code>id</code> will use the user's id attribute</
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						string[]
+					</div>
 
 
 
@@ -427,6 +456,10 @@ defined callback.</p>
 					</dl></div>
 
 
+					<h4>Throws</h4>
+					<div class="list">
+						Exception
+					</div>
 
 
 
@@ -437,7 +470,7 @@ defined callback.</p>
 
 			<td class="attributes"><code>
 				 public static
-				
+				callable
 				
 				</code>
 			</td>
@@ -455,6 +488,10 @@ defined callback.</p>
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						callable
+					</div>
 
 
 
@@ -492,6 +529,10 @@ execution</p>
 					</dl></div>
 
 
+					<h4>Throws</h4>
+					<div class="list">
+						Exception
+					</div>
 
 
 
@@ -502,7 +543,7 @@ execution</p>
 
 			<td class="attributes"><code>
 				 public static
-				
+				callable
 				
 				</code>
 			</td>
@@ -520,6 +561,10 @@ execution</p>
 
 
 
+					<h4>Returns</h4>
+					<div class="list">
+						callable
+					</div>
 
 
 

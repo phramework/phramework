@@ -113,7 +113,7 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Phramework.Models.Cache.html">Cache</a></li>
+				<li><a href="class-Phramework.Models.Cache.html" class="deprecated">Cache</a></li>
 				<li><a href="class-Phramework.Models.Compress.html">Compress</a></li>
 				<li><a href="class-Phramework.Models.Email.html">Email</a></li>
 				<li><a href="class-Phramework.Models.Execute.html">Execute</a></li>
@@ -178,14 +178,14 @@
 
 			<td class="attributes"><code>
 				 public static
-				array
+				object
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_checkPermission">#</a>
-			<code>checkPermission( <span>integer <var>$user_id</var> = <span class="php-keyword1">false</span></span> )</code>
+			<code>checkPermission( <span>integer <var>$userId</var> = <span class="php-keyword1">false</span></span> )</code>
 
 			<div class="description short">
 				<p>Check if current request is authenticated</p>
@@ -199,15 +199,20 @@
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
-						<dt><var>$user_id</var></dt>
-						<dd>[optional] Check if current user has the same id with $user_id</dd>
+						<dt><var>$userId</var></dt>
+						<dd><em>[Optional]</em> Check if current user has the same id with $userId</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
 					<div class="list">
-						array<br>Returns the user object
+						object<br>Returns the user object
 					</div>
 
+					<h4>Throws</h4>
+					<div class="list">
+						<code><a href="class-Phramework.Exceptions.PermissionException.html">Phramework\Exceptions\PermissionException</a></code><br>
+						<code><a href="class-Phramework.Exceptions.UnauthorizedException.html">Phramework\Exceptions\UnauthorizedException</a></code>
+					</div>
 
 
 
@@ -218,14 +223,14 @@
 
 			<td class="attributes"><code>
 				 public static
-				array
+				
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_requireParameters">#</a>
-			<code>requireParameters( <span>Array <var>$parameters</var></span>, <span>String|Array <var>$required</var></span> )</code>
+			<code>requireParameters( <span>array|object <var>$parameters</var></span>, <span>string|array <var>$required</var></span> )</code>
 
 			<div class="description short">
 				<p>Check if required parameters are set</p>
@@ -243,16 +248,12 @@
 						<dd>The required parameters</dd>
 					</dl></div>
 
-					<h4>Returns</h4>
+
+					<h4>Throws</h4>
 					<div class="list">
-						array<br>Returns the values of required parameters
+						<code><a href="class-Phramework.Exceptions.MissingParametersException.html">Phramework\Exceptions\MissingParametersException</a></code>
 					</div>
 
-
-					<h4>Todo</h4>
-					<div class="list">
-							accept objects<br>
-					</div>
 
 
 			</div>
@@ -269,7 +270,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_resourceId">#</a>
-			<code>resourceId( <span>array <var>$parameters</var></span>, <span>boolean <var>$UINTEGER</var> = <span class="php-keyword1">true</span></span> )</code>
+			<code>resourceId( <span>array|object <var>$parameters</var></span>, <span>boolean <var>$UINTEGER</var> = <span class="php-keyword1">true</span></span> )</code>
 
 			<div class="description short">
 				<p>Require id parameter if it's set else return NULL, it uses <code>resource_id</code> or <code>id</code> parameter if available</p>
@@ -284,7 +285,7 @@
 						<dt><var>$parameters</var></dt>
 						<dd>The request parameters</dd>
 						<dt><var>$UINTEGER</var></dt>
-						<dd>[Optional], Check id's type to be unsigned integer, default is true</dd>
+						<dd><em>[Optional]</em>, Check id's type to be unsigned integer</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -295,13 +296,9 @@ if $UINTEGER the returned value will be converted to unsigned integer</p>
 
 					<h4>Throws</h4>
 					<div class="list">
-						IncorrectParameters<br>if value is not correct
+						Phramework\Phramework\Exceptions\IncorrectParameters<br>When value is not correct
 					</div>
 
-					<h4>Todo</h4>
-					<div class="list">
-							accept objects<br>
-					</div>
 
 
 			</div>
@@ -318,7 +315,7 @@ if $UINTEGER the returned value will be converted to unsigned integer</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_requireId">#</a>
-			<code>requireId( <span>array <var>$parameters</var></span>, <span>boolean <var>$UINTEGER</var> = <span class="php-keyword1">true</span></span> )</code>
+			<code>requireId( <span>array|object <var>$parameters</var></span>, <span>boolean <var>$UINTEGER</var> = <span class="php-keyword1">true</span></span> )</code>
 
 			<div class="description short">
 				<p>Require id parameter, it uses <code>resource_id</code> or <code>id</code> parameter if available</p>
@@ -333,20 +330,17 @@ if $UINTEGER the returned value will be converted to unsigned integer</p>
 						<dt><var>$parameters</var></dt>
 						<dd>The request paramters</dd>
 						<dt><var>$UINTEGER</var></dt>
-						<dd>[Optional], Check id's type to be unsigned integer, default is true</dd>
+						<dd><em>[Optional]</em>, Check id's type to be unsigned integer, default is true</dd>
 					</dl></div>
 
 
 					<h4>Throws</h4>
 					<div class="list">
-						IncorrectParameters<br><p>if value is not correct
+						Phramework\Phramework\Exceptions\IncorrectParameters<br>When value is not correct<br>
+						<code><a href="class-Phramework.Exceptions.MissingParametersException.html">Phramework\Exceptions\MissingParametersException</a></code><br><p>When id is missing
 if $UINTEGER the returned value will be converted to unsigned integer</p>
 					</div>
 
-					<h4>Todo</h4>
-					<div class="list">
-							accept objects<br>
-					</div>
 
 
 			</div>
@@ -363,7 +357,7 @@ if $UINTEGER the returned value will be converted to unsigned integer</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_parseModel">#</a>
-			<code>parseModel( <span>array <var>$parameters</var></span>, <span>array <var>$model</var></span> )</code>
+			<code class="deprecated">parseModel( <span>array|object <var>$parameters</var></span>, <span>array <var>$model</var></span> )</code>
 
 			<div class="description short">
 				<p>Required required values and parse provided parameters into an array
@@ -374,6 +368,10 @@ Validate the provided request model and return the</p>
 				<p>Required required values and parse provided parameters into an array
 Validate the provided request model and return the</p>
 
+					<h4>Deprecated</h4>
+					<div class="list">
+							since 1.0.0<br>
+					</div>
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
@@ -392,11 +390,6 @@ Validate the provided request model and return the</p>
 					<h4>Uses</h4>
 					<div class="list">
 							\Phramework\Models\Request::requireParameters<br>
-							\Phramework\Validate\Validate::model<br>
-					</div>
-					<h4>Todo</h4>
-					<div class="list">
-							accept objects<br>
 					</div>
 
 
@@ -429,40 +422,6 @@ Validate the provided request model and return the</p>
 					<div class="list">
 						array<br>Return the array with the headers (indexes in lowercase)
 					</div>
-
-
-
-
-			</div>
-			</div></td>
-		</tr>
-		<tr data-order="mergePutParamters" id="_mergePutParamters">
-
-			<td class="attributes"><code>
-				 public static
-				
-				
-				</code>
-			</td>
-
-			<td class="name"><div>
-			<a class="anchor" href="#_mergePutParamters">#</a>
-			<code>mergePutParamters( <span>array <var>&amp; $parameters</var></span> )</code>
-
-			<div class="description short">
-				<p>Merge put paramters into $parameters array</p>
-			</div>
-
-			<div class="description detailed hidden">
-				<p>Merge put paramters into $parameters array</p>
-
-
-					<h4>Parameters</h4>
-					<div class="list"><dl>
-						<dt><var>$parameters</var></dt>
-						<dd>Parameter's array</dd>
-					</dl></div>
-
 
 
 

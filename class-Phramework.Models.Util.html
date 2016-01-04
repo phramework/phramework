@@ -113,7 +113,7 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-Phramework.Models.Cache.html">Cache</a></li>
+				<li><a href="class-Phramework.Models.Cache.html" class="deprecated">Cache</a></li>
 				<li><a href="class-Phramework.Models.Compress.html">Compress</a></li>
 				<li><a href="class-Phramework.Models.Email.html">Email</a></li>
 				<li><a href="class-Phramework.Models.Execute.html">Execute</a></li>
@@ -497,7 +497,7 @@
 
 			<td class="attributes"><code>
 				 public static
-				string
+				string|false
 				
 				</code>
 			</td>
@@ -517,41 +517,8 @@
 
 					<h4>Returns</h4>
 					<div class="list">
-						string
+						string|false<br>Returns fails on failure
 					</div>
-
-
-
-
-			</div>
-			</div></td>
-		</tr>
-		<tr data-order="checkIncludeRoot" id="_checkIncludeRoot">
-
-			<td class="attributes"><code>
-				 public static
-				
-				
-				</code>
-			</td>
-
-			<td class="name"><div>
-			<a class="anchor" href="#_checkIncludeRoot">#</a>
-			<code class="deprecated">checkIncludeRoot( )</code>
-
-			<div class="description short">
-				
-			</div>
-
-			<div class="description detailed hidden">
-				
-
-					<h4>Deprecated</h4>
-					<div class="list">
-							since version 0<br>
-					</div>
-
-
 
 
 
@@ -585,11 +552,11 @@
 						<dt><var>$directory</var></dt>
 						<dd>Directory path</dd>
 						<dt><var>$recursive</var></dt>
-						<dd>Include sub directories</dd>
+						<dd><em>[Optional]</em> Include sub directories</dd>
 						<dt><var>$listDirs</var></dt>
-						<dd>Include directories on listing</dd>
+						<dd><em>[Optional]</em> Include directories on listing</dd>
 						<dt><var>$listFiles</var></dt>
-						<dd>Include files on listing</dd>
+						<dd><em>[Optional]</em> Include files on listing</dd>
 						<dt><var>$exclude</var></dt>
 						<dd><p><em>[Optional]</em> Exclude paths that matches this
 regular expression</p></dd>
@@ -634,7 +601,7 @@ default <code>false</code></p></dd>
 						<dt><var>$directory</var></dt>
 						<dd>Directory path</dd>
 						<dt><var>$DELETE_DIRECTORY</var></dt>
-						<dd>Optinal, if is set directory will be deleted too.</dd>
+						<dd><em>[Optional]</em>, if is set directory will be deleted too.</dd>
 					</dl></div>
 
 
@@ -668,7 +635,7 @@ default <code>false</code></p></dd>
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 						<dt><var>$length</var></dt>
-						<dd>String's length</dd>
+						<dd><em>[Optional]</em> String's length</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -693,7 +660,7 @@ default <code>false</code></p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_curlHeaders">#</a>
-			<code>curlHeaders( <span>str <var>$url</var></span>, <span> <var>&amp; $data</var></span> )</code>
+			<code>curlHeaders( <span>string <var>$url</var></span>, <span> <var>&amp; $data</var></span> )</code>
 
 			<div class="description short">
 				<p>Get Headers from a remote link</p>
@@ -706,14 +673,14 @@ default <code>false</code></p></dd>
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 						<dt><var>$url</var></dt>
-						<dd><h1>url</h1></dd>
+						<dd></dd>
 						<dt><var>$data</var></dt>
 						<dd></dd>
 					</dl></div>
 
 					<h4>Returns</h4>
 					<div class="list">
-						array
+						array<br>Return headers
 					</div>
 
 
@@ -733,7 +700,7 @@ default <code>false</code></p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_curlDownload">#</a>
-			<code>curlDownload( <span>str <var>$url</var></span>, <span> <var>$path</var></span>, <span> <var>$timeout</var> = <span class="php-num">3600</span></span> )</code>
+			<code>curlDownload( <span>string <var>$url</var></span>, <span>string <var>$path</var></span>, <span> <var>$timeout</var> = <span class="php-num">3600</span></span> )</code>
 
 			<div class="description short">
 				<p>Download a file from a remote link</p>
@@ -746,7 +713,7 @@ default <code>false</code></p></dd>
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 						<dt><var>$url</var></dt>
-						<dd>$url, $path</dd>
+						<dd></dd>
 						<dt><var>$path</var></dt>
 						<dd></dd>
 						<dt><var>$timeout</var></dt>
@@ -813,20 +780,20 @@ default <code>false</code></p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_extension">#</a>
-			<code>extension( <span>string <var>$filename</var></span> )</code>
+			<code>extension( <span>string <var>$filePath</var></span> )</code>
 
 			<div class="description short">
-				<p>Extract extension from a filename</p>
+				<p>Extract extension from file's path</p>
 			</div>
 
 			<div class="description detailed hidden">
-				<p>Extract extension from a filename</p>
+				<p>Extract extension from file's path</p>
 
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
-						<dt><var>$filename</var></dt>
-						<dd>The filename</dd>
+						<dt><var>$filePath</var></dt>
+						<dd>The file path</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -851,7 +818,7 @@ default <code>false</code></p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_getPath">#</a>
-			<code>getPath( <span>array <var>$array</var></span>, <span> <var>$glue</var> = DIRECTORY_SEPARATOR</span> )</code>
+			<code>getPath( <span>array <var>$array</var></span>, <span>string <var>$glue</var> = DIRECTORY_SEPARATOR</span> )</code>
 
 			<div class="description short">
 				<p>Join directories and filename to create path</p>
@@ -866,7 +833,7 @@ default <code>false</code></p></dd>
 						<dt><var>$array</var></dt>
 						<dd>Array with directories and filename for example array( '/tmp', 'me', 'file.tmp' )</dd>
 						<dt><var>$glue</var></dt>
-						<dd></dd>
+						<dd><em>[Optional]</em></dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -949,26 +916,63 @@ default <code>false</code></p></dd>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_getFileSize">#</a>
-			<code>getFileSize( <span> <var>$path</var></span> )</code>
+			<code>getFileSize( <span>string <var>$path</var></span> )</code>
 
 			<div class="description short">
 				<p>Get the size of a file
-Works for large files too (>2GB )</p>
+Works for large files too (>2GB)</p>
 			</div>
 
 			<div class="description detailed hidden">
 				<p>Get the size of a file
-Works for large files too (>2GB )</p>
+Works for large files too (>2GB)</p>
 
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 						<dt><var>$path</var></dt>
-						<dd>path</dd>
+						<dd>File's path</dd>
 					</dl></div>
 
 
 
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="generateUUID" id="_generateUUID">
+
+			<td class="attributes"><code>
+				 public static
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_generateUUID">#</a>
+			<code>generateUUID( )</code>
+
+			<div class="description short">
+				<p>Generate UUID</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Generate UUID</p>
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						string<br>Returns a 36 characters string
+					</div>
+
+
+					<h4>Since</h4>
+					<div class="list">
+							1.2.0<br>
+					</div>
 
 
 			</div>
