@@ -23,13 +23,10 @@
     "ext-json": "*",
     "phramework/exceptions": "0.*",
     "phramework/validate": "^0.3",
-    "phramework/database": "dev-master"
+    "phramework/database": "0.*"
   },
   "suggest": {
-    "ext-curl": "*",
-    "ext-pdo": "Required when database is used",
-    "ext-pdo_pgsql": "Required when postgreSQL database is used",
-    "ext-pdo_mysql": "Required when MySQL or MariaDB database is used"
+    "ext-curl": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "5.*",

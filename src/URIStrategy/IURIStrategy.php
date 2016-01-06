@@ -43,7 +43,7 @@ interface IURIStrategy
      * @throws Phramework\Exceptions\UnauthorizedException
      */
     public function invoke(
-        $requestParameters,
+        &$requestParameters,
         $requestMethod,
         $requestHeaders,
         $requestUser

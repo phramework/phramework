@@ -96,7 +96,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
      * @return string[2] This method should return `[$class, $method]` on success
      */
     public function invoke(
-        $requestParameters,
+        &$requestParameters,
         $requestMethod,
         $requestHeaders,
         $requestUser

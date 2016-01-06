@@ -159,7 +159,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * @return string[2] This method should return `[$class, $method]` on success
      */
     public function invoke(
-        $requestParameters,
+        &$requestParameters,
         $requestMethod,
         $requestHeaders,
         $requestUser
@@ -194,7 +194,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                 list($URI_parameters) = $test;
 
                 //Merge all available parameters
-                $parameters = (object)array_merge(
+                $requestParameters = (object)array_merge(
                     (array)$requestParameters,
                     $URI_parameters,
                     $test[0]
@@ -215,7 +215,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
                     [$class, $method],
                     array_merge(
                         [
-                            $parameters,
+                            $requestParameters,
                             $requestMethod,
                             $requestHeaders
                         ],
