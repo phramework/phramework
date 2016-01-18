@@ -89,7 +89,6 @@ class Request
         if (count($missing)) {
             throw new MissingParametersException($missing);
         }
-
     }
 
     /**
