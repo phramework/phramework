@@ -48,7 +48,6 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     public function testSuccessProvider()
@@ -80,7 +79,8 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testFailureProvider(){
+    public function testFailureProvider()
+    {
         return [
             'check relashionship' => [
                 'book/', 'books'
@@ -153,5 +153,4 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
     {
         $this->markTestIncomplete();
     }
-
 }

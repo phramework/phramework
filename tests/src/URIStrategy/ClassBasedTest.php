@@ -19,7 +19,7 @@ class ClassBasedTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new ClassBased([],[],[]);
+        $this->object = new ClassBased([], [], []);
     }
 
     /**
@@ -39,5 +39,4 @@ class ClassBasedTest extends \PHPUnit_Framework_TestCase
     {
         $this->markTestIncomplete();
     }
-
 }

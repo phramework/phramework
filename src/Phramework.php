@@ -470,7 +470,6 @@ class Phramework
                 $method,
                 $headers
             );
-
         } catch (\Phramework\Exceptions\NotFoundException $exception) {
             self::errorView(
                 [(object)[

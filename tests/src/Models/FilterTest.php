@@ -28,7 +28,6 @@ class FilterTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
     }
 
     /**
@@ -150,5 +149,4 @@ class FilterTest extends \PHPUnit_Framework_TestCase
                 'This test has not been implemented yet.'
         );
     }
-
 }
