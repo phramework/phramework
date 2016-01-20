@@ -337,7 +337,7 @@ class Phramework
 
             //Parse request body
             //@Todo add allowed content-types
-            if (!empty($input) && in_array(
+            if (in_array(
                 $method,
                 [
                     self::METHOD_POST,
@@ -366,19 +366,21 @@ class Phramework
                 )) {
                     $input = trim(file_get_contents('php://input'));
 
-                    //note if input length is >0 and decode returns null then its bad data
-                    //json_last_error()
+                    if (!empty($input)) {
+                        //note if input length is >0 and decode returns null then its bad data
+                        //json_last_error()
 
-                    $inputObject = json_decode($input);
+                        $inputObject = json_decode($input);
 
-                    if (json_last_error() !== JSON_ERROR_NONE) {
-                        throw new \Phramework\Exceptions\RequestException(
-                            'JSON parse error: ' . json_last_error_msg()
-                        );
-                    }
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            throw new \Phramework\Exceptions\RequestException(
+                                'JSON parse error: ' . json_last_error_msg()
+                            );
+                        }
 
-                    if ($inputObject && !empty($inputObject)) {
-                        $params = (object)array_merge((array)$params, (array)$inputObject);
+                        if ($inputObject && !empty($inputObject)) {
+                            $params = (object)array_merge((array)$params, (array)$inputObject);
+                        }
                     }
                 }
             }
