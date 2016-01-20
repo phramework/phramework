@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Phramework\Validate\NumberValidator | phramework doc</title>
+	<title>Class Phramework\Validate\AnyOf | phramework doc</title>
 
 	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
 	<link rel="stylesheet" href="resources/style.css?70c1d062672daa3f906b72e4f5d03d4bc5c4174d">
@@ -114,7 +114,7 @@
 			<h3>Classes</h3>
 			<ul>
 				<li><a href="class-Phramework.Validate.AllOf.html">AllOf</a></li>
-				<li><a href="class-Phramework.Validate.AnyOf.html">AnyOf</a></li>
+				<li class="active"><a href="class-Phramework.Validate.AnyOf.html">AnyOf</a></li>
 				<li><a href="class-Phramework.Validate.ArrayValidator.html">ArrayValidator</a></li>
 				<li><a href="class-Phramework.Validate.BaseValidator.html">BaseValidator</a></li>
 				<li><a href="class-Phramework.Validate.BooleanValidator.html">BooleanValidator</a></li>
@@ -123,7 +123,7 @@
 				<li><a href="class-Phramework.Validate.EmailValidator.html">EmailValidator</a></li>
 				<li><a href="class-Phramework.Validate.EnumValidator.html">EnumValidator</a></li>
 				<li><a href="class-Phramework.Validate.IntegerValidator.html">IntegerValidator</a></li>
-				<li class="active"><a href="class-Phramework.Validate.NumberValidator.html">NumberValidator</a></li>
+				<li><a href="class-Phramework.Validate.NumberValidator.html">NumberValidator</a></li>
 				<li><a href="class-Phramework.Validate.ObjectValidator.html">ObjectValidator</a></li>
 				<li><a href="class-Phramework.Validate.OneOf.html">OneOf</a></li>
 				<li><a href="class-Phramework.Validate.StringValidator.html">StringValidator</a></li>
@@ -147,11 +147,11 @@
 <div id="right">
 	<div id="rightInner">
 <div id="content" class="class">
-	<h1>Class NumberValidator</h1>
+	<h1>Class AnyOf</h1>
 
 
 	<div class="description">
-	<p>Number validator</p>
+	<p>Validates successfully if it validates successfully against at least one schema defined in anyOf attribute</p>
 	</div>
 
 	<dl class="tree well">
@@ -163,7 +163,7 @@
 		</dd>
 		<dd style="padding-left:30px">
 			<img src="resources/inherit.png" alt="Extended by">
-<b><span>Phramework\Validate\NumberValidator</span></b>			
+<b><span>Phramework\Validate\AnyOf</span></b>			
 			
 			
 		</dd>
@@ -173,16 +173,11 @@
 	<div>
 		<h3>Direct known subclasses</h3>
 		<p class="elementList">
-			<code><a href="class-Phramework.Validate.IntegerValidator.html">Phramework\Validate\IntegerValidator</a></code>
+			<code><a href="class-Phramework.Validate.AllOf.html">Phramework\Validate\AllOf</a></code>, 
+			<code><a href="class-Phramework.Validate.OneOf.html">Phramework\Validate\OneOf</a></code>
 		</p>
 	</div>
 
-	<div>
-		<h3>Indirect known subclasses</h3>
-		<p class="elementList">
-			<code><a href="class-Phramework.Validate.UnsignedIntegerValidator.html">Phramework\Validate\UnsignedIntegerValidator</a></code>
-		</p>
-	</div>
 
 
 
@@ -199,11 +194,10 @@
 				<b>Author:</b>
 				Xenofon Spafaridis <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;">&#x6e;o&#104;&#112;&#x6f;&#x6e;&#101;&#120;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;.&#99;&#111;&#x6d;</a><br>
 				<b>Since:</b>
-				0.0.0<br>
+				0.4.0<br>
 				<b>See:</b>
-				<p>http://json-schema.org/latest/json-schema-validation.html#anchor13
-<em>5.1.  Validation keywords for numeric instances (number and integer)</em></p><br>
-			<b>Located at</b> NumberValidator.php		<br>
+				http://json-schema.org/latest/json-schema-validation.html#anchor85<br>
+			<b>Located at</b> AnyOf.php		<br>
 	</div>
 
 
@@ -222,19 +216,40 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code>__construct( <span> <var>$minimum</var> = <span class="php-keyword1">null</span></span>, <span> <var>$maximum</var> = <span class="php-keyword1">null</span></span>, <span> <var>$exclusiveMinimum</var> = <span class="php-keyword1">null</span></span>, <span> <var>$exclusiveMaximum</var> = <span class="php-keyword1">null</span></span>, <span> <var>$multipleOf</var> = <span class="php-keyword1">null</span> </span> )</code>
+			<code>__construct( <span>array <var>$anyOf</var></span> )</code>
 
 			<div class="description short">
-				<p>BaseValidator constructor.</p>
+				
 			</div>
 
 			<div class="description detailed hidden">
-				<p>BaseValidator constructor.</p>
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$anyOf</var></dt>
+						<dd></dd>
+					</dl></div>
 
 
 
+					<h4>Example</h4>
+					<div class="list">
+							<pre><span class="php-var">$validator</span> = <span class="php-keyword1">new</span> AnyOf([
+    <span class="php-keyword1">new</span> IntegerValidator(),
+    <span class="php-keyword1">new</span> ArrayValidator(
+        <span class="php-num">1</span>,
+        <span class="php-num">4</span>,
+        <span class="php-keyword1">new</span> IntegerValidator()
+    )
+]);
 
+<span class="php-comment">//Will parse successfully both</span>
 
+<span class="php-var">$parsed</span> = <span class="php-var">$validator</span>-&gt;parse(<span class="php-num">8</span>);
+<span class="php-var">$parsed</span> = <span class="php-var">$validator</span>-&gt;parse([<span class="php-num">8</span>, <span class="php-num">10</span>]);</pre><br>
+					</div>
 
 					<h4>Overrides</h4>
 					<div class="list"><code><a href="class-Phramework.Validate.BaseValidator.html#___construct">Phramework\Validate\BaseValidator::__construct</a></code></div>
@@ -278,6 +293,11 @@
 					<h4>See</h4>
 					<div class="list">
 							\Phramework\Validate\ValidateResult for ValidateResult object<br>
+					</div>
+					<h4>Uses</h4>
+					<div class="list">
+							<br>
+							<br>
 					</div>
 
 
@@ -325,40 +345,10 @@
 		<div class="panel panel-default">
             <div class="panel-heading"><h2>Properties summary</h2></div>
 			<table class="summary table table-bordered table-striped properties" id="properties">
-		<tr data-order="typeAttributes" id="$typeAttributes">
-			<td class="attributes"><code>
-				protected static 
-				array
-			</code></td>
-
-			<td class="name">
-<var>$typeAttributes</var>
-				<div class="description short">
-					<p>Overwrite base class attributes</p>
-				</div>
-
-				<div class="description detailed hidden">
-					<p>Overwrite base class attributes</p>
-
-				</div>
-			</td>
-			<td class="value">
-				<div>
-					<a href="#$typeAttributes" class="anchor">#</a>
-					<code>[
-    <span class="php-quote">'minimum'</span>,
-    <span class="php-quote">'maximum'</span>,
-    <span class="php-quote">'exclusiveMinimum'</span>,
-    <span class="php-quote">'exclusiveMaximum'</span>,
-    <span class="php-quote">'multipleOf'</span>
-]</code>
-				</div>
-			</td>
-		</tr>
 		<tr data-order="type" id="$type">
 			<td class="attributes"><code>
 				protected static 
-				string
+				null
 			</code></td>
 
 			<td class="name">
@@ -375,7 +365,95 @@
 			<td class="value">
 				<div>
 					<a href="#$type" class="anchor">#</a>
-					<code><span class="php-quote">'number'</span></code>
+					<code><span class="php-keyword1">null</span></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="typeAttributes" id="$typeAttributes">
+			<td class="attributes"><code>
+				protected static 
+				string[]
+			</code></td>
+
+			<td class="name">
+<var>$typeAttributes</var>
+				<div class="description short">
+					<p>Validator's attributes
+Can be overwritten</p>
+				</div>
+
+				<div class="description detailed hidden">
+					<p>Validator's attributes
+Can be overwritten</p>
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$typeAttributes" class="anchor">#</a>
+					<code>[
+    <span class="php-quote">'anyOf'</span>
+]</code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="requiredCountOfAnyOf" id="$requiredCountOfAnyOf">
+			<td class="attributes"><code>
+				protected  
+				integer|null
+			</code></td>
+
+			<td class="name">
+<var>$requiredCountOfAnyOf</var>
+				<div class="description short">
+					<p>When not null, a specific count of passed anyOf validations will be used in
+validate method.
+This internal parameter is useful for oneOf, and allOf classes</p>
+				</div>
+
+				<div class="description detailed hidden">
+					<p>When not null, a specific count of passed anyOf validations will be used in
+validate method.
+This internal parameter is useful for oneOf, and allOf classes</p>
+
+						<h4>Used by</h4>
+						<div class="list">
+								Phramework\Validate\AnyOf::validate()<br>
+						</div>
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$requiredCountOfAnyOf" class="anchor">#</a>
+					<code><span class="php-keyword1">null</span></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="anyOfProperty" id="$anyOfProperty">
+			<td class="attributes"><code>
+				protected  
+				string
+			</code></td>
+
+			<td class="name">
+<var>$anyOfProperty</var>
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+						<h4>Used by</h4>
+						<div class="list">
+								Phramework\Validate\AnyOf::validate()<br>
+						</div>
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$anyOfProperty" class="anchor">#</a>
+					<code><span class="php-quote">'anyOf'</span></code>
 				</div>
 			</td>
 		</tr>

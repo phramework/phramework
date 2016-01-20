@@ -113,6 +113,8 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Phramework.Validate.AllOf.html">AllOf</a></li>
+				<li><a href="class-Phramework.Validate.AnyOf.html">AnyOf</a></li>
 				<li><a href="class-Phramework.Validate.ArrayValidator.html">ArrayValidator</a></li>
 				<li><a href="class-Phramework.Validate.BaseValidator.html">BaseValidator</a></li>
 				<li><a href="class-Phramework.Validate.BooleanValidator.html">BooleanValidator</a></li>
@@ -123,6 +125,7 @@
 				<li><a href="class-Phramework.Validate.IntegerValidator.html">IntegerValidator</a></li>
 				<li><a href="class-Phramework.Validate.NumberValidator.html">NumberValidator</a></li>
 				<li class="active"><a href="class-Phramework.Validate.ObjectValidator.html">ObjectValidator</a></li>
+				<li><a href="class-Phramework.Validate.OneOf.html">OneOf</a></li>
 				<li><a href="class-Phramework.Validate.StringValidator.html">StringValidator</a></li>
 				<li><a href="class-Phramework.Validate.UnsignedIntegerValidator.html">UnsignedIntegerValidator</a></li>
 				<li><a href="class-Phramework.Validate.URLValidator.html">URLValidator</a></li>
@@ -259,7 +262,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_validate">#</a>
-			<code>validate( <span>mixed <var>$value</var></span> )</code>
+			<code>validate( <span>object <var>$value</var></span> )</code>
 
 			<div class="description short">
 				<p>Validate value</p>
@@ -287,7 +290,7 @@
 					</div>
 					<h4>Todo</h4>
 					<div class="list">
-							if array, remove elements without keys<br>
+							clean up failure of recurvice objects<br>
 					</div>
 
 
@@ -358,7 +361,7 @@ and return a clean object</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_addProperties">#</a>
-			<code>addProperties( <span>array||stdClass <var>$properties</var></span> )</code>
+			<code>addProperties( <span>array||object <var>$properties</var></span> )</code>
 
 			<div class="description short">
 				<p>Add properties to this object validator</p>
@@ -436,6 +439,7 @@ and return a clean object</p>
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_createFromArray">createFromArray()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_createFromJSON">createFromJSON()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_createFromObject">createFromObject()</a></code>, 
+				<code><a href="class-Phramework.Validate.BaseValidator.html#_createFromObjectForAdditional">createFromObjectForAdditional()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_getType">getType()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_getTypeAttributes">getTypeAttributes()</a></code>, 
 				<code><a href="class-Phramework.Validate.BaseValidator.html#_parseStatic">parseStatic()</a></code>, 
@@ -498,12 +502,12 @@ and return a clean object</p>
 <var>$typeAttributes</var>
 				<div class="description short">
 					<p>Validator's attributes
-Can be overwriten</p>
+Can be overwritten</p>
 				</div>
 
 				<div class="description detailed hidden">
 					<p>Validator's attributes
-Can be overwriten</p>
+Can be overwritten</p>
 
 				</div>
 			</td>
