@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/phramework/phramework.png?label=ready&title=Ready)](https://waffle.io/phramework/phramework)
 # phramework
 Version 1.x, _code name "Thales"_
 
