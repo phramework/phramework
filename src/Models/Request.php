@@ -21,6 +21,7 @@ use \Phramework\Exceptions\PermissionException;
 use \Phramework\Exceptions\MissingParametersException;
 use \Phramework\Exceptions\IncorrectParametersException;
 use \Phramework\Validate\UnsignedIntegerValidator;
+use \Phramework\Validate\Validate;
 
 /**
  * Request related functions
@@ -65,7 +66,7 @@ class Request
      * Check if required parameters are set
      * @param  array|object $parameters Request's parameters
      * @param  string|array $required The required parameters
-     * @throws Phramework\Exceptions\MissingParametersException
+     * @throws \Phramework\Exceptions\MissingParametersException
      */
     public static function requireParameters($parameters, $required)
     {
@@ -95,7 +96,7 @@ class Request
      * Require id parameter if it's set else return NULL, it uses `resource_id` or `id` parameter if available
      * @param  array|object $parameters  The request parameters
      * @param  boolean      $UINTEGER  *[Optional]*, Check id's type to be unsigned integer
-     * @throws Phramework\Exceptions\IncorrectParameters When value is not correct
+     * @throws \Phramework\Exceptions\IncorrectParameters When value is not correct
      * @return string|integer Returns the id or NULL if not set,
      * if $UINTEGER the returned value will be converted to unsigned integer
      */
@@ -131,8 +132,8 @@ class Request
      * Require id parameter, it uses `resource_id` or `id` parameter if available
      * @param  array|object $parameters The request paramters
      * @param  boolean      $UINTEGER  *[Optional]*, Check id's type to be unsigned integer, default is true
-     * @throws Phramework\Exceptions\IncorrectParameters When value is not correct
-     * @throws Phramework\Exceptions\MissingParametersException When id is missing
+     * @throws \Phramework\Exceptions\IncorrectParameters When value is not correct
+     * @throws \Phramework\Exceptions\MissingParametersException When id is missing
      * if $UINTEGER the returned value will be converted to unsigned integer
      */
     public static function requireId($parameters, $UINTEGER = true)

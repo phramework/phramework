@@ -42,6 +42,15 @@ class Operator
     const OPERATOR_NOT_IN = 'NOT IN';
 
     /**
+     * ∈, is an element of array *(URL encoded : `%E2%88%88"`)*
+     */
+    const OPERATOR_IN_ARRAY = '∈';
+    /**
+     * ∉, is not an element of array *(URL encoded : `%E2%88%89`)*
+     */
+    const OPERATOR_NOT_IN_ARRAY = '∉';
+
+    /**
      * @var string[]
      */
     protected static $operators = [
@@ -60,7 +69,9 @@ class Operator
         Operator::OPERATOR_IN,
         Operator::OPERATOR_NOT_IN,
         Operator::OPERATOR_LIKE,
-        Operator::OPERATOR_NOT_LIKE
+        Operator::OPERATOR_NOT_LIKE,
+        Operator::OPERATOR_IN_ARRAY,
+        Operator::OPERATOR_NOT_IN_ARRAY
     ];
 
     /**
@@ -77,7 +88,7 @@ class Operator
      * @param  string $operator
      * @param  string $attributeName
      *     *[Optional]* Attribute's name, used for thrown exception
-     * @throws Phramework\Exceptions\IncorrectParametersException
+     * @throws \Phramework\Exceptions\IncorrectParametersException
      * @return string Returns the operator
      */
     public static function validate($operator, $attributeName = 'operator')
@@ -94,6 +105,7 @@ class Operator
     const CLASS_COMPARABLE = 1;
     const CLASS_ORDERABLE = 2;
     const CLASS_LIKE = 4;
+    const CLASS_IN_ARRAY = 32;
     const CLASS_NULLABLE = 64;
     const CLASS_JSONOBJECT = 128;
 
@@ -101,6 +113,7 @@ class Operator
      * Get operators
      * @param  integer $classFlags
      * @return integer Operator class
+     * @throws \Exception When invalid operator class flags are given
      */
     public static function getByClassFlags($classFlags)
     {
@@ -134,6 +147,13 @@ class Operator
             );
         }
 
+        if (($classFlags & Operator::CLASS_IN_ARRAY) !== 0) {
+            $operators = array_merge(
+                $operators,
+                Operator::getInArrayOperators()
+            );
+        }
+
         if (empty($operators)) {
             throw new \Exception('Invalid operator class flags');
         }
@@ -143,10 +163,10 @@ class Operator
 
     /**
      * @param  string $operatorValueString
-     * @return string[2] [operator, operant]
+     * @return string[2] [operator, operand]
      * @example
      * ```php
-     * list($operator, $operant) = Operator::parse('>=5');
+     * list($operator, $operand) = Operator::parse('>=5');
      * ```
      */
     public static function parse($operatorValueString)
@@ -158,7 +178,8 @@ class Operator
             '|',
             array_merge(
                 Operator::getOrderableOperators(),
-                Operator::getLikeOperators()
+                Operator::getLikeOperators(),
+                Operator::getInArrayOperators()
             )
         );
 
@@ -209,6 +230,17 @@ class Operator
         return [
             Operator::OPERATOR_EQUAL,
             Operator::OPERATOR_NOT_EQUAL
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getInArrayOperators()
+    {
+        return [
+            Operator::OPERATOR_IN_ARRAY,
+            Operator::OPERATOR_NOT_IN_ARRAY
         ];
     }
 

@@ -231,10 +231,10 @@ class Phramework
 
     /**
      * Execute the API
-     * @throws Phramework\Exceptions\PermissionException
-     * @throws Phramework\Exceptions\NotFoundException
-     * @throws Phramework\Exceptions\IncorrectParametersException
-     * @throws Phramework\Exceptions\RequestException
+     * @throws \Phramework\Exceptions\PermissionException
+     * @throws \Phramework\Exceptions\NotFoundException
+     * @throws \Phramework\Exceptions\IncorrectParametersException
+     * @throws \Phramework\Exceptions\RequestException
      * @todo change default timezone
      * @todo change default language
      * @todo initialize database if set
@@ -366,19 +366,21 @@ class Phramework
                 )) {
                     $input = trim(file_get_contents('php://input'));
 
-                    //note if input length is >0 and decode returns null then its bad data
-                    //json_last_error()
+                    if (!empty($input)) {
+                        //note if input length is >0 and decode returns null then its bad data
+                        //json_last_error()
 
-                    $input = json_decode($input);
+                        $inputObject = json_decode($input);
 
-                    if (json_last_error() !== JSON_ERROR_NONE) {
-                        throw new \Phramework\Exceptions\RequestException(
-                            'JSON parse error - ' . json_last_error_msg()
-                        );
-                    }
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            throw new \Phramework\Exceptions\RequestException(
+                                'JSON parse error: ' . json_last_error_msg()
+                            );
+                        }
 
-                    if ($input && !empty($input)) {
-                        $params = (object)array_merge((array)$params, (array)$input);
+                        if ($inputObject && !empty($inputObject)) {
+                            $params = (object)array_merge((array)$params, (array)$inputObject);
+                        }
                     }
                 }
             }
