@@ -287,6 +287,10 @@
 						integer<br>Operator class
 					</div>
 
+					<h4>Throws</h4>
+					<div class="list">
+						Exception<br>When invalid operator class flags are given
+					</div>
 
 
 
@@ -322,13 +326,13 @@
 
 					<h4>Returns</h4>
 					<div class="list">
-						string[2]<br>[operator, operant]
+						string[2]<br>[operator, operand]
 					</div>
 
 
 					<h4>Example</h4>
 					<div class="list">
-							<span class="php-keyword1">list</span>(<span class="php-var">$operator</span>, <span class="php-var">$operant</span>) = Operator::parse(<span class="php-quote">'&gt;=5'</span>);<br>
+							<span class="php-keyword1">list</span>(<span class="php-var">$operator</span>, <span class="php-var">$operand</span>) = Operator::parse(<span class="php-quote">'&gt;=5'</span>);<br>
 					</div>
 
 
@@ -413,6 +417,39 @@
 			<td class="name"><div>
 			<a class="anchor" href="#_getEqualityOperators">#</a>
 			<code>getEqualityOperators( )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						string[]
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getInArrayOperators" id="_getInArrayOperators">
+
+			<td class="attributes"><code>
+				 public static
+				string[]
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getInArrayOperators">#</a>
+			<code>getInArrayOperators( )</code>
 
 			<div class="description short">
 				
@@ -848,6 +885,52 @@
 					</div>
 				</td>
 			</tr>
+			<tr data-order="OPERATOR_IN_ARRAY" id="OPERATOR_IN_ARRAY">
+
+				<td class="attributes"><code>string</code></td>
+				<td class="name">
+					<code>
+<b>OPERATOR_IN_ARRAY</b>					</code>
+
+					<div class="description short">
+						<p>∈, is an element of array <em>(URL encoded : <code>%E2%88%88"</code>)</em></p>
+					</div>
+
+					<div class="description detailed hidden">
+						<p>∈, is an element of array <em>(URL encoded : <code>%E2%88%88"</code>)</em></p>
+
+					</div>
+				</td>
+				<td class="value">
+					<div>
+						<a href="#OPERATOR_IN_ARRAY" class="anchor">#</a>
+						<code><span class="php-quote">'∈'</span></code>
+					</div>
+				</td>
+			</tr>
+			<tr data-order="OPERATOR_NOT_IN_ARRAY" id="OPERATOR_NOT_IN_ARRAY">
+
+				<td class="attributes"><code>string</code></td>
+				<td class="name">
+					<code>
+<b>OPERATOR_NOT_IN_ARRAY</b>					</code>
+
+					<div class="description short">
+						<p>∉, is not an element of array <em>(URL encoded : <code>%E2%88%89</code>)</em></p>
+					</div>
+
+					<div class="description detailed hidden">
+						<p>∉, is not an element of array <em>(URL encoded : <code>%E2%88%89</code>)</em></p>
+
+					</div>
+				</td>
+				<td class="value">
+					<div>
+						<a href="#OPERATOR_NOT_IN_ARRAY" class="anchor">#</a>
+						<code><span class="php-quote">'∉'</span></code>
+					</div>
+				</td>
+			</tr>
 			<tr data-order="CLASS_COMPARABLE" id="CLASS_COMPARABLE">
 
 				<td class="attributes"><code>integer</code></td>
@@ -914,6 +997,29 @@
 					<div>
 						<a href="#CLASS_LIKE" class="anchor">#</a>
 						<code><span class="php-num">4</span></code>
+					</div>
+				</td>
+			</tr>
+			<tr data-order="CLASS_IN_ARRAY" id="CLASS_IN_ARRAY">
+
+				<td class="attributes"><code>integer</code></td>
+				<td class="name">
+					<code>
+<b>CLASS_IN_ARRAY</b>					</code>
+
+					<div class="description short">
+						
+					</div>
+
+					<div class="description detailed hidden">
+						
+
+					</div>
+				</td>
+				<td class="value">
+					<div>
+						<a href="#CLASS_IN_ARRAY" class="anchor">#</a>
+						<code><span class="php-num">32</span></code>
 					</div>
 				</td>
 			</tr>
@@ -1008,7 +1114,9 @@
     Operator::OPERATOR_IN,
     Operator::OPERATOR_NOT_IN,
     Operator::OPERATOR_LIKE,
-    Operator::OPERATOR_NOT_LIKE
+    Operator::OPERATOR_NOT_LIKE,
+    Operator::OPERATOR_IN_ARRAY,
+    Operator::OPERATOR_NOT_IN_ARRAY
 ]</code>
 				</div>
 			</td>
