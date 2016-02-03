@@ -42,11 +42,11 @@ class Operator
     const OPERATOR_NOT_IN = 'NOT IN';
 
     /**
-     * ∈, is an element of array
+     * ∈, is an element of array *(URL encoded : `%E2%88%88"`)*
      */
     const OPERATOR_IN_ARRAY = '∈';
     /**
-     * ∉, is not an element of array
+     * ∉, is not an element of array *(URL encoded : `%E2%88%89`)*
      */
     const OPERATOR_NOT_IN_ARRAY = '∉';
 
