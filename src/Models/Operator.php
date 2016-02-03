@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Spafaridis Xenofon
+ * Copyright 2015 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,13 @@
 namespace Phramework\Models;
 
 /**
+ * Operator's related model
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
- * @author Spafaridis Xenophon <nohponex@gmail.com>
- * @package Phramework
- * @category Models
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
 class Operator
 {
-
     const OPERATOR_ISSET = 'isset';
     const OPERATOR_NOT_ISSET = '!isset';
     const OPERATOR_GREATER = '>';
@@ -43,7 +41,19 @@ class Operator
     const OPERATOR_IN = 'IN';
     const OPERATOR_NOT_IN = 'NOT IN';
 
-    public static $operators = [
+    /**
+     * ∈, is an element of array
+     */
+    const OPERATOR_IN_ARRAY = '∈';
+    /**
+     * ∉, is not an element of array
+     */
+    const OPERATOR_NOT_IN_ARRAY = '∉';
+
+    /**
+     * @var string[]
+     */
+    protected static $operators = [
         Operator::OPERATOR_EMPTY,
         Operator::OPERATOR_EQUAL,
         Operator::OPERATOR_GREATER,
@@ -59,14 +69,33 @@ class Operator
         Operator::OPERATOR_IN,
         Operator::OPERATOR_NOT_IN,
         Operator::OPERATOR_LIKE,
-        Operator::OPERATOR_NOT_LIKE
+        Operator::OPERATOR_NOT_LIKE,
+        Operator::OPERATOR_IN_ARRAY,
+        Operator::OPERATOR_NOT_IN_ARRAY
     ];
 
-    public static function validate($operator)
+    /**
+     * @return string[]
+     * @since 1.2.0
+     */
+    public static function getOperators()
+    {
+        return self::$operators;
+    }
+
+    /**
+     * Check if a string is a valid operator
+     * @param  string $operator
+     * @param  string $attributeName
+     *     *[Optional]* Attribute's name, used for thrown exception
+     * @throws \Phramework\Exceptions\IncorrectParametersException
+     * @return string Returns the operator
+     */
+    public static function validate($operator, $attributeName = 'operator')
     {
         if (!in_array($operator, self::$operators)) {
             throw new \Phramework\Exceptions\IncorrectParametersException(
-                ['operator']
+                [$attributeName]
             );
         }
 
@@ -76,9 +105,16 @@ class Operator
     const CLASS_COMPARABLE = 1;
     const CLASS_ORDERABLE = 2;
     const CLASS_LIKE = 4;
+    const CLASS_IN_ARRAY = 32;
     const CLASS_NULLABLE = 64;
     const CLASS_JSONOBJECT = 128;
 
+    /**
+     * Get operators
+     * @param  integer $classFlags
+     * @return integer Operator class
+     * @throws \Exception When invalid operator class flags are given
+     */
     public static function getByClassFlags($classFlags)
     {
         $operators = [];
@@ -111,6 +147,13 @@ class Operator
             );
         }
 
+        if (($classFlags & Operator::CLASS_IN_ARRAY) !== 0) {
+            $operators = array_merge(
+                $operators,
+                Operator::getInArrayOperators()
+            );
+        }
+
         if (empty($operators)) {
             throw new \Exception('Invalid operator class flags');
         }
@@ -118,6 +161,14 @@ class Operator
         return array_unique($operators);
     }
 
+    /**
+     * @param  string $operatorValueString
+     * @return string[2] [operator, operand]
+     * @example
+     * ```php
+     * list($operator, $operand) = Operator::parse('>=5');
+     * ```
+     */
     public static function parse($operatorValueString)
     {
         $operator = Operator::OPERATOR_EQUAL;
@@ -127,7 +178,8 @@ class Operator
             '|',
             array_merge(
                 Operator::getOrderableOperators(),
-                Operator::getLikeOperators()
+                Operator::getLikeOperators(),
+                Operator::getInArrayOperators()
             )
         );
 
@@ -148,6 +200,9 @@ class Operator
         return [$operator, $value];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getNullableOperators()
     {
         return [
@@ -156,6 +211,9 @@ class Operator
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getLikeOperators()
     {
         return [
@@ -164,6 +222,9 @@ class Operator
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public static function getEqualityOperators()
     {
         return [
@@ -172,6 +233,20 @@ class Operator
         ];
     }
 
+    /**
+     * @return string[]
+     */
+    public static function getInArrayOperators()
+    {
+        return [
+            Operator::OPERATOR_IN_ARRAY,
+            Operator::OPERATOR_NOT_IN_ARRAY
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
     public static function getOrderableOperators()
     {
         return [
