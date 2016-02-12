@@ -154,7 +154,7 @@ class Operator
             );
         }
 
-        if (empty($operators)) {
+        if (empty($operators) && ($classFlags & Operator::CLASS_JSONOBJECT) === 0) {
             throw new \Exception('Invalid operator class flags');
         }
 

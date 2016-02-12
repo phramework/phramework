@@ -40,8 +40,8 @@ class Request
      * Optionaly it checks the authenticated user has a specific user_id
      * @param integer $userId *[Optional]* Check if current user has the same id with $userId
      * @return object Returns the user object
-     * @throws Phramework\Exceptions\PermissionException
-     * @throws Phramework\Exceptions\UnauthorizedException
+     * @throws \Phramework\Exceptions\PermissionException
+     * @throws \Phramework\Exceptions\UnauthorizedException
      */
     public static function checkPermission($userId = false)
     {
