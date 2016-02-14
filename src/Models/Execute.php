@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace Phramework\Models;
  *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0
+ * @since 0.0.0
  */
 class Execute
 {
@@ -52,13 +52,13 @@ class Execute
      * @param array $arguments [optional] Executable arguments
      * @param array $output [optional] This array will be filled with every
      * line of output from the command. Trailing whitespace, such as \n, is not
-     * @return intigerthen the return status of the executed command
+     * @return int the return status of the executed command
      * @uses exec
      * @todo use sprintf, make it more readable
      */
     public static function file($executable, $arguments = [], &$output = false)
     {
-        $return_var;
+        $return_var = 0;
         exec(
             $executable . ($arguments ? ' ' . join(' ', $arguments) : ''),
             $output,

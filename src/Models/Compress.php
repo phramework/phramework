@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ use \Phramework\Models\Util;
 /**
  * Compress class
  *
- * Provides functions to uncompress files
+ * Provides functions to decompress files
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
@@ -30,15 +30,16 @@ use \Phramework\Models\Util;
 class Compress
 {
     /**
-     * Uncompress file archive
+     * decompress a file archive
      * @param string $compressedFile Archive path
-     * @param string $destinationFolder Destination folder to uncompress files
+     * @param string $destinationFolder Destination folder to decompress files
      * @param string $originalFilename Original file name
      * @param string $format Select format mode, Default is gz, gz, zip and tar are available.
-     * @return Array Returns a list with the uncompresed files
-     * @throws Exception
+     * @param string[] $allowedExtensions
+     * @return array Returns a list with the decompressed files
+     * @throws \Exception
      */
-    public static function uncompress(
+    public static function decompress(
         $compressedFile,
         $destinationFolder,
         $originalFilename = null,
@@ -51,25 +52,25 @@ class Compress
         //TODO ADD tar.gz
         $supported_formats = [ 'gz', 'zip', 'tar'];
         if (!in_array($format, $supported_formats)) {
-            throw new \Exception('Unsupported comression format');
+            throw new \Exception('Unsupported compression format');
         }
         switch ($format) {
             case 'gz':
-                return self::uncompress_gz(
+                return self::decompressGz(
                     $compressedFile,
                     $destinationFolder,
                     $originalFilename,
                     $allowedExtensions
                 );
             case 'zip':
-                return self::uncompress_zip(
+                return self::decompressZip(
                     $compressedFile,
                     $destinationFolder,
                     $originalFilename,
                     $allowedExtensions
                 );
             case 'tar':
-                return self::uncompress_tar(
+                return self::decompressTar(
                     $compressedFile,
                     $destinationFolder,
                     $originalFilename,
@@ -79,7 +80,7 @@ class Compress
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private static function uncompressZip(
         $compressedFile,
@@ -116,15 +117,15 @@ class Compress
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
-    private static function uncompressGz(
+    private static function decompressGz(
         $compressedFile,
         $destinationFolder,
         $originalFilename = null,
         $allowedExtensions = []
     ) {
-        //IN ORDER TO WORK CORRECTLY GZ FILES MUST HAVE DOUBLE EXTENSION E.G. name.csv.gz ( STANDARIZE IT ! )
+        //IN ORDER TO WORK CORRECTLY GZ FILES MUST HAVE DOUBLE EXTENSION E.G. name.csv.gz (STANDARDIZE IT !)
         //$file_path = Util::getPath(
         //    array($destinationFolder, basename(($originalFilename ? $originalFilename : $compressedFile), '.gz'))
         //);
@@ -156,9 +157,9 @@ class Compress
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
-    private static function uncompressTar(
+    private static function decompressTar(
         $compressedFile,
         $destinationFolder,
         $originalFilename = null,

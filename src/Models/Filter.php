@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,90 +23,90 @@ use \Phramework\Validate\Validate;
  *
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0
+ * @since 0.0.0
  */
 class Filter
 {
     /**
-     * Allow only keys of $whitelist in every row of $data array
+     * Allow only keys of $whiteList in every row of $data array
      *
      * @param array $data
-     * @param array $whitelist
+     * @param array $whiteList
      * @return array
      */
-    public static function in($data, $whitelist)
+    public static function in($data, $whiteList)
     {
         if ($data) {
             if (is_object($data)) {
                 $data = get_object_vars($data);
             }
-            $whitelist = array_flip($whitelist);
+            $whiteList = array_flip($whiteList);
 
             //Filter
             foreach ($data as $key => $value) {
                 if (is_object($value)) {
                     $value = get_object_vars($value);
                 }
-                $data[$key] = array_intersect_key($value, $whitelist);
+                $data[$key] = array_intersect_key($value, $whiteList);
             }
         }
         return $data;
     }
 
     /**
-     * Allow only keys of $whitelist in object
+     * Allow only keys of $whiteList in object
      *
      * @param array $data
-     * @param array $whitelist
+     * @param array $whiteList
      * @return array
      */
-    public static function inEntry($data, $whitelist)
+    public static function inEntry($data, $whiteList)
     {
         if ($data) {
-            $whitelist = array_flip($whitelist);
+            $whiteList = array_flip($whiteList);
 
             if (is_object($data)) {
                 $data = get_object_vars($data);
             }
 
-            $data = array_intersect_key($data, $whitelist);
+            $data = array_intersect_key($data, $whiteList);
         }
         return $data;
     }
 
     /**
-     * Exclude blackisted keys of $blacklist in every row of $data array
+     * Exclude blackisted keys of $blackList in every row of $data array
      *
      * @param array $data
-     * @param array $blacklist
+     * @param array $blackList
      * @return array
      */
-    public static function out($data, $blacklist)
+    public static function out($data, $blackList)
     {
         if ($data) {
-            $blacklist = array_flip($blacklist);
+            $blackList = array_flip($blackList);
 
             //Filter
             foreach ($data as $key => $value) {
-                $data[$key] = array_diff_key($value, $blacklist);
+                $data[$key] = array_diff_key($value, $blackList);
             }
         }
         return $data;
     }
 
     /**
-     * Exclude blackisted keys of $blacklist in $data object
+     * Exclude blacklisted keys of $blackList in $data object
      *
      * @param array $data
-     * @param array $blacklist
+     * @param array $blackList
      * @return array
      */
-    public static function outEntry($data, $blacklist)
+    public static function outEntry($data, $blackList)
     {
         if ($data) {
-            $blacklist = array_flip($blacklist);
+            $blackList = array_flip($blackList);
 
-            $data = array_diff_key($data, $blacklist);
+            $data = array_diff_key($data, $blackList);
         }
         return $data;
     }
@@ -187,7 +187,7 @@ class Filter
     }
 
     /**
-     * Type cast entry's attributs based on the provided model
+     * Type cast entry's attributes based on the provided model
      *
      * If any TYPE_UNIX_TIMESTAMP are present an additional attribute will
      * be included with the suffix _formatted, the format of the string can be
