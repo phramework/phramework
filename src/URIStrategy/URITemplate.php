@@ -133,7 +133,10 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
         $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
-        $URI = '/' . trim(str_replace($URI . '/', '', $REDIRECT_URL), '/');
+        if (substr($REDIRECT_URL, 0, strlen($URI)) == $URI) {
+            $URI = substr($REDIRECT_URL, strlen($URI));
+        }
+
         $URI = urldecode($URI) . '/';
 
         $URI = trim($URI, '/');
