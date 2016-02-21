@@ -82,7 +82,7 @@ class Compress
     /**
      * @throws \Exception
      */
-    private static function uncompressZip(
+    private static function decompressZip(
         $compressedFile,
         $destinationFolder,
         $originalFilename = null,

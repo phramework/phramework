@@ -78,7 +78,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * @return false|array If the validation of the template is not successful
      * then false will be returned,
      * else a array with a key-value array in position 0 will be returned
-     * containing the extracter parameters from the URI template.
+     * containing the extracted parameters from the URI template.
      * @todo provide options to specify parameters data type (alphanumeric or int)
      * @todo provide options to define optional parameters
      */
@@ -86,7 +86,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
     {
         $template = trim($URITemplate, '/');
 
-        // espace slash / character
+        // escape slash / character
         $template = str_replace('/', '\/', $template);
         // replace all named parameters {id} to named regexp matches
         $template = preg_replace(
@@ -133,14 +133,14 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
 
         $URI = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
-        $URI = '/' . trim(str_replace($URI, '', $REDIRECT_URL), '/');
+        $URI = '/' . trim(str_replace($URI . '/', '', $REDIRECT_URL), '/');
         $URI = urldecode($URI) . '/';
 
         $URI = trim($URI, '/');
 
         $parameters = [];
 
-        //Extract parametrs from QUERY string
+        //Extract parameters from QUERY string
         parse_str($REDIRECT_QUERY_STRING, $parameters);
 
         return [$URI, $parameters];
@@ -153,8 +153,8 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @throws Phramework\Exceptions\NotFoundException
-     * @throws Phramework\Exceptions\UnauthorizedException
+     * @throws \Phramework\Exceptions\NotFoundException
+     * @throws \Phramework\Exceptions\UnauthorizedException
      * @todo Use named parameters in future if available by PHP
      * @return string[2] This method should return `[$class, $method]` on success
      */

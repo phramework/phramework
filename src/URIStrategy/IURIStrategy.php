@@ -26,10 +26,10 @@ interface IURIStrategy
 {
     /**
      * Invoke URIStrategy, the implementation of this method MUST associate the
-     * request and invoke the apropriate method to handle this request.
+     * request and invoke the appropriate method to handle this request.
      * Invokes to handler method MUST at least define
      * `$requestParameters, $requestMethod, $requestHeaders` as arguments.
-     * NotFoundException SHOULD be when associatation between the request and
+     * NotFoundException SHOULD be when association between the request and
      * handler is not defined
      * UnauthorizedException SHOULD be thrown when a request requires authorization
      * @param  object       $requestParameters Request parameters
@@ -37,10 +37,10 @@ interface IURIStrategy
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @return string[2] This method SHOULD return a tuple specifing at least
+     * @return string[2] This method SHOULD return a tuple specifying at least
      * `[$class, $method]` on success.
-     * @throws Phramework\Exceptions\NotFoundException
-     * @throws Phramework\Exceptions\UnauthorizedException
+     * @throws \Phramework\Exceptions\NotFoundException
+     * @throws \Phramework\Exceptions\UnauthorizedException
      */
     public function invoke(
         &$requestParameters,
