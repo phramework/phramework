@@ -105,6 +105,7 @@ class Operator
     const CLASS_COMPARABLE = 1;
     const CLASS_ORDERABLE = 2;
     const CLASS_LIKE = 4;
+    const CLASS_IN = 8;
     const CLASS_IN_ARRAY = 32;
     const CLASS_NULLABLE = 64;
     const CLASS_JSONOBJECT = 128;
@@ -147,6 +148,13 @@ class Operator
             );
         }
 
+        if (($classFlags & Operator::CLASS_IN) !== 0) {
+            $operators = array_merge(
+                $operators,
+                Operator::getInOperators()
+            );
+        }
+
         if (($classFlags & Operator::CLASS_IN_ARRAY) !== 0) {
             $operators = array_merge(
                 $operators,
@@ -184,12 +192,32 @@ class Operator
         );
 
         if (!!preg_match(
+            '/^('
+            . implode(
+                '|',
+                Operator::getInOperators())
+            . ')[\ ]{0,1}(.+)$/',
+            $operatorValueString,
+            $matches
+        )) {
+            //handle IN operators
+
+            //values MUST be a list
+            $values = array_map(
+                'trim',
+                explode(',', $matches[2])
+            );
+
+            return [$matches[1], $values];
+        } elseif (!!preg_match(
             '/^(' . $operators . ')[\ ]{0,1}(.+)$/',
             $operatorValueString,
             $matches
         )) {
             return [$matches[1], $matches[2]];
         } elseif (!!preg_match(
+            //handle nullable operators
+
             '/^(' . implode('|', Operator::getNullableOperators()) . ')$/',
             $operatorValueString,
             $matches
@@ -230,6 +258,17 @@ class Operator
         return [
             Operator::OPERATOR_EQUAL,
             Operator::OPERATOR_NOT_EQUAL
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getInOperators()
+    {
+        return [
+            Operator::OPERATOR_IN,
+            Operator::OPERATOR_NOT_IN
         ];
     }
 
