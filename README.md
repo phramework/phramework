@@ -1,5 +1,5 @@
 # phramework
-Version 1.x, _code name "Thales"_
+Version 2.x, _code name "Gilbert"_
 
 A PHP framework for RESTful services and APIs
 

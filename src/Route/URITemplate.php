@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\URIStrategy;
+namespace Phramework\Route;
 
-use \Phramework\Phramework;
-use \Phramework\Exceptions\PermissionException;
-use \Phramework\Exceptions\NotFoundException;
-use \Phramework\Exceptions\MethodNotAllowedException;
-use \Phramework\Exceptions\ServerException;
+use Phramework\Phramework;
+use Phramework\Exceptions\PermissionException;
+use Phramework\Exceptions\NotFoundException;
+use Phramework\Exceptions\MethodNotAllowedException;
+use Phramework\Exceptions\ServerException;
+use Phramework\Route\IRoute;
 
 /**
  * IURIStrategy implementation using URI templates
@@ -43,7 +44,7 @@ use \Phramework\Exceptions\ServerException;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
-class URITemplate implements \Phramework\URIStrategy\IURIStrategy
+class URITemplate implements IRoute
 {
     /**
      * templates
@@ -91,7 +92,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
         // replace all named parameters {id} to named regexp matches
         $template = preg_replace(
             '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+)\}(.*?)/',
-            '$1(?P<$2>[0-9a-zA-Z_]+)$3',
+            '$1(?P<$2>[0-9a-zA-Z_\-]+)$3',
             $template
         );
 
@@ -150,7 +151,7 @@ class URITemplate implements \Phramework\URIStrategy\IURIStrategy
     }
 
     /**
-     * Invoke URIStrategy
+     * Invoke Route
      * @param  object       $requestParameters Request parameters
      * @param  string       $requestMethod     HTTP request method
      * @param  array        $requestHeaders    Request headers

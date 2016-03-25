@@ -14,18 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\URIStrategy;
+namespace Phramework\Route;
 
 /**
- * IURIStrategy Interface
+ * Route interface
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
  */
-interface IURIStrategy
+interface IRoute
 {
     /**
-     * Invoke URIStrategy, the implementation of this method MUST associate the
+     * Invoke Route, the implementation of this method MUST associate the
      * request and invoke the appropriate method to handle this request.
      * Invokes to handler method MUST at least define
      * `$requestParameters, $requestMethod, $requestHeaders` as arguments.

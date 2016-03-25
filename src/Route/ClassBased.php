@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\URIStrategy;
+namespace Phramework\Route;
 
 use \Phramework\Phramework;
 use \Phramework\Exceptions\PermissionException;
@@ -50,7 +50,7 @@ use \Phramework\Exceptions\NotFoundException;
  * @since 1.0.0
  * @todo Add documentation for setting default_controller
  */
-class ClassBased implements \Phramework\URIStrategy\IURIStrategy
+class ClassBased implements IRoute
 {
     private $controllerWhitelist;
     private $controllerUnauthenticatedWhitelist;
@@ -84,7 +84,7 @@ class ClassBased implements \Phramework\URIStrategy\IURIStrategy
     }
 
     /**
-     * Invoke URIStrategy
+     * Invoke Route
      * @param  object       $requestParameters Request parameters
      * @param  string       $requestMethod     HTTP request method
      * @param  array        $requestHeaders    Request headers

@@ -39,7 +39,7 @@ mb_http_output('UTF-8');
  * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @version 1.2.0
+ * @version 2.0.0
  * @link https://nohponex.gr Developer's website
  * @todo Clean GET callback
  * @todo Add translation class
@@ -78,8 +78,8 @@ class Phramework
     private static $viewer = \Phramework\Viewers\JSON::class;
 
     /**
-     * URIStrategy object
-     * @var Phramework\URIStrategy\IURIStrategy
+     * Route object
+     * @var Phramework\Route\IRoute
      */
     private static $URIStrategy;
 
@@ -112,8 +112,8 @@ class Phramework
      *
      * Only one instance of API may be present
      * @param array $settings
-     * @param Phramework\URIStrategy\IURIStrategy $URIStrategy
-     * URIStrategy object
+     * @param Phramework\Route\IRoute $Route
+     * Route object
      * @param object|null $translationObject  *[Optional]* Set custom translation class
      * @throws Phramework\Exceptions\ServerException
      */
@@ -138,7 +138,7 @@ class Phramework
             true
         )) {
             throw new \Phramework\Exceptions\ServerException(
-                'Class is not implementing Phramework\URIStrategy\IURIStrategy'
+                'Class is not implementing Phramework\Route\IRoute'
             );
         }
 
@@ -474,7 +474,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\NotFoundException $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -487,7 +487,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\RequestException $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -500,7 +500,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\PermissionException $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -513,7 +513,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\UnauthorizedException $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => $exception->getMessage()
@@ -526,12 +526,12 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\MissingParametersException $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
-                    'meta' => [
+                    /*'meta' => [
                         'missing' => $exception->getParameters()
-                    ],
+                    ],*/
                     'title' => $exception->getMessage()
                 ]],
                 $exception->getCode(),
@@ -542,12 +542,28 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
-                    'meta' => [
+                    /*'meta' => [
                         'incorrect' => $exception->getParameters()
-                    ],
+                    ],*/
+                    'title' => $exception->getMessage()
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
+        } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
+            self::errorView(
+                [(object) [
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    /*'meta' => [
+                        'incorrect' => $exception->getParameters()
+                    ],*/
                     'title' => $exception->getMessage()
                 ]],
                 $exception->getCode(),
@@ -563,7 +579,7 @@ class Phramework
             }
 
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'meta' => [
@@ -579,7 +595,7 @@ class Phramework
             );
         } catch (\Phramework\Exceptions\RequestException $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => 'Request Error'
@@ -592,7 +608,7 @@ class Phramework
             );
         } catch (\Exception $exception) {
             self::errorView(
-                [(object)[
+                [(object) [
                     'status' => 400,
                     'detail' => $exception->getMessage(),
                     'title' => 'Error'
@@ -762,7 +778,7 @@ class Phramework
             http_response_code($code);
         }
 
-        self::view((object)[
+        self::view((object) [
             'errors' => $errors
         ]);
 

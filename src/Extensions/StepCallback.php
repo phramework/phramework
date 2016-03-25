@@ -35,13 +35,13 @@ class StepCallback
     const STEP_AFTER_AUTHENTICATION_CHECK = 'STEP_AFTER_AUTHENTICATION_CHECK';
 
     /**
-     * Called before URIStrategy invocation
+     * Called before Route invocation
      * Callback passes $step, $params, $method, $headers, $callbackVariables
      */
     const STEP_BEFORE_CALL_URISTRATEGY = 'STEP_BEFORE_CALL_URISTRATEGY';
 
     /**
-     * Called after URIStrategy invocation
+     * Called after Route invocation
      * Callback passes $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod
      */
     const STEP_AFTER_CALL_URISTRATEGY = 'STEP_AFTER_CALL_URISTRATEGY';

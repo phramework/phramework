@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Xenofon Spafaridis
+ * Copyright 2015-2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class PhrameworkTest extends \PHPUnit_Framework_TestCase
         //Prepare phramework instance
         $this->phramework = new Phramework(
             [],
-            new \Phramework\URIStrategy\URITemplate([
+            new \Phramework\Route\URITemplate([
             ])
         );
     }

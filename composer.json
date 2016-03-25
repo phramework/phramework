@@ -19,11 +19,10 @@
   },
   "repositories": [],
   "require": {
-    "php": ">=5.6",
+    "php": ">=7",
     "ext-json": "*",
-    "phramework/exceptions": "0.*",
-    "phramework/validate": "0.*",
-    "phramework/database": "0.*"
+    "phramework/validate": "dev-master#643f183ec41f5e87162d893be457bb98e62287bc",
+    "phramework/database": "dev-master#68299ecea5b1db0e256a34a6ec7892cff2b5f109"
   },
   "suggest": {
     "ext-curl": "*"
