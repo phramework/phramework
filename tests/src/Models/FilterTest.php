@@ -113,40 +113,4 @@ class FilterTest extends \PHPUnit_Framework_TestCase
                 'This test has not been implemented yet.'
         );
     }
-
-    /**
-     * @covers Phramework\Models\Filter::typecast
-     * @todo   Implement testTypecast().
-     */
-    public function testTypecast()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Phramework\Models\Filter::castEntry
-     * @todo   Implement testCastEntry().
-     */
-    public function testCastEntry()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Phramework\Models\Filter::cast
-     * @todo   Implement testCast().
-     */
-    public function testCast()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
 }

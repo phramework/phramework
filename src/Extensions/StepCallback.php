@@ -38,13 +38,13 @@ class StepCallback
      * Called before Route invocation
      * Callback passes $step, $params, $method, $headers, $callbackVariables
      */
-    const STEP_BEFORE_CALL_URISTRATEGY = 'STEP_BEFORE_CALL_URISTRATEGY';
+    const STEP_BEFORE_CALL_ROUTE = 'STEP_BEFORE_CALL_ROUTE';
 
     /**
      * Called after Route invocation
      * Callback passes $step, $params, $method, $headers, $callbackVariables, $invokedController, $invokedMethod
      */
-    const STEP_AFTER_CALL_URISTRATEGY = 'STEP_AFTER_CALL_URISTRATEGY';
+    const STEP_AFTER_CALL_ROUTE = 'STEP_AFTER_CALL_ROUTE';
 
     /**
      * Callback passes $step, $params, $method, $headers, $callbackVariables
@@ -86,10 +86,9 @@ class StepCallback
      * Step callbacks, are callbacks that executed when the API reaches
      * a certain step, multiple callbacks can be set for the same step.
      * @param string $step
-     * @param function $callback
+     * @param callable $callback
      * @since 0.1.1
-     * @throws Exception When callback is not not callable
-     * @throws Phramework\Exceptions\IncorrectParametersException
+     * @throws \Exception When callback is not not callable
      */
     public function add($step, $callback)
     {
@@ -98,8 +97,8 @@ class StepCallback
         (new \Phramework\Validate\EnumValidator([
             self::STEP_BEFORE_AUTHENTICATION_CHECK,
             self::STEP_AFTER_AUTHENTICATION_CHECK,
-            self::STEP_AFTER_CALL_URISTRATEGY,
-            self::STEP_BEFORE_CALL_URISTRATEGY,
+            self::STEP_AFTER_CALL_ROUTE,
+            self::STEP_BEFORE_CALL_ROUTE,
             self::STEP_BEFORE_CLOSE,
             self::STEP_FINALLY,
             self::STEP_ERROR
@@ -126,9 +125,10 @@ class StepCallback
      * The value of `$params` and `$headers` can be passed by reference
      * so the callback functions can modify these variables
      * @param string $step
-     * @param array  $params  Request parameters
+     * @param object $params  Request parameters
      * @param string $method  Request method
      * @param array  $headers Request headers
+     * @param array  $additionalArguments
      * @return boolean Returns false if no callbacks set for this step
      */
     public function call(
@@ -136,7 +136,7 @@ class StepCallback
         &$params = null,
         $method = null,
         &$headers = null,
-        $extra = []
+        $additionalArguments = []
     ) {
         if (!isset($this->stepCallback[$step])) {
             return false;
@@ -153,7 +153,7 @@ class StepCallback
                         &$headers,
                         $this->variables
                     ],
-                    $extra
+                    $additionalArguments
                 )
             );
         }

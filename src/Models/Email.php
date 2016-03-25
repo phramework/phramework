@@ -29,7 +29,7 @@ class Email
 {
     /**
      * Send an e-mail
-     *
+     * @uses mail
      * @param string $address
      * @param string $subject
      * @param string $body
@@ -41,7 +41,7 @@ class Email
         $HTML     = true;
         $accounts = \Phramework\Phramework::getSetting('email');
 
-        if (!$accounts || !isset($accounts['default'])) {
+        if (empty($accounts) || !isset($accounts['default'])) {
             throw new \Exception('email setting is required');
         }
 
@@ -50,7 +50,7 @@ class Email
         }
 
         $headers   = [];
-        $headers[] = "MIME-Version: 1.0" . "\r\n";
+        $headers[] = 'MIME-Version: 1.0' . "\r\n";
 
         if (!$HTML) {
             $headers[] = 'Content-Type: text/plain;charset=utf-8' . "\r\n";
@@ -61,6 +61,12 @@ class Email
         $headers[] = 'From: ' . $accounts[$account]['name'] . ' <' . $accounts[$account]['mail'] . '>' . "\r\n";
         $headers[] = 'Reply-To: ' . $accounts[$account]['name'] . ' <' . $accounts[$account]['mail'] . "\r\n";
 
-        mail($address, $subject, $body, implode('', $headers), ('-f' . $accounts[$account]['mail']));
+        mail(
+            $address,
+            $subject,
+            $body,
+            implode('', $headers),
+            ('-f' . $accounts[$account]['mail'])
+        );
     }
 }

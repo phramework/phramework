@@ -16,15 +16,17 @@
  */
 namespace Phramework\Route;
 
+use Phramework\Exceptions\MethodNotAllowedException;
+use Phramework\Exceptions\ServerException;
+use Phramework\Exceptions\UnauthorizedException;
 use \Phramework\Phramework;
-use \Phramework\Exceptions\PermissionException;
 use \Phramework\Exceptions\NotFoundException;
 
 /**
  * ClassBased strategy will use the controller parameters extracted from URI
  * and will attempt to include the respective class.
  *
- * Optionaly apache's configuration via .htaccess can convert the url from:
+ * Optionally apache's configuration via .htaccess can convert the url from:
  *
  * `/?controller={controller}&resource_id={resource_id}` to `/{controller}/resource_id`
  *
@@ -90,9 +92,10 @@ class ClassBased implements IRoute
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @throws Phramework\Exceptions\NotFoundException
-     * @throws Phramework\Exceptions\UnauthorizedException
-     * @throws Phramework\Exceptions\ServerException
+     * @throws NotFoundException
+     * @throws UnauthorizedException
+     * @throws ServerException
+     * @throws MethodNotAllowedException
      * @return string[2] This method should return `[$class, $method]` on success
      */
     public function invoke(
@@ -106,7 +109,7 @@ class ClassBased implements IRoute
             if (($defaultController = Phramework::getSetting('default_controller'))) {
                 $requestParameters['controller'] = $defaultController;
             } else {
-                throw new \Phramework\Exceptions\ServerException(
+                throw new ServerException(
                     'Default controller has not been configured'
                 );
             }
@@ -119,7 +122,7 @@ class ClassBased implements IRoute
         if (!in_array($controller, $this->controllerWhitelist)) {
             throw new NotFoundException('Method not found');
         } elseif (!in_array($requestMethod, Phramework::$methodWhitelist)) {
-            throw new \Phramework\Exceptions\MethodNotAllowedException(
+            throw new MethodNotAllowedException(
                 'Method not found'
             );
         }
@@ -128,7 +131,7 @@ class ClassBased implements IRoute
         if (!$requestUser &&
             !in_array($controller, $this->controllerUnauthenticatedWhitelist) &&
             !in_array($controller, $this->controllerPublicWhitelist)) {
-            throw new \Phramework\Exceptions\UnauthorizedException();
+            throw new UnauthorizedException();
         }
 
         // Append suffix

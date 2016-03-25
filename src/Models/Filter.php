@@ -114,18 +114,19 @@ class Filter
     /**
      * Filter string, applies FILTER_SANITIZE_STRING
      * @param string $value Input string
-     * @param integer|NULL $max_length Max length of the string, optional. Default value is NULL (no limit)
+     * @param integer|NULL $maxLength Maximum length of the string, optional. Default value is null (no limit)
      * @return string Returns the filtered string
+     * @todo use Validate library
      */
-    public static function string($value, $max_length = null)
+    public static function string($value, $maxLength = null)
     {
         /*if (!is_string($value)) {
             throw new \Exception('not_a_string');
         }*/
         $value = filter_var(trim($value), FILTER_SANITIZE_STRING);
 
-        if ($max_length && mb_strlen($value) > $max_length) {
-            $value = mb_substr($value, 0, $max_length);
+        if ($maxLength && mb_strlen($value) > $maxLength) {
+            $value = mb_substr($value, 0, $maxLength);
         }
         return $value;
     }
@@ -134,6 +135,7 @@ class Filter
      * Filter email
      * @param string $value
      * @return string Returns the filtered email
+     * @todo use Validate library
      */
     public static function email($value)
     {
@@ -145,6 +147,7 @@ class Filter
      *
      * @param string|boolean $value Input value
      * @return boolean Return the input value as boolean
+     * @todo use Validate library
      */
     public static function boolean($value)
     {
@@ -153,104 +156,5 @@ class Filter
         } else {
             return false;
         }
-    }
-
-    /**
-     * Typecast a value
-     * @param mixed $value
-     * @param string $type
-     * @return mixed The typecasted value
-     * @deprecated since 1.1.0
-     */
-    public static function typecast(&$value, $type)
-    {
-        switch ($type) {
-            case Validate::TYPE_INT:
-            case Validate::TYPE_UINT:
-                $value = intval($value);
-                break;
-            case Validate::TYPE_FLOAT:
-                $value = floatval($value);
-                break;
-            case Validate::TYPE_DOUBLE:
-                $value = doubleval($value);
-                break;
-            case Validate::TYPE_BOOLEAN:
-                $value = boolval($value);
-                break;
-            case Validate::TYPE_UNIX_TIMESTAMP:
-                //Add the timezone offset (in minutes)
-                $value = intval($value) +
-                    (\Phramework\Phramework::getTimezoneOffset()*60);
-                break;
-        }
-    }
-
-    /**
-     * Type cast entry's attributes based on the provided model
-     *
-     * If any TYPE_UNIX_TIMESTAMP are present an additional attribute will
-     * be included with the suffix _formatted, the format of the string can be
-     * changed from timestamp_format setting.
-     * @param array $entry
-     * @param array $model
-     * @return array Returns the typecasted entry
-     * @deprecated since 1.1.0
-     */
-    public static function castEntry($entry, $model)
-    {
-        if (!$entry) {
-            return $entry;
-        }
-
-        $timestamp_format = \Phramework\Phramework::getSetting(
-            'timestamp_format',
-            null,
-            'Y-m-d\TH:i:s\Z'
-        );
-
-        //Repeat for each model's attribute of the entry.
-        //$k holds the key of the attribute and $v the type
-        foreach ($model as $k => $v) {
-            if (!isset($entry[$k])) {
-                continue;
-            }
-
-            //Typecast
-            Filter::typecast($entry[$k], $v);
-
-            //if type is a Validate::TYPE_UNIX_TIMESTAMP
-            //then inject a string version of the timestamp to this entry
-            if ($v === Validate::TYPE_UNIX_TIMESTAMP) {
-                //offset included!
-                $converted = gmdate($timestamp_format, $entry[$k]);
-
-                //inject the string version of the timestamp
-                $entry[$k . '_formatted'] = $converted;
-            }
-        }
-
-        return $entry;
-    }
-
-    /**
-     * Type cast each entry of list based on the provided model
-     * @param array $list
-     * @param array $model
-     * @return array Returns the typecasted list
-     * @deprecated since 1.1.0
-     */
-    public static function cast($list, $model)
-    {
-        if (!$list) {
-            return $list;
-        }
-
-        //Apply cast entry to each entry
-        foreach ($list as $k => &$v) {
-            $v= self::castEntry($v, $model);
-        }
-
-        return $list;
     }
 }

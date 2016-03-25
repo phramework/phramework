@@ -16,7 +16,7 @@
  */
 namespace Phramework\Models;
 
-use \Phramework\Phramework;
+use Phramework\Exceptions\ServerException;
 
 /**
  * Response class
@@ -29,7 +29,7 @@ use \Phramework\Phramework;
 class Response
 {
     /**
-     * Responde with 204 No Content Status-Code
+     * Respond with 204 No Content Status-Code
      *
      * The server has fulfilled the request but does not need to return an entity-body,
      * and might want to return updated metainformation.
@@ -40,25 +40,26 @@ class Response
      * input for actions to take place without causing a change to the user
      * agent's active document view, although any new or updated metainformation SHOULD be
      * applied to the document currently in the user agent's active view.
+     * @throws ServerException
      */
     public static function noContent()
     {
         if (!headers_sent()) {
-            //header('HTTP/1.0 204 No Content', true, 204);
             http_response_code(204);
         } else {
-            throw new \Phramework\Exceptions\ServerException();
+            throw new ServerException();
         }
     }
 
     /**
-     * Responde with 201 Created Status-Code
+     * Respond with 201 Created Status-Code
      *
      * The request has been fulfilled and resulted in a new resource being created.
      * The newly created resource can be referenced by the URI(s) returned in
      * the entity of the response, with the most specific URI for the
      * resource given by a Location header field.
      * @param  string $location URI to newly created resouce
+     * @throws ServerException
      */
     public static function created($location)
     {
@@ -66,12 +67,12 @@ class Response
             http_response_code(201);
             header('Location: ' . $location);
         } else {
-            throw new \Phramework\Exceptions\ServerException();
+            throw new ServerException();
         }
     }
 
     /**
-     * Responde with 202 Accepted
+     * Respond with 202 Accepted
      *
      *  The request has been accepted for processing,
      *  but the processing has not been completed.
@@ -79,19 +80,20 @@ class Response
      *  as it might be disallowed when processing actually takes place.
      *  There is no facility for re-sending a status code
      *  from an asynchronous operation such as this.
-     * @param  string $location URI to newly created resouce
+     * @throws ServerException
      */
     public static function accepted()
     {
         if (!headers_sent()) {
             http_response_code(202);
         } else {
-            throw new \Phramework\Exceptions\ServerException();
+            throw new ServerException();
         }
     }
 
     /**
      * Write cache headers
+     * @param string $expires
      */
     public static function cacheHeaders($expires = '+1 hour')
     {
@@ -102,6 +104,7 @@ class Response
             header('Expires: ' . date(DATE_RFC822, strtotime($expires)));
         }
     }
+
     /**
      * Returns a list of response headers sent (or ready to send)
      * @return array

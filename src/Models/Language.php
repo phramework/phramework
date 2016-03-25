@@ -26,19 +26,24 @@ class Language
      * Replace %key% from template string with their value from parameters array
      * @param  string $template
      * @param  string $parameters
-     * @param  string $startChar  *[Optional]*
-     * @param  string $endChar    *[Optional]*
+     * @param  string $prefix
+     * @param  string $suffix
      * @return string
      */
     public static function template(
         $template,
         $parameters,
-        $startChar = '%',
-        $endChar = '%'
+        $prefix = '%',
+        $suffix = '%'
     ) {
         foreach ($parameters as $key => $value) {
-            $template = str_replace($startChar . $key . $endChar, $value, $template);
+            $template = str_replace(
+                $prefix . $key . $suffix,
+                $value,
+                $template
+            );
         }
+
         return $template;
     }
 }

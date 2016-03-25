@@ -53,7 +53,7 @@ class Util
     }
 
     /**
-     * Clears all non ASCII characters from a string and replaces /,_,|,+, ,- charaters to '-'
+     * Clears all non ASCII characters from a string and replaces /,_,|,+, ,- characters to '-'
      * @param string $str The input string
      * @return string Returns the clean string
      */
@@ -95,7 +95,7 @@ class Util
     }
 
     /**
-     * Applies htmlentities
+     * @uses htmlentities
      * @param string $content
      * @return string
      */

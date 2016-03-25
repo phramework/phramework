@@ -66,7 +66,7 @@ class StepCallbackTest extends \PHPUnit_Framework_TestCase
         $test = $this;
 
         $this->object->add(
-            StepCallback::STEP_AFTER_CALL_URISTRATEGY,
+            StepCallback::STEP_AFTER_CALL_ROUTE,
             function (
                 $step,
                 &$params,
@@ -76,7 +76,7 @@ class StepCallbackTest extends \PHPUnit_Framework_TestCase
                 $invokedController,
                 $invokedMethod
             ) use ($test) {
-                $test->assertSame($step, StepCallback::STEP_AFTER_CALL_URISTRATEGY);
+                $test->assertSame($step, StepCallback::STEP_AFTER_CALL_ROUTE);
                 $test->assertInternalType('array', $params);
                 $test->assertInternalType('string', $method);
                 $test->assertInternalType('array', $headers);
@@ -92,7 +92,7 @@ class StepCallbackTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->object->call(
-            StepCallback::STEP_AFTER_CALL_URISTRATEGY,
+            StepCallback::STEP_AFTER_CALL_ROUTE,
             $params,
             \Phramework\Phramework::METHOD_GET,
             $headers,

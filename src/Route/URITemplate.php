@@ -16,6 +16,7 @@
  */
 namespace Phramework\Route;
 
+use Phramework\Exceptions\UnauthorizedException;
 use Phramework\Phramework;
 use Phramework\Exceptions\PermissionException;
 use Phramework\Exceptions\NotFoundException;
@@ -157,8 +158,8 @@ class URITemplate implements IRoute
      * @param  array        $requestHeaders    Request headers
      * @param  object|false $requestUser       Use object if successful
      * authenticated otherwise false
-     * @throws \Phramework\Exceptions\NotFoundException
-     * @throws \Phramework\Exceptions\UnauthorizedException
+     * @throws NotFoundException
+     * @throws UnauthorizedException
      * @todo Use named parameters in future if available by PHP
      * @return string[2] This method should return `[$class, $method]` on success
      */
@@ -192,7 +193,7 @@ class URITemplate implements IRoute
 
             if ($test !== false) {
                 if ($requiresAuthentication && $requestUser === false) {
-                    throw new \Phramework\Exceptions\UnauthorizedException();
+                    throw new UnauthorizedException();
                 }
 
                 list($URI_parameters) = $test;

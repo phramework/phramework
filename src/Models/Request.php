@@ -16,6 +16,8 @@
  */
 namespace Phramework\Models;
 
+use Phramework\Exceptions\Source\ISource;
+use Phramework\Exceptions\UnauthorizedException;
 use \Phramework\Phramework;
 use \Phramework\Exceptions\PermissionException;
 use \Phramework\Exceptions\MissingParametersException;
@@ -37,23 +39,23 @@ class Request
     /**
      * Check if current request is authenticated
      *
-     * Optionaly it checks the authenticated user has a specific user_id
-     * @param integer $userId *[Optional]* Check if current user has the same id with $userId
-     * @return object Returns the user object
+     * Optionally it checks the authenticated user has a specific user_id
+     * @param integer|null $userId *[Optional]* Check if current user has the same id with $userId
+     * @return \stdClass Returns the user object
      * @throws \Phramework\Exceptions\PermissionException
      * @throws \Phramework\Exceptions\UnauthorizedException
      */
-    public static function checkPermission($userId = false)
+    public static function checkPermission($userId = null)
     {
         $user = \Phramework\Phramework::getUser();
 
-        //If user is not authenticated throw an \Exception
+        //If user is not authenticated throw an exception
         if (!$user) {
-            throw new \Phramework\Exceptions\UnauthorizedException();
+            throw new UnauthorizedException();
         }
 
         //Check if speficied user is same as current user
-        if ($userId !== false && $user->id != $userId) {
+        if ($userId !== null && $user->id != $userId) {
             throw new PermissionException(
                 'Insufficient permissions'
             );
@@ -64,15 +66,19 @@ class Request
 
     /**
      * Check if required parameters are set
-     * @param  array|object $parameters Request's parameters
-     * @param  string|array $required The required parameters
+     * @param array|object    $parameters Request's parameters
+     * @param string|string[] $required The required parameters
+     * @param ISource|null    $source
      * @throws \Phramework\Exceptions\MissingParametersException
      */
-    public static function requireParameters($parameters, $required)
-    {
+    public static function requireParameters(
+        $parameters,
+        $required,
+        ISource $source = null
+    ) {
         //Work with arrays
         if (is_object($parameters)) {
-            $parameters = (array)$parameters;
+            $parameters = (array) $parameters;
         }
 
         $missing = [];
@@ -87,8 +93,11 @@ class Request
             }
         }
 
-        if (count($missing)) {
-            throw new MissingParametersException($missing);
+        if (count($missing) > 0) {
+            throw new MissingParametersException(
+                $missing,
+                $source
+            );
         }
     }
 
@@ -99,6 +108,7 @@ class Request
      * @throws \Phramework\Exceptions\IncorrectParameters When value is not correct
      * @return string|integer Returns the id or NULL if not set,
      * if $UINTEGER the returned value will be converted to unsigned integer
+     * @deprecated since 2.0.0
      */
     public static function resourceId($parameters, $UINTEGER = true)
     {
@@ -135,6 +145,7 @@ class Request
      * @throws \Phramework\Exceptions\IncorrectParameters When value is not correct
      * @throws \Phramework\Exceptions\MissingParametersException When id is missing
      * if $UINTEGER the returned value will be converted to unsigned integer
+     * @deprecated since 2.0.0
      */
     public static function requireId($parameters, $UINTEGER = true)
     {
@@ -164,59 +175,6 @@ class Request
             throw new IncorrectParametersException(['id']);
         }
         return ($UINTEGER ? intval($parameters['id']) : $parameters['id']);
-    }
-
-    /**
-     * Required required values and parse provided parameters into an array
-     * Validate the provided request model and return the
-     * @uses \Phramework\Models\Request::requireParameters
-     * @param array|object $parameters
-     * @param array $model
-     * @return array Return the keys => values collection
-     * @deprecated since 1.0.0
-     */
-    public static function parseModel($parameters, $model)
-    {
-        if (is_object($parameters)) {
-            $parameters = (array)$parameters;
-        }
-
-        $required_fields = [];
-        foreach ($model as $key => $value) {
-            if (in_array('required', $value, true) === true
-                || in_array('required', $value, true) == true) {
-                $required_fields[] = $key;
-            }
-        }
-
-        Request::requireParameters($parameters, $required_fields);
-        \Phramework\Validate\Validate::model($parameters, $model);
-
-        $keys_values = [];
-        foreach ($model as $key => $value) {
-            if (isset($parameters[$key])) {
-                if (in_array('nullable', $value) && $parameters[$key] == '0') {
-                    $keys_values[$key] = null;
-                    continue;
-                }
-                //Set value as null
-                if (in_array('nullable', $value) && !$parameters[$key]) {
-                    $keys_values[$key] = null;
-                    continue;
-                }
-                /*
-                if ($value['type'] == 'select' && !$parameters[$key]) {
-                    $keys_values[$key] = NULL;
-                } else {*/
-                    $keys_values[$key] = $parameters[$key];
-                /*}*/
-            } elseif (($value['type'] == 'boolean' || in_array('boolean', $value))
-                && (!isset($parameters[$key]) || !$parameters[$key])) {
-                $keys_values[$key] = false;
-            }
-        }
-
-        return $keys_values;
     }
 
     /**

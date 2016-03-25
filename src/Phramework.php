@@ -16,8 +16,20 @@
  */
 namespace Phramework;
 
+use Phramework\Exceptions\IncorrectParameterException;
+use Phramework\Exceptions\IncorrectParametersException;
+use Phramework\Exceptions\MethodNotAllowedException;
+use Phramework\Exceptions\MissingParametersException;
+use Phramework\Exceptions\NotFoundException;
+use Phramework\Exceptions\PermissionException;
+use Phramework\Exceptions\RequestException;
+use Phramework\Exceptions\ServerException;
+use Phramework\Exceptions\Source\Pointer;
+use Phramework\Exceptions\UnauthorizedException;
+use Phramework\Extensions\Translation;
 use \Phramework\Models\Request;
 use \Phramework\Extensions\StepCallback;
+use Phramework\Route\IRoute;
 
 // @codingStandardsIgnoreStart
 // Tell PHP that we're using UTF-8 strings until the end of the script
@@ -35,7 +47,7 @@ mb_http_output('UTF-8');
  * <li>string   errorlog_path <i>[Optional]</i>, default is null</li>
  * <li>string   language  <i>[Optional]</i>, default is "en"</li>
  * <li>string[] languages <i>[Optional]</i>, default is []</li>
- * <li>string[] allowed_referer <i>[Optional]</i>, default is null</li>
+ * <li>string[] allowed_referrer <i>[Optional]</i>, default is null</li>
  * </ul>
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
@@ -79,9 +91,9 @@ class Phramework
 
     /**
      * Route object
-     * @var Phramework\Route\IRoute
+     * @var IRoute
      */
-    private static $URIStrategy;
+    private static $route;
 
     /**
      * @var string
@@ -97,13 +109,13 @@ class Phramework
 
     /**
      * StepCallback extension
-     * @var Phramework\Extensions\StepCallback
+     * @var StepCallback
      */
     public static $stepCallback;
 
     /**
      * translation extension
-     * @var Phramework\Extensions\translation
+     * @var Translation
      */
     public static $translation;
 
@@ -112,14 +124,14 @@ class Phramework
      *
      * Only one instance of API may be present
      * @param array $settings
-     * @param Phramework\Route\IRoute $Route
+     * @param IRoute $route
      * Route object
      * @param object|null $translationObject  *[Optional]* Set custom translation class
-     * @throws Phramework\Exceptions\ServerException
+     * @throws ServerException
      */
     public function __construct(
         $settings,
-        $URIStrategyObject,
+        $route,
         $translationObject = null
     ) {
         self::$settings = $settings;
@@ -133,16 +145,16 @@ class Phramework
         self::$stepCallback = new \Phramework\Extensions\StepCallback();
 
         if (!is_subclass_of(
-            $URIStrategyObject,
-            \Phramework\URIStrategy\IURIStrategy::class,
+            $route,
+            IRoute::class,
             true
         )) {
-            throw new \Phramework\Exceptions\ServerException(
+            throw new ServerException(
                 'Class is not implementing Phramework\Route\IRoute'
             );
         }
 
-        self::$URIStrategy = $URIStrategyObject;
+        self::$route = $route;
 
         //If custom translation object is set add it
         if ($translationObject) {
@@ -177,7 +189,8 @@ class Phramework
 
     /**
      * Set translation object
-     * @param \Phramework\Extensions\Translation $translationObject Translation object
+     * @param Translation $translationObject Translation object
+     * @throws \Exception
      */
     public static function setTranslation($translationObject)
     {
@@ -191,7 +204,7 @@ class Phramework
             );
         }
 
-        return self::$translation = $translationObject;
+        self::$translation = $translationObject;
     }
 
     /**
@@ -199,7 +212,7 @@ class Phramework
      * @param string            $key
      * @param object|array|null $parameters
      * @param string            $fallbackValue
-     * @return type
+     * @return string
      * @todo implemtation
      */
     public static function getTranslated(
@@ -238,7 +251,8 @@ class Phramework
      * @todo change default timezone
      * @todo change default language
      * @todo initialize database if set
-     * @todo @security deny access to any else referals
+     * @todo remove callaback
+     * @todo @security deny access to any else referrals
      */
     public function invoke()
     {
@@ -267,7 +281,9 @@ class Phramework
                         ['callback']
                     );
                 }
+
                 self::$callback = $_GET['callback'];
+
                 unset($_GET['callback']);
             }
 
@@ -306,13 +322,13 @@ class Phramework
             if (isset($headers['Origin'])) {
                 $originHost = parse_url($headers['Origin'], PHP_URL_HOST);
                 //Check if origin host is allowed
-                if ($originHost && self::getSetting('allowed_referer')
-                    && in_array($originHost, self::getSetting('allowed_referer'))) {
+                if ($originHost && self::getSetting('allowed_referrer')
+                    && in_array($originHost, self::getSetting('allowed_referrer'))) {
                     $origin = $headers['Origin'];
                 }
                 //@TODO @security else deny access
             } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
-                $origin = '*'; //TODO Exctract origin from request url
+                $origin = '*'; //TODO Extract origin from request url
             }
 
             //Send access control headers
@@ -367,19 +383,24 @@ class Phramework
                     $input = trim(file_get_contents('php://input'));
 
                     if (!empty($input)) {
-                        //note if input length is >0 and decode returns null then its bad data
+                        //note if input length is > 0 and decode returns null then its bad data
                         //json_last_error()
 
                         $inputObject = json_decode($input);
 
                         if (json_last_error() !== JSON_ERROR_NONE) {
-                            throw new \Phramework\Exceptions\RequestException(
-                                'JSON parse error: ' . json_last_error_msg()
+                            throw new IncorrectParameterException(
+                                'encoding',
+                                'JSON parse error: ' . json_last_error_msg(),
+                                new Pointer('')
                             );
                         }
 
                         if ($inputObject && !empty($inputObject)) {
-                            $params = (object)array_merge((array)$params, (array)$inputObject);
+                            $params = (object) array_merge(
+                                (array )$params,
+                                (array) $inputObject
+                            );
                         }
                     }
                 }
@@ -399,11 +420,6 @@ class Phramework
                 $method,
                 $headers
             );
-
-            //In case of array returned force type to be object
-            if (is_array(self::$user)) {
-                self::$user = (object)self::$user;
-            }
 
             //STEP_AFTER_AUTHENTICATION_CHECK
             self::$stepCallback->call(
@@ -426,10 +442,10 @@ class Phramework
                 }
                 unset($_GET['this_language']);
             } elseif (self::$user && property_exists(self::$user, 'language_code')) {
-                // Use user's langugae
+                // Use user's language
                 $language = self::$user->language_code;
             } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && self::getSetting('languages')) {
-                // Use Accept languge if provided
+                // Use Accept language if provided
                 $a = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
                 if (in_array($a, self::getSetting('languages'))) {
@@ -441,16 +457,16 @@ class Phramework
             self::$language = $language;
             //self::$translation->setLanguageCode($language);
 
-            //STEP_BEFORE_CALL_URISTRATEGY
+            //STEP_BEFORE_CALL_ROUTE
             self::$stepCallback->call(
-                StepCallback::STEP_BEFORE_CALL_URISTRATEGY,
+                StepCallback::STEP_BEFORE_CALL_ROUTE,
                 $params,
                 $method,
                 $headers
             );
 
             //Call controller's method
-            list($invokedController, $invokedMethod) = self::$URIStrategy->invoke(
+            list($invokedController, $invokedMethod) = self::$route->invoke(
                 $params,
                 $method,
                 $headers,
@@ -458,7 +474,7 @@ class Phramework
             );
 
             self::$stepCallback->call(
-                StepCallback::STEP_AFTER_CALL_URISTRATEGY,
+                StepCallback::STEP_AFTER_CALL_ROUTE,
                 $params,
                 $method,
                 $headers,
@@ -472,12 +488,13 @@ class Phramework
                 $method,
                 $headers
             );
-        } catch (\Phramework\Exceptions\NotFoundException $exception) {
+        } catch (NotFoundException $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
-                    'title' => $exception->getMessage()
+                    'title'  => $exception->getMessage()
                 ]],
                 $exception->getCode(),
                 $params,
@@ -485,12 +502,13 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\RequestException $exception) {
+        } catch (RequestException $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
-                    'title' => $exception->getMessage()
+                    'title'  => $exception->getMessage()
                 ]],
                 $exception->getCode(),
                 $params,
@@ -498,12 +516,13 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\PermissionException $exception) {
+        } catch (PermissionException $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
-                    'title' => $exception->getMessage()
+                    'title'  => $exception->getMessage()
                 ]],
                 $exception->getCode(),
                 $params,
@@ -511,12 +530,13 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\UnauthorizedException $exception) {
+        } catch (UnauthorizedException $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
-                    'title' => $exception->getMessage()
+                    'title'  => $exception->getMessage()
                 ]],
                 $exception->getCode(),
                 $params,
@@ -524,14 +544,16 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\MissingParametersException $exception) {
+        } catch (MissingParametersException $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
-                    /*'meta' => [
+                    'source' => $exception->getSource(),
+                    'meta' => (object) [
                         'missing' => $exception->getParameters()
-                    ],*/
+                    ],
                     'title' => $exception->getMessage()
                 ]],
                 $exception->getCode(),
@@ -540,14 +562,16 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
+        } catch (IncorrectParameterException $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
-                    'detail' => $exception->getMessage(),
-                    /*'meta' => [
-                        'incorrect' => $exception->getParameters()
-                    ],*/
+                    'detail' => $exception->getDetail() ?? $exception->getMessage(),
+                    'source' => $exception->getSource(),
+                    'meta' => (object) [
+                        'failure' => $exception->getFailure()
+                    ],
                     'title' => $exception->getMessage()
                 ]],
                 $exception->getCode(),
@@ -556,23 +580,32 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\IncorrectParametersException $exception) {
+        } catch (IncorrectParametersException $exception) {
+
+            $incorrectParameters = [];
+            foreach ($exception->getParameters() as $incorrectParameter) {
+                //push
+                $incorrectParameters = (object) [
+                    'id'     => Phramework::getRequestUUID(),
+                    'status' => $incorrectParameter->getCode(),
+                    'detail' => $exception->getDetail() ?? $incorrectParameter->getMessage(),
+                    'title'  => $incorrectParameter->getMessage(),
+                    'meta'   => (object) [
+                        'failure' => $exception->getFailure()
+                    ]
+                ];
+            }
+
             self::errorView(
-                [(object) [
-                    'status' => $exception->getCode(),
-                    'detail' => $exception->getMessage(),
-                    /*'meta' => [
-                        'incorrect' => $exception->getParameters()
-                    ],*/
-                    'title' => $exception->getMessage()
-                ]],
+                $incorrectParameters,
                 $exception->getCode(),
                 $params,
                 $method,
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\MethodNotAllowedException $exception) {
+        } catch (MethodNotAllowedException $exception) {
+
             //Write allow header if AllowedMethods is set
             if (!headers_sent() && $exception->getAllowedMethods()) {
                 header('Allow: ' . implode(', ', $exception->getAllowedMethods()));
@@ -580,6 +613,7 @@ class Phramework
 
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'meta' => [
@@ -593,9 +627,10 @@ class Phramework
                 $headers,
                 $exception
             );
-        } catch (\Phramework\Exceptions\RequestException $exception) {
+        } catch (RequestException $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => $exception->getCode(),
                     'detail' => $exception->getMessage(),
                     'title' => 'Request Error'
@@ -609,6 +644,7 @@ class Phramework
         } catch (\Exception $exception) {
             self::errorView(
                 [(object) [
+                    'id'     => Phramework::getRequestUUID(),
                     'status' => 400,
                     'detail' => $exception->getMessage(),
                     'title' => 'Error'
@@ -676,15 +712,6 @@ class Phramework
     }
 
     /**
-     * Get requested controller
-     * @return string
-     */
-    public static function getController()
-    {
-        return self::$controller;
-    }
-
-    /**
      * Get current viewer
      * @return string
      */
@@ -743,6 +770,7 @@ class Phramework
     /**
      * Set viewer class
      * @param string $viewerClass A name of class that implements \Phramework\Viewers\IViewer
+     * @throws \Exception
      */
     public static function setViewer($viewerClass)
     {
@@ -805,13 +833,13 @@ class Phramework
         $args = func_get_args();
 
         /**
-         * On HEAD method dont return response body, only the user's object
+         * On HEAD method don't return response body, only the user's object
          */
         if (self::getMethod() === self::METHOD_HEAD) {
             return;
         }
 
-        //Instanciate a new viewer object
+        //Instantiate a new viewer object
         $viewer =  new self::$viewer();
 
         //rewrite $parameters to args

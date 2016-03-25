@@ -17,14 +17,14 @@
 
 namespace Phramework\Authentication;
 
+use Phramework\Exceptions\PermissionException;
+
 /**
  * Authentication related functions
  *
- * Implements authentication using HTTP\s BASIC AUTHENTICATION
- * This class should be extended, this implementation will allways return false
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 1
+ * @since 1.0.0
  */
 interface IAuthentication
 {
@@ -38,19 +38,19 @@ interface IAuthentication
     public function check($params, $method, $headers);
 
     /**
-     * Autheticate a user, using user's email and password
+     * Authenticate a user, using user's email and password
      * Always returns false
      * You must extend this class and implement this method
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
      * @param  array  $headers Request headers
      * @return array|false Returns false on error or the user object on success
-     * @throws Phramework\Exceptions\PermissionException
+     * @throws PermissionException
      */
     public function authenticate($params, $method, $headers);
 
     /**
-     * Test if current request holds authoratation data
+     * Test if current request holds authorization information
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
      * @param  array  $headers  Request headers

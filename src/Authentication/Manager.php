@@ -16,7 +16,14 @@
  */
 
 namespace Phramework\Authentication;
+use Phramework\Exceptions\ServerException;
 
+/**
+ * Class Manager
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @since 1.0.0
+ */
 class Manager
 {
     protected static $implementations = [];
@@ -31,17 +38,18 @@ class Manager
     public static function register($implementation)
     {
         $object = new $implementation();
-        if (!($object instanceof \Phramework\Authentication\IAuthentication)) {
-            throw new \Exception(
-                'Class is not implementing \Phramework\Authentication\IAuthentication'
-            );
+        if (!($object instanceof IAuthentication)) {
+            throw new \Exception(sprintf(
+                'Class is not implementing "%s',
+                IAuthentication::class
+            ));
         }
 
         self::$implementations[] = $object;
     }
 
     /**
-     * @return Phramework\Authentication\IAuthentication[]
+     * @return IAuthentication[]
      */
     public static function getImplementation()
     {
@@ -51,17 +59,17 @@ class Manager
     /**
      * Check user's authentication
      * This method iterates through all available authentication implementations
-     * tests in priorioty order which of them might be provided and executes
+     * tests in priority order which of them might be provided and executes
      * @param  array  $params  Request parameters
      * @param  string $method  Request method
      * @param  array  $headers  Request headers
      * @return array|false Returns false on error or the user object on success
-     * @throws Phramework\Exceptions\ServerException
+     * @throws ServerException
      */
     public static function check($params, $method, $headers)
     {
         if (count(self::$implementations) !== 0 && !self::$userGetByEmailMethod) {
-            throw new \Phramework\Exceptions\ServerException(
+            throw new ServerException(
                 'getUserByEmail method is not set'
             );
         }
@@ -98,9 +106,10 @@ class Manager
 
     /**
      * Set the method that accepts email and returns a user object
-     * MUST containg a password, id, this method MUST also contain any other
+     * MUST contain a password, id, this method MUST also contain any other
      * attribute specified in JWT::setAttributes method
      * @param callable $callable
+     * @throws \Exception
      */
     public static function setUserGetByEmailMethod($callable)
     {
@@ -142,7 +151,7 @@ class Manager
      * execution, `user` object will be provided to the
      * defined callback.
      * @param callable $callable
-     * @throws Exception
+     * @throws \Exception
      */
     public static function setOnAuthenticateCallback($callable)
     {
@@ -165,7 +174,7 @@ class Manager
      * Set a callback that will be executed after a successful check
      * execution
      * @param callable $callable
-     * @throws Exception
+     * @throws \Exception
      */
     public static function setOnCheckCallback($callable)
     {
