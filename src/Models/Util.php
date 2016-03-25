@@ -29,6 +29,7 @@ use \Phramework\Exceptions\IncorrectParametersException;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
  * @todo add defined settings
+ * @deprecated since 2.0
  */
 class Util
 {

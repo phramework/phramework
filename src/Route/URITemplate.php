@@ -16,6 +16,7 @@
  */
 namespace Phramework\Route;
 
+use Phramework\Exceptions\Source\Parameter;
 use Phramework\Exceptions\UnauthorizedException;
 use Phramework\Phramework;
 use Phramework\Exceptions\PermissionException;
@@ -23,9 +24,10 @@ use Phramework\Exceptions\NotFoundException;
 use Phramework\Exceptions\MethodNotAllowedException;
 use Phramework\Exceptions\ServerException;
 use Phramework\Route\IRoute;
+use Phramework\Validate\StringValidator;
 
 /**
- * IURIStrategy implementation using URI templates
+ * IRoute implementation using URI templates
  *
  * This strategy uses URI templates to validate the requested URI,
  * if the URI matches a template then the assigned method will be executed.
@@ -41,6 +43,7 @@ use Phramework\Route\IRoute;
  * RewriteCond %{REQUEST_FILENAME} !-d
  * RewriteRule ^(.*)$ index.php [QSA,L]
  * ```
+ * **NOTE** maximum URI length is set to 256
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 1.0.0
@@ -81,7 +84,6 @@ class URITemplate implements IRoute
      * then false will be returned,
      * else a array with a key-value array in position 0 will be returned
      * containing the extracted parameters from the URI template.
-     * @todo provide options to specify parameters data type (alphanumeric or int)
      * @todo provide options to define optional parameters
      */
     public function test($URITemplate, $URI)
@@ -90,7 +92,15 @@ class URITemplate implements IRoute
 
         // escape slash / character
         $template = str_replace('/', '\/', $template);
-        // replace all named parameters {id} to named regexp matches
+
+        //int class
+        $template = preg_replace(
+            '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+\|int)\}(.*?)/',
+            '$1(?P<$2>[0-9]+)$3',
+            $template
+        );
+
+        //all class replace all named parameters {id} to named regexp matches
         $template = preg_replace(
             '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+)\}(.*?)/',
             '$1(?P<$2>[0-9a-zA-Z_\-]+)$3',
@@ -147,6 +157,11 @@ class URITemplate implements IRoute
 
         //Extract parameters from QUERY string
         parse_str($REDIRECT_QUERY_STRING, $parameters);
+
+        //Validate URI length
+        $URI = (new StringValidator(0, 256))
+            ->setSource(new Parameter(''))
+            ->parse($URI);
 
         return [$URI, $parameters];
     }

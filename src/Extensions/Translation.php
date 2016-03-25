@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 namespace Phramework\Extensions;
+use Phramework\Models\Language;
 
 /**
  * translation extension
@@ -68,7 +69,7 @@ class Translation
         }
 
         if ($parameters) {
-            $translated = \Phramework\Models\language::template($translated, $parameters);
+            $translated = Language::template($translated, $parameters);
         }
 
         return $translated;

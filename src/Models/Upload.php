@@ -27,6 +27,7 @@ use \Phramework\Exceptions\NotFoundException;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0
  * @todo clean up
+ * @deprecated since 2.0
  */
 class Upload
 {

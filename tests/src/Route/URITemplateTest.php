@@ -31,23 +31,12 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', '1');
-
         $this->object = new URITemplate($this->testTemplates);
 
         $_SERVER['QUERY_STRING'] = 'spam=true&ok=false';
         $_SERVER['REQUEST_URI'] = '/api/book/1?spam=true&ok=false';
 
         $_SERVER['SCRIPT_NAME'] = '/api/index.php';
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
     }
 
     public function testSuccessProvider()
@@ -58,6 +47,9 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
             ],
             'check parameter' =>    [
                 'book/{id}', 'book/1', ['id' => '1']
+            ],
+            'check parameter (int class)' =>    [
+                'book/{id|int}', 'book/1', ['id' => '1']
             ],
             'check parameter' =>    [
                 'book/{id}',
@@ -87,13 +79,16 @@ class URITemplateTest extends \PHPUnit_Framework_TestCase
     public function testFailureProvider()
     {
         return [
-            'check relashionship' => [
-                'book/', 'books'
+            'typo' => [
+                'book', 'books'
             ],
             'invalid second level' => [
                 'book/{id}/author', 'book/1/authors'
             ],
-            'check relashionship\'s parameter' => [
+            'string parameter for integer class' => [
+                'book/{id|int}', 'book/myBook'
+            ],
+            'missing required parameter' => [
                 'book/{id}', 'book/'
             ],
             'test bad request' => [
