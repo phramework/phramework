@@ -18,6 +18,7 @@ namespace Phramework\Models;
 
 use \Phramework\Models\Util;
 use \Phramework\Exceptions\NotFoundException;
+use Phramework\Util\File;
 
 /**
  * Upload class
@@ -60,7 +61,7 @@ class Upload
             throw new NotFoundException('File not found');
         }
         $filename = $file['name'];
-        $ext = Util::extension($filename);
+        $ext = File::extension($filename);
         if (!in_array($ext, $allowedFiletypes)) {
             return 'Incorrect file type';
         }
@@ -77,7 +78,7 @@ class Upload
             } elseif ($parseExtension) {
                 $move['path'] .= '.' . $ext;
             }
-            $destination = Util::get_path(
+            $destination = File::getPath(
                 isset($move['name'])
                 ? [$move['path'], $move['name']]
                 : [$move['path']]
@@ -186,7 +187,7 @@ class Upload
 
             //If requires resize
             if ($height > $value[0] || $width > $value[1]) {
-                $destinationName = \Util::get_path([ $destinationName, '_' . $key . ($PNG ? '.png' : 'jpg')]);
+                $destinationName = File::getPath([ $destinationName, '_' . $key . ($PNG ? '.png' : 'jpg')]);
                 $newheight = $value[0];
                 $newwidth = $value[1];
                 if ($width > $height) {

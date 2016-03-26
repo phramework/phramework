@@ -32,7 +32,7 @@ use Phramework\Validate\StringValidator;
  * This strategy uses URI templates to validate the requested URI,
  * if the URI matches a template then the assigned method will be executed.
  *
- * This class is the preferable strategy if jsonapi is to be used.
+ * This class is the preferable strategy if JSON API is to be used.
  *
  * It requires apache configuration via .htaccess
  * ```
@@ -95,7 +95,7 @@ class URITemplate implements IRoute
 
         //int class
         $template = preg_replace(
-            '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+\|int)\}(.*?)/',
+            '/(.*?)\{([a-zA-Z][a-zA-Z0-9_]+)\|int\}(.*?)/',
             '$1(?P<$2>[0-9]+)$3',
             $template
         );

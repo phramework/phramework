@@ -30,6 +30,7 @@ use Phramework\Extensions\Translation;
 use \Phramework\Models\Request;
 use \Phramework\Extensions\StepCallback;
 use Phramework\Route\IRoute;
+use Phramework\Util\Util;
 
 // @codingStandardsIgnoreStart
 // Tell PHP that we're using UTF-8 strings until the end of the script
@@ -139,7 +140,7 @@ class Phramework
         self::$user = false;
         self::$language = 'en';
 
-        self::$requestUUID = \Phramework\Models\Util::generateUUID();
+        self::$requestUUID = Util::generateUUID();
 
         //Instantiate StepCallback object
         self::$stepCallback = new \Phramework\Extensions\StepCallback();
