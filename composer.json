@@ -17,20 +17,25 @@
       "Phramework\\": "src"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Phramework\\Tests\\": "tests"
+    }
+  },
   "repositories": [],
   "require": {
     "php": ">=7",
     "ext-json": "*",
-    "phramework/validate": "dev-master#643f183ec41f5e87162d893be457bb98e62287bc",
-    "phramework/database": "dev-master#68299ecea5b1db0e256a34a6ec7892cff2b5f109",
-    "phramework/util": "dev-master"
+    "phramework/exceptions": "^1.0",
+    "phramework/validate": "^1.0",
+    "phramework/database": "^1.0",
+    "phramework/util": "^0.0"
   },
   "suggest": {
     "ext-curl": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "5.*",
-    "phpunit/phpunit-skeleton-generator": "*",
     "squizlabs/php_codesniffer": "*",
     "apigen/apigen": "^4.1",
     "ext-pdo_sqlite": "*",

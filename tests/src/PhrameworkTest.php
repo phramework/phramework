@@ -32,7 +32,7 @@ class PhrameworkTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        //Prepare phramework instance
+        //Prepare phramework-old instance
         $this->phramework = new Phramework(
             [],
             new \Phramework\Route\URITemplate([

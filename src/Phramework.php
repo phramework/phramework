@@ -27,8 +27,8 @@ use Phramework\Exceptions\ServerException;
 use Phramework\Exceptions\Source\Pointer;
 use Phramework\Exceptions\UnauthorizedException;
 use Phramework\Extensions\Translation;
-use \Phramework\Models\Request;
-use \Phramework\Extensions\StepCallback;
+use Phramework\Models\Request;
+use Phramework\Extensions\StepCallback;
 use Phramework\Route\IRoute;
 use Phramework\Util\Util;
 
@@ -582,20 +582,45 @@ class Phramework
                 $exception
             );
         } catch (IncorrectParametersException $exception) {
-
+            /**
+             * @var \Exception[]
+             */
             $incorrectParameters = [];
-            foreach ($exception->getParameters() as $incorrectParameter) {
+
+            $parameters = $exception->getExceptions();
+
+            foreach ($parameters as $incorrectParameter) {
                 //push
-                $incorrectParameters = (object) [
+                $o = (object) [
                     'id'     => Phramework::getRequestUUID(),
                     'status' => $incorrectParameter->getCode(),
-                    'detail' => $exception->getDetail() ?? $incorrectParameter->getMessage(),
+                    //'detail' => $incorrectParameter->getMessage(),
                     'title'  => $incorrectParameter->getMessage(),
-                    'meta'   => (object) [
-                        'failure' => $exception->getFailure()
-                    ]
+                    //'source' => $incorrectParameter->getSource(),
+                    /*'meta'   => (object) [
+                        'failure' => $incorrectParameter->getFailure()
+                    ]*/
                 ];
+
+                $class = get_class($incorrectParameter);
+
+                if ($class == IncorrectParameterException::class) {
+                    $o->source = $incorrectParameter->getSource();
+                    $o->detail = $incorrectParameter->getDetail();
+                    $o->meta = (object) [
+                        'failure' => $incorrectParameter->getFailure()
+                    ];
+                } elseif ($class == MissingParametersException::class) {
+                    $o->source = $incorrectParameter->getSource();
+                    $o->meta = (object) [
+                        'missing' => $incorrectParameter->getParameters()
+                    ];
+                }
+
+                $incorrectParameters[] = $o;
             }
+
+            //var_dump($exception->getParameters()[0]);
 
             self::errorView(
                 $incorrectParameters,
@@ -826,12 +851,12 @@ class Phramework
      * If requested method is HEAD then the response body will be empty
      * Multiple arguments can be set, first argument will always be used as the parameters array.
      * Custom IViewer implementation can use these additional parameters at they definition.
-     * @param object|array $parameters The output parameters.
+     * @param mixed $arguments The output parameters.
      * @return mixed Returns the value returned by the invoked viewer
      */
-    public static function view($parameters = [])
+    public static function view(...$arguments)
     {
-        $args = func_get_args();
+        //$args = func_get_args();
 
         /**
          * On HEAD method don't return response body, only the user's object
@@ -844,10 +869,10 @@ class Phramework
         $viewer =  new self::$viewer();
 
         //rewrite $parameters to args
-        $args[0] = $parameters;
+        //$args[0] = $parameters;
 
         //Call view method
-        return call_user_func_array([$viewer, 'view'], $args);
+        return $viewer->view(...$arguments);
     }
 
     /**
