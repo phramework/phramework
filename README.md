@@ -1,4 +1,6 @@
 # phramework
+
+[![Join the chat at https://gitter.im/phramework/phramework](https://badges.gitter.im/phramework/phramework.svg)](https://gitter.im/phramework/phramework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Version 1.x, _code name "Thales"_
 
 A PHP framework for RESTful services and APIs
