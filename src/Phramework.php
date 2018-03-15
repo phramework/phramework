@@ -483,6 +483,20 @@ class Phramework
                 $headers,
                 $exception
             );
+        } catch (\Phramework\Exceptions\ApplicationException $exception) {
+            self::errorView(
+                [(object)[
+                    'status' => $exception->getCode(),
+                    'detail' => $exception->getMessage(),
+                    'title'  => $exception->getMessage(),
+                    'code'   => $exception->getApplicationCode(),
+                ]],
+                $exception->getCode(),
+                $params,
+                $method,
+                $headers,
+                $exception
+            );
         } catch (\Phramework\Exceptions\RequestException $exception) {
             self::errorView(
                 [(object)[
