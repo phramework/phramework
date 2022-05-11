@@ -20,7 +20,7 @@ namespace Phramework;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
-class PhrameworkTest extends \PHPUnit_Framework_TestCase
+class PhrameworkTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Phramework
@@ -30,7 +30,7 @@ class PhrameworkTest extends \PHPUnit_Framework_TestCase
     /**
      * This method is called before a test is executed.
      */
-    public function setUp()
+    public function setUp():void
     {
         //Prepare phramework instance
         $this->phramework = new Phramework(
@@ -47,7 +47,7 @@ class PhrameworkTest extends \PHPUnit_Framework_TestCase
     {
         $requestUUID = Phramework::getRequestUUID();
 
-        $this->assertInternalType('string', $requestUUID);
+        $this->assertIsString($requestUUID);
 
         $this->assertSame(36, strlen($requestUUID), 'Must be 36 characters');
 

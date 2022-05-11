@@ -20,7 +20,7 @@ namespace Phramework\Models;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
-class OperatorTest extends \PHPUnit_Framework_TestCase
+class OperatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Phramework\Models\Operator::parse
@@ -68,7 +68,7 @@ class OperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetByClassFlagsFailure()
     {
-        Operator::getByClassFlags(0);
+        Operator::getByClassFlags(1);
     }
 
     /**
