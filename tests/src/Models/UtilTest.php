@@ -20,7 +20,7 @@ namespace Phramework\Models;
  * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  */
-class UtilTest extends \PHPUnit_Framework_TestCase
+class UtilTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Phramework\Models\Util::generateUUID
@@ -29,7 +29,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     {
         $UUID = Util::generateUUID();
 
-        $this->assertInternalType('string', $UUID);
+        $this->assertIsString($UUID);
 
         $this->assertSame(36, strlen($UUID), 'Must be 36 characters');
 
@@ -47,7 +47,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     {
         $token = Util::token();
 
-        $this->assertInternalType('string', $token);
+        $this->assertIsString($token);
 
         $this->assertSame(40, strlen($token), 'Must be 40 characters');
 
@@ -65,7 +65,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     {
         $readableRandomString = Util::readableRandomString(10);
 
-        $this->assertInternalType('string', $readableRandomString);
+        $this->assertIsString($readableRandomString);
 
         $this->assertSame(
             10,

@@ -2,7 +2,7 @@
 
 namespace Phramework\Extensions;
 
-class StepCallbackTest extends \PHPUnit_Framework_TestCase
+class StepCallbackTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -14,7 +14,7 @@ class StepCallbackTest extends \PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp():void
     {
         $this->object = new StepCallback();
 
@@ -51,7 +51,9 @@ class StepCallbackTest extends \PHPUnit_Framework_TestCase
     {
         $this->object->add(
             StepCallback::STEP_AFTER_AUTHENTICATION_CHECK,
-            (new \stdClass())
+            function () {
+                return new \stdClass();
+            }
         );
     }
 
@@ -77,10 +79,10 @@ class StepCallbackTest extends \PHPUnit_Framework_TestCase
                 $invokedMethod
             ) use ($test) {
                 $test->assertSame($step, StepCallback::STEP_AFTER_CALL_URISTRATEGY);
-                $test->assertInternalType('array', $params);
-                $test->assertInternalType('string', $method);
-                $test->assertInternalType('array', $headers);
-                $test->assertInternalType('array', $callbackVariables);
+                $test->assertIsArray($params);
+                $test->assertIsString($method);
+                $test->assertIsArray($headers);
+                $test->assertIsArray($callbackVariables);
                 $test->assertSame('value', $callbackVariables['key']);
                 $test->assertSame('controller', $invokedController);
                 $test->assertSame('GET', $invokedMethod);
