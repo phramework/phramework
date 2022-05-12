@@ -29,7 +29,7 @@
     "ext-curl": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "9.3.1",
+    "phpunit/phpunit": "^9.3.1",
     "squizlabs/php_codesniffer": "*",
     "apigen/apigen": "^4.1",
     "ext-pdo_sqlite": "*",
