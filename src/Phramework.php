@@ -294,29 +294,26 @@ class Phramework
                 );
             }
 
-            //Default value of response's header origin
-            $origin = '*';
-
             //Get request headers
             $headers = Models\Request::headers();
 
-            //Check origin header
-            if (isset($headers['Origin'])) {
+            if (self::getSetting('allowed_referer') === null) {
+                if (!headers_sent()) {
+                    header('Access-Control-Allow-Origin: *');
+                }
+            } else if (isset($headers['Origin'])) {
                 $originHost = parse_url($headers['Origin'], PHP_URL_HOST);
                 //Check if origin host is allowed
-                if ($originHost && self::getSetting('allowed_referer')
-                    && in_array($originHost, self::getSetting('allowed_referer'))) {
-                    $origin = $headers['Origin'];
+                if (in_array($originHost, self::getSetting('allowed_referer'), true)) {
+                    if (!headers_sent()) {
+                        header('Access-Control-Allow-Origin: ' . $headers['Origin']);
+                    }
                 }
-                //@TODO @security else deny access
-            } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
-                $origin = '*'; //TODO Exctract origin from request url
             }
 
             //Send access control headers
             if (!headers_sent()) {
                 header('Access-Control-Allow-Credentials: true');
-                header('Access-Control-Allow-Origin: ' . $origin);
                 header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, HEAD, DELETE, OPTIONS');
                 header(
                     'Access-Control-Allow-Headers: '
